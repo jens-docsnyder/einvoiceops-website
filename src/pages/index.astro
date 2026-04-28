@@ -1,17 +1,2549 @@
----
-
----
-
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>einvoiceops — EU E-invoice Mandate Readiness</title>
+  <meta name="description" content="Fixed-scope readiness sprints for EU e-invoicing mandates. Built for finance and tax teams managing multi-country rollouts without the bandwidth to do it alone." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1a2b3c;
+      --navy-soft:   #243447;
+      --accent:      #2563eb;
+      --accent-dark: #1d4ed8;
+      --accent-glow: rgba(37,99,235,0.12);
+      --text:        #111827;
+      --sub:         #374151;
+      --muted:       #6b7280;
+      --border:      #e5e7eb;
+      --bg:          #ffffff;
+      --bg-alt:      #f8f9fa;
+      --ice:         #eff6ff;
+      --live:        #dc2626;
+      --urgent:      #d4a017;
+      --coming:      #2563eb;
+      --future:      #9ca3af;
+      --green:       #2e7d32;
+      --green-light: #e8f5e9;
+      --green-border:#a5d6a7;
+      --green-dark:  #1b5e20;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    @media (max-width: 600px) { .nav-links .hide-mobile { display: none; } }
+
+    nav a.btn-nav {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--bg);
+      background: var(--accent);
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    nav a.btn-nav:hover { background: var(--accent-dark); }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 96px 2rem 80px;
+      text-align: center;
+      background: var(--bg);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--ice);
+      border: 1px solid #bfdbfe;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--navy);
+      max-width: 820px;
+      margin: 0 auto 24px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--bg);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 13px 26px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: #162540; }
+
+    .btn-ghost {
+      display: inline-block;
+      color: var(--sub);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 13px 22px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+
+    .hero-mandates {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-mandates span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-live   { background: var(--live); }
+    .dot-urgent { background: var(--urgent); }
+    .dot-coming { background: var(--coming); }
+
+    /* ---- DIVIDER ---- */
+    hr.section-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* ---- CLOCKS ---- */
+    .clocks-section {
+      padding: 80px 2rem;
+      background: var(--navy);
+    }
+
+    .clocks-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .clocks-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .eyebrow-light {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .clocks-header h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #f9fafb;
+      max-width: 600px;
+      margin: 0 auto 12px;
+      line-height: 1.15;
+    }
+
+    .clocks-header p {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    .clocks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+      gap: 14px;
+      margin-bottom: 44px;
+    }
+
+    .clock-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 24px 16px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .clock-card:hover {
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+
+    .clock-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .clock-card.c-live::after   { background: var(--live); }
+    .clock-card.c-urgent::after { background: var(--urgent); }
+    .clock-card.c-coming::after { background: var(--coming); }
+    .clock-card.c-future::after { background: #4b5563; }
+
+    .clock-flag { font-size: 2rem; display: block; margin-bottom: 10px; }
+
+    .clock-country {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #f3f4f6;
+      margin-bottom: 3px;
+    }
+
+    .clock-mandate {
+      font-size: 0.7rem;
+      color: #6b7280;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .status-pill {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 11px;
+      border-radius: 100px;
+    }
+
+    .c-live   .status-pill { background: rgba(220,38,38,0.15);  color: #fca5a5; }
+    .c-urgent .status-pill { background: rgba(212,160,23,0.15);  color: #ffe082; }
+    .c-coming .status-pill { background: rgba(37,99,235,0.15);  color: #93c5fd; }
+    .c-future .status-pill { background: rgba(75,85,99,0.25);   color: #9ca3af; }
+
+    .clock-note {
+      display: block;
+      font-size: 0.68rem;
+      color: #4b5563;
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    .sources-bar {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 28px;
+      text-align: center;
+    }
+
+    .sources-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+
+    .sources-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 24px;
+    }
+
+    .sources-links a {
+      font-size: 0.78rem;
+      color: #6b7280;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .sources-links a:hover { color: #d1d5db; }
+
+    /* ---- SECTIONS ---- */
+    .section { padding: 88px 2rem; }
+    .section.bg-alt { background: var(--bg-alt); }
+
+    .inner { max-width: 960px; margin: 0 auto; }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    h2.section-h {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .section-lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    /* ---- PROBLEM ---- */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .problem-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .problem-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+    }
+
+    .problem-card .p-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--ice);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+
+    .problem-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .problem-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ---- SPRINT BOX ---- */
+    .sprint-box {
+      background: var(--navy);
+      border-radius: 16px;
+      padding: 52px 44px;
+    }
+
+    @media (max-width: 600px) { .sprint-box { padding: 36px 24px; } }
+
+    .sprint-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sprint-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      background: rgba(37,99,235,0.25);
+      color: #93c5fd;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .sprint-box h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #f9fafb;
+      margin-bottom: 6px;
+    }
+
+    .sprint-tagline {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 36px;
+    }
+
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .deliverable {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 20px;
+      transition: background 0.2s, transform 0.2s;
+      cursor: default;
+    }
+
+    .deliverable:hover {
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-3px);
+    }
+
+    .deliverable h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #93c5fd;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+
+    .deliverable p {
+      font-size: 0.8rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .sprint-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .sprint-pill {
+      background: rgba(96,165,250,0.12);
+      color: #93c5fd;
+      border: 1px solid rgba(96,165,250,0.2);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    /* ---- FOR WHO ---- */
+    .icp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .icp-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      background: var(--bg);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .icp-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+    }
+
+    .icp-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+
+    .icp-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .icp-card ul li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .icp-card ul li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+      color: var(--border);
+    }
+
+    /* ---- MID CTA ---- */
+    .mid-cta {
+      background: var(--ice);
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .mid-cta-text h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .mid-cta-text p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    /* ---- CREDENTIALS ---- */
+    .cred-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    @media (max-width: 680px) { .cred-layout { grid-template-columns: 1fr; gap: 36px; } }
+
+    .cred-bio h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .cred-role {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .cred-bio p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .cred-facts h4 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .cred-facts ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cred-facts ul li {
+      font-size: 0.875rem;
+      color: var(--sub);
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.5;
+    }
+
+    .cred-facts ul li:last-child { border-bottom: none; }
+
+    /* ---- FAQ ---- */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-item:last-child { border-bottom: none; }
+
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      padding: 22px 24px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--sans);
+      transition: background 0.15s;
+    }
+
+    .faq-q:hover { background: var(--bg-alt); }
+
+    .faq-q .faq-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-a {
+      display: none;
+      padding: 0 24px 22px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .faq-item.open .faq-a { display: block; }
+
+    /* ---- CONTACT ---- */
+    .contact-box {
+      background: var(--navy);
+      border-radius: 16px;
+      padding: 72px 48px;
+      text-align: center;
+      color: #f9fafb;
+    }
+
+    @media (max-width: 600px) { .contact-box { padding: 48px 28px; } }
+
+    .contact-box h2 {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #f9fafb;
+      margin-bottom: 14px;
+    }
+
+    .contact-box p {
+      font-size: 1rem;
+      color: #9ca3af;
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .email-link {
+      display: inline-block;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-decoration: none;
+      border-bottom: 2px solid rgba(96,165,250,0.3);
+      padding-bottom: 2px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .email-link:hover { color: #f9fafb; border-color: rgba(249,250,251,0.4); }
+
+    .contact-note {
+      display: block;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      padding: 32px 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ---- STATS BAR ---- */
+    .stats-bar {
+      background: var(--navy);
+      padding: 52px 2rem;
+    }
+
+    .stats-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 0 32px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+
+    .stat-item:first-child { padding-left: 0; }
+    .stat-item:last-child  { border-right: none; padding-right: 0; }
+
+    @media (max-width: 700px) {
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat-item { border-right: none; padding: 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .stat-item:nth-child(2n) { border-left: 1px solid rgba(255,255,255,0.06); }
+    }
+
+    .stat-number {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #f9fafb;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-number em {
+      font-style: normal;
+      color: #60a5fa;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: #d1d5db;
+      line-height: 1.45;
+      max-width: 160px;
+      margin: 0 auto 6px;
+    }
+
+    .stat-source {
+      font-size: 0.68rem;
+      color: #9ca3af;
+      font-style: italic;
+    }
+
+    /* ---- CALCULATOR ---- */
+    .calc-section {
+      padding: 88px 2rem;
+      background: var(--bg-alt);
+    }
+
+    .calc-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 720px) {
+      .calc-layout { grid-template-columns: 1fr; }
+    }
+
+    .calc-inputs {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+    }
+
+    .calc-field {
+      margin-bottom: 28px;
+    }
+
+    .calc-field:last-child { margin-bottom: 0; }
+
+    .help-tip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--border);
+      color: var(--muted);
+      font-size: 0.6rem;
+      font-weight: 700;
+      cursor: default;
+      position: relative;
+      vertical-align: middle;
+      margin-left: 5px;
+      flex-shrink: 0;
+    }
+
+    .help-tip::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 400;
+      line-height: 1.5;
+      padding: 8px 12px;
+      border-radius: 8px;
+      width: 240px;
+      white-space: normal;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 50;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .help-tip::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 3px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--navy);
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+    }
+
+    .help-tip:hover::after,
+    .help-tip:hover::before { opacity: 1; }
+
+    .calc-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--sub);
+      letter-spacing: 0.03em;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .calc-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+
+    .slider-val {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--navy);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    .mandate-checks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mandate-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.15s, background 0.15s;
+      user-select: none;
+    }
+
+    .mandate-check:hover { border-color: #93c5fd; background: var(--ice); }
+
+    .mandate-check input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .mandate-check.checked {
+      border-color: var(--accent);
+      background: var(--ice);
+    }
+
+    .mandate-check-label {
+      flex: 1;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--sub);
+    }
+
+    .mandate-check-label span {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    .mandate-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.15s;
+      user-select: none;
+    }
+
+    .radio-option:hover { border-color: #93c5fd; }
+    .radio-option.checked { border-color: var(--accent); background: var(--ice); }
+
+    .radio-option input[type="radio"] {
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .radio-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--sub);
+    }
+
+    .radio-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* ---- CALC OUTPUT ---- */
+    .calc-output {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 76px;
+    }
+
+    .calc-out-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+
+    .calc-out-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .calc-big-number {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--navy);
+      line-height: 1;
+    }
+
+    .calc-big-number.accent { color: var(--accent); }
+
+    .calc-sub-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .calc-comparison {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+    }
+
+    .calc-comparison h4 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .compare-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+
+    .compare-row:last-child { border-bottom: none; }
+
+    .compare-label {
+      font-size: 0.85rem;
+      color: var(--sub);
+      line-height: 1.4;
+    }
+
+    .compare-value {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .compare-value.green { color: #16a34a; }
+    .compare-value.accent { color: var(--accent); }
+
+    .saving-badge { display: none; } /* hidden — replaced by saving-hero */
+
+    .saving-hero {
+      display: none;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border: 1.5px solid var(--green-border);
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+
+    .saving-hero-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--green-dark);
+      margin-bottom: 4px;
+    }
+
+    .saving-hero-amount {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--green-dark);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .saving-hero-sub {
+      font-size: 0.78rem;
+      color: var(--green);
+      margin-top: 5px;
+      opacity: 0.85;
+    }
+
+    .saving-hero-divider {
+      border: none;
+      border-top: 1px solid var(--green-border);
+      margin: 16px 0;
+    }
+
+    .saving-hero-annual-label {
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green-dark);
+      margin-bottom: 3px;
+    }
+
+    .saving-hero-annual-amount {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .saving-hero-annual-sub {
+      font-size: 0.68rem;
+      color: var(--green);
+      margin-top: 3px;
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    .calc-empty {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 20px 0;
+    }
+
+
+    /* ---- RANGE TOOLTIP ---- */
+    .range-tooltip {
+      position: fixed;
+      pointer-events: none;
+      z-index: 999;
+      background: var(--navy);
+      color: white;
+      padding: 5px 11px;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transform: translate(14px, -50%);
+      display: none;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));
+    }
+
+    .range-tooltip::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-right-color: var(--navy);
+    }
+
+    /* ---- RANGE SOURCES ---- */
+    .range-sources {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #bfdbfe;
+      font-size: 0.68rem;
+      color: #4b72a8;
+      line-height: 1.65;
+    }
+
+    .range-sources strong {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #3b64a0;
+      margin-bottom: 3px;
+    }
+
+    /* ---- RANGE VIZ ---- */
+    .range-viz {
+      background: var(--ice);
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 6px 6px 20px;
+      display: none;
+    }
+
+    .range-viz-header {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
+      border-radius: 10px;
+      padding: 20px 22px 18px;
+      margin-bottom: 22px;
+    }
+
+    @keyframes banderole {
+      from { left: -65%; }
+      to   { left: 115%; }
+    }
+
+    .range-viz-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .range-viz-title::after {
+      content: '';
+      position: absolute;
+      top: -15%;
+      left: -65%;
+      width: 50%;
+      height: 130%;
+      background: linear-gradient(
+        105deg,
+        transparent        0%,
+        rgba(255,80,80,  0.45) 18%,
+        rgba(255,200,30, 0.45) 32%,
+        rgba(60,210,90,  0.45) 46%,
+        rgba(50,145,255, 0.45) 60%,
+        rgba(170,80,255, 0.45) 74%,
+        transparent        100%
+      );
+      transform: skewX(-12deg);
+      animation: banderole 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.55s 1 forwards;
+      pointer-events: none;
+    }
+
+    .range-viz-title.banderole-done::after { display: none; }
+
+    .range-viz-sub {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.55;
+    }
+
+    .range-viz-sub strong { color: white; font-weight: 700; }
+
+    .range-legend {
+      font-size: 0.68rem;
+      color: #6b94c4;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .range-sources a {
+      color: #2563eb;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .range-sources a:hover { color: #1d4ed8; }
+
+    .range-track-wrap {
+      position: relative;
+      padding-top: 60px;
+      margin-bottom: 4px;
+    }
+
+    .range-track {
+      height: 30px;
+      background: #dce6f0;
+      border-radius: 14px;
+      position: relative;
+      overflow: visible;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .range-band {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #93c5fd 0%, #2563eb 100%);
+      border-radius: 14px;
+      transition: left 0.55s cubic-bezier(0.34, 1.3, 0.64, 1),
+                  width 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
+      left: 50%;
+      width: 0%;
+    }
+
+
+    .range-sprint-marker {
+      position: absolute;
+      top: -10px;
+      width: 3px;
+      height: calc(100% + 20px);
+      background: var(--navy);
+      border-radius: 2px;
+      transition: left 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
+      left: 25%;
+    }
+
+    .sprint-marker-card {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      filter: drop-shadow(0 2px 8px rgba(26,43,60,0.3));
+    }
+
+    .sprint-marker-card::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--navy);
+    }
+
+    .sprint-card-label {
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      opacity: 0.65;
+    }
+
+    .sprint-card-price {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .range-point-labels {
+      position: relative;
+      height: 52px;
+      margin-top: 10px;
+    }
+
+    .range-point-label {
+      position: absolute;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 0.68rem;
+      line-height: 1.35;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: left 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .range-point-label strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 1px;
+    }
+
+    .range-point-label.lbl-sprint strong { color: var(--navy); }
+    .range-point-label.lbl-low strong    { color: #2563eb; }
+    .range-point-label.lbl-high strong   { color: var(--sub); }
+
+    /* ---- ERP SELECT ---- */
+    .erp-select {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 0.875rem;
+      font-family: var(--sans);
+      color: var(--sub);
+      font-weight: 600;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      transition: border-color 0.15s;
+    }
+    .erp-select:hover, .erp-select:focus { border-color: var(--accent); }
+
+    /* ---- METHODOLOGY ACCORDION ---- */
+    .calc-methodology {
+      margin-top: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .meth-toggle {
+      width: 100%;
+      background: var(--bg);
+      border: none;
+      cursor: pointer;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: var(--sans);
+      transition: background 0.15s;
+    }
+
+    .meth-toggle:hover { background: var(--bg-alt); color: var(--sub); }
+
+    .meth-arrow {
+      font-size: 0.65rem;
+      transition: transform 0.2s;
+      color: var(--muted);
+    }
+
+    .meth-toggle[aria-expanded="true"] .meth-arrow { transform: rotate(180deg); }
+
+    .meth-body {
+      padding: 0 18px 16px;
+      background: var(--bg);
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.65;
+      border-top: 1px solid var(--border);
+    }
+
+    .meth-body a { color: var(--accent); text-decoration: none; }
+    .meth-body a:hover { text-decoration: underline; }
+
+    .meth-section-head {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--sub);
+      margin: 14px 0 6px;
+    }
+
+    .meth-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 4px;
+    }
+
+    .meth-table th {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 5px 8px 5px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .meth-table td {
+      font-size: 0.7rem;
+      color: var(--sub);
+      padding: 5px 8px 5px 0;
+      border-bottom: 1px solid var(--bg-alt);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .meth-table tr:last-child td { border-bottom: none; }
+
+    /* ---- DISCLAIMER ---- */
+    .disclaimer {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      padding: 20px 2rem;
+      text-align: center;
+    }
+
+    .disclaimer p {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">einvoice<span>ops</span></a>
+  <div class="nav-links">
+    <a href="#calculator" class="hide-mobile">Mandate Cost Calculator</a>
+    <a href="#product" class="hide-mobile">Services</a>
+    <a href="/map/" class="hide-mobile">Compliance Map</a>
+    <a href="#about" class="hide-mobile">About</a>
+    <a href="#faq" class="hide-mobile">FAQ</a>
+    <a href="#contact" class="btn-nav">Get in touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Poland live &nbsp;·&nbsp; France Sept 2026 &nbsp;·&nbsp; Germany Jan 2027</span>
+  <h1>A single mandate change costs your finance team <em>270 to 430 hours</em> before the ERP work even starts.</h1>
+  <p class="hero-sub">Most of that time is invisible - distributed across Tax, IT, and Finance Ops and absorbed as coordination overhead that nobody budgets for.</p>
+  <div class="hero-actions">
+    <a href="#calculator" class="btn-primary">Calculate your exposure</a>
+    <a href="#product" class="btn-ghost">What's included</a>
+  </div>
+</section>
+
+<hr class="section-rule" />
+
+<!-- STATS BAR -->
+<section class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-number"><em>4–7</em>+</div>
+      <div class="stat-label">significant mandate change events per year for a 4-6 country EU footprint</div>
+      <div class="stat-source">Vertex Regulatory Tracker Q4 2025</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><em>85</em>%</div>
+      <div class="stat-label">of finance time during mandate-active periods goes to triage and coordination, not strategy</div>
+      <div class="stat-source">Accenture 2024</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><em>15–25</em>%</div>
+      <div class="stat-label">invoice exception rate in the first 30 days after go-live without structured preparation</div>
+      <div class="stat-source">IOFM / SoftCo 2026</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><em>18</em>%</div>
+      <div class="stat-label">lower IT operations spend in unified vs. fragmented ERP environments</div>
+      <div class="stat-source">Hackett Group 2025-26</div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-section" id="calculator">
+  <div class="calc-inner">
+    <span class="eyebrow">Your mandate cost</span>
+    <h2 class="section-h">What is your mandate exposure actually costing?</h2>
+    <p class="section-lead">Select your mandates, ERP, and team rate. The output on the right is your team's real internal readiness cost.</p>
+
+    <div class="calc-layout">
+
+      <!-- INPUTS -->
+      <div class="calc-inputs">
+
+        <div class="calc-field">
+          <label class="calc-label">Legal entities affected <span style="font-weight:400;color:var(--muted)">(across all selected mandates)</span><span class="help-tip" data-tip="A legal entity is a registered company (e.g. French SAS, Polish sp. z o.o., German GmbH). Set how many of your own entities need to comply — not the number of countries you sell into.">?</span></label>
+          <div class="calc-slider-wrap">
+            <input type="range" id="calc-countries" min="1" max="10" value="1" oninput="calcUpdate()">
+            <span class="slider-val" id="countries-display">1</span>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <label class="calc-label">Mandates active or upcoming for you</label>
+          <div class="mandate-checks">
+            <label class="mandate-check" id="chk-france">
+              <input type="checkbox" name="calc-mandate" value="france" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-status-dot" style="background:#d97706"></span>
+              <span class="mandate-check-label">France PDP <span>Sept 2026</span></span>
+            </label>
+            <label class="mandate-check" id="chk-poland">
+              <input type="checkbox" name="calc-mandate" value="poland" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-status-dot" style="background:#dc2626"></span>
+              <span class="mandate-check-label">Poland KSeF <span>Live</span></span>
+            </label>
+            <label class="mandate-check" id="chk-germany">
+              <input type="checkbox" name="calc-mandate" value="germany" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-status-dot" style="background:#2563eb"></span>
+              <span class="mandate-check-label">Germany B2B <span>Jan 2027</span></span>
+            </label>
+            <label class="mandate-check" id="chk-belgium">
+              <input type="checkbox" name="calc-mandate" value="belgium" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-status-dot" style="background:#dc2626"></span>
+              <span class="mandate-check-label">Belgium Peppol <span>Live</span></span>
+            </label>
+            <label class="mandate-check" id="chk-romania">
+              <input type="checkbox" name="calc-mandate" value="romania" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-status-dot" style="background:#dc2626"></span>
+              <span class="mandate-check-label">Romania e-Factura <span>Live</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <label class="calc-label">ERP environment <span style="font-weight:400;color:var(--muted)">(select all that apply)</span></label>
+          <div class="mandate-checks" id="erp-checks">
+            <label class="mandate-check" id="chk-netsuite">
+              <input type="checkbox" name="calc-erp" value="netsuite" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-check-label">NetSuite</span>
+            </label>
+            <label class="mandate-check" id="chk-dynamics">
+              <input type="checkbox" name="calc-erp" value="dynamics" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-check-label">Microsoft Dynamics 365</span>
+            </label>
+            <label class="mandate-check" id="chk-sap">
+              <input type="checkbox" name="calc-erp" value="sap" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-check-label">SAP S/4HANA</span>
+            </label>
+            <label class="mandate-check" id="chk-oracle">
+              <input type="checkbox" name="calc-erp" value="oracle" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-check-label">Oracle Cloud ERP</span>
+            </label>
+            <label class="mandate-check" id="chk-sage">
+              <input type="checkbox" name="calc-erp" value="sage" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-check-label">Sage X3</span>
+            </label>
+            <label class="mandate-check" id="chk-erp-other">
+              <input type="checkbox" name="calc-erp" value="other" onchange="calcUpdate(); toggleCheck(this)">
+              <span class="mandate-check-label">Other / not sure</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <label class="calc-label">Your team's blended hourly rate</label>
+          <div class="radio-group">
+            <label class="radio-option checked" id="rate-lean">
+              <input type="radio" name="calc-rate" value="85" checked onchange="calcUpdate(); toggleRadioGroup('rate')">
+              <span class="radio-label">€85 / hour</span>
+              <span class="radio-sub">Lean finance team</span>
+            </label>
+            <label class="radio-option" id="rate-cross">
+              <input type="radio" name="calc-rate" value="100" onchange="calcUpdate(); toggleRadioGroup('rate')">
+              <span class="radio-label">€100 / hour</span>
+              <span class="radio-sub">Finance + Tax + ERP</span>
+            </label>
+            <label class="radio-option" id="rate-enterprise">
+              <input type="radio" name="calc-rate" value="120" onchange="calcUpdate(); toggleRadioGroup('rate')">
+              <span class="radio-label">€120 / hour</span>
+              <span class="radio-sub">Enterprise specialists</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="calc-output">
+
+        <!-- 1. RANGE VIZ — most prominent element -->
+        <div class="range-viz" id="range-viz">
+          <div class="range-viz-header">
+            <div class="range-viz-title">Nobody budgets for this. Everyone pays it.</div>
+            <div class="range-viz-sub">Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.</div>
+          </div>
+          <div style="padding: 0 18px">
+            <div class="range-track-wrap">
+              <div class="range-track" id="range-track-el">
+                <div class="range-band" id="range-band"></div>
+                <div class="range-sprint-marker" id="range-sprint-marker">
+                  <div class="sprint-marker-card">
+                    <span class="sprint-card-label">Sprint fee</span>
+                    <span class="sprint-card-price" id="sprint-marker-pip">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="range-point-labels">
+              <div class="range-point-label lbl-low" id="lbl-low-pos">
+                <strong id="range-label-low">—</strong>
+                <span>Structured</span>
+              </div>
+              <div class="range-point-label lbl-high" id="lbl-high-pos">
+                <strong id="range-label-high">—</strong>
+                <span>Reactive</span>
+              </div>
+            </div>
+            <div class="range-legend">Grey bar: full cost spectrum &nbsp;·&nbsp; Blue band: your team's estimated range &nbsp;·&nbsp; Dark line: Readiness Sprint fee &nbsp;·&nbsp; Hover to read values</div>
+          </div>
+        </div>
+
+        <!-- 2. SAVING HERO — right after the graph -->
+        <div class="saving-hero" id="saving-hero">
+          <div class="saving-hero-label">Sprint saving — this mandate cycle</div>
+          <div class="saving-hero-amount" id="saving-hero-amount">—</div>
+          <div class="saving-hero-sub" id="saving-hero-sub"></div>
+          <hr class="saving-hero-divider" id="saving-hero-divider" style="display:none">
+          <div id="saving-hero-annual-block" style="display:none">
+            <div class="saving-hero-annual-label">Annual mandate burden — your team</div>
+            <div class="saving-hero-annual-amount" id="saving-hero-annual-amount">—</div>
+            <div class="saving-hero-annual-sub" id="saving-hero-annual-sub"></div>
+          </div>
+        </div>
+
+        <!-- 3. SPRINT COMPARISON -->
+        <div class="calc-comparison">
+          <div class="compare-row">
+            <span class="compare-label">Your internal cost (typical midpoint)</span>
+            <span class="compare-value" id="out-scope-internal">—</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-label" id="sprint-label">Readiness Sprint (fixed fee)</span>
+            <span class="compare-value accent" id="sprint-price-display">€24,500</span>
+          </div>
+          <div class="compare-row" id="penalty-row" style="display:none">
+            <span class="compare-label">France penalty risk <span style="font-size:0.68rem;color:var(--muted)">(2026 Budget Law — €50/invoice, cap €15K/yr/entity)</span></span>
+            <span class="compare-value" id="penalty-value" style="color:var(--urgent)"></span>
+          </div>
+          <div class="compare-row" id="poland-penalty-row" style="display:none">
+            <span class="compare-label">Poland KSeF penalty risk <span style="font-size:0.68rem;color:var(--muted)">(Art. 106ni VAT Act — 100% of VAT per invoice post Jan 2027)</span></span>
+            <span class="compare-value" style="color:var(--urgent);font-size:0.82rem">Per-invoice · no cap</span>
+          </div>
+          <div class="compare-row" id="germany-penalty-row" style="display:none">
+            <span class="compare-label">Germany penalty risk <span style="font-size:0.68rem;color:var(--muted)">(§26a UStG — up to €5K/invoice; GoBD non-compliance: VAT deduction denial + bookkeeping rejection)</span></span>
+            <span class="compare-value" style="color:var(--urgent);font-size:0.82rem">Per-invoice · no annual cap</span>
+          </div>
+          <div class="saving-badge" id="saving-badge"></div>
+          <div style="margin-top:12px;font-size:0.75rem;color:var(--muted);line-height:1.55;" id="sprint-note"></div>
+        </div>
+
+        <!-- 4. HOURS BOX — supporting detail -->
+        <div class="calc-out-box">
+          <div class="calc-out-label">Estimated readiness hours</div>
+          <div class="calc-big-number accent" id="out-hours">—</div>
+          <div class="calc-sub-note" id="out-hours-note">Select a mandate above</div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="out-range-pills"></div>
+        </div>
+
+        <!-- 5. METHODOLOGY — collapsible -->
+        <div class="calc-methodology">
+          <button class="meth-toggle" onclick="toggleMethodology()" aria-expanded="false">
+            <span>Methodology &amp; sources</span>
+            <span class="meth-arrow">&#9660;</span>
+          </button>
+          <div class="meth-body" id="meth-body" style="display:none">
+
+            <p class="meth-section-head">Readiness cost model</p>
+            <table class="meth-table">
+              <thead><tr><th>Input</th><th>Value</th><th>Source / basis</th></tr></thead>
+              <tbody>
+                <tr><td>Annual tax compliance burden per company</td><td>~900h/year (384h research + 510h returns)</td><td><a href="https://www.vertexinc.com/resources/resource-library/gartner-global-e-invoicing-strategy-report" target="_blank" rel="noopener">Forrester TEI of Avalara (2024)</a> — per-company baseline for mid-sized EU firm</td></tr>
+                <tr><td>Single-country e-invoicing go-live project duration</td><td>6–12 months</td><td>Billentis "Riding the Tornado" 2026 (Bruno Koch) — implementation timeline benchmark</td></tr>
+                <tr><td>Readiness effort per mandate (internal prep only, excl. ERP config)</td><td>270–430h per mandate per entity</td><td>Derived from Avalara/Billentis anchors above; consistent with implementation partner project benchmarks. Not a single published benchmark — treated as internal estimate.</td></tr>
+                <tr><td>Structured team (low end)</td><td>270–290h</td><td>Organised ownership, clear mandate lead, proactive partner coordination</td></tr>
+                <tr><td>Reactive team (high end)</td><td>405–430h</td><td>Distributed ownership, coordination overhead, post-go-live exception management</td></tr>
+              </tbody>
+            </table>
+
+            <p class="meth-section-head">ERP multipliers</p>
+            <table class="meth-table">
+              <thead><tr><th>ERP</th><th>Multiplier</th><th>Entity scaling (2nd entity+)</th></tr></thead>
+              <tbody>
+                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+25% per entity — baseline, consistent with SAPinsider implementation patterns and industry standard</td></tr>
+                <tr><td>Sage X3</td><td>×1.2 (estimated)</td><td>+30% per entity — directional estimate based on single-tenant architecture; no published benchmark. Higher UAT overhead for localised compliance patches vs. multi-tenant cloud ERPs</td></tr>
+                <tr><td>Oracle Cloud ERP</td><td>×1.3 (estimated)</td><td>+50% per entity — directional estimate. Forrester ERP Solutions Landscape Q1 2026 cites higher configuration complexity for Oracle Fusion vs. lightweight cloud ERPs in regulatory compliance scenarios</td></tr>
+                <tr><td>SAP S/4HANA</td><td>×1.5</td><td>+60% per entity — supported by SAPinsider S/4HANA Migration Benchmark 2025 and Forrester ERP Solutions Landscape Q1 2026 (higher "configuration complexity" rating)</td></tr>
+                <tr><td>Multi-ERP (2+ systems)</td><td>Avg multiplier ×1.135</td><td>+13.5% integration penalty — IDC 2025 "SaaS ERP Multi-Cloud Complexity" survey (12–15% integration and reconciliation penalty for heterogeneous ERP environments)</td></tr>
+              </tbody>
+            </table>
+
+            <p class="meth-section-head">Hourly rates</p>
+            <table class="meth-table">
+              <thead><tr><th>Rate</th><th>Profile</th></tr></thead>
+              <tbody>
+                <tr><td>€85/h</td><td>Lean finance team — <a href="https://www.roberthalf.com/be/en/insights/salary-guide" target="_blank" rel="noopener">Robert Half 2026</a></td></tr>
+                <tr><td>€100/h</td><td>Finance + Tax + ERP cross-functional — <a href="https://www.hays.com/salary-guide" target="_blank" rel="noopener">Hays 2026</a></td></tr>
+                <tr><td>€120/h</td><td>Enterprise specialists — <a href="https://www.morganmckinley.com/salary-guides" target="_blank" rel="noopener">Morgan McKinley 2026</a></td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:4px">Rates are fully loaded (1,650 productive hours/year). ERP reconfiguration and technical testing excluded.</p>
+
+            <p class="meth-section-head">Annual mandate burden</p>
+            <p>Mandate readiness is recurring, not one-time. <a href="https://www.vertexinc.com/resources/resource-library/navigating-urgent-e-invoicing-mandates-december-2025-regulatory-alert" target="_blank" rel="noopener">Vertex Regulatory Tracker (Jan 2026)</a> recorded 11 significant regulatory events across France, Poland, Belgium, Spain, Latvia, and Greece in Q4 2025 alone — new technical schemas, pilot launches, legal amendments, and enforcement date confirmations. For a 4–6 country EU footprint, this suggests 4–7+ significant events per year is a conservative floor, not a ceiling. Event types carry different effort weights: go-live events (~100% readiness effort), schema/format updates (~40%), legislative tuning (~20%). Annual estimate uses 2.5–3.5 full-mandate equivalents per year. Note: the Sovos and Billentis reports are cited as general sources for EU mandate complexity; neither report contains the specific per-company frequency figure.</p>
+
+            <p class="meth-section-head">Penalty exposure</p>
+            <table class="meth-table">
+              <thead><tr><th>Country</th><th>Penalty</th><th>Source</th></tr></thead>
+              <tbody>
+                <tr><td>France</td><td>€50/invoice, capped €15,000/year/entity</td><td>France 2026 Budget Law (approved Feb 2026) — <a href="https://www.dynatos.com/blog/france-e-invoicing-penalties-enforcement-2026/" target="_blank" rel="noopener">Dynatos 2026</a>; <a href="https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/" target="_blank" rel="noopener">Sovos France Budget Law</a></td></tr>
+                <tr><td>Poland (KSeF)</td><td>100% of VAT per invoice, no cap (post Jan 2027)</td><td><a href="https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/podstawy-prawne-oraz-kluczowe-terminy/" target="_blank" rel="noopener">Art. 106ni VAT Act</a></td></tr>
+                <tr><td>Germany</td><td>Up to €5,000/invoice (§26a UStG); GoBD non-compliance: VAT deduction denial, bookkeeping rejection — no fixed fine, tax authority discretion (AO)</td><td><a href="https://www.gesetze-im-internet.de/ustg_1980/__26a.html" target="_blank" rel="noopener">§26a UStG (official text)</a>; <a href="https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html" target="_blank" rel="noopener">BMF E-Rechnung FAQ</a></td></tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top:10px">Sprint: fixed fee €24,500 per mandate, 6-month engagement, 50% on start / 50% on delivery. One primary legal entity.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOCKS -->
+<section class="clocks-section">
+  <div class="clocks-inner">
+    <div class="clocks-header">
+      <span class="eyebrow-light">Mandate status — April 2026</span>
+      <h2>Six clocks. All running.<br>None synchronised.</h2>
+      <p>Think of each EU mandate as a clock set to a different alarm time. Poland's went off in February. France rings in September. Germany's issuance alarm sounds in January 2027. They do not run at the same speed, they do not warn you in advance, and none of them wait for each other. Your readiness gap is the distance between where your organisation is today and where each clock says you need to be.</p>
+    </div>
+
+    <div class="clocks-grid">
+      <div class="clock-card c-live">
+        <span class="clock-flag">🇵🇱</span>
+        <div class="clock-country">Poland</div>
+        <div class="clock-mandate">KSeF — Clearance</div>
+        <span class="status-pill">Live</span>
+        <span class="clock-note">Large taxpayers Feb 2026<br>All VAT-registered Apr 2026</span>
+      </div>
+      <div class="clock-card c-live">
+        <span class="clock-flag">🇧🇪</span>
+        <div class="clock-country">Belgium</div>
+        <div class="clock-mandate">Peppol BIS B2B</div>
+        <span class="status-pill">Live</span>
+        <span class="clock-note">Mandatory since Jan 2026</span>
+      </div>
+      <div class="clock-card c-live">
+        <span class="clock-flag">🇷🇴</span>
+        <div class="clock-country">Romania</div>
+        <div class="clock-mandate">RO e-Factura</div>
+        <span class="status-pill">Live</span>
+        <span class="clock-note">Mandatory since Jan 2024</span>
+      </div>
+      <div class="clock-card c-urgent">
+        <span class="clock-flag">🇫🇷</span>
+        <div class="clock-country">France</div>
+        <div class="clock-mandate">PDP / Y-Model</div>
+        <span class="status-pill">5 months</span>
+        <span class="clock-note">Large companies<br>Sept 1, 2026</span>
+      </div>
+      <div class="clock-card c-coming">
+        <span class="clock-flag">🇩🇪</span>
+        <div class="clock-country">Germany</div>
+        <div class="clock-mandate">XRechnung / ZUGFeRD</div>
+        <span class="status-pill">Partial</span>
+        <span class="clock-note">Reception: live Jan 2025<br>Issuance: Jan 2027</span>
+      </div>
+      <div class="clock-card c-future">
+        <span class="clock-flag">🇪🇺</span>
+        <div class="clock-country">ViDA</div>
+        <div class="clock-mandate">VAT in the Digital Age</div>
+        <span class="status-pill">Incoming</span>
+        <span class="clock-note">Digital reporting<br>from 2030</span>
+      </div>
+    </div>
+
+    <div class="sources-bar">
+      <p class="sources-label">Mandate data cross-referenced with</p>
+      <div class="sources-links">
+        <a href="https://www.basware.com/en/compliance-map" target="_blank" rel="noopener">Basware Country Compliance Map</a>
+        <a href="https://sovos.com/regulatory-analysis/" target="_blank" rel="noopener">Sovos Regulatory Analysis</a>
+        <a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/" target="_blank" rel="noopener">EU Commission Country Factsheets</a>
+        <a href="https://peppol.org/learn-more/country-profiles/" target="_blank" rel="noopener">OpenPEPPOL Country Profiles</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section bg-alt">
+  <div class="inner">
+    <span class="eyebrow">Why readiness fails</span>
+    <h2 class="section-h">Mandate readiness stalls for the same four reasons.</h2>
+    <p class="section-lead">The mandate is known. The deadline is visible. Nothing moves because nobody owns the translation from regulation to operational action - and every function assumes someone else is covering it.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="p-icon">⇄</div>
+        <h3>No single owner</h3>
+        <p>Tax interprets. Finance Ops escalates. IT configures. Nobody coordinates the full chain and action sits in the gap between functions.</p>
+      </div>
+      <div class="problem-card">
+        <div class="p-icon">⊙</div>
+        <h3>Local visibility gap</h3>
+        <p>Local accounting partners handle each country. HQ has no structured view of readiness across entities. Problems surface too late to fix cleanly.</p>
+      </div>
+      <div class="problem-card">
+        <div class="p-icon">⊟</div>
+        <h3>ERP assumptions that do not hold</h3>
+        <p>Many ERPs do not natively support new mandate formats. SIRET mismatches, missing connectors, and format gaps generate exception volume from day one.</p>
+      </div>
+      <div class="problem-card">
+        <div class="p-icon">↧</div>
+        <h3>HQ deprioritisation</h3>
+        <p>HQ ranks problems by Euro impact and headcount. Small-country mandate pressure is structurally invisible at group level until it becomes an emergency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section class="section" id="product">
+  <div class="inner">
+    <span class="eyebrow">The Readiness Sprint</span>
+    <h2 class="section-h">One mandate. One country. Six months to go-live.</h2>
+    <p class="section-lead">Structured work packets routed to the right owners inside your finance function - with a partner accountability module that creates visibility across your local entities. Fixed scope, fixed fee, no surprises.</p>
+
+    <div class="sprint-box">
+      <div class="sprint-meta">
+        <span class="sprint-badge">Example scope</span>
+      </div>
+      <h3>France B2B Readiness Sprint</h3>
+      <p class="sprint-tagline">France PDP mandate &nbsp;·&nbsp; September 2026 deadline &nbsp;·&nbsp; one legal entity</p>
+
+      <div class="deliverables-grid">
+        <div class="deliverable">
+          <h4>Finance Systems Owner</h4>
+          <p>ERP connector gap analysis, SIRET/SIREN master data audit, PDP vendor decision framework, T-minus action sequence.</p>
+        </div>
+        <div class="deliverable">
+          <h4>Tax / Compliance</h4>
+          <p>Mandate applicability confirmation, format and field requirements, correction and cancellation flow, archival obligations.</p>
+        </div>
+        <div class="deliverable">
+          <h4>Finance Ops</h4>
+          <p>Exception handling protocol, reception obligation readiness, escalation path, go-live monitoring setup.</p>
+        </div>
+        <div class="deliverable">
+          <h4>Partner Accountability</h4>
+          <p>Structured questions and required artifacts for local accounting partners and entity finance leads. Response SLA and escalation path.</p>
+        </div>
+      </div>
+
+      <div class="sprint-pills">
+        <span class="sprint-pill">Fixed scope</span>
+        <span class="sprint-pill">Six months</span>
+        <span class="sprint-pill">Fixed fee</span>
+        <span class="sprint-pill">50% on start · 50% on delivery</span>
+        <span class="sprint-pill">Non-authoritative — always source-linked</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="section bg-alt" id="for-who">
+  <div class="inner">
+    <span class="eyebrow">Is this you?</span>
+    <h2 class="section-h">Built for finance teams managing EU mandate rollouts without dedicated compliance headcount.</h2>
+    <p class="section-lead">This is not tax advice. It is operational readiness support for the people responsible for making sure nothing breaks at go-live.</p>
+
+    <div class="icp-grid">
+      <div class="icp-card">
+        <h3>Multi-country European groups</h3>
+        <ul>
+          <li>3 to 20 EU countries with active entities</li>
+          <li>Lean central finance team, coordinated operations</li>
+          <li>No dedicated e-invoicing programme manager</li>
+          <li>Local partners handling country-level accounting</li>
+        </ul>
+      </div>
+      <div class="icp-card">
+        <h3>Active mandate pressure</h3>
+        <ul>
+          <li>French SAS or subsidiary in scope for Sept 2026</li>
+          <li>Polish entity managing KSeF go-live</li>
+          <li>German B2B reception live, issuance Jan 2027</li>
+          <li>ERP that does not natively handle mandate formats</li>
+        </ul>
+      </div>
+      <div class="icp-card">
+        <h3>Governance gap</h3>
+        <ul>
+          <li>No single named mandate owner across countries</li>
+          <li>Ownership sits between Tax, IT, and Finance Ops</li>
+          <li>Relying on local partners for central visibility</li>
+          <li>Internal governance project moving slowly</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MID CTA -->
+<section class="section">
+  <div class="inner">
+    <div class="mid-cta">
+      <div class="mid-cta-text">
+        <h3>France or Poland deadline on your radar?</h3>
+        <p>Send a short note about your situation. We will come back with a frank read on your readiness gap and what a sprint would cover - no sales sequence, no demo call.</p>
+      </div>
+      <a href="#contact" class="btn-primary">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section class="section bg-alt" id="about">
+  <div class="inner">
+    <span class="eyebrow">Who is behind this</span>
+    <h2 class="section-h">Built by someone who mapped EU mandate complexity from the inside.</h2>
+
+    <div class="cred-layout">
+      <div class="cred-bio">
+        <h3>Jens Anttila</h3>
+        <span class="cred-role">Founder, einvoiceops</span>
+        <p>Former product marketer at Basware, covering AP and e-invoice compliance for 2.5 years. Built the internal compliance country map and worked directly with product and GTM teams on how mandate changes translate into customer impact.</p>
+        <p>Since leaving, I have conducted independent buyer and expert research across EU mandate readiness - interviewing finance and tax leads at multi-country European groups, compliance experts, and platform product leaders. einvoiceops is built from that research, not from a consulting template.</p>
+        <p>Based in Finland. Native German speaker. Available across EU time zones.</p>
+      </div>
+
+      <div class="cred-facts">
+        <h4>Background</h4>
+        <ul>
+          <li>2.5 years at Basware — AP and e-invoice compliance product marketing</li>
+          <li>Built internal EU mandate country map and compliance taxonomy</li>
+          <li>Independent buyer research across France, Poland, Germany, Belgium, Romania</li>
+          <li>Interviewed finance and tax leads at multi-country EU groups on mandate readiness gaps</li>
+          <li>Domain expertise: EN16931, XRechnung / ZUGFeRD, PEPPOL BIS, PDP certification, KSeF architecture</li>
+          <li>Coverage: clearance platform mandates (FR, PL, IT, RO) and high-investment mandates (DE, ES, HU)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="inner">
+    <span class="eyebrow">FAQ</span>
+    <h2 class="section-h">Questions we hear most.</h2>
+    <p class="section-lead">Not answered here? Email directly.</p>
+
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is this tax advice or legal advice?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          No. einvoiceops provides operational readiness support - structured work packets, action sequences, and accountability frameworks. We do not interpret tax law, give compliance opinions, or confirm that your organisation is compliant. All work packets are source-linked to official government and regulatory sources and include a clear disclaimer. For legal or tax interpretation, you need a qualified advisor. What we do is translate the operational implications of mandates into actions for the right people inside your organisation.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What exactly do I receive at the end of a sprint?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          A set of structured work packets - one per relevant persona in your finance function (Finance Systems Owner, Tax/Compliance, Finance Ops). Each packet covers: mandate snapshot and what it means operationally, a T-minus action sequence from now to the deadline, fields and systems affected, what you need from other teams, and a partner accountability module with structured questions for your local accounting partners. Everything is source-linked with a confidence level and a snapshot date.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          My AP vendor says they already cover this. Why do I need a readiness sprint?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Platform vendors handle the technical exchange layer - sending and receiving invoices in the right format. They do not handle what needs to happen inside your organisation before that works: master data quality (SIRET for France, GTU codes for Poland), internal ownership clarity, ERP connector configuration, exception handling processes, and partner confirmation across your local entities. These are internal readiness tasks your platform vendor cannot do for you. The sprint covers the gap between what your vendor delivers and what your organisation needs to have ready.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do you price the sprint?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Fixed fee per sprint - one mandate, one country, one legal entity. Pricing is deliverable-based, not day-rate based: 50% on engagement start, 50% on delivery of the final work packet set. This keeps scope clean and predictable. Pricing is discussed directly before any engagement starts - get in touch with your situation and we will give you a clear number.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          We have multiple countries with upcoming mandates. Where do we start?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Start with the nearest hard deadline. France (Sept 2026) and Poland (live) are the most time-pressured for most European groups right now. Germany issuance (Jan 2027) has a longer runway but a more complex internal preparation requirement. We can help you triage based on your entity footprint and ERP setup - send us a short note.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do you work with companies of any size?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          The sprint is designed for companies with 500 to 5,000 employees operating across 3 to 20 EU countries. Large enough to have multi-country mandate exposure, lean enough that no single team has the bandwidth to own all of it. If you are smaller with only one country in scope, or larger with a dedicated compliance programme, the sprint may not be the right fit - and we will tell you that directly.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section bg-alt" id="contact">
+  <div class="inner">
+    <div class="contact-box">
+      <h2>Tell us your situation. Get back a frank read of your mandate gaps.</h2>
+      <p>If you have French, Polish, or German entities and a deadline on your radar, send a short note. We will come back with a frank read of your readiness gap and what a sprint would cover - in writing, within 48 hours.</p>
+      <a href="mailto:jens@einvoiceops.eu" class="email-link">jens@einvoiceops.eu</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>einvoiceops &nbsp;·&nbsp; <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> &nbsp;·&nbsp; Finland</p>
+  <p>© 2026 einvoiceops</p>
+</footer>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <p>einvoiceops provides operational readiness support and is not a tax advisor, legal advisor, or compliance authority. All work packets are informational and operational planning aids only. Customers remain responsible for all compliance decisions and their execution. Confirm regulatory applicability with a qualified advisor where required.</p>
+</div>
+
+<!-- RANGE HOVER TOOLTIP -->
+<div class="range-tooltip" id="range-tooltip"></div>
+
+<script is:inline>
+  /* ---- FAQ ---- */
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    item.classList.toggle('open');
+  }
+
+  /* ---- CALCULATOR ---- */
+
+  // Base hours = readiness-only per mandate per entity
+  // Low = 600h full impl × 45% readiness fraction; High = 900h × 45%
+  // Source: Ardent Partners / Gartner 2024-26 lighter ERP benchmarks
+  const MANDATE_BASE = {
+    france:  { name: "France PDP",        low: 270, high: 405 },
+    poland:  { name: "Poland KSeF",       low: 290, high: 430 },
+    germany: { name: "Germany B2B",       low: 270, high: 405 },
+    belgium: { name: "Belgium Peppol",    low: 200, high: 300 },
+    romania: { name: "Romania e-Factura", low: 200, high: 300 }
+  };
+
+  // ERP multiplier and per-entity scaling by named ERP
+  // NetSuite / Dynamics: 1.0x baseline — widely accepted, per SAPinsider / implementation patterns
+  // Sage X3: 1.2x — directional estimate based on architecture complexity; no published benchmark
+  // Oracle Cloud ERP: 1.3x — directional estimate; Forrester ERP Landscape Q1 2026 cites higher config complexity
+  // SAP S/4HANA: 1.5x — supported by SAPinsider 2025 complexity benchmarks; Forrester ERP Landscape Q1 2026
+  // Multi-ERP: avg mult + 17.5% coordination overhead — modelled on Hackett Group (18% higher IT ops in fragmented envs)
+  const ERP_CONFIG = {
+    netsuite:  { mult: 1.0, entityScale: 0.25 },
+    dynamics:  { mult: 1.0, entityScale: 0.25 },
+    sap:       { mult: 1.5, entityScale: 0.60 },
+    oracle:    { mult: 1.3, entityScale: 0.50 },
+    sage:      { mult: 1.2, entityScale: 0.30 },
+    other:     { mult: 1.0, entityScale: 0.25 }
+  };
+
+  const MULTI_ERP_COORDINATION = 0.135; // 12-15% integration penalty for mixed ERP — IDC 2025 "SaaS ERP Multi-Cloud Complexity" (midpoint 13.5%)
+
+  function entityFactor(n, erpKey) {
+    if (n <= 1) return 1.0;
+    const cfg = ERP_CONFIG[erpKey] || ERP_CONFIG.other;
+    return 1.0 + (n - 1) * cfg.entityScale;
+  }
+
+  const SPRINT_PRICE = 24500;
+
+  let _costLow = 0, _costHigh = 0, _scaleMax = 0;
+
+  /* ---- HOVER TOOLTIP ON RANGE TRACK ---- */
+  document.addEventListener('DOMContentLoaded', function() {
+    const track   = document.getElementById('range-track-el');
+    const tooltip = document.getElementById('range-tooltip');
+    if (!track || !tooltip) return;
+    track.addEventListener('mousemove', function(e) {
+      if (!_scaleMax) return;
+      const rect = track.getBoundingClientRect();
+      const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const val  = pct * _scaleMax;
+      tooltip.textContent    = fmtShort(val);
+      tooltip.style.left     = e.clientX + 'px';
+      tooltip.style.top      = e.clientY + 'px';
+      tooltip.style.display  = 'block';
+    });
+    track.addEventListener('mouseleave', function() {
+      tooltip.style.display = 'none';
+    });
+
+    /* ---- BANDEROLE RETIRE ---- */
+    const title = document.querySelector('.range-viz-title');
+    if (title) {
+      title.addEventListener('animationend', function() {
+        title.classList.add('banderole-done');
+      });
+    }
+  });
+
+  function fmt(n) {
+    return '€' + Math.round(n).toLocaleString('de-DE');
+  }
+
+  function fmtShort(n) {
+    if (n >= 1000000) return '€' + (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000)    return '€' + Math.round(n / 1000) + 'K';
+    return '€' + Math.round(n);
+  }
+
+  function updateRangeBar(costLow, costHigh, totalSprint) {
+    const viz    = document.getElementById('range-viz');
+    const band   = document.getElementById('range-band');
+    const marker = document.getElementById('range-sprint-marker');
+    const pip    = document.getElementById('sprint-marker-pip');
+
+    // Scale: full track = costHigh * 2, so the team cost band always sits in the right half
+    const scaleMax = costHigh * 2;
+    _costLow  = costLow;
+    _costHigh = costHigh;
+    _scaleMax = scaleMax;
+
+    viz.style.display = 'block';
+
+    // Inner band: positioned at costLow..costHigh on the scale
+    const bandLeftPct  = (costLow  / scaleMax) * 100;
+    const bandWidthPct = ((costHigh - costLow) / scaleMax) * 100;
+    band.style.left  = bandLeftPct + '%';
+    band.style.width = bandWidthPct + '%';
+
+    // Sprint marker: positioned at totalSprint on the same scale (left of band in typical cases)
+    const sprintPct = Math.max(2, Math.min(96, (totalSprint / scaleMax) * 100));
+    marker.style.left = sprintPct + '%';
+    pip.textContent   = fmtShort(totalSprint);
+
+    // Position point labels under band edges
+    const lblLowEl  = document.getElementById('lbl-low-pos');
+    const lblHighEl = document.getElementById('lbl-high-pos');
+    const lblLow    = document.getElementById('range-label-low');
+    const lblHigh   = document.getElementById('range-label-high');
+
+    if (lblLowEl)  lblLowEl.style.left  = bandLeftPct + '%';
+    if (lblHighEl) lblHighEl.style.left = (bandLeftPct + bandWidthPct) + '%';
+    if (lblLow)    lblLow.textContent   = fmtShort(costLow);
+    if (lblHigh)   lblHigh.textContent  = fmtShort(costHigh);
+  }
+
+  function calcUpdate() {
+    const entities = parseInt(document.getElementById('calc-countries').value);
+    document.getElementById('countries-display').textContent = entities + (entities >= 10 ? '+' : '');
+
+    // Multi-ERP model: average multiplier across selected ERPs + 17.5% coordination overhead
+    // Formula: Total = Σ(effort × ERP_i_mult / n_erps) × (1 + coordination) — Forrester TEI Q1 2026
+    // Single ERP: straight multiplier, no coordination overhead
+    const selectedERPs = [...document.querySelectorAll('input[name="calc-erp"]:checked')].map(i => i.value);
+    const isMultiERP = selectedERPs.length > 1;
+    const avgMult = selectedERPs.length > 0
+      ? selectedERPs.reduce((sum, key) => sum + (ERP_CONFIG[key]?.mult || 1), 0) / selectedERPs.length
+      : 1.0;
+    const erpMult = isMultiERP ? avgMult * (1 + MULTI_ERP_COORDINATION) : avgMult;
+    // Entity scaling: use worst-case ERP among selected
+    const erpKey = selectedERPs.length > 0
+      ? selectedERPs.reduce((best, key) =>
+          (ERP_CONFIG[key]?.entityScale || 0.25) > (ERP_CONFIG[best]?.entityScale || 0.25) ? key : best
+        , selectedERPs[0])
+      : 'other';
+    const rateEl  = document.querySelector('input[name="calc-rate"]:checked');
+    const rate    = rateEl ? parseInt(rateEl.value) : 85;
+
+    const selected = [...document.querySelectorAll('input[name="calc-mandate"]:checked')].map(i => i.value);
+
+    const hoursEl     = document.getElementById('out-hours');
+    const hoursNote   = document.getElementById('out-hours-note');
+    const rangePills  = document.getElementById('out-range-pills');
+    const scopeInt    = document.getElementById('out-scope-internal');
+    const savingBadge = document.getElementById('saving-badge');
+    const sprintLabel = document.getElementById('sprint-label');
+    const sprintPriceEl = document.getElementById('sprint-price-display');
+    const sprintNote  = document.getElementById('sprint-note');
+    const penaltyRow        = document.getElementById('penalty-row');
+    const penaltyVal        = document.getElementById('penalty-value');
+    const polandPenaltyRow  = document.getElementById('poland-penalty-row');
+    const germanyPenaltyRow = document.getElementById('germany-penalty-row');
+
+    if (selected.length === 0) {
+      hoursEl.textContent    = '—';
+      hoursNote.textContent  = 'Select a mandate above';
+      rangePills.innerHTML   = '';
+      scopeInt.textContent   = '—';
+      savingBadge.style.display    = 'none';
+      const sh = document.getElementById('saving-hero');
+      sh.style.display = 'none';
+      document.getElementById('saving-hero-divider').style.display     = 'none';
+      document.getElementById('saving-hero-annual-block').style.display = 'none';
+      penaltyRow.style.display     = 'none';
+      polandPenaltyRow.style.display  = 'none';
+      germanyPenaltyRow.style.display = 'none';
+      document.getElementById('range-viz').style.display = 'none';
+      sprintNote.textContent = '';
+      sprintPriceEl.textContent = '€24,500';
+      return;
+    }
+
+    const eFactor = entityFactor(entities, erpKey);
+
+    let totalLow = 0, totalHigh = 0;
+    selected.forEach(m => {
+      totalLow  += MANDATE_BASE[m].low;
+      totalHigh += MANDATE_BASE[m].high;
+    });
+
+    const hoursLow  = Math.round(totalLow  * erpMult * eFactor);
+    const hoursHigh = Math.round(totalHigh * erpMult * eFactor);
+    const hoursMid  = Math.round((hoursLow + hoursHigh) / 2);
+
+    const costLow  = hoursLow  * rate;
+    const costHigh = hoursHigh * rate;
+    const costMid  = hoursMid  * rate;
+
+    const nSprints    = selected.length;
+    const totalSprint = nSprints * SPRINT_PRICE;
+    const savingLow   = costLow  - totalSprint;
+    const savingHigh  = costHigh - totalSprint;
+
+    hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
+    hoursNote.textContent = selected.length + ' mandate' + (selected.length > 1 ? 's' : '') +
+      ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y') + ' · readiness overhead only';
+
+    rangePills.innerHTML =
+      '<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured team: ' + hoursLow.toLocaleString('de-DE') + 'h</span>' +
+      '<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc / reactive: ' + hoursHigh.toLocaleString('de-DE') + 'h</span>';
+
+    updateRangeBar(costLow, costHigh, totalSprint);
+
+    const countryShort = { france: 'France', poland: 'Poland', germany: 'Germany', belgium: 'Belgium', romania: 'Romania' };
+    const selectedNames = selected.map(m => countryShort[m]);
+    const headCountry = selectedNames.length <= 3
+      ? selectedNames.join(' + ')
+      : selectedNames.slice(0, 2).join(' + ') + ' +' + (selectedNames.length - 2) + ' more';
+
+    scopeInt.textContent = fmt(costMid) + ' (typical midpoint)';
+
+    sprintLabel.textContent = nSprints > 1
+      ? nSprints + ' × Readiness Sprint (fixed fee)'
+      : 'Readiness Sprint (fixed fee)';
+    sprintPriceEl.textContent = fmt(totalSprint);
+
+    // Saving hero — large, right under the graph
+    const savingHero    = document.getElementById('saving-hero');
+    const savingHeroAmt = document.getElementById('saving-hero-amount');
+    const savingHeroSub = document.getElementById('saving-hero-sub');
+    const savingHeroDivider     = document.getElementById('saving-hero-divider');
+    const savingHeroAnnualBlock = document.getElementById('saving-hero-annual-block');
+    const savingHeroAnnualAmt   = document.getElementById('saving-hero-annual-amount');
+    const savingHeroAnnualSub   = document.getElementById('saving-hero-annual-sub');
+
+    if (savingLow > 0) {
+      savingHero.style.display  = 'block';
+      savingHeroAmt.textContent = fmt(savingLow) + ' – ' + fmt(savingHigh);
+      savingHeroSub.textContent = 'compared to your team handling this internally (' + headCountry + ')';
+    } else if (savingHigh > 0) {
+      savingHero.style.display  = 'block';
+      savingHeroAmt.textContent = 'up to ' + fmt(savingHigh);
+      savingHeroSub.textContent = 'potential saving in reactive scenarios (' + headCountry + ')';
+    } else {
+      savingHero.style.display = 'none';
+    }
+
+    // Annual mandate burden — Vertex Q4 2025: 11 events across 6 EU countries in one quarter
+    // Weighted by event type: go-lives ~100% effort, schema updates ~40%, legislative tuning ~20%
+    // Range: 2.5–3.5 full-mandate equivalents per year for a 4-6 country footprint
+    if (nSprints > 0 && savingHero.style.display !== 'none') {
+      const perMandateLow  = costLow  / nSprints;
+      const perMandateHigh = costHigh / nSprints;
+      const annualLow  = Math.round(perMandateLow  * 2.5);
+      const annualHigh = Math.round(perMandateHigh * 3.5);
+      savingHeroDivider.style.display     = 'block';
+      savingHeroAnnualBlock.style.display = 'block';
+      savingHeroAnnualAmt.textContent     = fmt(annualLow) + ' – ' + fmt(annualHigh) + '/year';
+      savingHeroAnnualSub.textContent     = '4–7 mandate change events/year (Vertex Q4 2025: 11 events across 6 EU countries in one quarter) · ' +
+        'weighted for event type: go-lives, schema updates, legislative tuning · based on your rate and ERP inputs';
+    } else {
+      savingHeroDivider.style.display     = 'none';
+      savingHeroAnnualBlock.style.display = 'none';
+    }
+
+    savingBadge.style.display = 'none';
+
+    sprintNote.textContent = isMultiERP
+      ? 'Mixed ERP environment — estimate uses average multiplier across selected ERPs plus 13.5% integration overhead (IDC 2025). Actual cost depends on which entities run which system.'
+      : nSprints > 1
+        ? 'Pricing assumes one entity per mandate. For multi-entity engagements, contact us for a proposal.'
+        : '';
+
+    // France: €50/invoice capped at €15,000/year/entity (2026 Budget Law, confirmed Feb 2026)
+    // Previously €15 — increased by 2026 Finance Act. Source: dynatos.com / vatcalc.com
+    if (selected.includes('france')) {
+      penaltyRow.style.display = 'flex';
+      penaltyVal.textContent   = fmt(15000 * entities) + '/year';
+    } else {
+      penaltyRow.style.display = 'none';
+    }
+
+    // Poland: 100% of VAT per invoice, no cap (Art. 106ni VAT Act, post Jan 2027)
+    polandPenaltyRow.style.display = selected.includes('poland') ? 'flex' : 'none';
+
+    // Germany: €5K/invoice + €30K GoBD archiving (§26a UStG + BMF March 2026)
+    germanyPenaltyRow.style.display = selected.includes('germany') ? 'flex' : 'none';
+  }
+
+  function toggleCheck(el) {
+    const label = el.closest('.mandate-check');
+    if (el.checked) label.classList.add('checked');
+    else label.classList.remove('checked');
+  }
+
+  function toggleRadioGroup(groupName) {
+    document.querySelectorAll('input[name="calc-' + groupName + '"]').forEach(radio => {
+      const label = radio.closest('.radio-option');
+      if (radio.checked) label.classList.add('checked');
+      else label.classList.remove('checked');
+    });
+  }
+
+  function toggleMethodology() {
+    const btn  = document.querySelector('.meth-toggle');
+    const body = document.getElementById('meth-body');
+    if (!btn || !body) return;
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    body.style.display = isOpen ? 'none' : 'block';
+  }
+
+  // Init
+  calcUpdate();
+</script>
+
+</body>
 </html>

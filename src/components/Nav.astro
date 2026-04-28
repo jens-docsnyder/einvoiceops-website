@@ -1,0 +1,45 @@
+---
+interface Props {
+  active?: 'calculator' | 'map';
+}
+const { active } = Astro.props;
+---
+<nav>
+  <a href="/" class="logo">einvoice<span>ops</span></a>
+  <div class="nav-links">
+    <a href="/" class:list={['hide-mobile', { active: active === 'calculator' }]}>Home</a>
+    <a href="/map/" class:list={[{ active: active === 'map' }]}>Compliance Map</a>
+    <a href="/#contact" class="btn-nav">Get in touch</a>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  }
+  .logo {
+    font-size: 1.05rem; font-weight: 800;
+    letter-spacing: -0.03em; color: #1a2b3c;
+    text-decoration: none; white-space: nowrap;
+  }
+  .logo span { color: #2563eb; }
+  .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-links a {
+    font-size: 0.875rem; color: #6b7280;
+    text-decoration: none; font-weight: 500; transition: color 0.15s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #111827; }
+  .btn-nav {
+    font-size: 0.875rem; font-weight: 600;
+    color: #fff !important; background: #2563eb;
+    padding: 8px 18px; border-radius: 8px;
+  }
+  .btn-nav:hover { background: #1d4ed8; color: #fff !important; }
+  @media (max-width: 600px) { .hide-mobile { display: none; } }
+</style>
