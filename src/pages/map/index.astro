@@ -19,6 +19,7 @@ const svgContent = svgRaw
 const countryPaths: Record<string, string> = {
   path7015: 'DE',
   path7031: 'IT',
+  path7029: 'FR',
 };
 
 // Flag overlay positions as % of SVG viewport (400x420)
@@ -26,6 +27,7 @@ const countryPaths: Record<string, string> = {
 const overlayPositions: Record<string, { x: number; y: number }> = {
   DE: { x: 46.5, y: 58.9 },
   IT: { x: 55.6, y: 82.8 },
+  FR: { x: 40.0, y: 52.0 },
 };
 ---
 <!DOCTYPE html>
@@ -73,7 +75,8 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
 
     /* Countries with entries: blue tint */
     #eu-map #path7015,
-    #eu-map #path7031 {
+    #eu-map #path7031,
+    #eu-map #path7029 {
       fill: #dbeafe;
       stroke: #93c5fd;
       stroke-width: 0.6;
@@ -81,6 +84,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     }
     #eu-map #path7015:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7031:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7029:hover { fill: #2563eb; stroke: #1d4ed8; }
 
     /* ---- FLAG TILES overlaid on SVG ---- */
     .flag-overlay {
@@ -210,7 +214,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
 
   <script is:inline>
     // Click navigation for country paths
-    const routes = { path7015: '/map/DE/', path7031: '/map/IT/' };
+    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7029: '/map/FR/' };
     Object.entries(routes).forEach(([id, href]) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('click', () => location.href = href);
