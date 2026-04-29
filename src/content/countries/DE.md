@@ -66,15 +66,17 @@ The most common delay: discovering mid-project that the entity list is incomplet
 
 ## Operational Ownership
 
-**Finance Systems** configures the billing engine to produce XML that passes EN 16931 validation. This requires mapping every ERP tax code to UNECE 5305 tax category codes - a field-by-field review across the system, not a settings toggle. Any unmapped code produces XML validation failures.
+**Finance Systems** owns the billing engine reconfiguration. The mandate requires EN 16931-compliant XML output - producing it means systematic work across the entire billing configuration, not a single settings change.
 
-**Tax/Compliance** owns two obligations the mandate created. First: GoBD archiving now requires the XML to be stored unmodified for 10 years - a PDF export does not satisfy this requirement. Second: if an incoming invoice contains a format error in the XML, it is classified as a "sonstige Rechnung" rather than a valid e-invoice under the mandate - putting the input VAT deduction at risk until corrected via Rechnungsberichtigung. Corrections are possible, but only if Tax has a process to catch format errors before they go unnoticed. [BMF Schreiben 15.10.2024, III C 2 - S 7287-a/23/10001 :007 (DOK 2024/0883282), Rn 7; BMF Schreiben 15.10.2025, Rn 35a: https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3] Tax must define and operationalise validation rules for incoming invoices, not only outgoing.
+**Tax/Compliance** owns two obligations the mandate created. First: GoBD archiving now requires the XML to be stored unmodified for 10 years - a PDF export does not satisfy this requirement. Second: if an incoming invoice contains a format error in the XML, it is classified as a "sonstige Rechnung" rather than a valid e-invoice under the mandate - putting the input VAT deduction at risk until corrected via Rechnungsberichtigung. [BMF Schreiben 15.10.2024, III C 2 - S 7287-a/23/10001 :007 (DOK 2024/0883282), Rn 7; BMF Schreiben 15.10.2025, Rn 35a: https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3] Tax must define and operationalise validation rules for incoming invoices, not only outgoing.
 
-**AP Operations** has a new processing requirement since January 2025: German business partners may now send invoices as structured XML files (XRechnung or ZUGFeRD). The mandate requires the ability to receive and process these formats. In practice, many AP teams continue to process the readable PDF layer of ZUGFeRD invoices rather than ingesting the XML - which leaves the input VAT validation gap open (see Tax/Compliance above).
+**AP Operations** has a new processing requirement since January 2025: German business partners may now send invoices as structured XML files (XRechnung or ZUGFeRD). In practice, many AP teams continue to process the readable PDF layer of ZUGFeRD invoices rather than ingesting the XML - which leaves the input VAT validation gap open (see Tax/Compliance above).
 
-**IT** owns the transport layer: either Peppol AS4 protocol configuration with a certified access point provider, or a secure email gateway configured to handle inbound XML invoice files.
+**IT** owns the transport layer: the connection between the ERP and the Peppol network or bilateral exchange channel.
 
 **Where it breaks:** Tax defines XML validation rules for incoming invoices. AP processes the PDF layer. The two teams have no shared view of incoming invoice XML quality. When Tax identifies a format error, the input VAT deduction has typically already been claimed and must be reversed.
+
+The configuration work items in each of these areas vary by ERP system, entity structure, and current baseline. That specificity is what the Readiness Sprint delivers.
 
 ## Data & Infrastructure
 

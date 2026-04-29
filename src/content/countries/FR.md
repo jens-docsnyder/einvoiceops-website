@@ -75,15 +75,17 @@ A clean implementation from standing start takes 4-6 months minimum. Four stages
 
 ## Operational Ownership
 
-**Finance Systems** owns two integration layers. First: ERP-to-PDP output. The billing engine must generate a compliant format with all EN 16931 mandatory fields populated. Second: the reverse integration of lifecycle statuses from the PDP back into the ERP. Deposited, Rejected, Refused, and Paid statuses must trigger automated AR/AP workflows. This reverse integration is typically not part of standard PDP contract scope and requires separate specification.
+**Finance Systems** owns two integration layers. First: ERP-to-PDP output - the billing engine must produce a compliant format and all mandatory data fields. Second: the reverse integration of PDP lifecycle statuses back into the ERP. This reverse flow is typically not part of standard PDP contract scope and requires separate specification.
 
-**Tax/Compliance** owns two obligations the mandate created. First: archiving. E-invoices must be stored in their original electronic format for 10 years under commercial law (Art. L123-22 Code de commerce: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006279025) and 6 years under tax law (Art. L102 B LPF: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869400). Storing PDFs does not satisfy this. Second: e-reporting. B2C sales and international B2B transactions not subject to e-invoicing must be reported separately to the DGFiP. Tax must own and operationalise these flows alongside the e-invoicing flows - they are not the same pipeline.
+**Tax/Compliance** owns two obligations the mandate created. First: archiving. E-invoices must be stored in their original electronic format for 10 years under commercial law (Art. L123-22 Code de commerce: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006279025) and 6 years under tax law (Art. L102 B LPF: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869400). Storing PDFs does not satisfy this. Second: e-reporting. B2C sales and international B2B transactions not subject to e-invoicing must be reported separately to the DGFiP on a defined schedule - a distinct pipeline from e-invoicing, owned by Tax.
 
-**AP/AR Operations** manages lifecycle status exceptions. A Rejet (technical failure at the PDP) means the invoice was never legally issued - fix the error and issue a new invoice with a new number. A Refus (buyer rejection for business reasons) means the invoice was legally issued - cancel it with a credit note and issue a new one. [AdE FAQ: https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/fatture-e-corrispettivi/faq-fe] These are different processes. AR must have separate documented procedures for each.
+**AP/AR Operations** manages lifecycle status exceptions. A Rejet (technical failure at the PDP) means the invoice was never legally issued. A Refus (buyer rejection for business reasons) means the invoice was legally issued. These require different responses and AR must have separate documented procedures for each.
 
-**IT** owns the PDP integration layer: API or EDI connection to the PDP, Annuaire registration for all French SIRETs, and - where an OD is currently in use - the integration bridge from OD invoice output to PDP input.
+**IT** owns the PDP integration layer: the connection between the ERP and the certified PDP, Annuaire registration for all French SIRETs, and - where an OD is currently in use - the bridge from OD output to PDP input.
 
-**Where it breaks:** Groups using an OD (uncertified invoice software) that have not yet contracted a certified PDP. An OD cannot transmit invoices under the mandate. The transition to a PDP requires 6-9 months of lead time. Most groups relying on an OD have not started this transition.
+**Where it breaks:** Groups using an OD (uncertified invoice software) that have not yet contracted a certified PDP. An OD cannot transmit invoices under the mandate. The transition requires 6-9 months of lead time. Most groups relying on an OD have not started this transition.
+
+The configuration work items in each of these areas vary by ERP system, entity structure, and current baseline. That specificity is what the Readiness Sprint delivers.
 
 ## Data & Infrastructure
 
