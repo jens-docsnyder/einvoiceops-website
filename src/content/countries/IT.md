@@ -111,13 +111,15 @@ The transmission path for most mid-market groups is an intermediary hub connecti
 
 ## The Friction Map
 
-**Mancata Consegna mishandling.** SdI accepts the invoice - it is tax-valid - but the buyer's endpoint is down or their PEC inbox is full. SdI returns a Mancata Consegna status. A pattern observed in multi-country AR operations: foreign teams see the status, assume the invoice failed, and resubmit. This creates a duplicate in the tax ledger. The correct action: the invoice is legally valid. The supplier downloads the PDF and emails it directly to the buyer. The governance gap is that AR has no defined process for Mancata Consegna, and the intermediary portal is checked infrequently.
+**Mancata Consegna mishandling.** SdI accepts the invoice - it is tax-valid - but the buyer's endpoint is down or their PEC inbox is full. SdI returns a Mancata Consegna status. A pattern observed in multi-country AR operations: foreign teams see the status, assume the invoice failed, and resubmit. This creates a duplicate in the tax ledger. The invoice is legally valid. The supplier must download the PDF and email it directly to the buyer. Most AR teams have no documented process for this - and nobody checks the intermediary portal often enough to catch it quickly.
 
-**Codice Fiscale vs Partita IVA confusion.** For individual traders and private consumers, these are different fields placed in different XML nodes. For companies they are often numerically identical but must still appear in the correct node. Error codes 00327/00324 mean immediate SdI rejection. Root cause: ERP configuration does not distinguish between the two fields during customer onboarding, treating them as equivalent.
+**Codice Fiscale vs Partita IVA confusion.** For individual traders and private consumers, these are different fields placed in different XML nodes. For companies they are often numerically identical but must still appear in the correct node. Error codes 00327/00324 mean immediate SdI rejection. Usually down to ERP configuration that treats the two fields as equivalent - a setup decision made years before the mandate existed.
 
-**Foreign B2B routing gap.** Invoices to non-Italian EU counterparties require XXXXXXX as the Codice Destinatario. Most ERPs do not have a routing rule for "foreign buyer, no Italian routing code" - the field is left blank, triggering a different rejection error. This typically surfaces when the first foreign customer invoice is submitted in production, because implementation testing covered only Italian customer records.
+**Foreign B2B routing gap.** Invoices to non-Italian EU counterparties require XXXXXXX as the Codice Destinatario. Most ERPs do not have a routing rule for "foreign buyer, no Italian routing code" - the field is left blank, triggering a different rejection error. If your implementation tested only Italian customer records, this is waiting for you in production.
 
 **Conservazione gap.** Transmitting through a certified intermediary does not satisfy the archiving requirement. Conservazione Elettronica (10-year timestamped archival with Marca Temporale) is a separate service. Most intermediaries offer it as an add-on. Many Italian subsidiaries discover the gap during their first Italian tax audit, years after go-live.
+
+Every group has a version of at least one of these. Finding which ones, and in which subsidiaries, is how a Readiness Sprint starts.
 
 ## The "Ready" Definition
 
