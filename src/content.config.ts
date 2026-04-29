@@ -1,18 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const mandateTypeEnum = z.enum([
-  'centralized-clearance',
-  'decentralized-clearance',
-  'real-time-reporting',
-  'interoperability',
-  'post-audit'
-]);
-
-const lifecycleStateEnum = z.enum([
-  'SENT', 'ACCEPTED', 'REJECTED', 'REJECTED_BY_BUYER'
-]);
-
 const countries = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/countries' }),
   schema: z.object({
@@ -20,16 +8,16 @@ const countries = defineCollection({
     code: z.string().length(2),
     flag: z.string(),
 
-    mandate_type: mandateTypeEnum,
-    vida_alignment: z.enum(['DRR-compliant', 'legacy-clearance', 'none']),
+    mandate_type: z.string(),
+    vida_alignment: z.string(),
     future_direction: z.string().nullish(),
 
     b2b: z.enum(['mandatory', 'voluntary', 'not-yet', 'none']),
     b2g: z.enum(['mandatory', 'voluntary', 'not-yet', 'none']),
-    b2c_scope: z.enum(['in_scope', 'separate_summary', 'none']),
-    status: z.enum(['live', 'announced', 'proposed', 'none']),
+    b2c_scope: z.string(),
+    status: z.string(),
     phase_in: z.boolean(),
-    phase_in_scope: z.enum(['large_taxpayers', 'all', 'pending_micro', 'none']),
+    phase_in_scope: z.string(),
 
     key_deadlines: z.array(z.object({
       date: z.coerce.date(),
@@ -39,20 +27,20 @@ const countries = defineCollection({
     formats: z.array(z.string()),
     cius: z.string().nullish(),
     platform: z.string(),
-    platform_model: z.enum(['centralized', 'Y-Model', 'none']),
-    transport_protocol: z.enum(['AS2', 'AS4', 'Peppol-BIS-3.0', 'API-OAuth2', 'SFTP', 'none']),
+    platform_model: z.string(),
+    transport_protocol: z.string(),
     b2g_signature: z.enum(['XAdES', 'PAdES', 'CAdES', 'optional', 'none']),
     b2b_signature: z.enum(['XAdES', 'PAdES', 'CAdES', 'optional', 'none']),
 
     master_data_id: z.string(),
-    mandatory_pdf_bundle: z.enum(['ZUGFeRD', 'Factur-X', 'none']),
+    mandatory_pdf_bundle: z.string(),
     foreign_resident_scope: z.boolean(),
     archiving_years: z.number().int(),
     penalty_max: z.string().nullish(),
     reporting_window: z.number().int().nullish(),
     correction_mechanism: z.enum(['correction_invoice', 'credit_note', 'zeroing']),
 
-    document_lifecycle_states: z.array(lifecycleStateEnum),
+    document_lifecycle_states: z.array(z.string()),
 
     has_sandbox: z.boolean(),
     last_verified: z.coerce.date(),
