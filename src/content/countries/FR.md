@@ -28,6 +28,11 @@ transport_protocol: PDP
 b2g_signature: none
 b2b_signature: none
 
+inbound_mandate_date: 2026-09-01
+outbound_mandate_date: 2026-09-01
+outbound_mandate_date_phase2: 2027-09-01
+mandate_hardness: hard-inbound-soft-outbound
+
 master_data_id: "SIRET (14-digit establishment identifier)"
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
@@ -48,13 +53,13 @@ last_verified: 2026-04-29
 
 ## Preparation Timeline
 
-The receiving obligation applies to all companies from September 1, 2026. That is four months from now. Any group with French subsidiaries that has not yet selected a certified PDP and registered in the Annuaire is behind.
+The inbound obligation applies to all companies from September 1, 2026. That is four months from now. Any group with French subsidiaries that has not yet selected a certified PDP and registered in the Annuaire is behind.
 
-France has delayed its B2B mandate before. The current dates are confirmed in legislation (Loi n° 2023-1322 du 29 décembre 2023, Article 91), with a built-in government option to postpone by up to three months by decree. The hard outside limit is December 1, 2026 for large companies and December 1, 2027 for SMEs.
+France has delayed its B2B mandate before. The current dates are confirmed in legislation (Loi n° 2023-1322 du 29 décembre 2023, Article 91: https://www.legifrance.gouv.fr/loda/id/JORFTEXT000048727345), with a built-in government option to postpone by up to three months by decree. The hard outside limit is December 1, 2026 for large companies and December 1, 2027 for SMEs.
 
-Issuing is phase-in by size:
-- Large companies and ETIs: mandatory issuing from September 1, 2026
-- SMEs and micro-enterprises: mandatory issuing from September 1, 2027
+Outbound obligations are phased by size:
+- Large companies and ETIs: hard outbound from September 1, 2026
+- SMEs and micro-enterprises: hard outbound from September 1, 2027
 
 A clean implementation from standing start takes 4-6 months minimum. Four stages:
 
@@ -72,9 +77,9 @@ A clean implementation from standing start takes 4-6 months minimum. Four stages
 
 **Finance Systems** owns two integration layers. First: ERP-to-PDP output. The billing engine must generate a compliant format with all EN 16931 mandatory fields populated. Second: the reverse integration of lifecycle statuses from the PDP back into the ERP. Deposited, Rejected, Refused, and Paid statuses must trigger automated AR/AP workflows. This reverse integration is typically not part of standard PDP contract scope and requires separate specification.
 
-**Tax/Compliance** owns two obligations the mandate created. First: archiving. E-invoices must be stored in their original electronic format - authenticity of origin, integrity of content, legibility - for 10 years under commercial law and 6 years under tax law. Storing PDFs does not satisfy this. Second: e-reporting. B2C sales and international B2B transactions not subject to e-invoicing must be reported separately to the DGFiP on a defined schedule. Tax must own and operationalise these flows alongside the e-invoicing flows - they are not the same pipeline.
+**Tax/Compliance** owns two obligations the mandate created. First: archiving. E-invoices must be stored in their original electronic format for 10 years under commercial law (Art. L123-22 Code de commerce: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006279025) and 6 years under tax law (Art. L102 B LPF: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869400). Storing PDFs does not satisfy this. Second: e-reporting. B2C sales and international B2B transactions not subject to e-invoicing must be reported separately to the DGFiP. Tax must own and operationalise these flows alongside the e-invoicing flows - they are not the same pipeline.
 
-**AP/AR Operations** manages lifecycle status exceptions. A Rejet (technical failure at the PDP) means the invoice was never legally issued - fix the error and issue a new invoice with a new number. A Refus (buyer rejection for business reasons) means the invoice was legally issued - cancel it with a credit note and issue a new one. These are different processes. AR must have separate documented procedures for each.
+**AP/AR Operations** manages lifecycle status exceptions. A Rejet (technical failure at the PDP) means the invoice was never legally issued - fix the error and issue a new invoice with a new number. A Refus (buyer rejection for business reasons) means the invoice was legally issued - cancel it with a credit note and issue a new one. [AdE FAQ: https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/fatture-e-corrispettivi/faq-fe] These are different processes. AR must have separate documented procedures for each.
 
 **IT** owns the PDP integration layer: API or EDI connection to the PDP, Annuaire registration for all French SIRETs, and - where an OD is currently in use - the integration bridge from OD invoice output to PDP input.
 
@@ -94,7 +99,7 @@ Format selection: all three formats (Factur-X, UBL BIS 3.0, CII) are legally equ
 
 ## Correction & Business Continuity
 
-**Correction:** France does not allow altering or reissuing an invoice under the same number. The correction mechanism is a credit note (avoir) referencing the original invoice number, followed by a new invoice with a new sequential number. The credit note must itself be transmitted through the PDP.
+**Correction:** France does not allow altering or reissuing an invoice under the same number. The correction mechanism is a credit note (avoir) referencing the original invoice number, followed by a new invoice with a new sequential number. The credit note must itself be transmitted through the PDP. [impots.gouv.fr FAQ: https://www.impots.gouv.fr/foire-aux-questions-je-decouvre-la-facturation-electronique]
 
 **Rejet vs Refus - two different workflows:**
 - Rejet: technical or format failure at the PDP. The invoice was never legally issued. Fix the error, issue a corrected invoice under a new number.

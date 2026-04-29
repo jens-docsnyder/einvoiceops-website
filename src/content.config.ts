@@ -32,6 +32,11 @@ const countries = defineCollection({
     b2g_signature: z.enum(['XAdES', 'PAdES', 'CAdES', 'optional', 'none']),
     b2b_signature: z.enum(['XAdES', 'PAdES', 'CAdES', 'optional', 'none']),
 
+    inbound_mandate_date: z.coerce.date().nullish(),
+    outbound_mandate_date: z.coerce.date().nullish(),
+    outbound_mandate_date_phase2: z.coerce.date().nullish(),
+    mandate_hardness: z.string().nullish(),
+
     master_data_id: z.string(),
     mandatory_pdf_bundle: z.string(),
     foreign_resident_scope: z.boolean(),
