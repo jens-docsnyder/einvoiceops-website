@@ -10,7 +10,7 @@ future_direction: "Domestic B2B e-invoicing mandate planned from January 2030, d
 b2b: not-yet
 b2g: mandatory
 b2c_scope: none
-status: announced
+status: proposed
 phase_in: false
 phase_in_scope: none
 
@@ -106,7 +106,7 @@ For B2B (post-audit current state): no platform, no central routing. B2B invoice
 
 **Digipoort routing staleness.** Dutch government entity Peppol IDs change over time - reorganisations, mergers of public bodies, system migrations. A company that set up B2G Peppol routing in 2019 and has not revalidated buyer IDs since is likely routing some invoices to stale IDs, which fail silently at the access point.
 
-**SI-UBL version confusion.** SI-UBL 1.x is no longer valid. Since 2019, the required format is SI-UBL 2.0, aligned with and functionally equivalent to Peppol BIS 3.0. Older implementations not yet updated are non-compliant for B2G.
+**SI-UBL version confusion.** SI-UBL 1.x is no longer valid. Since January 2023, the only accepted format is SI-UBL 2.0, aligned with and functionally equivalent to Peppol BIS 3.0. Older implementations not yet updated are non-compliant for B2G.
 
 **2030 mandate deferred planning.** Dutch B2B Peppol legislation is expected by mid-2028 with a two-year implementation window. Companies that wait for enacted legislation before starting will compete for access point provider capacity and ERP implementation resources in 2028-2030 alongside the entire Dutch B2B market. Groups implementing Peppol for Belgium now can extend NL at minimal marginal cost if they plan for it.
 
