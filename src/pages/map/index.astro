@@ -15,23 +15,22 @@ const svgContent = svgRaw
   // Remove inline fill styles from paths so CSS can override them
   .replace(/\s*style="fill:#c5c5c5;fill-opacity:1"/g, '');
 
-// Country path IDs → codes (best-guess from bounding box analysis; adjust if wrong)
+// Country path IDs → codes (verified by bounding box centroid analysis)
 const countryPaths: Record<string, string> = {
   path7015: 'DE',
   path7031: 'IT',
   path7041: 'FR',
-  path7017: 'BE',
-  path7039: 'NL',
+  path7019: 'BE',
+  path7017: 'NL',
 };
 
 // Flag overlay positions as % of SVG viewport (400x420)
-// Adjust these if flags appear in the wrong spot
 const overlayPositions: Record<string, { x: number; y: number }> = {
   DE: { x: 46.5, y: 58.9 },
   IT: { x: 55.6, y: 82.8 },
   FR: { x: 34.3, y: 72.7 },
-  BE: { x: 37.7, y: 56.7 },
-  NL: { x: 43.7, y: 45.4 },
+  BE: { x: 36.3, y: 61.2 },
+  NL: { x: 37.8, y: 56.7 },
 };
 ---
 <!DOCTYPE html>
@@ -81,8 +80,8 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7015,
     #eu-map #path7031,
     #eu-map #path7041,
-    #eu-map #path7017,
-    #eu-map #path7039 {
+    #eu-map #path7019,
+    #eu-map #path7017 {
       fill: #dbeafe;
       stroke: #93c5fd;
       stroke-width: 0.6;
@@ -91,8 +90,8 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7015:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7031:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7041:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7019:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7017:hover { fill: #2563eb; stroke: #1d4ed8; }
-    #eu-map #path7039:hover { fill: #2563eb; stroke: #1d4ed8; }
 
     /* ---- FLAG TILES overlaid on SVG ---- */
     .flag-overlay {
@@ -222,7 +221,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
 
   <script is:inline>
     // Click navigation for country paths
-    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7017: '/map/BE/', path7039: '/map/NL/' };
+    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/' };
     Object.entries(routes).forEach(([id, href]) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('click', () => location.href = href);
