@@ -5,7 +5,7 @@ flag: "🇧🇪"
 
 mandate_type: interoperability
 vida_alignment: DRR-compliant
-future_direction: "Near real-time e-reporting to FPS Finance planned from January 1, 2028 via 5-corner Peppol model. Annual client listing abolished from 2028 as transaction data will be available in real time."
+future_direction: "Near real-time e-reporting to FPS Finance planned from January 1, 2028 via 5-corner Peppol model, per federal coalition agreement (pending legislation). Annual client listing to be abolished when enacted."
 
 b2b: mandatory
 b2g: mandatory
@@ -16,17 +16,15 @@ phase_in_scope: all
 
 key_deadlines:
   - date: 2025-12-31
-    description: Hermes B2G platform decommissioned - B2G also migrated to Peppol
+    description: Hermes B2G platform decommissioned - B2G migrated to Peppol
   - date: 2026-01-01
     description: Mandatory structured Peppol B2B e-invoicing for all domestic transactions
   - date: 2026-03-31
-    description: Tolerance period ended - penalties now applicable for non-compliant B2B invoicing
-  - date: 2026-06-30
-    description: Extended tolerance for self-billing arrangements ends
+    description: Tolerance period ended - administrative penalties now applicable
   - date: 2028-01-01
-    description: Near real-time e-reporting to FPS Finance via 5-corner Peppol model
+    description: Near real-time e-reporting to FPS Finance planned (federal coalition agreement; legislation pending)
 
-formats: [Peppol-BIS-3.0, UBL-2.1, CII-16B]
+formats: [Peppol-BIS-3.0, UBL-2.1, CII-UN-CEFACT]
 cius: null
 platform: none
 platform_model: none
@@ -41,30 +39,33 @@ mandate_hardness: hard-both
 
 master_data_id: "Peppol ID scheme 0208 (KBO/BCE enterprise number)"
 mandatory_pdf_bundle: none
-foreign_resident_scope: true
+foreign_resident_scope: false
 archiving_years: 7
-penalty_max: "EUR 5,000 per offense (third offense within 3 months)"
+penalty_max: "Administrative fines under Art. 70 Belgian VAT Code; amounts depend on circumstances of each case"
 reporting_window: null
 correction_mechanism: credit_note
 
 document_lifecycle_states:
   - SENT
+  - ACCEPTED
+  - REJECTED
+  - PAID
 
 has_sandbox: false
-last_verified: 2026-04-29
+last_verified: 2026-04-30
 ---
 
 ## Preparation Timeline
 
-Belgium's mandate went live January 1, 2026. The tolerance period ended March 31, 2026. Companies that have not yet completed implementation are in the full penalty window. Self-billing arrangements have an extended tolerance until June 30, 2026. From April 1, 2026, penalties apply: EUR 1,500 for a first offense, EUR 3,000 second, EUR 5,000 third within a three-month window.
+Belgium's mandate went live January 1, 2026 (Law of 6 February 2024, Art. 3 §2bis: https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635). The tolerance period ended March 31, 2026 (https://einvoice.belgium.be/en/news/period-tolerance-during-first-three-months-2026). Companies that have not completed implementation are in the full penalty window. Administrative fines apply under Art. 70 of the Belgian VAT Code from April 1, 2026.
 
 The work from a standing start runs in four stages:
 
-**Peppol access point selection (2-4 weeks).** The mandate requires Peppol network routing for all domestic B2B invoices. Most mid-market companies use a certified access point provider rather than running their own AS4 node. Provider selection affects 2028 e-reporting readiness: Belgium moves to a 5-corner Peppol model in 2028, where FPS Finance becomes an active Peppol participant receiving real-time invoice copies. Choosing a provider without a confirmed 2028 roadmap means a second migration.
+**Peppol access point selection (2-4 weeks).** The mandate requires Peppol network routing for all domestic B2B invoices. Most mid-market companies use a certified access point provider rather than operating their own AS4 node. Provider selection affects 2028 e-reporting readiness: per the Belgian federal coalition agreement, near real-time reporting to FPS Finance is planned from 2028, replacing the annual client listing. Choosing a provider without a confirmed 2028 roadmap means a forced migration in 18 months. The common procurement delay: InfoSec and legal review of a new critical cloud vendor takes 6-12 weeks in most corporate environments.
 
-**ERP configuration and Peppol ID registration (4-8 weeks).** The billing system must produce Peppol BIS Billing 3.0 compliant XML (UBL 2.1 or CII 16B). Your access point registers your Peppol Participant ID in the Belgian SMP (Service Metadata Publisher). Until that registration is active, Belgian counterparties cannot find you on the Peppol network.
+**ERP configuration and Peppol ID registration (4-8 weeks).** The billing system must produce Peppol BIS Billing 3.0 compliant XML (UBL 2.1 or CII). The access point registers the company's Peppol Participant ID in the Belgian SMP. Until that registration is active, Belgian counterparties cannot route invoices to you. The Belgian Peppol ID uses scheme 0208 with the 10-digit KBO/BCE enterprise number - this is a different field from the VAT number and must be stored and configured separately in ERP customer/vendor records.
 
-**Master data scrubbing (3-4 weeks).** Every Belgian business partner needs a valid KBO/BCE enterprise number - the primary Belgian Peppol routing identifier. Companies without systematically verified customer and vendor KBO numbers encounter routing failures at go-live.
+**Master data scrubbing (3-4 weeks).** Every Belgian business partner needs a valid KBO/BCE enterprise number for Peppol routing. Companies without systematically verified KBO numbers for all Belgian customers and vendors encounter routing failures at go-live.
 
 **Testing (2-4 weeks).** No official Belgian government B2B sandbox exists. Testing uses the Peppol test network provided by access point providers.
 
@@ -72,45 +73,47 @@ The work from a standing start runs in four stages:
 
 ## Operational Ownership
 
-**Finance Systems** owns the billing engine configuration for Peppol BIS 3.0 XML output. Every invoicing scenario - standard invoices, credit notes, self-billing, and any invoice-type-specific handling - must produce valid XML before the access point can transmit.
+**Finance Systems** owns the billing engine configuration for Peppol BIS 3.0 XML output. Every invoicing scenario - standard invoices, credit notes, self-billing - must produce valid XML. A specific Belgian gap in ERP configurations: the VAT breakdown must comply with Peppol UNCL5305 duty/tax/fee category codes (Category S for standard rate, Z for zero-rated, E for exempt). ERPs that aggregate tax at header level without category codes fail Peppol access point validation.
 
-**Tax/Compliance** owns scope determination per entity: which Belgian-registered entities are mandated, which are excluded (Art. 44 of the Belgian VAT Code for exclusively exempt activities, Art. 56 flat-rate taxpayers), and which self-billing arrangements still benefit from the June 2026 tolerance. Tax also owns the 7-year archiving obligation and penalty exposure monitoring. From January 2028, near real-time e-reporting to FPS Finance will expand Tax's monitoring and reporting scope significantly.
+**Tax/Compliance** owns scope determination per entity: which Belgian-registered entities are in scope, which are excluded (Art. 44 of the Belgian VAT Code for exclusively exempt activities - note this applies only to entities exclusively carrying out exempt activities, not mixed-activity companies), and which self-billing arrangements benefit from any extended tolerance. Tax also owns 7-year archiving (https://einvoice.belgium.be/en/article/how-do-i-keep-invoices-received-electronic-invoicing) and penalty monitoring. From 2028, near real-time e-reporting to FPS Finance will add a new continuous monitoring obligation.
 
-**AP Operations** must process inbound Peppol invoices from Belgian suppliers. The mandate requires both sending AND receiving. Registering a Peppol ID for outbound only and ignoring the inbound stream is the most common compliance gap in early implementations.
+**AP Operations** must process inbound Peppol invoices from Belgian suppliers. The mandate requires both sending AND receiving. Registering a Peppol ID for outbound only and ignoring the inbound stream is the most common compliance gap in Belgian implementations.
 
-**IT** owns the access point integration, API setup, Peppol ID registration management, and inbound queue monitoring. IT is also responsible for evaluating provider readiness for the 2028 5-corner model before contract renewal.
+**IT** owns the access point integration, Peppol ID registration in the Belgian SMP, inbound queue monitoring, and provider evaluation for 2028 readiness before contract renewal.
 
-**Where it breaks:** AP is not set up to process inbound Peppol. Belgian suppliers start sending. Invoices arrive at the access point and queue unread. Tax discovers the gap during archiving review.
+**Where it breaks:** AP is not configured to process inbound Peppol. Belgian suppliers start sending. Invoices arrive at the access point and queue unread. Nobody monitors the inbound queue because it did not exist before the mandate. Tax discovers the gap during archiving review.
 
 The configuration work items in each of these areas vary by ERP system, entity structure, and current baseline. That specificity is what the Readiness Sprint delivers.
 
 ## Data & Infrastructure
 
-The Belgian Peppol Participant ID uses the KBO/BCE enterprise number as the primary identifier. The format is scheme code 0208 followed by the 10-digit enterprise number: a company registered as BE0123.456.789 registers on Peppol as 0208:0123456789. The 9925 scheme (VAT-number-based) is valid but has limited support and is not the recommended primary identifier.
+The Belgian Peppol Participant ID uses the KBO/BCE enterprise number, scheme code 0208. A company registered as BE0123.456.789 registers on Peppol as 0208:0123456789. The dots are removed; the "BE" prefix is not included. Scheme 0088 (GLN - Global Location Number) is used in retail and healthcare. Scheme 9925 is specific to Austria and is not used for Belgian domestic routing.
 
-Registration is not automatic. Your access point must explicitly register your Peppol ID in the Belgian SMP after onboarding. Until confirmed and active, Belgian counterparties searching the SMP cannot find you and inbound routing fails silently.
+Registration is not automatic. The access point explicitly registers the Peppol ID in the Belgian SMP after onboarding. Until confirmed active, Belgian counterparties cannot find the company and inbound routing fails silently with no error reaching the sender.
 
-For Belgian subsidiaries of foreign groups: the mandate applies to the Belgian established entity, not the foreign parent. A multi-entity group with six Belgian entities needs six Peppol IDs registered, each tied to the Belgian entity's KBO/BCE number.
+**The KBO/BCE gap in ERP master data.** Most multi-country ERP configurations store VAT numbers as the primary customer/vendor identifier. The Belgian KBO number is a separate 10-digit enterprise number without the "BE" prefix. In SAP, VAT number is typically stored in field STCEG; KBO requires a separate identification type. If the KBO field is absent or incorrectly populated, the Peppol transmission fails at the access point before reaching the recipient.
 
-**Transport:** Peppol AS4 is the standard protocol. Email-based PDF transmission is not compliant for mandated B2B transactions. Other EN 16931-compliant formats are permitted only where both parties agree - in practice, Peppol is the de facto mandatory path.
+**The inbound integration gap.** An inbound Peppol invoice does not land in the ERP automatically. An API or SFTP bridge must be configured between the access point and the ERP's AP workflow. Standard ERPs have no Peppol inbox by default. This integration is consistently underscoped in implementation projects that treat e-invoicing as an outbound billing project.
+
+For Belgian subsidiaries of foreign groups: each Belgian entity needs its own KBO/BCE number registered in the SMP. A group with six Belgian entities needs six Peppol IDs.
 
 ## Correction & Business Continuity
 
-**Correction:** Belgium uses the standard Peppol UBL CreditNote transmitted via Peppol. There is no Belgian-specific correction format. The credit note must comply with Peppol BIS Billing 3.0 and route through Peppol like any other invoice.
+**Correction:** Belgium uses the standard Peppol UBL CreditNote transmitted via Peppol (https://docs.peppol.eu/poacc/billing/3.0/). The credit note must comply with Peppol BIS Billing 3.0, include the original invoice number in the BillingReference tag, and route through Peppol like any other invoice. A Peppol invoice cannot be cancelled or recalled once sent.
 
-**Business continuity:** No central B2B government platform means no government downtime risk for B2B exchange. Exposure is bilateral - either the sender's or recipient's access point. Peppol AS4 includes store-and-forward retry logic for transient outages.
+**Business continuity:** No central B2B government platform means no government downtime risk for B2B exchange. Primary continuity exposure is bilateral - either the sender's or recipient's access point. Peppol AS4 includes store-and-forward retry logic for transient outages.
 
-**PDF fallback:** Reverting to PDF when a Peppol connection has issues does not satisfy the mandate. Queue and retry electronically. If a trading partner has not registered on Peppol, the invoice cannot be delivered - this is a mandate compliance issue on the recipient side, not a sender fallback scenario.
+**PDF fallback:** Reverting to PDF when a Peppol connection has issues does not satisfy the mandate after March 31, 2026. Queue and retry electronically.
 
 ## The Friction Map
 
 **Inbound-only registration.** A company registers on Peppol, configures outbound invoicing, and considers compliance complete. Belgian suppliers start sending Peppol invoices to the registered ID. The invoices arrive at the access point and queue unprocessed. AP continues processing PDF invoices, unaware a Peppol inbound queue exists. Tax discovers during archiving review that months of inbound Belgian invoices were never processed. The mandate requires both sending AND receiving - outbound-only implementations are partially compliant at best.
 
-**KBO/BCE number gaps in supplier master.** Peppol routing for Belgian companies uses the KBO/BCE enterprise number (scheme 0208). Suppliers without registered Peppol IDs cannot receive Peppol invoices. Routing failures surface at go-live and are not always clearly attributed to missing KBO data.
+**KBO/BCE number gaps in supplier master.** Peppol routing for Belgian companies uses the KBO/BCE enterprise number (scheme 0208). ERP supplier master records that store only VAT numbers cannot support Peppol routing without field-by-field KBO enrichment. Suppliers without a registered Peppol ID cannot receive invoices. Both gaps produce the same routing failure symptom with different root causes.
 
-**Art. 44 misapplication.** The exclusion applies only to entities that exclusively carry out Art. 44 VAT-exempt activities. Mixed-activity companies with some exempt revenue but also taxable operations are in scope. Finance teams that assume partial exempt activity excludes the entire entity face retroactive penalty exposure.
+**Art. 44 misapplication.** The exclusion from the mandate applies only to entities that exclusively carry out Art. 44 VAT-exempt activities. Mixed-activity companies with some exempt revenue but also taxable operations are in scope for their taxable transactions. Finance teams that assume partial exempt activity excludes the entire entity face retroactive penalty exposure from April 1, 2026 onward.
 
-**2028 e-reporting migration risk.** Access point providers that cannot support the 5-corner Peppol model will require customers to migrate by January 2028. Companies signing multi-year contracts now without confirming the provider's 2028 roadmap are building in a forced migration.
+**2028 e-reporting migration risk.** Access point providers that cannot support Belgium's planned 2028 reporting model will require customers to migrate. Companies signing multi-year access point contracts now without confirming the provider's 2028 roadmap are building in a forced migration. The 2028 model adds FPS Finance as a real-time recipient of invoice data - a new Tax compliance obligation that must be operationalised separately from the transmission infrastructure.
 
 Every group has a version of at least one of these. Finding which ones, and in which subsidiaries, is how a Readiness Sprint starts.
 
@@ -118,9 +121,9 @@ Every group has a version of at least one of these. Finding which ones, and in w
 
 A Belgian mandate operation is ready when four conditions hold:
 
-- Every Belgian-established entity's Peppol ID is registered in the Belgian SMP and verifiable by counterparties
-- All outbound domestic B2B invoices route via Peppol in Peppol BIS 3.0 format - no PDF substitutes for mandated transactions
-- Inbound Peppol invoices from Belgian suppliers are automatically ingested and processed (not queuing unread in the access point)
-- 7-year archiving of XML invoice data is confirmed as active and owned by a named person
+- Every Belgian-established entity's Peppol ID is registered in the Belgian SMP and verifiable by counterparties - send a Peppol SMP lookup for the entity's KBO number and confirm a registered endpoint returns
+- All outbound domestic B2B invoices route via Peppol in Peppol BIS 3.0 format with no PDF substitutes for mandated transactions
+- Inbound Peppol invoices from Belgian suppliers automatically reach the AP system - not queuing unread in the access point
+- 7-year archiving of transmitted XML invoice data is active and owned by a named person, separate from PDF storage
 
 The operations test: if a key Belgian supplier sends a Peppol invoice today, does it reach your AP system automatically, or does it sit in an access point queue? If the answer is "I'm not sure," inbound compliance is not done.
