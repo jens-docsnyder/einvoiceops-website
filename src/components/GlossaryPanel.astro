@@ -35,10 +35,10 @@ const { country } = Astro.props;
 
   .gloss-tab {
     order: 2;
-    background: #1a2b3c;
+    background: #2563eb;
     color: #ffffff;
     border: none;
-    padding: 18px 10px;
+    padding: 20px 12px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -48,8 +48,9 @@ const { country } = Astro.props;
     border-radius: 8px 0 0 8px;
     flex-shrink: 0;
     transition: background 0.15s;
+    box-shadow: -3px 0 16px rgba(37, 99, 235, 0.35);
   }
-  .gloss-tab:hover { background: #253d52; }
+  .gloss-tab:hover { background: #1d4ed8; }
 
   .gloss-tab-label {
     writing-mode: vertical-rl;
@@ -194,24 +195,18 @@ const { country } = Astro.props;
     transform: none;
   }
 
-  /* ---- Schema field label "?" icon ---- */
+  /* ---- Schema field label info icon ---- */
   .field-q {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    font-size: 0.62rem;
-    font-weight: 700;
-    color: #2563eb;
-    border: 1.5px solid #93c5fd;
-    border-radius: 50%;
+    font-size: 0.82rem;
+    color: #93c5fd;
     cursor: help;
-    margin-left: 5px;
+    margin-left: 4px;
     vertical-align: middle;
     flex-shrink: 0;
     line-height: 1;
+    transition: color 0.12s;
   }
+  .field-q:hover { color: #2563eb; }
 
   /* ---- Schema value tooltip ---- */
   .val-tip {

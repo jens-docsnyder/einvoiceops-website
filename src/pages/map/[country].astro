@@ -305,14 +305,14 @@ function getValTip(field: string, val: string | null | undefined): string | unde
       <h2>Mandate Overview</h2>
       <div class="data-grid">
         <div class="data-row">
-          <span>Mandate type<span class="field-q" data-tooltip={FIELD_TIPS.mandate_type}>?</span></span>
+          <span>Mandate type<span class="field-q" data-tooltip={FIELD_TIPS.mandate_type}>ℹ</span></span>
           <span
             class={getValTip('mandate_type', d.mandate_type) ? 'val-tip' : undefined}
             data-tooltip={getValTip('mandate_type', d.mandate_type)}
           >{fmt(d.mandate_type)}</span>
         </div>
         <div class="data-row">
-          <span>ViDA alignment<span class="field-q" data-tooltip={FIELD_TIPS.vida_alignment}>?</span></span>
+          <span>ViDA alignment<span class="field-q" data-tooltip={FIELD_TIPS.vida_alignment}>ℹ</span></span>
           <span
             class={getValTip('vida_alignment', d.vida_alignment) ? 'val-tip' : undefined}
             data-tooltip={getValTip('vida_alignment', d.vida_alignment)}
@@ -320,19 +320,19 @@ function getValTip(field: string, val: string | null | undefined): string | unde
         </div>
         {d.future_direction && (
           <div class="data-row">
-            <span>Future direction<span class="field-q" data-tooltip={FIELD_TIPS.future_direction}>?</span></span>
+            <span>Future direction<span class="field-q" data-tooltip={FIELD_TIPS.future_direction}>ℹ</span></span>
             <span>{d.future_direction}</span>
           </div>
         )}
         <div class="data-row">
-          <span>B2C scope<span class="field-q" data-tooltip={FIELD_TIPS.b2c_scope}>?</span></span>
+          <span>B2C scope<span class="field-q" data-tooltip={FIELD_TIPS.b2c_scope}>ℹ</span></span>
           <span
             class={getValTip('b2c_scope', d.b2c_scope) ? 'val-tip' : undefined}
             data-tooltip={getValTip('b2c_scope', d.b2c_scope)}
           >{fmt(d.b2c_scope)}</span>
         </div>
         <div class="data-row">
-          <span>Phase-in<span class="field-q" data-tooltip={FIELD_TIPS.phase_in}>?</span></span>
+          <span>Phase-in<span class="field-q" data-tooltip={FIELD_TIPS.phase_in}>ℹ</span></span>
           <span>{d.phase_in ? `Yes - ${fmt(d.phase_in_scope)}` : 'No'}</span>
         </div>
       </div>
@@ -354,42 +354,42 @@ function getValTip(field: string, val: string | null | undefined): string | unde
       <h2>Format & Technical Details</h2>
       <div class="data-grid">
         <div class="data-row">
-          <span>Formats<span class="field-q" data-tooltip={FIELD_TIPS.formats}>?</span></span>
+          <span>Formats<span class="field-q" data-tooltip={FIELD_TIPS.formats}>ℹ</span></span>
           <span>{d.formats.join(', ')}</span>
         </div>
         {d.cius && (
           <div class="data-row">
-            <span>CIUS<span class="field-q" data-tooltip={FIELD_TIPS.cius}>?</span></span>
+            <span>CIUS<span class="field-q" data-tooltip={FIELD_TIPS.cius}>ℹ</span></span>
             <span>{d.cius}</span>
           </div>
         )}
         <div class="data-row">
-          <span>Platform<span class="field-q" data-tooltip={FIELD_TIPS.platform}>?</span></span>
+          <span>Platform<span class="field-q" data-tooltip={FIELD_TIPS.platform}>ℹ</span></span>
           <span>{d.platform !== 'none' ? d.platform : 'None - direct exchange'}</span>
         </div>
         <div class="data-row">
-          <span>Platform model<span class="field-q" data-tooltip={FIELD_TIPS.platform_model}>?</span></span>
+          <span>Platform model<span class="field-q" data-tooltip={FIELD_TIPS.platform_model}>ℹ</span></span>
           <span
             class={getValTip('platform_model', d.platform_model) ? 'val-tip' : undefined}
             data-tooltip={getValTip('platform_model', d.platform_model)}
           >{fmt(d.platform_model)}</span>
         </div>
         <div class="data-row">
-          <span>Transport protocol<span class="field-q" data-tooltip={FIELD_TIPS.transport_protocol}>?</span></span>
+          <span>Transport protocol<span class="field-q" data-tooltip={FIELD_TIPS.transport_protocol}>ℹ</span></span>
           <span
             class={getValTip('transport_protocol', d.transport_protocol) ? 'val-tip' : undefined}
             data-tooltip={getValTip('transport_protocol', d.transport_protocol)}
           >{d.transport_protocol !== 'none' ? d.transport_protocol : 'Not specified'}</span>
         </div>
         <div class="data-row">
-          <span>B2G signature<span class="field-q" data-tooltip={FIELD_TIPS.b2g_signature}>?</span></span>
+          <span>B2G signature<span class="field-q" data-tooltip={FIELD_TIPS.b2g_signature}>ℹ</span></span>
           <span
             class={getValTip('b2g_signature', d.b2g_signature) ? 'val-tip' : undefined}
             data-tooltip={getValTip('b2g_signature', d.b2g_signature)}
           >{fmt(d.b2g_signature)}</span>
         </div>
         <div class="data-row">
-          <span>B2B signature<span class="field-q" data-tooltip={FIELD_TIPS.b2b_signature}>?</span></span>
+          <span>B2B signature<span class="field-q" data-tooltip={FIELD_TIPS.b2b_signature}>ℹ</span></span>
           <span
             class={getValTip('b2b_signature', d.b2b_signature) ? 'val-tip' : undefined}
             data-tooltip={getValTip('b2b_signature', d.b2b_signature)}
@@ -402,49 +402,49 @@ function getValTip(field: string, val: string | null | undefined): string | unde
       <h2>Compliance Data</h2>
       <div class="data-grid">
         <div class="data-row">
-          <span>Master data ID<span class="field-q" data-tooltip={FIELD_TIPS.master_data_id}>?</span></span>
+          <span>Master data ID<span class="field-q" data-tooltip={FIELD_TIPS.master_data_id}>ℹ</span></span>
           <span>{d.master_data_id}</span>
         </div>
         <div class="data-row">
-          <span>PDF bundle<span class="field-q" data-tooltip={FIELD_TIPS.mandatory_pdf_bundle}>?</span></span>
+          <span>PDF bundle<span class="field-q" data-tooltip={FIELD_TIPS.mandatory_pdf_bundle}>ℹ</span></span>
           <span
             class={getValTip('mandatory_pdf_bundle', d.mandatory_pdf_bundle) ? 'val-tip' : undefined}
             data-tooltip={getValTip('mandatory_pdf_bundle', d.mandatory_pdf_bundle)}
           >{fmt(d.mandatory_pdf_bundle)}</span>
         </div>
         <div class="data-row">
-          <span>Foreign resident scope<span class="field-q" data-tooltip={FIELD_TIPS.foreign_resident_scope}>?</span></span>
+          <span>Foreign resident scope<span class="field-q" data-tooltip={FIELD_TIPS.foreign_resident_scope}>ℹ</span></span>
           <span>{d.foreign_resident_scope ? 'Yes' : 'No'}</span>
         </div>
         <div class="data-row">
-          <span>Archiving<span class="field-q" data-tooltip={FIELD_TIPS.archiving_years}>?</span></span>
+          <span>Archiving<span class="field-q" data-tooltip={FIELD_TIPS.archiving_years}>ℹ</span></span>
           <span>{d.archiving_years} years</span>
         </div>
         {d.penalty_max && (
           <div class="data-row">
-            <span>Penalty<span class="field-q" data-tooltip={FIELD_TIPS.penalty_max}>?</span></span>
+            <span>Penalty<span class="field-q" data-tooltip={FIELD_TIPS.penalty_max}>ℹ</span></span>
             <span>{d.penalty_max}</span>
           </div>
         )}
         {d.reporting_window && (
           <div class="data-row">
-            <span>Reporting window<span class="field-q" data-tooltip={FIELD_TIPS.reporting_window}>?</span></span>
+            <span>Reporting window<span class="field-q" data-tooltip={FIELD_TIPS.reporting_window}>ℹ</span></span>
             <span>{d.reporting_window} days</span>
           </div>
         )}
         <div class="data-row">
-          <span>Correction mechanism<span class="field-q" data-tooltip={FIELD_TIPS.correction_mechanism}>?</span></span>
+          <span>Correction mechanism<span class="field-q" data-tooltip={FIELD_TIPS.correction_mechanism}>ℹ</span></span>
           <span
             class={getValTip('correction_mechanism', d.correction_mechanism) ? 'val-tip' : undefined}
             data-tooltip={getValTip('correction_mechanism', d.correction_mechanism)}
           >{fmt(d.correction_mechanism)}</span>
         </div>
         <div class="data-row">
-          <span>Document lifecycle<span class="field-q" data-tooltip={FIELD_TIPS.document_lifecycle_states}>?</span></span>
+          <span>Document lifecycle<span class="field-q" data-tooltip={FIELD_TIPS.document_lifecycle_states}>ℹ</span></span>
           <span>{d.document_lifecycle_states.join(' → ')}</span>
         </div>
         <div class="data-row">
-          <span>Sandbox available<span class="field-q" data-tooltip={FIELD_TIPS.has_sandbox}>?</span></span>
+          <span>Sandbox available<span class="field-q" data-tooltip={FIELD_TIPS.has_sandbox}>ℹ</span></span>
           <span>{d.has_sandbox ? 'Yes' : 'No'}</span>
         </div>
       </div>
