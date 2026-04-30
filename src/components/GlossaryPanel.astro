@@ -1,0 +1,370 @@
+---
+interface Props {
+  country: string;
+}
+const { country } = Astro.props;
+---
+
+<div id="glossary-panel" class="gloss-panel" data-country={country}>
+  <button class="gloss-tab" id="gloss-toggle" aria-expanded="false" aria-controls="gloss-body" title="Toggle glossary">
+    <span class="gloss-tab-arrow" id="gloss-arrow">&#9664;</span>
+    <span class="gloss-tab-label">Glossary</span>
+  </button>
+  <div class="gloss-body" id="gloss-body" hidden>
+    <div class="gloss-header">Glossary</div>
+    <div class="gloss-list" id="gloss-list"></div>
+  </div>
+</div>
+
+<style is:global>
+  @media (max-width: 768px) {
+    .gloss-panel { display: none !important; }
+  }
+
+  .gloss-panel {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    z-index: 500;
+    max-height: 70vh;
+  }
+
+  .gloss-tab {
+    order: 2;
+    background: #1a2b3c;
+    color: #ffffff;
+    border: none;
+    padding: 18px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 8px 0 0 8px;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .gloss-tab:hover { background: #253d52; }
+
+  .gloss-tab-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .gloss-tab-arrow {
+    font-size: 0.75rem;
+    transition: transform 0.2s;
+    display: block;
+  }
+  .gloss-panel.open .gloss-tab-arrow {
+    transform: rotate(180deg);
+  }
+  .gloss-panel.open .gloss-tab {
+    border-radius: 0;
+  }
+
+  .gloss-body {
+    order: 1;
+    width: 280px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .gloss-body[hidden] { display: none; }
+
+  .gloss-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2563eb;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    z-index: 1;
+  }
+
+  .gloss-list {
+    padding: 6px 0 12px;
+    overflow-y: auto;
+  }
+
+  .gloss-entry {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-radius: 4px;
+    margin: 0 4px;
+  }
+  .gloss-entry:hover { background: #f8f9fa; }
+
+  .gloss-term-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1a2b3c;
+    margin-bottom: 3px;
+  }
+
+  .gloss-term-def {
+    font-size: 0.76rem;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  .gloss-divider {
+    height: 1px;
+    background: #f3f4f6;
+    margin: 2px 12px;
+  }
+
+  @keyframes gloss-flash {
+    0%   { background: #dbeafe; }
+    100% { background: transparent; }
+  }
+  .gloss-entry.gloss-highlight {
+    animation: gloss-flash 1.4s ease-out forwards;
+  }
+
+  /* ---- Prose glossary terms ---- */
+  .glossary-term {
+    border-bottom: 1.5px dotted #2563eb;
+    cursor: help;
+    position: relative;
+  }
+  .glossary-term:hover {
+    color: #1d4ed8;
+  }
+
+  /* ---- Tooltip base (shared by prose + schema tooltips) ---- */
+  [data-tooltip] {
+    position: relative;
+  }
+  [data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 260px;
+    background: #1a2b3c;
+    color: #ffffff;
+    font-size: 0.74rem;
+    line-height: 1.45;
+    padding: 8px 11px;
+    border-radius: 6px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 600;
+    white-space: normal;
+    text-align: left;
+    font-weight: 400;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  [data-tooltip]:hover::after {
+    opacity: 1;
+  }
+  /* Ensure tooltip doesn't clip on right edge */
+  [data-tooltip].tip-left::after {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
+  /* ---- Schema field label "?" icon ---- */
+  .field-q {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #2563eb;
+    border: 1.5px solid #93c5fd;
+    border-radius: 50%;
+    cursor: help;
+    margin-left: 5px;
+    vertical-align: middle;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  /* ---- Schema value tooltip ---- */
+  .val-tip {
+    cursor: help;
+  }
+</style>
+
+<script is:inline define:vars={{ country }}>
+(function () {
+  var ALL_TERMS = [
+    // EU-wide / cross-mandate
+    { id: 'annuaire', term: 'Annuaire', def: "France's central routing directory - a national database that records which certified platform (PDP) each French business has chosen to receive invoices through. If your company is not registered here by the mandate deadline, your suppliers cannot route invoices to you.", countries: ['FR'], match: 'Annuaire' },
+    { id: 'as4', term: 'AS4', def: 'The transmission protocol used by the Peppol network to send invoices securely between access points. Think of it as the postal infrastructure - it handles delivery, retry on failure, and proof of receipt, without requiring a direct connection between sender and receiver.', countries: ['general'], match: 'AS4' },
+    { id: 'b2b-mandate', term: 'B2B mandate', def: 'A legal requirement for businesses to exchange invoices with other businesses in a structured electronic format. Different from B2G mandates that came earlier. Most EU countries are now introducing or have introduced B2B mandates.', countries: ['DE', 'IT', 'FR'], match: 'B2B mandate' },
+    { id: 'b2g-mandate', term: 'B2G mandate', def: 'A legal requirement for businesses to send invoices to public administration bodies in a structured electronic format. B2G mandates went live years before B2B in most EU countries.', countries: ['DE', 'IT'], match: 'B2G mandate' },
+    { id: 'buy-side-obligation', term: 'Buy-side obligation', def: 'The requirement to be able to receive and process compliant e-invoices from your suppliers. Also called the inbound obligation. This is often the first deadline - companies must be ready to receive before they are required to issue.', countries: ['DE', 'IT', 'FR'], match: 'buy-side obligation' },
+    { id: 'cius', term: 'CIUS', def: "A country-specific set of rules that sits on top of the EU standard (EN 16931) and adds local requirements. Germany's CIUS is XRechnung. Italy's is CIUS-IT. France follows EN 16931 directly. Think of it as the local dialect of the standard language.", countries: ['DE', 'IT', 'FR'], match: 'CIUS' },
+    { id: 'clearance-model', term: 'Clearance model', def: 'A mandate design where the government platform validates or registers an invoice before it is legally issued to the buyer. The invoice is only valid once the government system has processed it. Italy (SdI) and France (via PDP) use clearance models. Germany does not.', countries: ['general'], match: 'clearance model' },
+    { id: 'en-16931', term: 'EN 16931', def: 'The European standard that defines what data an e-invoice must contain to be legally valid across EU member states. Think of it as the minimum vocabulary every EU e-invoice must speak. Country mandates build on top of it.', countries: ['DE', 'IT', 'FR'], match: 'EN 16931' },
+    { id: 'erp-footprint-audit', term: 'ERP footprint audit', def: 'The first step of any mandate readiness project: identifying every system in your organisation that generates or processes invoices. Most groups discover they have more invoice-generating systems than they thought - ERPs, billing tools, subsidiary legacy systems, e-commerce platforms.', countries: ['DE', 'IT', 'FR'], match: 'ERP footprint audit' },
+    { id: 'gap-analysis', term: 'Gap analysis', def: 'The process of mapping current ERP capabilities against what the mandate requires. Reveals where configuration changes are needed, what data is missing, and what workflows must change. Standard first deliverable of a readiness engagement.', countries: ['DE', 'IT', 'FR'], match: 'gap analysis' },
+    { id: 'hard-mandate', term: 'Hard mandate', def: 'A mandate phase where compliance is legally required and penalties apply. You are legally forced to issue or receive e-invoices in compliant format. Contrast with soft mandate.', countries: ['DE', 'IT', 'FR'], match: 'hard mandate' },
+    { id: 'inbound-obligation', term: 'Inbound obligation', def: 'The requirement to be able to receive and process compliant e-invoices from your suppliers. This is often the first deadline, coming before the issuing requirement.', countries: ['DE', 'IT', 'FR'], match: 'inbound obligation' },
+    { id: 'last-mile-configuration', term: 'Last-mile configuration', def: "The gap between what your ERP vendor provides out of the box and what you actually need to configure for your specific mandate coverage. SAP or Oracle may provide the framework - but field mappings, tax codes, and routing rules for your entity structure are always last-mile work.", countries: ['DE', 'IT', 'FR'], match: 'last-mile configuration' },
+    { id: 'localization-pack', term: 'Localization pack', def: 'A bundle of country-specific ERP configurations that together achieve mandate compliance for a single country. Some ERP vendors sell these as add-ons. In practice, every group ends up with their own localization layer on top of whatever the vendor provides.', countries: ['DE', 'IT', 'FR'], match: 'localization pack' },
+    { id: 'mapping-delta', term: 'Mapping delta', def: "The gap between what your ERP exports and what the tax authority's format requires. If your ERP produces an invoice with field values that don't match the mandate's required codes or structure, the mapping delta is what needs to be fixed before you can transmit compliantly.", countries: ['DE', 'IT', 'FR'], match: 'mapping delta' },
+    { id: 'master-data-scrubbing', term: 'Master data scrubbing', def: 'The work of fixing incorrect or incomplete supplier and customer records before go-live. VAT IDs with wrong formats, missing routing codes, incomplete addresses - these all cause invoice rejections. Consistently the most time-consuming step of any mandate implementation.', countries: ['DE', 'IT', 'FR'], match: 'master data scrubbing' },
+    { id: 'od', term: 'OD (Opérateur de Dématérialisation)', def: "An uncertified invoice software provider in France's mandate model. Unlike a PDP, an OD is not legally authorised to transmit invoices or report data to the tax authority directly. If your invoicing tool is an OD, you still need to contract a certified PDP for legal compliance.", countries: ['FR'], match: 'OD' },
+    { id: 'outbound-obligation', term: 'Outbound obligation', def: 'The requirement to issue compliant e-invoices to your customers. Also called the sell-side obligation. This often comes later than the inbound obligation and may be phased by company size.', countries: ['DE', 'IT', 'FR'], match: 'outbound obligation' },
+    { id: 'pdp', term: 'PDP (Plateforme Agréée)', def: "A certified private platform in France's mandate model. All French B2B invoice exchange must pass through a certified PDP - there is no free government option. The PDP handles format conversion, transmission, and tax data reporting to the government.", countries: ['FR'], match: 'PDP' },
+    { id: 'peppol', term: 'Peppol', def: 'A European network that allows businesses to exchange e-invoices and other documents without needing a direct connection to each trading partner. An access point provider registers your company on the Peppol network; suppliers on the same network then route to you automatically.', countries: ['general'], match: 'Peppol' },
+    { id: 'peppol-bis-3-0', term: 'Peppol BIS 3.0', def: 'The Peppol billing standard - a specific format and set of rules for e-invoices transmitted over the Peppol network. Compatible with EN 16931. The recommended format for Germany\'s B2B interoperability model.', countries: ['general'], match: 'Peppol BIS 3.0' },
+    { id: 'post-audit-model', term: 'Post-audit model', def: 'A mandate design where invoices are exchanged directly between parties and reported to the government after the fact - not validated before legal issuance. Germany uses a post-audit / interoperability model for B2B.', countries: ['general'], match: 'post-audit' },
+    { id: 'ppf', term: 'PPF (Portail Public de Facturation)', def: "France's public e-invoice portal. Since October 2024, the PPF no longer acts as an invoice exchange platform for B2B - it now acts as a central routing directory (the Annuaire) and a data concentrator. All B2B invoice exchange must go through a certified PDP.", countries: ['FR'], match: 'PPF' },
+    { id: 'sell-side-obligation', term: 'Sell-side obligation', def: 'The requirement to issue compliant e-invoices to your customers. Also called the outbound obligation. This often comes later than the inbound obligation and may be phased by company size.', countries: ['DE', 'IT', 'FR'], match: 'sell-side obligation' },
+    { id: 'soft-mandate', term: 'Soft mandate', def: 'A mandate phase where you are legally required to accept e-invoices if your supplier sends them, but not yet required to send them yourself. Germany was soft outbound for most companies from January 2025 until the hard outbound deadline of January 2027.', countries: ['general'], match: 'soft mandate' },
+    { id: 'ubl', term: 'UBL (Universal Business Language)', def: "One of the three accepted e-invoice XML formats in France's mandate (alongside Factur-X and CII). A global open standard for business documents. Pure XML - no embedded PDF.", countries: ['general'], match: 'UBL' },
+    { id: 'un-cefact-cii', term: 'UN/CEFACT CII', def: "One of the three accepted e-invoice XML formats in France's mandate. Also used in Germany. A UN standard for structured invoice data. Pure XML, no embedded PDF.", countries: ['general'], match: 'CII' },
+    { id: 'vida', term: 'ViDA (VAT in the Digital Age)', def: "The EU Commission's major VAT reform initiative, expected to introduce mandatory real-time digital reporting for cross-border B2B transactions from 2030. All current national mandates are national frameworks that precede ViDA's cross-border scope.", countries: ['general'], match: 'ViDA' },
+    // Germany
+    { id: 'gobd', term: 'GoBD', def: "Germany's rules for proper bookkeeping and digital record retention. For e-invoices, GoBD requires the original XML to be archived unmodified for 10 years. A PDF printout does not satisfy this - the machine-readable file itself must be preserved unchanged.", countries: ['DE'], match: 'GoBD' },
+    { id: 'innerer-kontrollpfad', term: 'innerer Kontrollpfad', def: "A concept introduced by the German tax authority in 2025: a documented internal process that connects invoice receipt to VAT accounting and verification. Failing to validate incoming XML invoices means this control path is absent, which creates VAT audit risk.", countries: ['DE'], match: 'innerer Kontrollpfad' },
+    { id: 'kosit', term: 'KoSIT', def: "The German government body that maintains the XRechnung standard and operates the official XML validation tool for e-invoices. Before transmitting an invoice, senders can validate their XML against the KoSIT validator to catch format errors.", countries: ['DE'], match: 'KoSIT' },
+    { id: 'leitweg-id', term: 'Leitweg-ID', def: "A routing identifier required for invoices sent to German public authorities (B2G). It tells the government's routing system exactly which department or entity should receive the invoice. Standard ERP customer master setups do not include this field - it must be added separately for any public sector customers.", countries: ['DE'], match: 'Leitweg-ID' },
+    { id: 'rechnungsberichtigung', term: 'Rechnungsberichtigung', def: "A correction invoice - Germany's mechanism for correcting an already-issued e-invoice. Unlike a credit note, a Rechnungsberichtigung is a new invoice that references and supersedes the original. It must itself be a fully compliant EN 16931 electronic invoice.", countries: ['DE'], match: 'Rechnungsberichtigung' },
+    { id: 'sonstige-rechnung', term: 'sonstige Rechnung', def: "Literally 'other invoice' - the German tax authority's classification for an invoice that fails to meet the e-invoice format requirements. If a supplier sends you a sonstige Rechnung when they were required to send a compliant e-invoice, your right to deduct input VAT is at risk.", countries: ['DE'], match: 'sonstige Rechnung' },
+    { id: 'wachstumschancengesetz', term: 'Wachstumschancengesetz', def: "The German legislation passed in March 2024 that introduced the B2B e-invoicing mandate. It amends §14 UStG (the VAT Act) to require structured electronic invoices for domestic B2B transactions. This is the primary legal source for Germany's receiving obligation (January 2025) and issuing deadlines (2027/2028).", countries: ['DE'], match: 'Wachstumschancengesetz' },
+    { id: 'xrechnung', term: 'XRechnung', def: "Germany's national e-invoice standard - a pure XML format with no embedded PDF. Machine-readable only. Required for invoices to federal government bodies. Legally valid for B2B. Buyers without XML processing capability cannot read it visually, which is why ZUGFeRD is often preferred for mixed supplier bases.", countries: ['DE'], match: 'XRechnung' },
+    { id: 'zugferd', term: 'ZUGFeRD', def: "A hybrid e-invoice format that bundles a human-readable PDF with an embedded structured XML payload. The XML layer is legally binding - in any discrepancy between the PDF and the XML, the XML takes precedence. AP teams that process only the PDF layer are exposed to VAT risk.", countries: ['DE'], match: 'ZUGFeRD' },
+    // Italy
+    { id: 'cig-cup-codes', term: 'CIG/CUP codes', def: "Procurement identifiers required on all invoices sent to Italian public administration. CIG is the tender identification code; CUP is the project code. They come from the buyer's procurement system and are rarely captured in ERP order records. Missing CIG/CUP causes immediate SdI rejection for B2G transactions.", countries: ['IT'], match: 'CIG/CUP' },
+    { id: 'codice-destinatario', term: 'Codice Destinatario', def: "A 7-character routing code that identifies which endpoint an Italian B2B buyer uses to receive invoices via SdI. Unlike a VAT number, this code is not publicly searchable - buyers must communicate it to their suppliers. Collecting this field from all Italian customers is consistently the most time-consuming part of an Italian mandate implementation.", countries: ['IT'], match: 'Codice Destinatario' },
+    { id: 'codice-fiscale', term: 'Codice Fiscale', def: "Italy's personal/entity tax identification number. For individual traders and sole proprietors, this is a different field from the Partita IVA (VAT number) and sits in a different XML node in the FatturaPA schema. Treating them as equivalent in ERP configuration causes SdI rejections.", countries: ['IT'], match: 'Codice Fiscale' },
+    { id: 'codice-univoco-ufficio', term: 'Codice Univoco Ufficio', def: "A 6-character routing code required for invoices to Italian public administration (B2G). The equivalent of the Codice Destinatario for government entities. Usually comes with additional procurement codes (CIG/CUP).", countries: ['IT'], match: 'Codice Univoco Ufficio' },
+    { id: 'conservazione-elettronica', term: 'Conservazione Elettronica', def: "Italy's mandatory 10-year digital archiving service. Separate from SdI transmission - transmitting through a certified intermediary does not satisfy this requirement. Requires timestamping (Marca Temporale) and specific technical certification. Must be provisioned as a distinct service with a named internal owner.", countries: ['IT'], match: 'Conservazione Elettronica' },
+    { id: 'fatturapa', term: 'FatturaPA', def: "Italy's mandatory B2B e-invoice format - a structured XML schema with specific document type codes (TD codes). All Italian B2B invoices must be transmitted through SdI in FatturaPA format. Version 1.9.1 took effect May 2026 and added TD29 as a new document type.", countries: ['IT'], match: 'FatturaPA' },
+    { id: 'mancata-consegna', term: 'Mancata Consegna', def: "An SdI lifecycle status meaning 'delivery not achieved' - SdI accepted the invoice as tax-valid but could not reach the buyer's endpoint. The invoice is legally issued. The supplier must email the buyer a PDF copy. Groups that see this status and attempt to resubmit create tax ledger duplicates.", countries: ['IT'], match: 'Mancata Consegna' },
+    { id: 'marca-temporale', term: 'Marca Temporale', def: "A qualified digital timestamp required as part of Italy's Conservazione Elettronica process. It proves that a document existed at a specific point in time and has not been altered since. Required for legal archiving validity.", countries: ['IT'], match: 'Marca Temporale' },
+    { id: 'nota-di-variazione-td04', term: 'Nota di Variazione / TD04', def: "Italy's credit note mechanism - the only way to correct or cancel an issued invoice once it has received a Ricevuta di Consegna from SdI. There are no correction invoices in Italy. The TD04 must itself be a valid FatturaPA XML transmitted through SdI.", countries: ['IT'], match: 'TD04' },
+    { id: 'partita-iva', term: 'Partita IVA', def: "Italy's VAT registration number. Distinct from the Codice Fiscale for sole traders and individuals, though numerically similar for companies. Must appear in the correct XML node in FatturaPA - placing it in the wrong node triggers SdI rejections.", countries: ['IT'], match: 'Partita IVA' },
+    { id: 'ricevuta-di-consegna', term: 'Ricevuta di Consegna', def: "SdI's delivery receipt - confirmation that an invoice has been successfully delivered to the buyer's endpoint. Once issued, this status locks the invoice in the tax ledger. It cannot be recalled or altered. Any correction must go through a TD04 credit note.", countries: ['IT'], match: 'Ricevuta di Consegna' },
+    { id: 'sdi', term: 'SdI (Sistema di Interscambio)', def: "Italy's government invoice exchange platform operated by Agenzia delle Entrate. Every Italian B2B invoice must pass through SdI. SdI validates the invoice, routes it to the buyer's endpoint, and returns a lifecycle status. It is the single point of clearance for all Italian B2B transactions.", countries: ['IT'], match: 'SdI' },
+    { id: 'td-codes', term: 'TD codes (TipoDocumento)', def: "Document type codes in the FatturaPA schema (TD01 through TD29 as of version 1.9.1). Each code corresponds to a specific invoice type - standard invoice (TD01), credit note (TD04), deferred invoice (TD24), reverse charge for foreign purchases (TD17, TD18, TD19). Every billing scenario in the ERP must map to the correct TD code.", countries: ['IT'], match: 'TD codes' },
+    // France
+    { id: 'avoir', term: 'avoir', def: "French for 'credit note' - the correction mechanism under France's e-invoicing mandate. Once an invoice is issued, it cannot be altered or reissued under the same number. An avoir must reference the original invoice and be transmitted through the PDP like any other invoice.", countries: ['FR'], match: 'avoir' },
+    { id: 'code-de-routage', term: 'Code de Routage', def: "An optional routing code in France's Annuaire that directs invoices to a specific department or team within a SIRET. Useful for large entities with multiple AP teams. Absent from most initial Annuaire registrations, which causes invoice delivery failures within the entity.", countries: ['FR'], match: 'Code de Routage' },
+    { id: 'deposited-depot', term: 'Deposited / Dépôt', def: "The first mandatory lifecycle status in France's mandate - the invoice has been submitted to the PDP and is in transit. One of four statuses PDPs must report to the DGFiP alongside Rejected, Refused, and Paid.", countries: ['FR'], match: 'Dépôt' },
+    { id: 'e-reporting', term: 'e-reporting', def: "France's parallel obligation for transaction data that falls outside e-invoicing scope: B2C sales and international B2B transactions. These must be reported separately to the DGFiP on a defined schedule. E-reporting is a distinct pipeline from e-invoicing and is owned by Tax, not AR.", countries: ['FR'], match: 'e-reporting' },
+    { id: 'factur-x', term: 'Factur-X', def: "A hybrid e-invoice format that embeds structured XML inside a PDF/A-3 file. The XML payload is legally binding - the DGFiP audits the XML, not the PDF. One of three accepted formats under France's mandate (alongside UBL and CII). Heavily promoted for SMEs because of its readable PDF layer.", countries: ['FR', 'DE'], match: 'Factur-X' },
+    { id: 'refus', term: 'Refus', def: "France's buyer rejection lifecycle status - the buyer has rejected an invoice for business reasons (wrong amount, wrong entity, dispute). A Refus means the invoice was legally issued. The supplier must issue an avoir (credit note) to cancel it. Different from a Rejet.", countries: ['FR'], match: 'Refus' },
+    { id: 'rejet', term: 'Rejet', def: "France's technical rejection lifecycle status - the PDP rejected the invoice due to a format or validation error before it was legally issued. A Rejet means the invoice was never legally created. The supplier fixes the error and issues a new invoice with a new number. Different from a Refus.", countries: ['FR'], match: 'Rejet' },
+    { id: 'siren', term: 'SIREN', def: "France's 9-digit legal entity identifier. Identifies the company as a whole. Not sufficient for Annuaire routing - invoices must be addressed to a SIRET (the 14-digit establishment identifier), not a SIREN. Many ERP customer master records store SIREN only.", countries: ['FR'], match: 'SIREN' },
+    { id: 'siret', term: 'SIRET', def: "France's 14-digit establishment identifier. The last 5 digits after the SIREN identify a specific physical establishment or branch. Annuaire routing operates at SIRET level - every active French establishment must be separately registered.", countries: ['FR'], match: 'SIRET' },
+    // Practitioner terms
+    { id: 'inbound-outbound-flows', term: 'Inbound/outbound flows', def: 'The practitioner shorthand for the receiving and issuing sides of a mandate. Finance and AP teams use "inbound" for invoices arriving from suppliers and "outbound" for invoices sent to customers. Preferred over the legal terminology "receiving obligation / issuing obligation."', countries: ['DE', 'IT', 'FR'], match: 'inbound/outbound' },
+    { id: 'it-tax-gap', term: 'IT-Tax gap', def: "The most common ownership problem in mandate implementations: IT sees the work as a tax reporting issue, Tax sees it as a system configuration issue. Neither team owns it. The mandate sits unclaimed until a deadline forces a decision - by which point it is usually too late for a clean implementation.", countries: ['DE', 'IT', 'FR'], match: 'IT-Tax gap' },
+    { id: 'orphaned-project', term: 'Orphaned project', def: "A mandate implementation that has been announced internally but has no allocated budget because it does not fit cleanly into any department's capital plan. It is not an IT project (IT sees it as a tax matter). It is not a Tax project (Tax sees it as a systems matter). It sits between functions with no owner and no funding.", countries: ['DE', 'IT', 'FR'], match: 'orphaned project' },
+    { id: 'schema-freeze', term: 'Schema freeze', def: 'The point in a mandate implementation after which no further changes to the XML field mapping are permitted before go-live. Changes after schema freeze require regression testing the entire invoice flow.', countries: ['DE', 'IT', 'FR'], match: 'schema freeze' },
+  ];
+
+  function isVisible(term) {
+    return term.countries.indexOf('general') !== -1 || term.countries.indexOf(country) !== -1;
+  }
+
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderTerms() {
+    var list = document.getElementById('gloss-list');
+    if (!list) return;
+    var visible = ALL_TERMS.filter(isVisible).sort(function(a,b){ return a.term.localeCompare(b.term); });
+    if (visible.length === 0) {
+      list.innerHTML = '<div style="padding:12px 16px;font-size:0.8rem;color:#6b7280;">No terms available for this country.</div>';
+      return;
+    }
+    var html = '';
+    visible.forEach(function(t, i) {
+      if (i > 0) html += '<div class="gloss-divider"></div>';
+      html += '<div class="gloss-entry" id="gloss-term-' + t.id + '" data-term-id="' + t.id + '">'
+            + '<div class="gloss-term-name">' + esc(t.term) + '</div>'
+            + '<div class="gloss-term-def">' + esc(t.def) + '</div>'
+            + '</div>';
+    });
+    list.innerHTML = html;
+    list.querySelectorAll('.gloss-entry').forEach(function(el) {
+      el.addEventListener('click', function() {
+        var tid = el.dataset.termId;
+        el.classList.add('gloss-highlight');
+        setTimeout(function(){ el.classList.remove('gloss-highlight'); }, 1400);
+      });
+    });
+  }
+
+  window.openGlossaryTo = function(termId) {
+    var panel = document.getElementById('glossary-panel');
+    var body = document.getElementById('gloss-body');
+    var toggle = document.getElementById('gloss-toggle');
+    if (!panel || !body) return;
+    panel.classList.add('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    body.removeAttribute('hidden');
+    var el = document.getElementById('gloss-term-' + termId);
+    if (el) {
+      setTimeout(function() {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        el.classList.add('gloss-highlight');
+        setTimeout(function(){ el.classList.remove('gloss-highlight'); }, 1400);
+      }, 60);
+    }
+  };
+
+  window.__glossaryTerms = ALL_TERMS;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderTerms();
+
+    var toggle = document.getElementById('gloss-toggle');
+    var panel = document.getElementById('glossary-panel');
+    var body = document.getElementById('gloss-body');
+
+    if (toggle && panel && body) {
+      toggle.addEventListener('click', function() {
+        var isOpen = panel.classList.contains('open');
+        panel.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+        if (isOpen) {
+          body.setAttribute('hidden', '');
+        } else {
+          body.removeAttribute('hidden');
+        }
+      });
+    }
+  });
+})();
+</script>

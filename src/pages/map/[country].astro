@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Nav from '../../components/Nav.astro';
+import GlossaryPanel from '../../components/GlossaryPanel.astro';
 
 export async function getStaticPaths() {
   const countries = await getCollection('countries');
@@ -21,6 +22,101 @@ function fmt(val: string | null | undefined): string {
 
 function fmtDate(date: Date): string {
   return date.toISOString().slice(0, 10);
+}
+
+// Level 1: field label tooltips
+const FIELD_TIPS: Record<string, string> = {
+  mandate_type: "How this country's e-invoicing system works at a structural level - whether invoices are validated by a government platform before reaching the buyer, exchanged directly between companies, or reported after the fact.",
+  vida_alignment: "How this country's mandate relates to the EU's ViDA (VAT in the Digital Age) reform due around 2030. Some countries are ahead of ViDA, some will need to rebuild when ViDA arrives.",
+  future_direction: "Known upcoming changes to this country's mandate - format updates, new deadlines, or structural reforms expected in the next 1-3 years.",
+  b2b: "Whether business-to-business e-invoicing is legally required between private companies.",
+  b2g: "Whether businesses are legally required to send e-invoices to government and public sector buyers. B2G mandates typically came before B2B in most EU countries.",
+  b2c_scope: "Whether the mandate covers invoices issued to consumers (private individuals), and if so in what form.",
+  status: "Where this country currently sits in the mandate rollout - already live and enforced, in an official pilot period, announced with a confirmed date, or still proposed.",
+  phase_in: "Whether the mandate is being introduced gradually for different company sizes or sectors, rather than all at once.",
+  phase_in_scope: "Which companies are in the current phase - which ones must comply now versus which ones have more time.",
+  formats: "Which structured electronic invoice formats are legally accepted under this mandate. These are XML-based formats - not PDF.",
+  cius: "The country-specific implementation of the EU standard (EN 16931). A CIUS adds local requirements on top of the European baseline.",
+  platform: "The government platform or infrastructure that handles invoice routing, validation, or registration in this country. Not all countries have one - some use decentralised exchange.",
+  platform_model: "How the government platform fits into the invoice flow - whether it sits in the middle of every transaction (clearance), acts as a directory, or is not involved at all.",
+  transport_protocol: "The technical standard used to transmit invoices between companies or to the government platform.",
+  b2g_signature: "Whether a legally recognised electronic signature is required on invoices sent to government. Different from B2B requirements.",
+  b2b_signature: "Whether a legally recognised electronic signature is required on invoices sent to other companies.",
+  master_data_id: "The identifier your company and your trading partners use to route e-invoices correctly. Different countries use different identifiers - VAT numbers, registration numbers, or country-specific routing codes.",
+  mandatory_pdf_bundle: "Whether a human-readable PDF must be included alongside the structured XML. In some countries it is required; in others the XML alone is the legal document.",
+  foreign_resident_scope: "Whether your company is in scope if you have a VAT registration in this country but your business is not legally established here (no permanent establishment).",
+  archiving_years: "How many years the original electronic invoice file must be kept, in its original format, with proof that it has not been altered.",
+  penalty_max: "The financial penalty for non-compliance. In some countries this is a per-invoice fine; in others the primary consequence is losing the right to deduct VAT.",
+  reporting_window: "If this country has a deadline for transmitting invoices after the transaction date (not all countries do), this shows the number of days allowed.",
+  correction_mechanism: "The legally approved method for correcting a compliant e-invoice that has already been issued. Countries differ on whether you use a correction invoice or a credit note - and the rules are strict.",
+  document_lifecycle_states: "The official status labels an invoice passes through in this country's system - from submission to final acceptance, rejection, or payment. These statuses must flow back into your ERP.",
+  has_sandbox: "Whether an official test environment exists where you can validate your invoice format and transmission before going live.",
+};
+
+// Level 2: value tooltips (keyed by raw field value from frontmatter)
+const VALUE_TIPS: Record<string, Record<string, string>> = {
+  mandate_type: {
+    interoperability: "Companies exchange invoices directly with each other through a shared network (Peppol) or agreed channels. No government platform sits in the middle. Germany uses this model.",
+    'centralized-clearance': "Every invoice must pass through a single government platform that validates it before the buyer receives it. The invoice is only legally issued once the government system has processed it. Italy uses this model.",
+    'clearance-pdp': "Similar to centralised clearance, but exchange happens through certified private platforms (PDPs) rather than a single government portal. The government platform acts as a directory and data receiver. France uses this model.",
+    'post-audit': "Invoices are exchanged directly and reported to the government after the fact. The government reviews data periodically rather than in real time. The older model - most countries are moving away from it.",
+  },
+  vida_alignment: {
+    'DRR-compliant': "This country's mandate is designed to align with the EU's ViDA Digital Reporting Requirements, which will govern cross-border transactions from around 2030. Germany is positioned here.",
+    'legacy-clearance': "This country built its clearance model before ViDA was designed. The existing system will need to be partially rebuilt or bridged when ViDA cross-border rules arrive. Italy is in this category.",
+    'ctc-national': "A national continuous transaction control model that predates ViDA and runs independently of it. Alignment with ViDA's cross-border requirements is planned for 2030+. France's PDP model is in this category.",
+  },
+  b2c_scope: {
+    none: "Invoices to private consumers are not covered by this mandate.",
+    in_scope: "Consumer transactions are in scope. In Italy, B2C invoices can be transmitted via SdI on request; otherwise daily aggregated data must be reported separately.",
+    'e-reporting-only': "Consumer transactions are not subject to e-invoicing, but anonymised daily transaction totals must be reported separately to the tax authority. France uses this model.",
+  },
+  status: {
+    live: "The mandate is active and enforced. Non-compliance can result in penalties or loss of tax deduction rights.",
+    pilot: "An official testing period is underway. Companies can transmit compliant invoices now, but the hard enforcement deadline has not yet arrived.",
+    announced: "A specific go-live date has been confirmed in legislation or official publication. The mandate is not yet enforced.",
+    proposed: "The mandate has been discussed or consulted on, but no confirmed date exists in law.",
+  },
+  phase_in_scope: {
+    pending_micro: "The issuing mandate is deferred for smaller companies. In Germany, companies below EUR 800,000 annual turnover have until January 2028 to begin issuing.",
+    all: "The mandate applies to all companies with no ongoing phase-in. Italy completed its final phase-in in January 2024.",
+    by_size: "The mandate is being rolled out by company size. In France, large companies must issue from September 2026, SMEs from September 2027.",
+    large_taxpayers: "Only large taxpayers (above a defined revenue threshold) are currently required to comply.",
+  },
+  platform_model: {
+    none: "No government platform is involved in B2B invoice exchange. Companies exchange directly, and the government has no real-time visibility into individual transactions. Germany uses this model.",
+    centralized: "A single government platform processes every invoice. All traffic flows through one point. Italy's SdI is this model.",
+    'Y-Model': "A hybrid model where certified private platforms handle invoice exchange between companies, while a central government portal maintains the routing directory and receives tax data. France uses this model.",
+  },
+  transport_protocol: {
+    'Peppol-BIS-3.0': "The standard used by the Peppol network. Invoices are transmitted via certified access point providers using the AS4 protocol. Peppol is the recommended path for Germany's B2B mandate.",
+    SFTP: "Secure file transfer - the high-volume direct channel for connecting to Italy's SdI platform. Used by large-scale senders.",
+    PDP: "All B2B invoice exchange in France must go through a certified PDP (Plateforme Agréée). The PDP handles format conversion, transmission, and tax data reporting.",
+    'API-OAuth2': "API-based transmission using OAuth2 authentication. Used in clearance models where real-time government validation is required.",
+  },
+  b2g_signature: {
+    none: "No electronic signature is required. Document integrity is guaranteed through the transmission channel or platform certification instead.",
+    XAdES: "A specific type of XML-based electronic signature required on B2G invoices in Italy. Legally equivalent to a handwritten signature.",
+    optional: "A signature is legally valid and accepted, but not required for compliance.",
+  },
+  b2b_signature: {
+    none: "No electronic signature is required. Document integrity is guaranteed through the transmission channel or platform certification instead.",
+    XAdES: "A specific type of XML-based electronic signature required on some invoice types. Legally equivalent to a handwritten signature.",
+    optional: "A signature is legally valid and accepted, but not required for compliance.",
+  },
+  mandatory_pdf_bundle: {
+    none: "The XML file is the legal original. No accompanying PDF is required. A PDF may be included for human readability but has no legal status.",
+    optional: "A human-readable PDF can be bundled with the XML (as in Factur-X or ZUGFeRD), but pure XML is equally valid.",
+  },
+  correction_mechanism: {
+    correction_invoice: "A new invoice is issued that references and supersedes the original. It must itself be a fully compliant e-invoice - a PDF correction is not valid. Germany uses this model.",
+    credit_note: "The original invoice is cancelled by issuing a credit note that references it. A new invoice is then issued if needed. Italy and France use this model. Correction invoices do not exist in these countries.",
+  },
+};
+
+function getValTip(field: string, val: string | null | undefined): string | undefined {
+  if (!val) return undefined;
+  return VALUE_TIPS[field]?.[val];
 }
 ---
 <!DOCTYPE html>
@@ -99,6 +195,7 @@ function fmtDate(date: Date): string {
     .data-row span:first-child {
       width: 180px; flex-shrink: 0;
       color: var(--muted); font-weight: 500;
+      display: flex; align-items: center;
     }
     .data-row span:last-child { color: var(--text); }
     .data-row:nth-child(even) { background: var(--bg-alt); }
@@ -193,7 +290,10 @@ function fmtDate(date: Date): string {
       <div>
         <h1>{d.country}</h1>
         <div class="header-badges">
-          <span class={`badge badge-${d.status}`}>{d.status}</span>
+          <span
+            class={`badge badge-${d.status}`}
+            data-tooltip={getValTip('status', d.status)}
+          >{d.status}</span>
           <span class={`badge badge-${d.b2b}`}>B2B {d.b2b}</span>
           <span class={`badge badge-${d.b2g}`}>B2G {d.b2g}</span>
         </div>
@@ -204,11 +304,37 @@ function fmtDate(date: Date): string {
     <div class="section-block">
       <h2>Mandate Overview</h2>
       <div class="data-grid">
-        <div class="data-row"><span>Mandate type</span><span>{fmt(d.mandate_type)}</span></div>
-        <div class="data-row"><span>ViDA alignment</span><span>{d.vida_alignment}</span></div>
-        {d.future_direction && <div class="data-row"><span>Future direction</span><span>{d.future_direction}</span></div>}
-        <div class="data-row"><span>B2C scope</span><span>{fmt(d.b2c_scope)}</span></div>
-        <div class="data-row"><span>Phase-in</span><span>{d.phase_in ? `Yes - ${fmt(d.phase_in_scope)}` : 'No'}</span></div>
+        <div class="data-row">
+          <span>Mandate type<span class="field-q" data-tooltip={FIELD_TIPS.mandate_type}>?</span></span>
+          <span
+            class={getValTip('mandate_type', d.mandate_type) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('mandate_type', d.mandate_type)}
+          >{fmt(d.mandate_type)}</span>
+        </div>
+        <div class="data-row">
+          <span>ViDA alignment<span class="field-q" data-tooltip={FIELD_TIPS.vida_alignment}>?</span></span>
+          <span
+            class={getValTip('vida_alignment', d.vida_alignment) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('vida_alignment', d.vida_alignment)}
+          >{d.vida_alignment}</span>
+        </div>
+        {d.future_direction && (
+          <div class="data-row">
+            <span>Future direction<span class="field-q" data-tooltip={FIELD_TIPS.future_direction}>?</span></span>
+            <span>{d.future_direction}</span>
+          </div>
+        )}
+        <div class="data-row">
+          <span>B2C scope<span class="field-q" data-tooltip={FIELD_TIPS.b2c_scope}>?</span></span>
+          <span
+            class={getValTip('b2c_scope', d.b2c_scope) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('b2c_scope', d.b2c_scope)}
+          >{fmt(d.b2c_scope)}</span>
+        </div>
+        <div class="data-row">
+          <span>Phase-in<span class="field-q" data-tooltip={FIELD_TIPS.phase_in}>?</span></span>
+          <span>{d.phase_in ? `Yes - ${fmt(d.phase_in_scope)}` : 'No'}</span>
+        </div>
       </div>
     </div>
 
@@ -227,28 +353,100 @@ function fmtDate(date: Date): string {
     <div class="section-block">
       <h2>Format & Technical Details</h2>
       <div class="data-grid">
-        <div class="data-row"><span>Formats</span><span>{d.formats.join(', ')}</span></div>
-        {d.cius && <div class="data-row"><span>CIUS</span><span>{d.cius}</span></div>}
-        <div class="data-row"><span>Platform</span><span>{d.platform !== 'none' ? d.platform : 'None - direct exchange'}</span></div>
-        <div class="data-row"><span>Platform model</span><span>{fmt(d.platform_model)}</span></div>
-        <div class="data-row"><span>Transport protocol</span><span>{d.transport_protocol !== 'none' ? d.transport_protocol : 'Not specified'}</span></div>
-        <div class="data-row"><span>B2G signature</span><span>{fmt(d.b2g_signature)}</span></div>
-        <div class="data-row"><span>B2B signature</span><span>{fmt(d.b2b_signature)}</span></div>
+        <div class="data-row">
+          <span>Formats<span class="field-q" data-tooltip={FIELD_TIPS.formats}>?</span></span>
+          <span>{d.formats.join(', ')}</span>
+        </div>
+        {d.cius && (
+          <div class="data-row">
+            <span>CIUS<span class="field-q" data-tooltip={FIELD_TIPS.cius}>?</span></span>
+            <span>{d.cius}</span>
+          </div>
+        )}
+        <div class="data-row">
+          <span>Platform<span class="field-q" data-tooltip={FIELD_TIPS.platform}>?</span></span>
+          <span>{d.platform !== 'none' ? d.platform : 'None - direct exchange'}</span>
+        </div>
+        <div class="data-row">
+          <span>Platform model<span class="field-q" data-tooltip={FIELD_TIPS.platform_model}>?</span></span>
+          <span
+            class={getValTip('platform_model', d.platform_model) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('platform_model', d.platform_model)}
+          >{fmt(d.platform_model)}</span>
+        </div>
+        <div class="data-row">
+          <span>Transport protocol<span class="field-q" data-tooltip={FIELD_TIPS.transport_protocol}>?</span></span>
+          <span
+            class={getValTip('transport_protocol', d.transport_protocol) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('transport_protocol', d.transport_protocol)}
+          >{d.transport_protocol !== 'none' ? d.transport_protocol : 'Not specified'}</span>
+        </div>
+        <div class="data-row">
+          <span>B2G signature<span class="field-q" data-tooltip={FIELD_TIPS.b2g_signature}>?</span></span>
+          <span
+            class={getValTip('b2g_signature', d.b2g_signature) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('b2g_signature', d.b2g_signature)}
+          >{fmt(d.b2g_signature)}</span>
+        </div>
+        <div class="data-row">
+          <span>B2B signature<span class="field-q" data-tooltip={FIELD_TIPS.b2b_signature}>?</span></span>
+          <span
+            class={getValTip('b2b_signature', d.b2b_signature) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('b2b_signature', d.b2b_signature)}
+          >{fmt(d.b2b_signature)}</span>
+        </div>
       </div>
     </div>
 
     <div class="section-block">
       <h2>Compliance Data</h2>
       <div class="data-grid">
-        <div class="data-row"><span>Master data ID</span><span>{d.master_data_id}</span></div>
-        <div class="data-row"><span>PDF bundle</span><span>{fmt(d.mandatory_pdf_bundle)}</span></div>
-        <div class="data-row"><span>Foreign resident scope</span><span>{d.foreign_resident_scope ? 'Yes' : 'No'}</span></div>
-        <div class="data-row"><span>Archiving</span><span>{d.archiving_years} years</span></div>
-        {d.penalty_max && <div class="data-row"><span>Penalty</span><span>{d.penalty_max}</span></div>}
-        {d.reporting_window && <div class="data-row"><span>Reporting window</span><span>{d.reporting_window} days</span></div>}
-        <div class="data-row"><span>Correction mechanism</span><span>{fmt(d.correction_mechanism)}</span></div>
-        <div class="data-row"><span>Document lifecycle</span><span>{d.document_lifecycle_states.join(' → ')}</span></div>
-        <div class="data-row"><span>Sandbox available</span><span>{d.has_sandbox ? 'Yes' : 'No'}</span></div>
+        <div class="data-row">
+          <span>Master data ID<span class="field-q" data-tooltip={FIELD_TIPS.master_data_id}>?</span></span>
+          <span>{d.master_data_id}</span>
+        </div>
+        <div class="data-row">
+          <span>PDF bundle<span class="field-q" data-tooltip={FIELD_TIPS.mandatory_pdf_bundle}>?</span></span>
+          <span
+            class={getValTip('mandatory_pdf_bundle', d.mandatory_pdf_bundle) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('mandatory_pdf_bundle', d.mandatory_pdf_bundle)}
+          >{fmt(d.mandatory_pdf_bundle)}</span>
+        </div>
+        <div class="data-row">
+          <span>Foreign resident scope<span class="field-q" data-tooltip={FIELD_TIPS.foreign_resident_scope}>?</span></span>
+          <span>{d.foreign_resident_scope ? 'Yes' : 'No'}</span>
+        </div>
+        <div class="data-row">
+          <span>Archiving<span class="field-q" data-tooltip={FIELD_TIPS.archiving_years}>?</span></span>
+          <span>{d.archiving_years} years</span>
+        </div>
+        {d.penalty_max && (
+          <div class="data-row">
+            <span>Penalty<span class="field-q" data-tooltip={FIELD_TIPS.penalty_max}>?</span></span>
+            <span>{d.penalty_max}</span>
+          </div>
+        )}
+        {d.reporting_window && (
+          <div class="data-row">
+            <span>Reporting window<span class="field-q" data-tooltip={FIELD_TIPS.reporting_window}>?</span></span>
+            <span>{d.reporting_window} days</span>
+          </div>
+        )}
+        <div class="data-row">
+          <span>Correction mechanism<span class="field-q" data-tooltip={FIELD_TIPS.correction_mechanism}>?</span></span>
+          <span
+            class={getValTip('correction_mechanism', d.correction_mechanism) ? 'val-tip' : undefined}
+            data-tooltip={getValTip('correction_mechanism', d.correction_mechanism)}
+          >{fmt(d.correction_mechanism)}</span>
+        </div>
+        <div class="data-row">
+          <span>Document lifecycle<span class="field-q" data-tooltip={FIELD_TIPS.document_lifecycle_states}>?</span></span>
+          <span>{d.document_lifecycle_states.join(' → ')}</span>
+        </div>
+        <div class="data-row">
+          <span>Sandbox available<span class="field-q" data-tooltip={FIELD_TIPS.has_sandbox}>?</span></span>
+          <span>{d.has_sandbox ? 'Yes' : 'No'}</span>
+        </div>
       </div>
     </div>
 
@@ -262,38 +460,111 @@ function fmtDate(date: Date): string {
       This content is provided for operational preparation purposes only and does not constitute legal, financial, or tax advice. While we strive for accuracy, EU regulatory requirements change frequently. Validate with your legal counsel or tax advisors before implementation. einvoiceops.eu is not an authoritative source of law.
     </div>
   </main>
-  <script is:inline>
-    const layer2 = document.getElementById('layer2');
-    if (layer2) {
-      const headings = Array.from(layer2.querySelectorAll('h2'));
-      headings.forEach((h2, i) => {
-        const id = 'sec-' + h2.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-        // Collect content nodes between this h2 and the next
-        const body = document.createElement('div');
+  <GlossaryPanel country={d.code} />
+
+  <script is:inline>
+    // Section transformation: h2 headings → <details> accordions
+    var layer2 = document.getElementById('layer2');
+    if (layer2) {
+      var headings = Array.from(layer2.querySelectorAll('h2'));
+      headings.forEach(function(h2, i) {
+        var body = document.createElement('div');
         body.className = 'section-body';
-        let node = h2.nextSibling;
+        var node = h2.nextSibling;
         while (node && !(node.nodeType === 1 && node.tagName === 'H2')) {
-          const next = node.nextSibling;
+          var next = node.nextSibling;
           body.appendChild(node);
           node = next;
         }
-
-        // Build <details><summary>title</summary><div class="section-body">...</div></details>
-        const details = document.createElement('details');
-        details.id = id;
+        var details = document.createElement('details');
+        details.id = 'sec-' + h2.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
         if (i === 0) details.open = true;
-
-        const summary = document.createElement('summary');
+        var summary = document.createElement('summary');
         summary.textContent = h2.textContent;
-
         details.appendChild(summary);
         details.appendChild(body);
         layer2.insertBefore(details, h2);
         h2.remove();
-
       });
     }
+  </script>
+
+  <script is:inline>
+    // Prose term scanner: wraps first occurrence per section, adds tooltip + panel link
+    (function() {
+      var terms = window.__glossaryTerms;
+      if (!terms) return;
+      var panel = document.getElementById('glossary-panel');
+      var country = panel ? panel.dataset.country : '';
+
+      function isVisible(t) {
+        return t.countries.indexOf('general') !== -1 || t.countries.indexOf(country) !== -1;
+      }
+
+      var visible = terms
+        .filter(isVisible)
+        .sort(function(a, b) { return b.match.length - a.match.length; });
+
+      function escapeRx(s) {
+        return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      function wrapFirstOccurrence(section, term) {
+        var rx = new RegExp('\\b' + escapeRx(term.match) + '\\b', 'i');
+        var walker = document.createTreeWalker(
+          section,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode: function(node) {
+              var el = node.parentElement;
+              while (el && el !== section) {
+                var tag = el.tagName;
+                if (tag === 'SUMMARY' || tag === 'A' || tag === 'CODE' || tag === 'PRE' || tag === 'H2' || tag === 'H3' || tag === 'H4') {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (tag === 'SPAN' && el.classList && el.classList.contains('glossary-term')) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                el = el.parentElement;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          }
+        );
+        var node;
+        while ((node = walker.nextNode())) {
+          var text = node.textContent;
+          var m = rx.exec(text);
+          if (!m) continue;
+          var before = text.slice(0, m.index);
+          var matched = m[0];
+          var after = text.slice(m.index + matched.length);
+          var frag = document.createDocumentFragment();
+          if (before) frag.appendChild(document.createTextNode(before));
+          var span = document.createElement('span');
+          span.className = 'glossary-term';
+          span.dataset.termId = term.id;
+          span.setAttribute('data-tooltip', term.def);
+          span.textContent = matched;
+          span.addEventListener('click', function() {
+            var tid = this.dataset.termId;
+            if (window.openGlossaryTo) window.openGlossaryTo(tid);
+          });
+          frag.appendChild(span);
+          if (after) frag.appendChild(document.createTextNode(after));
+          node.parentNode.replaceChild(frag, node);
+          return true;
+        }
+        return false;
+      }
+
+      document.querySelectorAll('.section-body').forEach(function(section) {
+        visible.forEach(function(term) {
+          wrapFirstOccurrence(section, term);
+        });
+      });
+    })();
   </script>
 </body>
 </html>
