@@ -197,7 +197,7 @@ const withItems = countries.filter(c => (researchMap[c.data.code]?.length ?? 0) 
               <td>{fmtDate(d.last_verified)}</td>
               <td><span class={`badge ${s.cls}`}>{s.label}</span></td>
               <td class="log-cell">
-                <a href={`/changelog/${d.code}`} class="log-btn">Log</a>
+                <a href={`/changelog/${d.code}/`} class="log-btn">Log</a>
               </td>
             </tr>
           );
