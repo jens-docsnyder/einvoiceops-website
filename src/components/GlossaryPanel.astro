@@ -147,6 +147,30 @@ const { country } = Astro.props;
     animation: gloss-flash 1.4s ease-out forwards;
   }
 
+  @keyframes gloss-hint {
+    /* Burst 1 (0 – 36% = 1.3 s) */
+    0%    { transform: translateY(-50%) translateX(0); }
+    3.6%  { transform: translateY(-50%) translateX(-14px); }
+    7.2%  { transform: translateY(-50%) translateX(0); }
+    11.5% { transform: translateY(-50%) translateX(-12px); }
+    15.1% { transform: translateY(-50%) translateX(0); }
+    19.4% { transform: translateY(-50%) translateX(-10px); }
+    23%   { transform: translateY(-50%) translateX(0); }
+    /* Pause (36 – 64% = 1 s) */
+    64%   { transform: translateY(-50%) translateX(0); }
+    /* Burst 2 (64 – 100% = 1.3 s) */
+    67.6% { transform: translateY(-50%) translateX(-14px); }
+    71.2% { transform: translateY(-50%) translateX(0); }
+    75.5% { transform: translateY(-50%) translateX(-12px); }
+    79.1% { transform: translateY(-50%) translateX(0); }
+    83.4% { transform: translateY(-50%) translateX(-10px); }
+    87%   { transform: translateY(-50%) translateX(0); }
+    100%  { transform: translateY(-50%) translateX(0); }
+  }
+  .gloss-panel {
+    animation: gloss-hint 3.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 1s 1 both;
+  }
+
   /* ---- Prose glossary terms ---- */
   .glossary-term {
     border-bottom: 1.5px dotted #2563eb;

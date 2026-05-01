@@ -53,6 +53,9 @@ document_lifecycle_states:
 
 has_sandbox: false
 last_verified: 2026-04-30
+mandate_version: 1
+confidence_summary: amber
+unresolved_high: 3
 ---
 
 ## Preparation Timeline

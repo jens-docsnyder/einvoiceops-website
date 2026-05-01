@@ -1,6 +1,20 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const research = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/research' }),
+  schema: z.object({
+    country_code: z.string().length(2),
+    items: z.array(z.object({
+      priority: z.enum(['high', 'amber']),
+      type: z.enum(['source-verification', 'protocol-action', 'content-review']),
+      description: z.string(),
+      source_url: z.string().url().nullish(),
+      added: z.coerce.date(),
+    })),
+  }),
+});
+
 const countries = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/countries' }),
   schema: z.object({
@@ -12,12 +26,12 @@ const countries = defineCollection({
     vida_alignment: z.string(),
     future_direction: z.string().nullish(),
 
-    b2b: z.enum(['mandatory', 'voluntary', 'not-yet', 'none']),
-    b2g: z.enum(['mandatory', 'voluntary', 'not-yet', 'none']),
+    b2b: z.enum(['mandatory', 'voluntary', 'not-yet', 'none', 'announced']),
+    b2g: z.enum(['mandatory', 'voluntary', 'not-yet', 'none', 'announced']),
     b2c_scope: z.string(),
     status: z.string(),
     phase_in: z.boolean(),
-    phase_in_scope: z.string(),
+    phase_in_scope: z.string().nullish(),
 
     key_deadlines: z.array(z.object({
       date: z.coerce.date(),
@@ -42,14 +56,18 @@ const countries = defineCollection({
     foreign_resident_scope: z.boolean(),
     archiving_years: z.number().int(),
     penalty_max: z.string().nullish(),
-    reporting_window: z.number().int().nullish(),
-    correction_mechanism: z.enum(['correction_invoice', 'credit_note', 'zeroing']),
+    reporting_window: z.union([z.number().int(), z.string()]).nullish(),
+    correction_mechanism: z.enum(['correction_invoice', 'credit_note', 'zeroing', 'anulacion']),
 
     document_lifecycle_states: z.array(z.string()),
 
     has_sandbox: z.boolean(),
-    last_verified: z.coerce.date(),
+    last_verified: z.coerce.date().nullish(),
+    mandate_version: z.number().int(),
+    confidence_summary: z.enum(['green', 'amber', 'red']),
+    unresolved_high: z.number().int().nullish(),
+    unresolved_amber: z.number().int().nullish(),
   }),
 });
 
-export const collections = { countries };
+export const collections = { countries, research };
