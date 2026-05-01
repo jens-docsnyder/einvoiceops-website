@@ -22,6 +22,9 @@ const countryPaths: Record<string, string> = {
   path7041: 'FR',
   path7019: 'BE',
   path7017: 'NL',
+  path7039: 'DK',
+  path6999: 'PL',
+  path8160: 'RO',
 };
 
 // Flag overlay positions as % of SVG viewport (400x420)
@@ -31,6 +34,9 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
   FR: { x: 34.3, y: 72.7 },
   BE: { x: 36.3, y: 61.2 },
   NL: { x: 37.8, y: 56.7 },
+  DK: { x: 43.7, y: 45.4 },
+  PL: { x: 61.8, y: 53.3 },
+  RO: { x: 70.2, y: 73.6 },
 };
 ---
 <!DOCTYPE html>
@@ -81,7 +87,10 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7031,
     #eu-map #path7041,
     #eu-map #path7019,
-    #eu-map #path7017 {
+    #eu-map #path7017,
+    #eu-map #path7039,
+    #eu-map #path6999,
+    #eu-map #path8160 {
       fill: #dbeafe;
       stroke: #93c5fd;
       stroke-width: 0.6;
@@ -92,6 +101,9 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7041:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7019:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7017:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7039:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path6999:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8160:hover { fill: #2563eb; stroke: #1d4ed8; }
 
     /* ---- FLAG TILES overlaid on SVG ---- */
     .flag-overlay {
@@ -221,7 +233,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
 
   <script is:inline>
     // Click navigation for country paths
-    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/' };
+    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/', path7039: '/map/DK/', path6999: '/map/PL/', path8160: '/map/RO/' };
     Object.entries(routes).forEach(([id, href]) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('click', () => location.href = href);
