@@ -1,0 +1,17 @@
+country_code: PL
+items:
+  - priority: high
+    type: source-verification
+    description: "Phase 1 threshold reference year — stated as 2024 total sales in the enacted law, with a note that Ministry of Finance consultations raised shifting it to 2025. Click the isap.sejm.gov.pl URL for the Act of May 9, 2024, and confirm the reference year is 2024 in the enacted text, not 2025."
+    source_url: "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20240000852"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "FA(2) schema stated as invalid from January 31, 2026. Verify this specific deprecation date is confirmed in enacted legislation or official Ministry of Finance communication — not just a proposed or expected date."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "KSeF number described as '35 characters.' Verify this length is correct against the official KSeF API documentation or FA(3) schema specification."
+    source_url: "https://www.podatki.gov.pl/ksef/"
+    added: 2026-05-01

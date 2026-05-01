@@ -1,0 +1,32 @@
+country_code: FI
+items:
+  - priority: high
+    type: source-verification
+    description: "Act 241/2019 Section 4 — states that 'businesses above a turnover threshold' have the right to demand structured e-invoices. The content does not state what that threshold is. Find the exact threshold in Act 241/2019 or its implementing regulation. If no threshold exists and the right applies to all businesses, the description must be corrected."
+    source_url: "https://www.finlex.fi/fi/laki/ajantasa/2019/20190241"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Archiving stated as '6-year archiving under Accounting Act (1336/1997), Chapter 2, Section 10.' Verify the specific chapter and section reference against the current Accounting Act text."
+    source_url: "https://www.finlex.fi/fi/laki/ajantasa/1997/19971336"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Tieke address register at verkkolaskuosoite.fi — cited as the national OVT code register. Verify the URL is active, publicly searchable, and that the OVT structure described (0037 + Y-tunnus without hyphen + optional suffix) matches what Tieke publishes."
+    source_url: "https://verkkolaskuosoite.fi"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "'100% B2B e-invoicing by 2030' Real-Time Economy project target — find the official Finnish government source (Ministry of Finance or government programme decision) that establishes this target date."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Finvoice 3.0 described as required for new implementations (2.x deprecated) — verify whether Finvoice 2.x is formally deprecated or simply not recommended, and whether Finnish public sector buyers still accept it."
+    source_url: "https://www.finanssiala.fi/finvoice"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "last_verified is null — Finland content has not been through a verification pass. Before raising confidence_summary to green or publishing as authoritative, a full protocol verification pass is needed for all claims."
+    source_url: null
+    added: 2026-05-01

@@ -1,0 +1,17 @@
+country_code: DK
+items:
+  - priority: high
+    type: source-verification
+    description: "OIOUBL 3.0 cancellation — this is the most prominent claim in the DK page and everything downstream depends on it. The URL cited leads to the Nemhandel announcement. Click it and confirm the page exists and explicitly states OIOUBL 3.0 is cancelled and Peppol BIS 3.0 is the single future standard."
+    source_url: "https://nemhandel.dk/oioubl-30-aflyses-tillmeld-dig-til-naeste-nemhandelsforum-24-februar-i-koebenhavn-0"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Penalty stated as 'Up to DKK 1,500,000; compulsory dissolution for repeated non-compliance — Bogføringsloven Section 26.' Find the full text of Bogføringsloven Section 26 and confirm both the DKK 1,500,000 cap and the compulsory dissolution provision."
+    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "DKK 300,000 turnover threshold for small business Bogføringsloven phase-in (January 1, 2026) — verify this threshold is stated in Bogføringsloven or its implementing regulation and that it applies for two consecutive years as described."
+    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
+    added: 2026-05-01

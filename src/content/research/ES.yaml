@@ -1,0 +1,42 @@
+country_code: ES
+items:
+  - priority: high
+    type: source-verification
+    description: "Implementing Real Decreto for Ley 18/2022 B2B mandate — stated as still pending as of May 2026. This drives the claim that there is 'no confirmed go-live date.' Verify this remains true — if the Real Decreto has been published, the 12/24-month countdown has started and the page needs updating."
+    source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-15274"
+    added: 2026-05-01
+  - priority: high
+    type: source-verification
+    description: "Penalty amounts cited as up to €150,000 (manufacturing non-compliant SIF), €50,000 (operating), €1,000 (lacking Declaración Responsable) — attributed to Art. 201 bis Ley 58/2003 as amended by Ley 11/2021. Find and read the exact article text to confirm these figures."
+    source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Real Decreto-ley 15/2025 — cited as published December 2, 2025, confirming 2027 go-live dates for Verifactu. Verify the publication date and confirm the January 1 and July 1 2027 dates are in the enacted text."
+    source_url: "https://www.boe.es/boe/dias/2025/12/02/"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "TicketBAI exclusion — entities tax-domiciled in Basque Country (Araba, Bizkaia, Gipuzkoa) and Navarre are excluded from Verifactu and must implement TicketBAI instead. Verify the exact exclusion mechanism in Real Decreto 1007/2023 or Orden HAC/1177/2024 — or whether this is established in Basque/Navarre regional legislation."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Article 11, Orden HAC/1177/2024 — cited as permitting a documented chain reset on system migration ('Primer registro' flagging). Click the BOE publication of Orden HAC/1177/2024 and confirm Article 11 contains this specific provision."
+    source_url: "https://www.boe.es/boe/dias/2024/10/17/"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "SII entities excluded from Verifactu — stated that companies on SII (Suministro Inmediato de Información, large taxpayers with monthly VAT filing) are excluded from Verifactu requirements. Verify this exclusion is explicitly stated in Real Decreto 1007/2023 or Orden HAC/1177/2024."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Large-company turnover threshold for Ley 18/2022 B2B mandate — the page states '12 months for companies above the large-company turnover threshold' but does not state the threshold amount. Find the threshold in Ley 18/2022 Art. 12 or implementing regulation."
+    source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-15274"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "last_verified is null — Spain content has not been through a verification pass. Before raising confidence_summary to green or publishing as authoritative, a full protocol verification pass is needed for all claims."
+    source_url: null
+    added: 2026-05-01

@@ -1,0 +1,22 @@
+country_code: RO
+items:
+  - priority: high
+    type: source-verification
+    description: "OUG 89/2025 — drives the key January 2026 changes (5-day window standardization, non-resident expansion). No source URL cited for this regulation. Find the official Romanian Official Gazette (Monitorul Oficial) publication of OUG 89/2025 and confirm both changes are in the text."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "EU Council Decision 2023/1553 — cited as the derogation permitting Romania's mandate, expiring December 31, 2026. Verify the exact decision number and expiry date against the Official Journal of the EU."
+    source_url: "https://eur-lex.europa.eu/search.html?query=2023%2F1553"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Penalty of '15% of invoice value for B2B transactions outside XML system' — cited as GEO 120/2021 Art. 13^1 as amended by Law 296/2023. Verify this specific percentage and the article reference against the enacted Romanian legislation."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "BNR exchange rate requirement — VAT must be expressed in RON using the National Bank of Romania daily rate. Find the specific ANAF or fiscal code provision that mandates the BNR daily rate (as opposed to a monthly average or contractual rate)."
+    source_url: "https://www.anaf.ro/anaf/internet/RO/e-factura"
+    added: 2026-05-01

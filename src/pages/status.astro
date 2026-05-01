@@ -1,0 +1,236 @@
+---
+import { getCollection } from 'astro:content';
+
+const countriesRaw = await getCollection('countries');
+const researchRaw = await getCollection('research');
+
+// Build research lookup: country_code -> items[]
+const researchMap: Record<string, typeof researchRaw[number]['data']['items']> = {};
+for (const r of researchRaw) {
+  researchMap[r.data.country_code] = r.data.items;
+}
+
+// Staleness logic (days since last_verified)
+const today = new Date('2026-05-01');
+function staleness(d: Date | null | undefined): { label: string; cls: string } {
+  if (!d) return { label: 'Not verified', cls: 'stale-stale' };
+  const days = Math.floor((today.getTime() - d.getTime()) / 86400000);
+  if (days < 90)  return { label: 'Fresh',       cls: 'stale-fresh' };
+  if (days < 180) return { label: 'Review due',  cls: 'stale-review' };
+  return              { label: 'Stale',          cls: 'stale-stale' };
+}
+
+function fmtDate(d: Date | null | undefined): string {
+  if (!d) return '—';
+  return d.toISOString().slice(0, 10);
+}
+
+// Sort: unresolved_high descending (nulls last), then country name ascending
+const countries = [...countriesRaw].sort((a, b) => {
+  const ah = a.data.unresolved_high ?? -1;
+  const bh = b.data.unresolved_high ?? -1;
+  if (bh !== ah) return bh - ah;
+  return a.data.country.localeCompare(b.data.country);
+});
+
+// Countries with open action items
+const withItems = countries.filter(c => (researchMap[c.data.code]?.length ?? 0) > 0);
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Quality Dashboard — internal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a2b3c;
+      --accent: #2563eb;
+      --text:   #111827;
+      --muted:  #6b7280;
+      --border: #e5e7eb;
+      --bg:     #ffffff;
+      --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    body { font-family: var(--sans); color: var(--text); background: var(--bg); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    main { max-width: 900px; margin: 0 auto; padding: 48px 2rem 80px; }
+
+    .page-header { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 2px solid var(--navy); }
+    .page-header h1 { font-size: 1.75rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; margin-bottom: 6px; }
+    .page-header p { font-size: 0.875rem; color: var(--muted); }
+
+    /* --- TABLE --- */
+    .table-wrap { overflow-x: auto; margin-bottom: 48px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead th {
+      text-align: left; padding: 10px 12px;
+      border-bottom: 2px solid var(--navy);
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 10px 12px; vertical-align: middle; }
+    .country-cell { font-weight: 600; white-space: nowrap; }
+    .flag { margin-right: 6px; }
+    .code { font-size: 0.75rem; color: var(--muted); margin-left: 4px; font-weight: 400; }
+
+    /* confidence badges */
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 9999px;
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .badge-green  { background: #dcfce7; color: #15803d; }
+    .badge-amber  { background: #fef3c7; color: #92400e; }
+    .badge-red    { background: #fee2e2; color: #b91c1c; }
+
+    /* staleness badges */
+    .stale-fresh  { background: #f0fdf4; color: #166534; }
+    .stale-review { background: #fefce8; color: #854d0e; }
+    .stale-stale  { background: #fef2f2; color: #991b1b; }
+
+    /* numeric cells */
+    .num { text-align: center; font-variant-numeric: tabular-nums; }
+    .num-high { color: #b91c1c; font-weight: 700; }
+    .num-amber { color: #92400e; font-weight: 700; }
+    .dash { color: var(--muted); }
+
+    /* --- ACTION ITEMS --- */
+    .section-heading { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+
+    details { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; }
+    details[open] { border-color: #cbd5e1; }
+    summary {
+      padding: 12px 16px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+      list-style: none; display: flex; align-items: center; gap: 10px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: '▶';
+      font-size: 0.65rem; color: var(--muted);
+      transition: transform 0.15s;
+      flex-shrink: 0;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    .summary-meta { margin-left: auto; font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+
+    .items-list { padding: 0 16px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .item-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px; align-items: start;
+      padding: 10px 12px;
+      background: #f9fafb; border-radius: 4px; border-left: 3px solid var(--border);
+    }
+    .item-row.item-high  { border-left-color: #ef4444; }
+    .item-row.item-amber { border-left-color: #f59e0b; }
+    .item-badges { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; flex-shrink: 0; }
+    .badge-priority-high  { background: #fee2e2; color: #b91c1c; }
+    .badge-priority-amber { background: #fef3c7; color: #92400e; }
+    .badge-type { background: #f1f5f9; color: #475569; font-size: 0.65rem; }
+    .item-desc { font-size: 0.85rem; line-height: 1.5; color: var(--text); }
+    .item-link a {
+      font-size: 0.75rem; color: var(--accent); text-decoration: none; white-space: nowrap;
+      padding: 2px 8px; border: 1px solid #bfdbfe; border-radius: 4px;
+    }
+    .item-link a:hover { background: #eff6ff; }
+  </style>
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <h1>Research Quality Dashboard</h1>
+    <p>Internal &mdash; run locally via <code>npm run dev</code></p>
+  </header>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Confidence</th>
+          <th class="num">High</th>
+          <th class="num">Amber</th>
+          <th class="num">Version</th>
+          <th>Last verified</th>
+          <th>Staleness</th>
+        </tr>
+      </thead>
+      <tbody>
+        {countries.map(c => {
+          const d = c.data;
+          const s = staleness(d.last_verified);
+          return (
+            <tr>
+              <td class="country-cell">
+                <span class="flag">{d.flag}</span>
+                {d.country}
+                <span class="code">{d.code}</span>
+              </td>
+              <td>
+                <span class={`badge badge-${d.confidence_summary}`}>{d.confidence_summary}</span>
+              </td>
+              <td class="num">
+                {d.unresolved_high != null
+                  ? <span class="num-high">{d.unresolved_high}</span>
+                  : <span class="dash">&mdash;</span>}
+              </td>
+              <td class="num">
+                {d.unresolved_amber != null
+                  ? <span class="num-amber">{d.unresolved_amber}</span>
+                  : <span class="dash">&mdash;</span>}
+              </td>
+              <td class="num">{d.mandate_version}</td>
+              <td>{fmtDate(d.last_verified)}</td>
+              <td><span class={`badge ${s.cls}`}>{s.label}</span></td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  {withItems.length > 0 && (
+    <section>
+      <h2 class="section-heading">Open action items</h2>
+      {withItems.map(c => {
+        const items = researchMap[c.data.code] ?? [];
+        const highCount = items.filter(i => i.priority === 'high').length;
+        const amberCount = items.filter(i => i.priority === 'amber').length;
+        const summaryText = [
+          highCount  > 0 ? `${highCount} high`  : '',
+          amberCount > 0 ? `${amberCount} amber` : '',
+        ].filter(Boolean).join(', ');
+        return (
+          <details>
+            <summary>
+              <span class="flag">{c.data.flag}</span>
+              {c.data.country}
+              <span class="summary-meta">{summaryText}</span>
+            </summary>
+            <div class="items-list">
+              {items.map(item => (
+                <div class={`item-row item-${item.priority}`}>
+                  <div class="item-badges">
+                    <span class={`badge badge-priority-${item.priority}`}>{item.priority}</span>
+                    <span class="badge badge-type">{item.type}</span>
+                  </div>
+                  <p class="item-desc">{item.description}</p>
+                  <div class="item-link">
+                    {item.source_url
+                      ? <a href={item.source_url} target="_blank" rel="noopener noreferrer">Open source</a>
+                      : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </details>
+        );
+      })}
+    </section>
+  )}
+</main>
+</body>
+</html>

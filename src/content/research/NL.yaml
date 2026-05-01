@@ -1,0 +1,17 @@
+country_code: NL
+items:
+  - priority: high
+    type: source-verification
+    description: "SI-UBL 1.x no longer accepted since January 2023, only SI-UBL 2.0 valid — find the official publication confirming this deprecation date."
+    source_url: "https://www.peppol.nl/en/frequently-asked-questions-about-peppol"
+    added: 2026-04-30
+  - priority: high
+    type: source-verification
+    description: "Digipoort automatically converts incoming Peppol BIS 3.0 invoices to UBL-OHNL format — verify against Logius official documentation."
+    source_url: "https://www.logius.nl/diensten/digipoort"
+    added: 2026-04-30
+  - priority: amber
+    type: source-verification
+    description: "B2G mandate dates — central government 2017, all public sector 2019 (EU Directive 2014/55/EU implementation). Verify both dates against official Dutch government source."
+    source_url: "https://www.rijksoverheid.nl/onderwerpen/e-factureren"
+    added: 2026-04-30

@@ -1,0 +1,22 @@
+country_code: IT
+items:
+  - priority: high
+    type: source-verification
+    description: "FatturaPA v1.9.1 effective May 15, 2026 — this date is in the key_deadlines and future_direction. No Agenzia delle Entrate source URL is cited for the schema publication. Verify the version number, effective date, and what specifically changes (TD codes, structure) against the official AdE schema documentation."
+    source_url: "https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/fatture-e-corrispettivi/fattura-elettronica-b2b"
+    added: 2026-05-01
+  - priority: high
+    type: source-verification
+    description: "TD codes listed as 'TD01 through TD29 as of v1.9.1' — TD29 is a specific version claim. Verify that TD29 is actually introduced in v1.9.1 and not an earlier version, and confirm the full range against the official FatturaPA schema specification."
+    source_url: "https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/fatture-e-corrispettivi/fattura-elettronica-b2b"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Penalty stated as '70% of undocumented VAT (min EUR 300)' — no specific legislative source cited. Find the exact provision in DPR 633/1972 or Dlgs 471/1997 that establishes this penalty for e-invoice non-compliance."
+    source_url: null
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "12-day transmission window — cited as DL 34/2019 (Decreto Crescita), Art. 14, amending DPR 633/1972 Art. 21. Click the normattiva URL and confirm the 12-day rule is stated in that article."
+    source_url: "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:2019-04-30;34"
+    added: 2026-05-01

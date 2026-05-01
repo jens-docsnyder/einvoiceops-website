@@ -1,0 +1,22 @@
+country_code: SE
+items:
+  - priority: amber
+    type: source-verification
+    description: "Svefaktura 1.0 and EDIFACT phase-out for new public procurement stated as July 1, 2025 — verify this date and confirm whether it applies only to new contracts signed after that date or also to contracts in progress."
+    source_url: "https://www.digg.se/e-handel/e-faktura"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Ministry of Finance formal inquiry into EU ViDA B2B mandate — stated as launched February 5, 2026. Verify the exact launch date, the inquiry scope, and confirm the report is due November 30, 2027."
+    source_url: "https://www.regeringen.se/rattsliga-dokument/kommittedirektiv/"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Archiving stated as '7-year archiving under Bokföringslaget (1999:1078), Chapter 7, Section 2.' Verify the specific chapter and section reference against the current Bokföringslaget text."
+    source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/bokforingslag-19991078_sfs-1999-1078/"
+    added: 2026-05-01
+  - priority: amber
+    type: source-verification
+    description: "Penalty mechanism described as vitesföreläggande (conditional fine) under Viteslag (1985:206) — cited as the designated authority's enforcement tool under §7 of Lag 2018:1277. Verify the specific section and confirm the penalty mechanism references are correct."
+    source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20181277-om-elektroniska-fakturor-till_sfs-2018-1277/"
+    added: 2026-05-01
