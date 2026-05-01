@@ -1,0 +1,11 @@
+country_code: DK
+entries:
+  - timestamp: 2026-04-30T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Denmark NemHandel/Peppol compliance map built from Gemini Deep Research (full 3-prompt protocol). Two parallel frameworks: B2G (since 2005) and Bogføringsloven 2022 capability mandate for B2B. OIOUBL 3.0 cancellation confirmed via nemhandel.dk."
+    source_url: "https://nemhandel.dk"
+    mandate_version_before: null
+    mandate_version_after: 1

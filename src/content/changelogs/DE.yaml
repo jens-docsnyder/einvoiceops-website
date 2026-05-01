@@ -1,0 +1,11 @@
+country_code: DE
+entries:
+  - timestamp: 2026-04-27T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Germany e-invoicing compliance map built from Gemini Deep Research (3-prompt protocol) with Claude WebFetch cross-examination. Wachstumschancengesetz mandate facts, EN 16931 format, KoSIT validator, 8-year archiving under GoBD."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

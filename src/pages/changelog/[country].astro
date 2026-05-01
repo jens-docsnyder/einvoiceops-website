@@ -1,0 +1,195 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const logs = await getCollection('changelogs');
+  return logs.map(log => ({
+    params: { country: log.data.country_code },
+    props: { log },
+  }));
+}
+
+const { log } = Astro.props;
+const { country_code, entries } = log.data;
+
+// Get country metadata for flag + name
+const countries = await getCollection('countries');
+const meta = countries.find(c => c.data.code === country_code);
+
+// Reverse-chronological
+const sorted = [...entries].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+function fmtTs(d: Date): string {
+  return d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+}
+
+const typeLabels: Record<string, string> = {
+  'initial-publish':   'Initial publish',
+  'error-correction':  'Error correction',
+  'mandate-change':    'Mandate change',
+  'confidence-upgrade':'Confidence upgrade',
+  'content-update':    'Content update',
+};
+
+const typeColors: Record<string, string> = {
+  'initial-publish':   'type-init',
+  'error-correction':  'type-error',
+  'mandate-change':    'type-mandate',
+  'confidence-upgrade':'type-confidence',
+  'content-update':    'type-content',
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{meta?.data.country ?? country_code} Changelog — internal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a2b3c;
+      --accent: #2563eb;
+      --text:   #111827;
+      --muted:  #6b7280;
+      --border: #e5e7eb;
+      --bg:     #ffffff;
+      --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    body { font-family: var(--sans); color: var(--text); background: var(--bg); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 2rem 80px; }
+
+    .back { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
+    .back:hover { text-decoration: underline; }
+
+    .page-header { margin-bottom: 36px; padding-bottom: 20px; border-bottom: 2px solid var(--navy); }
+    .page-header h1 { font-size: 1.6rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
+    .page-header p { font-size: 0.875rem; color: var(--muted); margin-top: 4px; }
+
+    .empty { color: var(--muted); font-size: 0.875rem; padding: 24px 0; }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .entry:last-child { border-bottom: none; }
+
+    .entry-meta { padding-top: 2px; }
+    .entry-ts {
+      font-size: 0.78rem; font-variant-numeric: tabular-nums;
+      color: var(--muted); line-height: 1.4;
+    }
+    .entry-type {
+      display: inline-block; margin-top: 6px;
+      padding: 2px 8px; border-radius: 9999px;
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .type-init       { background: #f0fdf4; color: #166534; }
+    .type-error      { background: #fee2e2; color: #b91c1c; }
+    .type-mandate    { background: #eff6ff; color: #1d4ed8; }
+    .type-confidence { background: #fef9c3; color: #713f12; }
+    .type-content    { background: #f1f5f9; color: #475569; }
+
+    .entry-body { }
+    .entry-desc { font-size: 0.875rem; line-height: 1.55; color: var(--text); margin-bottom: 8px; }
+
+    .entry-diff {
+      display: flex; gap: 8px; align-items: flex-start;
+      margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .diff-field {
+      font-size: 0.75rem; font-family: ui-monospace, monospace;
+      background: #f8fafc; border: 1px solid var(--border);
+      padding: 2px 7px; border-radius: 4px; color: var(--muted);
+    }
+    .diff-arrow { font-size: 0.75rem; color: var(--muted); padding-top: 3px; }
+    .diff-old {
+      font-size: 0.78rem; background: #fef2f2; color: #991b1b;
+      padding: 2px 8px; border-radius: 4px; text-decoration: line-through;
+    }
+    .diff-new {
+      font-size: 0.78rem; background: #f0fdf4; color: #166534;
+      padding: 2px 8px; border-radius: 4px;
+    }
+
+    .version-bump {
+      font-size: 0.75rem; color: #1d4ed8;
+      background: #eff6ff; border: 1px solid #bfdbfe;
+      padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;
+    }
+
+    .entry-source a {
+      font-size: 0.78rem; color: var(--accent); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .entry-source a:hover { text-decoration: underline; }
+    .entry-source a::after { content: '↗'; font-size: 0.65rem; }
+  </style>
+</head>
+<body>
+<main>
+  <a href="/status" class="back">← Research Quality Dashboard</a>
+
+  <header class="page-header">
+    <h1>{meta?.data.flag} {meta?.data.country ?? country_code} — Changelog</h1>
+    <p>{sorted.length} {sorted.length === 1 ? 'entry' : 'entries'} &nbsp;·&nbsp; mandate_version {meta?.data.mandate_version ?? 1}</p>
+  </header>
+
+  {sorted.length === 0
+    ? <p class="empty">No changelog entries yet.</p>
+    : (
+      <div class="timeline">
+        {sorted.map(entry => (
+          <div class="entry">
+            <div class="entry-meta">
+              <div class="entry-ts">{fmtTs(entry.timestamp)}</div>
+              <span class={`entry-type ${typeColors[entry.type]}`}>
+                {typeLabels[entry.type]}
+              </span>
+            </div>
+            <div class="entry-body">
+              {entry.mandate_version_after != null && entry.mandate_version_before != null && (
+                <div class="version-bump">
+                  mandate_version {entry.mandate_version_before} → {entry.mandate_version_after}
+                </div>
+              )}
+              {entry.mandate_version_after != null && entry.mandate_version_before == null && (
+                <div class="version-bump">
+                  mandate_version → {entry.mandate_version_after}
+                </div>
+              )}
+              <p class="entry-desc">{entry.description}</p>
+              {(entry.field || entry.old_value || entry.new_value) && (
+                <div class="entry-diff">
+                  {entry.field && <span class="diff-field">{entry.field}</span>}
+                  {(entry.old_value || entry.new_value) && (
+                    <>
+                      {entry.old_value && <span class="diff-old">{entry.old_value}</span>}
+                      {entry.old_value && entry.new_value && <span class="diff-arrow">→</span>}
+                      {entry.new_value && <span class="diff-new">{entry.new_value}</span>}
+                    </>
+                  )}
+                </div>
+              )}
+              {entry.source_url && (
+                <div class="entry-source">
+                  <a href={entry.source_url} target="_blank" rel="noopener noreferrer">
+                    View source
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</main>
+</body>
+</html>

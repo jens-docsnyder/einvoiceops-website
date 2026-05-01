@@ -1,0 +1,11 @@
+country_code: BE
+entries:
+  - timestamp: 2026-04-29T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Belgium Peppol BIS 3.0 compliance map rebuilt from Gemini Deep Research (full 3-prompt protocol) after earlier version was written without research pass. Penalty amounts stated as conservative language (no EUR figures) pending 2025 Royal Decree amendment to RD No. 44 (backlog #43). Foreign resident scope unconfirmed (backlog #44)."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

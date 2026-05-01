@@ -1,6 +1,24 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const changelogs = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/changelogs' }),
+  schema: z.object({
+    country_code: z.string().length(2),
+    entries: z.array(z.object({
+      timestamp: z.coerce.date(),
+      type: z.enum(['initial-publish', 'error-correction', 'mandate-change', 'confidence-upgrade', 'content-update']),
+      field: z.string().nullish(),
+      old_value: z.string().nullish(),
+      new_value: z.string().nullish(),
+      description: z.string(),
+      source_url: z.string().url().nullish(),
+      mandate_version_before: z.number().int().nullish(),
+      mandate_version_after: z.number().int().nullish(),
+    })),
+  }),
+});
+
 const research = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/research' }),
   schema: z.object({
@@ -70,4 +88,4 @@ const countries = defineCollection({
   }),
 });
 
-export const collections = { countries, research };
+export const collections = { countries, research, changelogs };

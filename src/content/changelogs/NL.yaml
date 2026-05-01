@@ -1,0 +1,29 @@
+country_code: NL
+entries:
+  - timestamp: 2026-04-29T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Netherlands Peppol/Digipoort compliance map rebuilt from Gemini Deep Research after earlier version was written without research pass."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1
+  - timestamp: 2026-04-30T00:00:00Z
+    type: error-correction
+    field: status
+    old_value: "announced"
+    new_value: "proposed"
+    description: "Status corrected from 'announced' to 'proposed'. No enacted B2B legislation exists — the 2030 B2B mandate is government intent, not law. Confirmed via peppol.nl cross-examination."
+    source_url: "https://www.peppol.nl"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-04-30T00:00:00Z
+    type: error-correction
+    field: "prose-Data & Infrastructure"
+    old_value: "SI-UBL 1.x no longer valid since 2019"
+    new_value: "SI-UBL 1.x no longer valid since January 2023"
+    description: "SI-UBL 1.x phase-out date corrected from 2019 to January 2023. The 2019 date referred to when SI-UBL 2.0 became mandatory for new implementations; formal 1.x sunset was January 2023. Source: peppol.nl."
+    source_url: "https://www.peppol.nl"
+    mandate_version_before: null
+    mandate_version_after: null

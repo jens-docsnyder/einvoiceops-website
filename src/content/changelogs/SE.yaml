@@ -1,0 +1,11 @@
+country_code: SE
+entries:
+  - timestamp: 2026-05-01T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Sweden Lag 2018:1277 B2G mandate, Svefaktura phase-out July 2025, ViDA inquiry launched February 2026. last_verified null — source verification pass required. unresolved_amber: 4."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

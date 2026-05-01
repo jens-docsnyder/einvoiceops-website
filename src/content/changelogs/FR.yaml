@@ -1,0 +1,11 @@
+country_code: FR
+entries:
+  - timestamp: 2026-04-27T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. France PDP/PPF compliance map built from Gemini Deep Research with Claude WebFetch cross-examination. Three legifrance.gouv.fr URLs return 403 (bot protection) — AMBER status on archiving, correction mechanism, and PPF liability citations pending Jens URL verification (backlog #41)."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

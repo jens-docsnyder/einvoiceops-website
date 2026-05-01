@@ -11,7 +11,7 @@ for (const r of researchRaw) {
 }
 
 // Staleness logic (days since last_verified)
-const today = new Date('2026-05-01');
+const today = new Date();
 function staleness(d: Date | null | undefined): { label: string; cls: string } {
   if (!d) return { label: 'Not verified', cls: 'stale-stale' };
   const days = Math.floor((today.getTime() - d.getTime()) / 86400000);
@@ -90,6 +90,16 @@ const withItems = countries.filter(c => (researchMap[c.data.code]?.length ?? 0) 
     .stale-review { background: #fefce8; color: #854d0e; }
     .stale-stale  { background: #fef2f2; color: #991b1b; }
 
+    /* log button */
+    .log-cell { white-space: nowrap; }
+    .log-btn {
+      font-size: 0.72rem; font-weight: 600; color: var(--accent);
+      text-decoration: none; padding: 2px 10px;
+      border: 1px solid #bfdbfe; border-radius: 4px;
+      background: #fff; white-space: nowrap;
+    }
+    .log-btn:hover { background: #eff6ff; }
+
     /* numeric cells */
     .num { text-align: center; font-variant-numeric: tabular-nums; }
     .num-high { color: #b91c1c; font-weight: 700; }
@@ -156,6 +166,7 @@ const withItems = countries.filter(c => (researchMap[c.data.code]?.length ?? 0) 
           <th class="num">Version</th>
           <th>Last verified</th>
           <th>Staleness</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -185,6 +196,9 @@ const withItems = countries.filter(c => (researchMap[c.data.code]?.length ?? 0) 
               <td class="num">{d.mandate_version}</td>
               <td>{fmtDate(d.last_verified)}</td>
               <td><span class={`badge ${s.cls}`}>{s.label}</span></td>
+              <td class="log-cell">
+                <a href={`/changelog/${d.code}`} class="log-btn">Log</a>
+              </td>
             </tr>
           );
         })}

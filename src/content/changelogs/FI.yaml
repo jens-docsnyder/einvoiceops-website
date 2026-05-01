@@ -1,0 +1,11 @@
+country_code: FI
+entries:
+  - timestamp: 2026-05-01T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Finland Act 241/2019 B2G mandate and on-demand B2B right. last_verified null — full source verification pass required before publishing. unresolved_high: 1, unresolved_amber: 5."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

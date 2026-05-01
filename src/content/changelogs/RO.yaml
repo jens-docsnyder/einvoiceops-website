@@ -1,0 +1,11 @@
+country_code: RO
+entries:
+  - timestamp: 2026-04-30T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Romania e-Factura compliance map built from Gemini Deep Research (full 3-prompt protocol). Clearance model, RO_CIUS on UBL 2.1, ANAF SPV, 5-working-day window, D406 SAF-T cross-reference. Romanian government URLs (mfinante.gov.ro) timed out during cross-examination — several claims remain AMBER pending Jens URL verification."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

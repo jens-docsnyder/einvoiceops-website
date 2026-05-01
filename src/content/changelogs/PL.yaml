@@ -1,0 +1,11 @@
+country_code: PL
+entries:
+  - timestamp: 2026-04-30T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Poland KSeF compliance map built from Gemini Deep Research (full 3-prompt protocol). Clearance model, FA(3) schema, NIP routing, February/April 2026 mandatory phases, penalty enforcement from August 2026."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

@@ -1,0 +1,11 @@
+country_code: IT
+entries:
+  - timestamp: 2026-04-27T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Italy SdI compliance map built from Gemini Deep Research with Claude WebFetch cross-examination. SdI clearance model, FatturaPA format, 10-year archiving. Note: DPR 633/1972 Art. 21 (12-day transmission rule citation) subsequently identified as repealed by D.Lgs. 10/2026 — correction pending (backlog #40)."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

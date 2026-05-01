@@ -1,0 +1,11 @@
+country_code: ES
+entries:
+  - timestamp: 2026-05-01T00:00:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Spain Verifactu/SIF compliance map built from Gemini Deep Research (full 3-prompt: P1 schema/timeline, P2 technical, P3 ERP friction) with Claude WebFetch cross-examination. 2027 go-live dates confirmed from RD-ley 15/2025 BOE text. Art. 201 bis penalty amounts confirmed from AEAT FAQ. EUR 8M B2B threshold (Ley 18/2022 Art. 12) not confirmed from BOE text — HIGH research item. TicketBAI regional complexity documented."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1
