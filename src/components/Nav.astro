@@ -1,14 +1,14 @@
 ---
 interface Props {
-  active?: 'calculator' | 'map';
+  active?: 'calculator' | 'map' | 'services';
 }
 const { active } = Astro.props;
 ---
 <nav>
   <a href="/" class="logo">einvoice<span>ops</span></a>
   <div class="nav-links">
-    <a href="/" class:list={['hide-mobile', { active: active === 'calculator' }]}>Home</a>
-    <a href="/map/" class:list={[{ active: active === 'map' }]}>Compliance Map</a>
+    <a href="/services/" class:list={['hide-mobile', { active: active === 'services' }]}>Services</a>
+    <a href="/map/" class:list={['hide-mobile', { active: active === 'map' }]}>Compliance Map</a>
     <a href="/#contact" class="btn-nav">Get in touch</a>
   </div>
 </nav>
