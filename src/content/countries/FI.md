@@ -5,7 +5,7 @@ flag: 🇫🇮
 
 mandate_type: interoperability
 vida_alignment: DRR-inquiry
-future_direction: "Government Real-Time Economy project targets 100% B2B e-invoicing by 2030 but no enacted B2B mandate exists as of May 2026. Act 241/2019 Section 4 gives businesses above a turnover threshold the right to demand structured e-invoices from any supplier — the supplier is legally required to provide them."
+future_direction: "TIEKE's Verkkolaskuvisio 2030 initiative (Finland's e-invoicing forum, Verkkolaskufoorumi) targets 100% EN-standard e-invoice adoption by 2030, with public and private sector backing. No enacted B2B mandate exists as of May 2026. Act 241/2019 Section 4 gives any business (elinkeinonharjoittaja) the right to demand a structured e-invoice from any supplier on request - no turnover threshold applies. The supplier is legally required to comply."
 
 b2b: voluntary
 b2g: mandatory
@@ -33,7 +33,7 @@ outbound_mandate_date: 2019-04-01
 outbound_mandate_date_phase2: 2020-04-01
 mandate_hardness: hard-inbound-soft-outbound
 
-master_data_id: "OVT code: 0037 + 8-digit Business ID (Y-tunnus, no hyphen) + optional 5-digit org unit suffix. Peppol scheme 0037. Address register: Tieke verkkolaskuosoite.fi."
+master_data_id: "OVT code: 0037 + 8-digit Business ID (Y-tunnus, no hyphen) + optional org unit suffix (up to 5 digits). Peppol scheme 0037. Address register: Tieke verkkolaskuosoite.fi."
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 6
@@ -46,21 +46,21 @@ document_lifecycle_states:
   - DELIVERED
 
 has_sandbox: false
-last_verified: null
+last_verified: 2026-05-04
 
 mandate_version: 1
-unresolved_high: 1
-unresolved_amber: 5
-confidence_summary: amber
+unresolved_high: 0
+unresolved_amber: 0
+confidence_summary: green
 ---
 
 ## Preparation Timeline
 
 Finland's B2G e-invoicing mandate has been live since April 1, 2019 for central government contracting authorities, and since April 1, 2020 for all other public sector entities (Act on Electronic Invoicing, 241/2019). Finland operates on a private operator network — a four-corner model with no government clearance platform. Invoice routing uses OVT codes maintained in the Tieke address register.
 
-The B2B situation requires careful interpretation. Act 241/2019, Section 4 establishes a right for businesses above a turnover threshold to demand a structured e-invoice from any supplier. The supplier is legally required to provide it. This is not a universal B2B mandate — it is an on-demand right. But it creates compliance exposure: a Finnish corporate customer who invokes this right is entitled to withhold payment on a non-compliant invoice without being in late-payment default. The foreign supplier cannot contest the delay until a compliant structured e-invoice is provided.
+The B2B situation requires careful interpretation. Act 241/2019, Section 4 establishes a right for any business (elinkeinonharjoittaja) to demand a structured e-invoice from any supplier on request. No turnover threshold applies - the right is universal. This is not a universal B2B mandate; it is an on-demand right. But it creates compliance exposure: a Finnish corporate customer who invokes this right is entitled to withhold payment on a non-compliant invoice without being in late-payment default. The foreign supplier cannot contest the delay until a compliant structured e-invoice is provided.
 
-The government "Real-Time Economy" project targets 100% B2B e-invoicing by 2030. No enacted B2B mandate or confirmed date exists as of May 2026.
+TIEKE's Verkkolaskuvisio 2030 initiative targets 100% EN-standard e-invoice adoption in Finland by 2030. This is an industry-led roadmap backed by Finland's Verkkolaskufoorumi, with public sector participation - not enacted legislation. No B2B mandate or confirmed enforcement date exists as of May 2026.
 
 For a foreign group supplying Finnish public sector buyers from a standing start:
 
@@ -90,9 +90,9 @@ The configuration work items in each of these areas vary by ERP system, entity s
 
 ## Data & Infrastructure
 
-**OVT code structure.** The Finnish routing identifier is the OVT code: `0037` + 8-digit Business ID (Y-tunnus without hyphen) + optional 5-digit organization unit suffix. For Peppol routing, scheme code `0037` is used. Tieke maintains the national address register at verkkolaskuosoite.fi. Standard ERP customer master setups have no OVT field — it must be added as a dedicated field mapped to the routing logic.
+**OVT code structure.** The Finnish routing identifier is the OVT code: `0037` + 8-digit Business ID (Y-tunnus without hyphen) + optional organization unit suffix (up to 5 digits). For Peppol routing, scheme code `0037` is used. Tieke maintains the national address register at verkkolaskuosoite.fi. Standard ERP customer master setups have no OVT field — it must be added as a dedicated field mapped to the routing logic.
 
-**Finvoice 3.0 vs Peppol BIS 3.0.** Both are accepted for Finnish B2G. For groups already on Peppol for other EU countries, routing via Peppol scheme 0037 to Finnish public entities is increasingly straightforward and avoids a separate Finnish operator network agreement. Legacy implementations using Finvoice 2.x need to be updated to Finvoice 3.0.
+**Finvoice 3.0 vs Peppol BIS 3.0.** Both are accepted for Finnish B2G. For groups already on Peppol for other EU countries, routing via Peppol scheme 0037 to Finnish public entities is increasingly straightforward and avoids a separate Finnish operator network agreement. Legacy implementations using Finvoice 2.x should be updated to Finvoice 3.0. Finvoice 2.x remains documented and accepted by Finnish banks, but Finvoice 3.0 is required for compliance with EU directive 2014/55/EU (EN 16931) for public sector invoicing.
 
 **Operator network.** Finnish private e-invoice operators form the delivery network for Finvoice. Sender connects to one operator; the operator routes to the receiver's operator. Equivalent to the Peppol four-corner model but uses Finnish operator infrastructure.
 

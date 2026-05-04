@@ -1,5 +1,59 @@
 country_code: FI
 entries:
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + last_verified + unresolved_amber"
+    old_value: "confidence_summary: amber, last_verified: null, unresolved_amber: 1"
+    new_value: "confidence_summary: green, last_verified: 2026-05-04, unresolved_amber: 0"
+    description: "Full verification pass complete. All HIGH and AMBER items resolved. confidence_summary upgraded to green. last_verified set to 2026-05-04."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "prose-Data section + unresolved_amber"
+    old_value: "Legacy implementations using Finvoice 2.x need to be updated to Finvoice 3.0; unresolved_amber: 2"
+    new_value: "Finvoice 2.x still documented and accepted by banks; 3.0 required for EN 16931 B2G compliance; unresolved_amber: 1"
+    description: "finanssiala.fi/aiheet/verkkolaskutus-finvoice/ verified (original URL was dead - 404). Finvoice 2.x is NOT formally deprecated: all versions (1.3, 2.0/2.01, 3.0) remain documented and supported by Finnish banks. No deprecation language found. Finvoice 3.0 is required for EU directive 2014/55 (EN 16931) compliance in B2G. Body text corrected from 'need to be updated' to accurate statement of 3.0 requirement for B2G compliance."
+    source_url: "https://www.finanssiala.fi/aiheet/verkkolaskutus-finvoice/"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: error-correction
+    field: "future_direction + prose-Preparation Timeline"
+    old_value: "Government Real-Time Economy project targets 100% B2B e-invoicing by 2030"
+    new_value: "TIEKE's Verkkolaskuvisio 2030 initiative targets 100% EN-standard e-invoice adoption by 2030"
+    description: "Attribution corrected: the 2030 target is TIEKE's Verkkolaskuvisio 2030 (industry forum initiative, Verkkolaskufoorumi), not a government programme. Source confirmed at tieke.fi. Removed 'Government Real-Time Economy project' language from both frontmatter future_direction and body. unresolved_amber decremented from 3 to 2."
+    source_url: "https://tieke.fi/hankkeet/verkkolaskuvisio-2030/"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "master_data_id + prose-Data section + unresolved_amber"
+    old_value: "optional 5-digit org unit suffix; unresolved_amber: 4"
+    new_value: "optional org unit suffix (up to 5 digits); unresolved_amber: 3"
+    description: "verkkolaskuosoite.fi confirmed live and publicly searchable. OVT structure 0037 + 8-digit Y-tunnus confirmed via Kesko Oyj entries. Suffix precision corrected: Kesko shows 2-digit suffixes (20, 40, 41, 82), confirming the suffix is up to 5 digits not exactly 5. Updated master_data_id frontmatter and Data & Infrastructure body text."
+    source_url: "https://verkkolaskuosoite.fi"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "5"
+    new_value: "4"
+    description: "Accounting Act 1336/1997 Chapter 2 Section 10 verified on finlex.fi: 6-year retention for invoices (tositteet) confirmed in paragraph 2. 10-year rule applies to financial statements and ledgers only. FI page archiving_years: 6 is correct. No page change."
+    source_url: "https://www.finlex.fi/fi/laki/ajantasa/1997/19971336"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: error-correction
+    field: "future_direction + prose-B2B section"
+    old_value: "businesses above a turnover threshold"
+    new_value: "any business (elinkeinonharjoittaja), no turnover threshold"
+    description: "Act 241/2019 Section 4 verified on finlex.fi: no turnover threshold exists. The right to demand an e-invoice applies to all businesses (elinkeinonharjoittaja) universally. Removed 'above a turnover threshold' language from future_direction frontmatter and Preparation Timeline body. unresolved_high decremented from 1 to 0."
+    source_url: "https://www.finlex.fi/fi/laki/ajantasa/2019/20190241"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-01T00:00:00Z
     type: initial-publish
     field: null
