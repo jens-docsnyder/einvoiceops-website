@@ -3,12 +3,12 @@
   <style>
     .icon {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 148px;
+      font-size: 192px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
   </style>
   <text class="icon" x="256" y="256" text-anchor="middle" dominant-baseline="central">
-    <tspan fill="#1a2b3c">ei</tspan><tspan fill="#2563eb">ops</tspan>
+    <tspan fill="#1a2b3c">ei</tspan><tspan fill="#2563eb">o</tspan>
   </text>
 </svg>
