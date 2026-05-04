@@ -2419,7 +2419,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
             <span class="compare-label">Germany penalty risk <span style="font-size:0.68rem;color:var(--muted)">(§26a UStG: up to €5K/invoice; GoBD non-compliance: VAT deduction denial + bookkeeping rejection)</span></span>
             <span class="compare-value" style="color:var(--urgent);font-size:0.82rem">Per-invoice · no annual cap</span>
           </div>
-          <div class="saving-badge" id="saving-badge"></div>
         </div>
 
         <!-- 4. HOURS BOX - supporting detail -->
@@ -2454,9 +2453,9 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
             <table class="meth-table">
               <thead><tr><th>ERP</th><th>Multiplier</th><th>Entity scaling (2nd entity+)</th></tr></thead>
               <tbody>
-                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+25% per entity - baseline, consistent with SAPinsider implementation patterns and industry standard</td></tr>
-                <tr><td>Sage X3</td><td>×1.2 (estimated)</td><td>+30% per entity - directional estimate based on single-tenant architecture; no published benchmark. Higher UAT overhead for localised compliance patches vs. multi-tenant cloud ERPs</td></tr>
-                <tr><td>Oracle Cloud ERP</td><td>×1.3 (estimated)</td><td>+50% per entity - directional estimate. Forrester ERP Solutions Landscape Q1 2026 cites higher configuration complexity for Oracle Fusion vs. lightweight cloud ERPs in regulatory compliance scenarios</td></tr>
+                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+15% per entity - multi-tenant cloud ERPs share PDP provider setup, format mapping, and test scripts across entities; incremental work is entity registration, master data, and local training only</td></tr>
+                <tr><td>Sage X3</td><td>×1.2 (estimated)</td><td>+25% per entity - directional estimate based on single-tenant architecture; no published benchmark. Higher UAT overhead for localised compliance patches vs. multi-tenant cloud ERPs</td></tr>
+                <tr><td>Oracle Cloud ERP</td><td>×1.3 (estimated)</td><td>+40% per entity - directional estimate. Forrester ERP Solutions Landscape Q1 2026 cites higher configuration complexity for Oracle Fusion vs. lightweight cloud ERPs in regulatory compliance scenarios</td></tr>
                 <tr><td>SAP S/4HANA</td><td>×1.5</td><td>+60% per entity - supported by SAPinsider S/4HANA Migration Benchmark 2025 and Forrester ERP Solutions Landscape Q1 2026 (higher "configuration complexity" rating)</td></tr>
                 <tr><td>Multi-ERP (2+ systems)</td><td>Avg multiplier ×1.135</td><td>+13.5% integration penalty - IDC 2025 "SaaS ERP Multi-Cloud Complexity" survey (12–15% integration and reconciliation penalty for heterogeneous ERP environments)</td></tr>
               </tbody>
@@ -3072,12 +3071,12 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   // SAP S/4HANA: 1.5x - supported by SAPinsider 2025 complexity benchmarks; Forrester ERP Landscape Q1 2026
   // Multi-ERP: avg mult + 17.5% coordination overhead - modelled on Hackett Group (18% higher IT ops in fragmented envs)
   const ERP_CONFIG = {
-    netsuite:  { mult: 1.0, entityScale: 0.25 },
-    dynamics:  { mult: 1.0, entityScale: 0.25 },
+    netsuite:  { mult: 1.0, entityScale: 0.15 },
+    dynamics:  { mult: 1.0, entityScale: 0.15 },
     sap:       { mult: 1.5, entityScale: 0.60 },
-    oracle:    { mult: 1.3, entityScale: 0.50 },
-    sage:      { mult: 1.2, entityScale: 0.30 },
-    other:     { mult: 1.0, entityScale: 0.25 }
+    oracle:    { mult: 1.3, entityScale: 0.40 },
+    sage:      { mult: 1.2, entityScale: 0.25 },
+    other:     { mult: 1.0, entityScale: 0.15 }
   };
 
   const MULTI_ERP_COORDINATION = 0.135; // 12-15% integration penalty for mixed ERP - IDC 2025 "SaaS ERP Multi-Cloud Complexity" (midpoint 13.5%)
@@ -3087,8 +3086,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     const cfg = ERP_CONFIG[erpKey] || ERP_CONFIG.other;
     return 1.0 + (n - 1) * cfg.entityScale;
   }
-
-  const SPRINT_PRICE = 24500;
 
   let _costLow = 0, _costHigh = 0, _scaleMax = 0;
 
@@ -3185,7 +3182,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     const hoursNote   = document.getElementById('out-hours-note');
     const rangePills  = document.getElementById('out-range-pills');
     const scopeInt    = document.getElementById('out-scope-internal');
-    const savingBadge = document.getElementById('saving-badge');
     const penaltyRow        = document.getElementById('penalty-row');
     const penaltyVal        = document.getElementById('penalty-value');
     const polandPenaltyRow  = document.getElementById('poland-penalty-row');
@@ -3196,7 +3192,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
       hoursNote.textContent  = 'Select a mandate above';
       rangePills.innerHTML   = '';
       scopeInt.textContent   = '--';
-      savingBadge.style.display = 'none';
       penaltyRow.style.display     = 'none';
       polandPenaltyRow.style.display  = 'none';
       germanyPenaltyRow.style.display = 'none';
@@ -3231,8 +3226,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     updateRangeBar(costLow, costHigh);
 
     scopeInt.textContent = fmt(costMid) + ' (typical midpoint)';
-
-    savingBadge.style.display = 'none';
 
     // France: €50/invoice capped at €15,000/year/entity (2026 Budget Law, confirmed Feb 2026)
     // Previously €15 - increased by 2026 Finance Act. Source: dynatos.com / vatcalc.com
