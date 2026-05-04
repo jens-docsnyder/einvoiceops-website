@@ -1,5 +1,41 @@
 country_code: NL
 entries:
+  - timestamp: 2026-05-04T14:45:00Z
+    type: confidence-upgrade
+    field: unresolved_high
+    old_value: "2"
+    new_value: "1"
+    description: "SI-UBL 1.x obsolete since January 2023 confirmed via peppol.nl FAQ: 'SI-UBL 1.2 is obsolete and has not been in use since January 2023.' Exact match to claim on NL page (line 98, Data & Infrastructure). Research item removed. High count decremented 2 → 1."
+    source_url: "https://www.peppol.nl/en/frequently-asked-questions-about-peppol"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T14:45:00Z
+    type: error-correction
+    field: "research/NL.yaml item 2 source_url"
+    old_value: "https://www.logius.nl/diensten/digipoort"
+    new_value: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+Country+Factsheets"
+    description: "logius.nl/diensten/digipoort is the Digipoort developer suite (Aansluit Suite) — does not contain UBL-OHNL conversion claim. NL page cites EU Commission eInvoicing Country Sheet NL as the actual source. Research item redirected to EC factsheet. HIGH item remains open."
+    source_url: "https://www.logius.nl/diensten/digipoort"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T14:45:00Z
+    type: error-correction
+    field: "research/NL.yaml item 3 source_url"
+    old_value: "https://www.rijksoverheid.nl/onderwerpen/e-factureren"
+    new_value: null
+    description: "rijksoverheid.nl/onderwerpen/e-factureren returns 404 — page removed. AMBER item (B2G mandate dates April 2017 / April 2019) redirected to forumstandaardisatie.nl or EC country factsheet. Item remains open."
+    source_url: "https://www.rijksoverheid.nl/onderwerpen/e-factureren"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T14:45:00Z
+    type: content-update
+    field: "prose-Data & Infrastructure"
+    old_value: null
+    new_value: "Digipoort infrastructure migration note added"
+    description: "Added note: Logius launched new Digipoort infrastructure November 2025, migration deadline April 30, 2026. WUS connections configured before November 2025 require endpoint and certificate reconfiguration. Connections not yet migrated are now cut off. Source: Logius Aansluit Suite migration documentation."
+    source_url: "https://www.logius.nl/diensten/digipoort"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: error-correction
     field: "unresolved_high + unresolved_amber"

@@ -52,7 +52,7 @@ has_sandbox: true
 last_verified: 2026-04-30
 mandate_version: 1
 confidence_summary: amber
-unresolved_high: 2
+unresolved_high: 1
 unresolved_amber: 1
 ---
 
@@ -92,6 +92,8 @@ The configuration work items in each of these areas vary by ERP system, entity s
 The Dutch Peppol Participant ID uses two scheme codes. Scheme **0106** (KvK / Kamer van Koophandel number) is used for private companies. Scheme **0190** (OIN / Organisatie-identificatienummer) is used for Dutch government entities. The VAT number (scheme 9944) is supported but not the primary routing identifier for B2G.
 
 For B2G invoicing: Peppol invoices to Dutch government entities route through Digipoort, the central invoice reception hub operated by Logius. Digipoort automatically converts the incoming Peppol BIS 3.0 invoice to UBL-OHNL format for government system consumption (EU Commission eInvoicing Country Sheet NL, updated February 2026). Suppliers do not send directly to Digipoort - they send via Peppol to the buyer's OIN-based Peppol ID and the network handles routing automatically.
+
+**Digipoort infrastructure migration:** Logius launched a new Digipoort infrastructure in November 2025, with a migration deadline of April 30, 2026. IT teams with WUS-based B2G connections configured before November 2025 must validate against new endpoints and PKIoverheid certificate requirements. See logius.nl/nieuwedigipoort for migration documentation. Connections not yet migrated are now cut off from the old system.
 
 **NLCIUS vs SI-UBL 2.0.** SI-UBL 2.0 is the UBL syntax expression of NLCIUS. For a Peppol invoice to be valid for Dutch public sector recipients, it must comply with both Peppol BIS 3.0 (transmission) and NLCIUS (content). The key Dutch-specific requirement: the supplier's KvK number must appear in the PartyLegalEntity/CompanyID XML node. This field is absent in most multi-country ERP templates.
 
