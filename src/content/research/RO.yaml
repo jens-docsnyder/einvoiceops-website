@@ -2,7 +2,7 @@ country_code: RO
 items:
   - priority: high
     type: source-verification
-    description: "No source URL — search: 'OUG 89/2025 Monitorul Oficial Romania' OR 'Ordonanta urgenta 89 2025 e-factura'. Also try monitoruloficial.ro and search for OUG 89 from 2025. Confirm: regulation exists and its text includes (1) standardization of the 5-day submission window and (2) expansion to non-resident VAT-registered entities. If found: add source_url to this item, no page change → remove + decrement high. If regulation number is wrong (not OUG 89/2025): search for the correct OUG number that covers January 2026 e-Factura changes and update the legal citation on RO page."
+    description: "OUG NUMBER FLAG: EC eInvoicing Country Factsheet RO (August 2025) cites 'Emergency Government Ordinance No. 138/2024' (not OUG 89/2025) as the regulation amending e-invoicing rules effective January 1, 2025. Our research item searches for OUG 89/2025 — this may be a wrong OUG number, or there could be two separate ordinances. Search: 'OUG 138/2024 Monitorul Oficial Romania e-factura' first, then 'OUG 89/2025'. Confirm which ordinance (or both) covers: (1) the 5-day submission window and (2) expansion to non-resident VAT-registered entities. If OUG 138/2024 is the correct source: update any legal citation on the RO page that references OUG 89/2025. If both exist: note both in the citation."
     source_url: null
     added: 2026-05-01
   - priority: amber

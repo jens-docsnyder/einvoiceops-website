@@ -2,7 +2,7 @@ country_code: DK
 items:
   - priority: high
     type: source-verification
-    description: "Open source link → look for 'OIOUBL 3.0' and 'aflyst' (cancelled) or 'Peppol BIS 3.0' as the single future standard. Confirm: page explicitly states OIOUBL 3.0 is cancelled and Peppol BIS 3.0 is the only going-forward standard for Danish public procurement. If confirmed: no page change → remove + decrement high. If page is gone (404): search nemhandel.dk for 'OIOUBL 3.0 aflyst' or check the Nemhandel news archive. If claim is unverifiable or the cancellation has been reversed: flag as [A-CONF] and add a note in the DK page future_direction section."
+    description: "CONFLICT: EC eInvoicing Country Factsheet DK (last updated August 14, 2025) still showed OIOUBL 3.0 as 'mandatory expected on 15 November 2025' — NOT cancelled. Our DK page says OIOUBL 3.0 was cancelled. If cancellation happened, it must have occurred after August 2025. Open source link → look for 'OIOUBL 3.0' and 'aflyst' (cancelled) or a reversal/continuation notice. Confirm: (a) page explicitly states OIOUBL 3.0 is cancelled and Peppol BIS 3.0 is the only forward standard — if confirmed, no page change, remove + decrement high; OR (b) page shows OIOUBL 3.0 was NOT cancelled and went live November 2025 — if so, update DK page future_direction to remove cancellation claim and add OIOUBL 3.0 live date. If URL is 404: search nemhandel.dk for 'OIOUBL 3.0' to find current status."
     source_url: "https://nemhandel.dk/oioubl-30-aflyses-tillmeld-dig-til-naeste-nemhandelsforum-24-februar-i-koebenhavn-0"
     added: 2026-05-01
   - priority: amber
