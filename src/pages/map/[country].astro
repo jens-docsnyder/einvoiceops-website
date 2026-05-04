@@ -346,10 +346,9 @@ function getValTip(field: string, val: string | null | undefined): string | unde
 
     .country-cta {
       margin-top: 32px;
-      background: #f8f9fa;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      padding: 20px 24px;
+      background: #1a2b3c;
+      border-radius: 10px;
+      padding: 24px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -362,23 +361,27 @@ function getValTip(field: string, val: string | null | undefined): string | unde
       gap: 4px;
     }
     .country-cta-text strong {
-      font-size: 0.925rem;
-      color: #111827;
-      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      font-weight: 700;
     }
     .country-cta-text span {
       font-size: 0.85rem;
-      color: #6b7280;
+      color: rgba(255,255,255,0.7);
       line-height: 1.5;
     }
     .country-cta-link {
+      display: inline-block;
+      background: white;
+      color: #1a2b3c;
       font-size: 0.875rem;
-      font-weight: 600;
-      color: #2563eb;
+      font-weight: 700;
       text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 7px;
       white-space: nowrap;
     }
-    .country-cta-link:hover { text-decoration: underline; }
+    .country-cta-link:hover { background: #eff6ff; text-decoration: none; }
 
     footer {
       padding: 24px 2rem;

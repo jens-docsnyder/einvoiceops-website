@@ -183,6 +183,31 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     .badge-live { background: #dcfce7; color: #166534; }
     .badge-mandatory { background: #eff6ff; color: #1d4ed8; }
     .row-arrow { margin-left: auto; color: var(--muted); font-size: 1rem; }
+    .map-cta {
+      margin-top: 48px;
+      background: var(--navy);
+      border-radius: 10px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .map-cta-text strong { display: block; font-size: 1rem; color: white; font-weight: 700; margin-bottom: 4px; }
+    .map-cta-text span { font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .map-cta-link {
+      display: inline-block;
+      background: white;
+      color: var(--navy);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 7px;
+      white-space: nowrap;
+    }
+    .map-cta-link:hover { background: #eff6ff; }
   </style>
 </head>
 <body>
@@ -244,6 +269,14 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
         </div>
       </div>
     )}
+
+    <div class="map-cta">
+      <div class="map-cta-text">
+        <strong>Not sure where your exposure sits?</strong>
+        <span>Tell us your countries and ERP. We come back with a frank read of your readiness gap, in writing, within 48 hours.</span>
+      </div>
+      <a href="mailto:jens@einvoiceops.eu?subject=Mandate readiness inquiry" class="map-cta-link">Email jens@einvoiceops.eu</a>
+    </div>
   </main>
 
   <script is:inline>
