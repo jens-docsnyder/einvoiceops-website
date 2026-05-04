@@ -1,0 +1,149 @@
+---
+import Nav from '../components/Nav.astro';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal Notice | einvoiceops</title>
+  <meta name="description" content="Legal notice and service provider identification for einvoiceops." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a2b3c;
+      --accent: #2563eb;
+      --text:   #111827;
+      --sub:    #374151;
+      --muted:  #6b7280;
+      --border: #e5e7eb;
+      --bg:     #ffffff;
+      --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 2rem 80px;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+    h2 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 36px 0 10px;
+    }
+    p, address {
+      font-size: 0.95rem;
+      color: var(--sub);
+      line-height: 1.75;
+      font-style: normal;
+    }
+    p + p { margin-top: 10px; }
+    .pending {
+      color: #92400e;
+      font-style: italic;
+    }
+    .notice {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-size: 0.875rem;
+      color: #1e40af;
+      line-height: 1.65;
+      margin-top: 40px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer {
+      padding: 28px 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <Nav />
+
+  <main>
+    <h1>Legal Notice</h1>
+    <p class="subtitle">
+      Impressum (DE) &nbsp;&middot;&nbsp; Mentions L&eacute;gales (FR) &nbsp;&middot;&nbsp; Palveluntarjoajan tiedot (FI)
+    </p>
+
+    <h2>Service Provider</h2>
+    <address>
+      einvoiceops Oy (in formation)<br />
+      Jens Anttila<br />
+      Nallenpolku 4f90<br />
+      02110 Espoo<br />
+      Finland
+    </address>
+
+    <h2>Contact</h2>
+    <p>
+      Email: <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a><br />
+      Phone: <a href="tel:+358400374990">+358 400 374 990</a>
+    </p>
+
+    <h2>Business Registration</h2>
+    <p>
+      Finnish Business ID (Y-tunnus): <span class="pending">pending &mdash; einvoiceops Oy registration in progress</span><br />
+      VAT Registration Number: <span class="pending">pending</span>
+    </p>
+
+    <h2>Regulatory Basis</h2>
+    <p>
+      This legal notice is provided pursuant to the Finnish Act on Electronic Communications Services
+      (917/2014), the EU e-Commerce Directive (2000/31/EC), German teleservices legislation (DDG),
+      and French requirements under the Loi pour la Confiance dans l'&Eacute;conomie
+      Num&eacute;rique (LCEN 2004-575).
+    </p>
+
+    <h2>Professional Activity</h2>
+    <p>
+      einvoiceops provides operational readiness support for EU e-invoicing mandates. This service does
+      not constitute tax advice, legal advice, or compliance authority opinion.
+      See the <a href="/">service description</a> for full scope and applicable disclaimers.
+    </p>
+
+    <div class="notice">
+      <strong>Note:</strong> einvoiceops Oy is currently in formation under Finnish law. Business
+      registration details (Y-tunnus, VAT number, registered address) will be updated on this page
+      upon completion. In the interim, Jens Anttila operates as the responsible natural person.
+    </div>
+  </main>
+
+  <footer>
+    <p>einvoiceops &nbsp;&middot;&nbsp; <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> &nbsp;&middot;&nbsp; Finland</p>
+    <p>&copy; 2026 einvoiceops &nbsp;&middot;&nbsp; <a href="/legal/">Legal Notice</a> &nbsp;&middot;&nbsp; <a href="/privacy/">Privacy Policy</a></p>
+  </footer>
+</body>
+</html>

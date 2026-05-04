@@ -2,16 +2,16 @@ country_code: NL
 items:
   - priority: high
     type: source-verification
-    description: "SI-UBL 1.x no longer accepted since January 2023, only SI-UBL 2.0 valid — find the official publication confirming this deprecation date."
+    description: "Open source link → search the FAQ page for 'SI-UBL 1' or '2023' or 'niet meer'. Confirm: page explicitly states SI-UBL 1.x is no longer accepted as of January 2023, with only SI-UBL 2.0 valid. If confirmed: no page change → remove + decrement high. If date is different or claim is absent: search logius.nl or peppolauthority.nl for the official deprecation notice, update format_notes on NL page with correct date."
     source_url: "https://www.peppol.nl/en/frequently-asked-questions-about-peppol"
     added: 2026-04-30
   - priority: high
     type: source-verification
-    description: "Digipoort automatically converts incoming Peppol BIS 3.0 invoices to UBL-OHNL format — verify against Logius official documentation."
+    description: "Open source link → navigate to Digipoort technical documentation. Ctrl+F 'UBL-OHNL' or 'conversie' or 'BIS 3.0'. Confirm: Digipoort automatically converts incoming Peppol BIS 3.0 to UBL-OHNL format (or confirm what conversion actually occurs). If confirmed as described: no page change → remove + decrement high. If conversion behavior is different (e.g., BIS 3.0 passed through without conversion): update the Digipoort description in the Transport section of NL page. If page does not cover this: try logius.nl/diensten/digipoort/aan-de-slag."
     source_url: "https://www.logius.nl/diensten/digipoort"
     added: 2026-04-30
   - priority: amber
     type: source-verification
-    description: "B2G mandate dates — central government 2017, all public sector 2019 (EU Directive 2014/55/EU implementation). Verify both dates against official Dutch government source."
+    description: "Open source link → look for dates: 'April 2017' or '2017' for central government and '2019' for all public sector. Confirm: central government mandate April 2017, all public sector 2019, both under EU Directive 2014/55/EU implementation. If confirmed: no page change → remove + decrement amber. If dates differ: update `b2g` mandate timeline in NL page key_deadlines. Also check for any B2B announcement language — if rijksoverheid page now references a B2B mandate, update `b2b` status field."
     source_url: "https://www.rijksoverheid.nl/onderwerpen/e-factureren"
     added: 2026-04-30

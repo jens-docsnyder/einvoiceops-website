@@ -1,27 +1,2 @@
 country_code: BE
-items:
-  - priority: high
-    type: source-verification
-    description: "Penalty amounts — current text says 'amounts depend on circumstances' but specific figures (EUR 1,500 / 3,000 / 5,000) are cited elsewhere. Find the exact Art. 70 Belgian VAT Code provision and confirm whether specific amounts are stated."
-    source_url: "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635"
-    added: 2026-04-30
-  - priority: high
-    type: source-verification
-    description: "foreign_resident_scope is set to false — verify this is correct. Some sources suggest non-resident VAT-registered entities may be in scope. Find the specific provision."
-    source_url: null
-    added: 2026-04-30
-  - priority: high
-    type: source-verification
-    description: "Art. 44 VAT Code exclusion for financial/insurance services — verify the 'exclusively' threshold carries its intended legal weight and the exclusion scope is correctly described."
-    source_url: null
-    added: 2026-04-30
-  - priority: amber
-    type: source-verification
-    description: "2028 5-corner Peppol e-reporting — confirm this is in enacted legislation or only in the federal coalition agreement. Current text says 'pending legislation'."
-    source_url: null
-    added: 2026-04-30
-  - priority: amber
-    type: source-verification
-    description: "cius: null — Belgium uses Peppol BIS 3.0. Confirm whether a Belgian CIUS exists on top of EN 16931 or whether BIS 3.0 applies without a country-specific overlay."
-    source_url: "https://peppol.org/learn/for-businesses/"
-    added: 2026-04-30
+items: []

@@ -1,5 +1,59 @@
 country_code: DE
 entries:
+  - timestamp: 2026-05-04T00:00:00Z
+    type: content-update
+    field: "correction_business_continuity.penalties"
+    old_value: "no penalty section existed"
+    new_value: "Added: Germany has no dedicated financial penalty schedule; consequences via existing tax law (input VAT denial, GoBD audit risk, tax base estimation); penalty_max: null confirmed correct"
+    description: "BMF FAQ confirmed silent on penalties. Germany uses consequence-by-incorporation: no per-invoice administrative fine. Input VAT denial is the primary financial risk (invoice reclassified as 'sonstige Rechnung'); GoBD archiving violations trigger audit risk and possible tax base estimation. Penalty model clarified in Correction & Business Continuity section. penalty_max: null confirmed correct."
+    source_url: "https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_high + last_verified"
+    old_value: "amber, unresolved_high: 1, last_verified: 2026-04-29"
+    new_value: "green, unresolved_high: 0, last_verified: 2026-05-04"
+    description: "Germany reaches GREEN. All research items resolved across two sessions. Rn 35a HIGH item closed: searched BMF Schreiben Oct 2025 for 'maßgeblich' — word only appears as section heading ('Maßgebliche Vorschriften für die Rechnungsausstellung'), not in XML-vs-PDF binding context. Rn 35a citation removed from two locations on page (Tax/Compliance section and Friction Map hybrid illusion paragraph). The innerer Kontrollpfad concept retained as it IS confirmed from the document. GREEN means all current claims verified — not that the law will not change."
+    source_url: "https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: content-update
+    field: "operational_ownership.tax_compliance + friction_map.hybrid_illusion"
+    old_value: "Two citations of 'BMF Schreiben 15.10.2025, Rn 35a' with claim 'XML is legally binding over PDF in case of discrepancy'"
+    new_value: "Rn 35a removed from both citations; XML-binding-over-PDF specific claim removed; innerer Kontrollpfad concept and BMF Schreiben URL retained"
+    description: "Rn 35a citation unconfirmed: BMF Schreiben Oct 2025 searched thoroughly, 'maßgeblich' found only as section heading. The specific claim that 'XML is legally binding over PDF in case of discrepancy' cannot be sourced to this document at this Rn. Citation removed. The innerer Kontrollpfad concept (internal control path, audit risk from failing to ingest XML) IS referenced in the document and retained."
+    source_url: "https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_high"
+    old_value: "2"
+    new_value: "1"
+    description: "Penalty HIGH item resolved: BMF FAQ confirmed no dedicated penalty provisions for e-invoice non-compliance; penalty_max: null confirmed correct. One HIGH item remains open: Rn 35a XML-binding-over-PDF claim in BMF Schreiben Oct 2025 — text at searched location does not match claim, correct PDF being re-examined. Confidence stays AMBER."
+    source_url: "https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: content-update
+    field: "correction_business_continuity.correction"
+    old_value: "Correction must be fully compliant EN 16931 invoice; PDF correction to XRechnung not valid (stated without transition period caveat)"
+    new_value: "Added transition period caveat: correction must be EN 16931 e-invoice once mandatory phase applies; during transition periods, corrections may still use paper or non-compliant electronic formats where transition rules permit"
+    description: "BMF FAQ 2026 confirmed: correction must be e-invoice (§31 Abs. 5 UStDV) when e-invoice obligation applies, with explicit exception during transition periods. Page text updated to reflect this nuance - previous wording overstated the rule for entities still in their transition window."
+    source_url: "https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "2"
+    new_value: "0"
+    description: "First source verification pass (partial). Both AMBER items resolved: (1) EUR 800,000 threshold + §27 Abs. 38 UStG confirmed from Wachstumschancengesetz enacted text (BGBl. 2024 I Nr. 108); (2) correction must be EN 16931 e-invoice confirmed from BMF FAQ 2026. Two HIGH items remain open: (a) financial penalty provisions under §26a UStG / GoBD - no source yet; (b) Rn 35a XML-binding-over-PDF claim in BMF Schreiben Oct 2025 - text found at Rn 35a does not match claim, further search needed. Confidence stays AMBER."
+    source_url: "https://www.recht.bund.de/bgbl/1/2024/108/VO.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-27T00:00:00Z
     type: initial-publish
     field: null

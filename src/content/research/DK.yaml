@@ -2,16 +2,16 @@ country_code: DK
 items:
   - priority: high
     type: source-verification
-    description: "OIOUBL 3.0 cancellation — this is the most prominent claim in the DK page and everything downstream depends on it. The URL cited leads to the Nemhandel announcement. Click it and confirm the page exists and explicitly states OIOUBL 3.0 is cancelled and Peppol BIS 3.0 is the single future standard."
+    description: "Open source link → look for 'OIOUBL 3.0' and 'aflyst' (cancelled) or 'Peppol BIS 3.0' as the single future standard. Confirm: page explicitly states OIOUBL 3.0 is cancelled and Peppol BIS 3.0 is the only going-forward standard for Danish public procurement. If confirmed: no page change → remove + decrement high. If page is gone (404): search nemhandel.dk for 'OIOUBL 3.0 aflyst' or check the Nemhandel news archive. If claim is unverifiable or the cancellation has been reversed: flag as [A-CONF] and add a note in the DK page future_direction section."
     source_url: "https://nemhandel.dk/oioubl-30-aflyses-tillmeld-dig-til-naeste-nemhandelsforum-24-februar-i-koebenhavn-0"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Penalty stated as 'Up to DKK 1,500,000; compulsory dissolution for repeated non-compliance — Bogføringsloven Section 26.' Find the full text of Bogføringsloven Section 26 and confirm both the DKK 1,500,000 cap and the compulsory dissolution provision."
+    description: "Open source link (Bogføringsloven Act 700/2022) → Ctrl+F '§ 26' or '1.500.000' or 'tvungen opløsning'. Confirm: DKK 1,500,000 cap stated in §26 and compulsory dissolution provision for repeated non-compliance also in §26. If confirmed: no page change → remove + decrement amber. If the cap amount or section number is different: update the penalty section on DK page with correct figures and section reference."
     source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "DKK 300,000 turnover threshold for small business Bogføringsloven phase-in (January 1, 2026) — verify this threshold is stated in Bogføringsloven or its implementing regulation and that it applies for two consecutive years as described."
+    description: "Open source link (Bogføringsloven Act 700/2022) → Ctrl+F '300.000' or the phase-in threshold section (likely §15 or a transitional provision). Confirm: DKK 300,000 annual turnover threshold for the small business phase-in applies for two consecutive years before the obligation kicks in. If confirmed: no page change → remove + decrement amber. If threshold or the two-consecutive-year condition is different: update the phase_in_scope description on DK page."
     source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
     added: 2026-05-01

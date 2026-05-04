@@ -2,41 +2,41 @@ country_code: ES
 items:
   - priority: high
     type: source-verification
-    description: "Implementing Real Decreto for Ley 18/2022 B2B mandate — stated as still pending as of May 2026. This drives the claim that there is 'no confirmed go-live date.' Verify this remains true — if the Real Decreto has been published, the 12/24-month countdown has started and the page needs updating."
+    description: "Open source link (BOE for Ley 18/2022) → Ctrl+F 'Real Decreto' in Art. 12 or the disposiciones finales. Confirm: as of today, no implementing Real Decreto has been published under Ley 18/2022 that would start the 12/24-month B2B go-live countdown. Also search BOE.es for 'Real Decreto Verifactu 2025' or 'Real Decreto SIF 2026' to check if it has been published since content was written. If still no Real Decreto found: no page change → remove + decrement high. If a Real Decreto has been published: update `b2b` field, add confirmed go-live dates to key_deadlines, update future_direction, and upgrade this item to a MANDATE-CHANGE commit."
     source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-15274"
     added: 2026-05-01
   - priority: high
     type: source-verification
-    description: "Penalty amounts cited as up to €150,000 (manufacturing non-compliant SIF), €50,000 (operating), €1,000 (lacking Declaración Responsable) — attributed to Art. 201 bis Ley 58/2003 as amended by Ley 11/2021. Find and read the exact article text to confirm these figures."
+    description: "Open source link (BOE for Ley 58/2003, Ley General Tributaria) → Ctrl+F 'artículo 201 bis'. Confirm: EUR 150,000 (manufacturing non-compliant SIF system), EUR 50,000 (operating non-compliant SIF), and EUR 1,000 (lacking Declaración Responsable) penalty amounts stated in Art. 201 bis. If all three confirmed: no page change → remove + decrement high. If amounts differ: update penalty section on ES page with correct figures from the article."
     source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Real Decreto-ley 15/2025 — cited as published December 2, 2025, confirming 2027 go-live dates for Verifactu. Verify the publication date and confirm the January 1 and July 1 2027 dates are in the enacted text."
+    description: "Open source link (BOE for December 2, 2025) → look for Real Decreto-ley 15/2025 in the BOE index for that date. Once found, Ctrl+F '1 de enero de 2027' and '1 de julio de 2027'. Confirm: January 1, 2027 (large companies) and July 1, 2027 (SMEs) go-live dates are in the published RD-ley 15/2025 text. If confirmed: no page change → remove + decrement amber. If dates differ: update key_deadlines on ES page."
     source_url: "https://www.boe.es/boe/dias/2025/12/02/"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "TicketBAI exclusion — entities tax-domiciled in Basque Country (Araba, Bizkaia, Gipuzkoa) and Navarre are excluded from Verifactu and must implement TicketBAI instead. Verify the exact exclusion mechanism in Real Decreto 1007/2023 or Orden HAC/1177/2024 — or whether this is established in Basque/Navarre regional legislation."
+    description: "No source URL — search: 'Real Decreto 1007/2023 TicketBAI exclusión Verifactu País Vasco Navarra' OR 'Orden HAC/1177/2024 entidades excluidas'. Confirm: entities tax-domiciled in the Basque Country (Araba, Bizkaia, Gipuzkoa) and Navarre are explicitly excluded from Verifactu/SIF and must implement TicketBAI instead, either in RD 1007/2023 or Orden HAC/1177/2024 or regional tax authority legislation (Haciendas Forales). If found: add source_url → remove + decrement amber. If the exclusion is only in regional law: update the TicketBAI note on ES page to specify it is established in Basque/Navarre foral law, not national regulation."
     source_url: null
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Article 11, Orden HAC/1177/2024 — cited as permitting a documented chain reset on system migration ('Primer registro' flagging). Click the BOE publication of Orden HAC/1177/2024 and confirm Article 11 contains this specific provision."
+    description: "Open source link (BOE for October 17, 2024, Orden HAC/1177/2024) → find the Orden in the BOE index for that date. Ctrl+F 'artículo 11' or 'primer registro' or 'cadena'. Confirm: Art. 11 contains the 'Primer registro' provision that permits a documented chain reset on system migration. If confirmed: no page change → remove + decrement amber. If Art. 11 does not contain this: check Art. 8 or Art. 9 (technical provisions). If absent entirely: remove the chain reset claim from ES page or flag as unconfirmed."
     source_url: "https://www.boe.es/boe/dias/2024/10/17/"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "SII entities excluded from Verifactu — stated that companies on SII (Suministro Inmediato de Información, large taxpayers with monthly VAT filing) are excluded from Verifactu requirements. Verify this exclusion is explicitly stated in Real Decreto 1007/2023 or Orden HAC/1177/2024."
+    description: "No source URL — search: 'SII Suministro Inmediato Información excluidos Verifactu Real Decreto 1007/2023 disposición adicional' OR 'grandes empresas SII obligación Verifactu excepción'. Confirm: SII-registered large taxpayers are explicitly excluded from Verifactu/SIF requirements in the enacted text. If found: add source_url → remove + decrement amber. If wrong (SII entities are also in scope): update the scope/exclusion section on ES page significantly."
     source_url: null
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Large-company turnover threshold for Ley 18/2022 B2B mandate — the page states '12 months for companies above the large-company turnover threshold' but does not state the threshold amount. Find the threshold in Ley 18/2022 Art. 12 or implementing regulation."
+    description: "Open source link (BOE for Ley 18/2022) → Ctrl+F 'artículo 12' then look for the large-company threshold amount. Also search for 'gran empresa' or 'umbral' or 'facturación'. Confirm: the specific annual turnover threshold (expected to be EUR 6M or EUR 8M) is stated in Art. 12 or the implementing regulation. If found: add the threshold amount to the phase_in_scope description on ES page → remove + decrement amber. If threshold is in a separate implementing regulation not yet in force: note that the threshold depends on the pending Real Decreto."
     source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-15274"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "last_verified is null — Spain content has not been through a verification pass. Before raising confidence_summary to green or publishing as authoritative, a full protocol verification pass is needed for all claims."
+    description: "Process item — not a source to click. Complete all other items in this list first. When all high and amber items above are resolved: set `last_verified` in ES frontmatter to today's date, update `confidence_summary` from amber to green (if all high items resolved) or keep amber (if any remain), then remove this item and decrement amber count. Do not remove this item before the others are done."
     source_url: null
     added: 2026-05-01

@@ -47,11 +47,11 @@ document_lifecycle_states:
   - SENT
 
 has_sandbox: false
-last_verified: 2026-04-29
+last_verified: 2026-05-04
 mandate_version: 1
-confidence_summary: amber
-unresolved_high: 2
-unresolved_amber: 2
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline
@@ -72,7 +72,7 @@ The most common delay: discovering mid-project that the entity list is incomplet
 
 **Finance Systems** owns the billing engine reconfiguration. The mandate requires EN 16931-compliant XML output - producing it means systematic work across the entire billing configuration, not a single settings change.
 
-**Tax/Compliance** owns two obligations the mandate created. First: GoBD archiving now requires the XML to be stored unmodified for 10 years - a PDF export does not satisfy this requirement. Second: if an incoming invoice contains a format error in the XML, it is classified as a "sonstige Rechnung" rather than a valid e-invoice under the mandate - putting the input VAT deduction at risk until corrected via Rechnungsberichtigung. [BMF Schreiben 15.10.2024, III C 2 - S 7287-a/23/10001 :007 (DOK 2024/0883282), Rn 7; BMF Schreiben 15.10.2025, Rn 35a: https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3] Tax must define and operationalise validation rules for incoming invoices, not only outgoing.
+**Tax/Compliance** owns two obligations the mandate created. First: GoBD archiving now requires the XML to be stored unmodified for 10 years - a PDF export does not satisfy this requirement. Second: if an incoming invoice contains a format error in the XML, it is classified as a "sonstige Rechnung" rather than a valid e-invoice under the mandate - putting the input VAT deduction at risk until corrected via Rechnungsberichtigung. [BMF Schreiben 15.10.2024, III C 2 - S 7287-a/23/10001 :007 (DOK 2024/0883282), Rn 7; BMF Schreiben 15.10.2025: https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3] Tax must define and operationalise validation rules for incoming invoices, not only outgoing.
 
 **AP Operations** has a new processing requirement since January 2025: German business partners may now send invoices as structured XML files (XRechnung or ZUGFeRD). In practice, many AP teams continue to process the readable PDF layer of ZUGFeRD invoices rather than ingesting the XML - which leaves the input VAT validation gap open (see Tax/Compliance above).
 
@@ -96,7 +96,9 @@ Format choice (XRechnung vs ZUGFeRD): XRechnung is machine-readable only - buyer
 
 ## Correction & Business Continuity
 
-**Correction:** Germany uses correction invoices (Rechnungsberichtigung) rather than credit notes. The BMF March 2026 FAQ (https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html, section on Rechnungsberichtigungen) is explicit: the correction document must itself be a fully compliant EN 16931 electronic invoice. A PDF correction to an XRechnung is not valid. The correction must reference the original invoice number and be transmitted through the same channel as the original.
+**Correction:** Germany uses correction invoices (Rechnungsberichtigung) rather than credit notes. Once the mandatory e-invoice obligation applies to your entity, the correction document must itself be a fully compliant EN 16931 electronic invoice - the same invoice type code for a correction (BMF FAQ 2026: https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html, section on Rechnungsberichtigungen). During the transition periods where your entity is still permitted to issue paper or non-compliant electronic formats, corrections may also use those formats. Once the transition period ends, a PDF correction to an XRechnung is not valid. The correction must reference the original invoice number specifically and unambiguously and be transmitted through the same channel as the original.
+
+**Penalties:** Germany has no dedicated financial penalty schedule for e-invoice non-compliance. The BMF FAQ is silent on penalties because consequences operate through existing tax law rather than a new e-invoice-specific fine regime. The primary financial risk is input VAT denial: an invoice that does not meet EN 16931 requirements may be reclassified as a "sonstige Rechnung," putting the recipient's input VAT deduction at risk. GoBD archiving failures (not storing the XML unmodified for 10 years) expose the company to heightened audit risk and potential tax base estimation by the tax authority. There is no per-invoice administrative fine comparable to those in clearance-model mandates. The `penalty_max` field is null — confirmed correct.
 
 **Business continuity:** Germany has no central government B2B platform, so there is no government downtime risk for B2B exchange. Exposure is bilateral - either your Peppol access point or your trading partner's. The Peppol AS4 protocol includes store-and-forward retry logic that handles transient outages without manual intervention. For email-based exchange, the fallback is manual queue management.
 
@@ -104,7 +106,7 @@ Reverting to paper or PDF when a trading partner's system is down is not complia
 
 ## The Friction Map
 
-**The hybrid illusion.** ZUGFeRD invoices contain two layers: a readable PDF and a structured XML. A pattern observed in early ZUGFeRD implementations: AP teams process the PDF and do not ingest the XML. The legal position is confirmed by the BMF letter of October 2025 (https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3), Rn 35a: in the event of a discrepancy between the XML and the PDF, the XML is legally binding. The same letter introduces the concept of "innerer Kontrollpfad" (internal control path) - failing to ingest and validate the XML means the internal control path is absent, which can result in denied input VAT deductions during an audit. Tax owns the VAT exposure. AP owns the process. Nobody owns the space between them.
+**The hybrid illusion.** ZUGFeRD invoices contain two layers: a readable PDF and a structured XML. A pattern observed in early ZUGFeRD implementations: AP teams process the PDF and do not ingest the XML. The BMF Schreiben of October 2025 (https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3) introduces the concept of "innerer Kontrollpfad" (internal control path) - failing to ingest and validate the XML means the internal control path is absent, which can result in denied input VAT deductions during an audit. Tax owns the VAT exposure. AP owns the process. Nobody owns the space between them.
 
 **Master data failures at sender.** Invoices fail KoSIT validation before leaving the sender's system because the buyer's VAT ID is formatted incorrectly - DE prefix missing, checksum wrong, or field blank. For B2G transactions, the Leitweg-ID is simply absent from the customer master. Buyer routing data was not validated during onboarding - a data quality problem that was invisible until the first e-invoice batch failed.
 

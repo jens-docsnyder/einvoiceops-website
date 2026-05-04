@@ -2,21 +2,21 @@ country_code: SE
 items:
   - priority: amber
     type: source-verification
-    description: "Svefaktura 1.0 and EDIFACT phase-out for new public procurement stated as July 1, 2025 — verify this date and confirm whether it applies only to new contracts signed after that date or also to contracts in progress."
+    description: "Open source link (DIGG e-handel page) → Ctrl+F 'Svefaktura' or '1 juli 2025' or 'upphandling'. Confirm: July 1, 2025 as the phase-out date for Svefaktura 1.0 and EDIFACT in new public procurement contracts, and clarify scope — whether this applies only to new contracts signed after that date or also to contracts already in progress. If confirmed with scope clarified: if scope differs from current page description, update the format_notes on SE page → remove + decrement amber. If date is different: update the format_deprecation timeline on SE page."
     source_url: "https://www.digg.se/e-handel/e-faktura"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Ministry of Finance formal inquiry into EU ViDA B2B mandate — stated as launched February 5, 2026. Verify the exact launch date, the inquiry scope, and confirm the report is due November 30, 2027."
+    description: "Open source link (regeringen.se kommittédirektiv page) → search for 'fakturaering' or 'ViDA' or 'elektronisk faktura' in the kommittédirektiv listing. Find the directive from around February 2026. Confirm: inquiry launched February 5, 2026 with a report due November 30, 2027. If confirmed: no page change → remove + decrement amber. If dates differ: update the inquiry_timeline note in SE page future_direction section."
     source_url: "https://www.regeringen.se/rattsliga-dokument/kommittedirektiv/"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Archiving stated as '7-year archiving under Bokföringslaget (1999:1078), Chapter 7, Section 2.' Verify the specific chapter and section reference against the current Bokföringslaget text."
+    description: "Open source link (Bokföringslaget 1999:1078 on riksdagen.se) → Ctrl+F '7 kap' (Chapter 7) then '2 §'. Confirm: 7-year archiving obligation stated in Chapter 7, Section 2. If confirmed: no page change → remove + decrement amber. If the archiving rule is in a different chapter or section: update the archiving_reference citation on SE page."
     source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/bokforingslag-19991078_sfs-1999-1078/"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Penalty mechanism described as vitesföreläggande (conditional fine) under Viteslag (1985:206) — cited as the designated authority's enforcement tool under §7 of Lag 2018:1277. Verify the specific section and confirm the penalty mechanism references are correct."
+    description: "Open source link (Lag 2018:1277 on riksdagen.se) → Ctrl+F '7 §' or 'vitesföreläggande' or 'Viteslag'. Confirm: Section 7 designates vitesföreläggande (conditional fine) under Viteslag (1985:206) as the enforcement tool for the designated authority. If confirmed: no page change → remove + decrement amber. If the penalty mechanism is in a different section or references a different law: update the penalty_mechanism note on SE page."
     source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20181277-om-elektroniska-fakturor-till_sfs-2018-1277/"
     added: 2026-05-01

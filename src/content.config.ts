@@ -25,7 +25,7 @@ const research = defineCollection({
     country_code: z.string().length(2),
     items: z.array(z.object({
       priority: z.enum(['high', 'amber']),
-      type: z.enum(['source-verification', 'protocol-action', 'content-review']),
+      type: z.enum(['source-verification', 'protocol-action', 'content-review', 'pending-amendment']),
       description: z.string(),
       source_url: z.string().url().nullish(),
       added: z.coerce.date(),

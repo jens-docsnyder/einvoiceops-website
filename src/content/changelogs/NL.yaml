@@ -1,5 +1,14 @@
 country_code: NL
 entries:
+  - timestamp: 2026-05-04T00:00:00Z
+    type: error-correction
+    field: "unresolved_high + unresolved_amber"
+    old_value: "unresolved_high: 3, unresolved_amber: missing"
+    new_value: "unresolved_high: 2, unresolved_amber: 1"
+    description: "Frontmatter correction: unresolved_high was 3 but research YAML only contains 2 HIGH items — count was never decremented when original NL build ran. unresolved_amber field was missing entirely despite 1 AMBER item in research YAML. Both corrected to match actual research YAML state. No page content changed."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-29T00:00:00Z
     type: initial-publish
     field: null

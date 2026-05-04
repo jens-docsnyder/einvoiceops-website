@@ -5,7 +5,7 @@ flag: "🇧🇪"
 
 mandate_type: interoperability
 vida_alignment: DRR-compliant
-future_direction: "Near real-time e-reporting to FPS Finance planned from January 1, 2028 via 5-corner Peppol model, per federal coalition agreement (pending legislation). Annual client listing to be abolished when enacted."
+future_direction: "Near real-time e-reporting to FPS Finance planned from January 1, 2028 via 5-corner Peppol model, per federal coalition agreement (pending legislation). Annual client listing to be abolished when enacted. Scope note: Art. 3 §2bis currently excludes non-established VAT-registered entities; Belgian law being amended on this point - amendment not yet enacted as of 2026-05-03 (source: einvoice.belgium.be/en/faq/general-questions-b2b)."
 
 b2b: mandatory
 b2g: mandatory
@@ -52,10 +52,11 @@ document_lifecycle_states:
   - PAID
 
 has_sandbox: false
-last_verified: 2026-04-30
+last_verified: 2026-05-03
 mandate_version: 1
-confidence_summary: amber
-unresolved_high: 3
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline
@@ -78,7 +79,7 @@ The work from a standing start runs in four stages:
 
 **Finance Systems** owns the billing engine configuration for Peppol BIS 3.0 XML output. Every invoicing scenario - standard invoices, credit notes, self-billing - must produce valid XML. A specific Belgian gap in ERP configurations: the VAT breakdown must comply with Peppol UNCL5305 duty/tax/fee category codes (Category S for standard rate, Z for zero-rated, E for exempt). ERPs that aggregate tax at header level without category codes fail Peppol access point validation.
 
-**Tax/Compliance** owns scope determination per entity: which Belgian-registered entities are in scope, which are excluded (Art. 44 of the Belgian VAT Code for exclusively exempt activities - note this applies only to entities exclusively carrying out exempt activities, not mixed-activity companies), and which self-billing arrangements benefit from any extended tolerance. Tax also owns 7-year archiving (https://einvoice.belgium.be/en/article/how-do-i-keep-invoices-received-electronic-invoicing) and penalty monitoring. From 2028, near real-time e-reporting to FPS Finance will add a new continuous monitoring obligation.
+**Tax/Compliance** owns scope determination per entity: which Belgian-registered entities are in scope, which transactions are excluded under Art. 44 of the Belgian VAT Code (the exclusion is transaction-level - Art. 44 exempt transactions are outside scope, but any entity with taxable transactions must e-invoice those), and which self-billing arrangements benefit from any extended tolerance. Tax also owns 7-year archiving (https://einvoice.belgium.be/en/article/how-do-i-keep-invoices-received-electronic-invoicing) and penalty monitoring. From 2028, near real-time e-reporting to FPS Finance will add a new continuous monitoring obligation.
 
 **AP Operations** must process inbound Peppol invoices from Belgian suppliers. The mandate requires both sending AND receiving. Registering a Peppol ID for outbound only and ignoring the inbound stream is the most common compliance gap in Belgian implementations.
 
@@ -102,7 +103,7 @@ For Belgian subsidiaries of foreign groups: each Belgian entity needs its own KB
 
 ## Correction & Business Continuity
 
-**Correction:** Belgium uses the standard Peppol UBL CreditNote transmitted via Peppol (https://docs.peppol.eu/poacc/billing/3.0/). The credit note must comply with Peppol BIS Billing 3.0, include the original invoice number in the BillingReference tag, and route through Peppol like any other invoice. A Peppol invoice cannot be cancelled or recalled once sent.
+**Correction:** Belgium uses the standard Peppol UBL CreditNote transmitted via Peppol (https://docs.peppol.eu/poacc/billing/3.0/). The credit note must comply with Peppol BIS Billing 3.0, include the original invoice number in the BillingReference tag, and route through Peppol like any other invoice. A Peppol invoice cannot be cancelled or recalled once sent. The 2024 law also recognises any document that specifically and unambiguously references and modifies the original invoice as a valid structured electronic invoice (Art. 3 §2bis) - correction invoices are legally valid if issued in the same format as the original.
 
 **Business continuity:** No central B2B government platform means no government downtime risk for B2B exchange. Primary continuity exposure is bilateral - either the sender's or recipient's access point. Peppol AS4 includes store-and-forward retry logic for transient outages.
 
@@ -114,7 +115,7 @@ For Belgian subsidiaries of foreign groups: each Belgian entity needs its own KB
 
 **KBO/BCE number gaps in supplier master.** Peppol routing for Belgian companies uses the KBO/BCE enterprise number (scheme 0208). ERP supplier master records that store only VAT numbers cannot support Peppol routing without field-by-field KBO enrichment. Suppliers without a registered Peppol ID cannot receive invoices. Both gaps produce the same routing failure symptom with different root causes.
 
-**Art. 44 misapplication.** The exclusion from the mandate applies only to entities that exclusively carry out Art. 44 VAT-exempt activities. Mixed-activity companies with some exempt revenue but also taxable operations are in scope for their taxable transactions. Finance teams that assume partial exempt activity excludes the entire entity face retroactive penalty exposure from April 1, 2026 onward.
+**Art. 44 misapplication.** The exclusion applies at the transaction level: Art. 44 exempt transactions are outside scope. Any entity with taxable transactions must e-invoice those, regardless of what other activities it carries out. Finance teams that assume partial exempt activity excludes the entire entity face retroactive penalty exposure from April 1, 2026 onward. (Law of 6 February 2024, Art. 3 §2bis)
 
 **2028 e-reporting migration risk.** Access point providers that cannot support Belgium's planned 2028 reporting model will require customers to migrate. Companies signing multi-year access point contracts now without confirming the provider's 2028 roadmap are building in a forced migration. The 2028 model adds FPS Finance as a real-time recipient of invoice data - a new Tax compliance obligation that must be operationalised separately from the transmission infrastructure.
 

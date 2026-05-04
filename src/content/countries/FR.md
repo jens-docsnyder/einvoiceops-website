@@ -37,7 +37,7 @@ master_data_id: "SIRET (14-digit establishment identifier)"
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 10
-penalty_max: "EUR 15 per invoice (cap EUR 15,000/year); EUR 250 per e-reporting transmission (cap EUR 15,000/year)"
+penalty_max: "EUR 50/invoice for failure to issue electronically (Art. 1737 §III CGI, cap EUR 15,000/year); EUR 15/invoice for content errors (Art. 1737 §II CGI, cap 25% of invoice amount); EUR 500-1,000/quarter escalating for failure to use certified PDP for reception (Art. 1737 §IV bis CGI). First infraction in 3 years exempt if corrected within 30 days (Art. 1737 §V CGI)."
 reporting_window: null
 correction_mechanism: credit_note
 
@@ -48,11 +48,11 @@ document_lifecycle_states:
   - PAID
 
 has_sandbox: true
-last_verified: 2026-04-29
-mandate_version: 1
-confidence_summary: amber
-unresolved_high: 1
-unresolved_amber: 3
+last_verified: 2026-05-04
+mandate_version: 2
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline
@@ -67,13 +67,13 @@ Outbound obligations are phased by size:
 
 A clean implementation from standing start takes 4-6 months minimum. Four stages:
 
-**PDP selection and contracting (4-8 weeks).** There is no free public option for B2B invoice exchange. The PPF's B2B exchange capability was discontinued in October 2024. Every French entity must contract a certified PDP (Plateforme Agréée). Approximately 80-100 platforms are currently certified or pre-registered. The common procurement delay: InfoSec and legal review of a new critical cloud vendor takes 6-12 weeks in most corporate environments.
+**PDP selection and contracting (4-8 weeks).** There is no free public option for B2B invoice exchange. The PPF (Portail Public de Facturation) does not support B2B invoice exchange - every French entity must contract a certified PDP (Plateforme Agréée). Approximately 80-100 platforms are currently certified or pre-registered. The common procurement delay: InfoSec and legal review of a new critical cloud vendor takes 6-12 weeks in most corporate environments.
 
 **SIRET audit and Annuaire registration (2-4 weeks).** Every active French establishment (SIRET, 14 digits) must be registered in the central routing directory (the Annuaire) with an assigned PDP by September 1, 2026. Groups with multiple French entities must audit their entity list and close inactive SIRETs before registering to prevent routing confusion.
 
 **ERP-to-PDP integration (8-12 weeks).** The billing engine must produce one of the three accepted formats (Factur-X, UBL BIS 3.0, or CII) at EN 16931 standard or above. The reverse integration - lifecycle statuses flowing back from PDP to ERP - is equally important and is rarely covered in default PDP contract terms.
 
-**Testing and pilot transactions (4-6 weeks).** The official Pilot Phase runs from February to August 2026. Groups starting now can complete piloting before the mandatory go-live. Groups waiting until September have no pilot buffer.
+**Testing and pilot transactions (4-6 weeks).** A pilot phase is in progress ahead of the September 2026 go-live. Groups participating now can validate PDP integration before the mandatory deadline. Groups that have not yet contracted a PDP have no pilot buffer before September 1.
 
 **Minimum:** 4 months with a simple ERP and fast PDP onboarding. **Stretched:** 9+ months for fragmented multi-entity setups or slow procurement.
 
@@ -119,7 +119,7 @@ AR must have separate documented procedures for each. Treating them as the same 
 
 **Annuaire registration failures.** The most consistent data gaps when registering French entities in the Annuaire: the SIRET is stored at SIREN level (missing the 5-digit establishment suffix), and the optional routing code (Code de Routage) for directing invoices to specific departments is absent. Consequence: supplier invoices cannot be routed to the correct endpoint and are rejected at the sender's PDP. Corporate Tax and Legal know the SIREN. AP and Master Data need the SIRET. Neither team has owned routing data as a compliance requirement before this mandate.
 
-**OD-to-PDP transition bottleneck.** Many groups use an OD to generate invoices and assumed the public PPF portal would handle transmission at no cost. Since October 2024, the PPF no longer exchanges B2B invoices - all B2B flows require a certified PDP. The transition from OD to PDP involves a new vendor procurement cycle, InfoSec review, and API/EDI integration work. Lead time: 6-9 months. Groups that have not started this are at structural risk of non-compliance on September 1, 2026.
+**OD-to-PDP transition bottleneck.** Many groups use an OD to generate invoices and assumed the public PPF portal would handle transmission at no cost. The PPF does not handle B2B invoice exchange - all B2B flows require a certified PDP. The transition from OD to PDP involves a new vendor procurement cycle, InfoSec review, and API/EDI integration work. Lead time: 6-9 months. Groups that have not started this are at structural risk of non-compliance on September 1, 2026.
 
 **Factur-X PDF vs XML layer.** Factur-X is a hybrid format: a readable PDF/A-3 with an embedded XML payload. The XML layer is legally binding; the DGFiP audits the XML, not the PDF. A pattern observed in early implementations: AP teams continue processing the PDF through OCR or visual review, treating a hybrid e-invoice like a scanned paper document. Payment gets booked against data that may differ from what was legally reported. Same gap as Germany. Tax owns the legal document. AP processes the visual one. Both assume they're looking at the same thing.
 

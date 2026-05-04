@@ -1,22 +1,2 @@
 country_code: FR
-items:
-  - priority: high
-    type: source-verification
-    description: "PPF B2B capability discontinued October 2024 — this is operationally the most important single claim in the FR page (every company must now use a certified PDP). No source URL is cited for this discontinuation. Find the official DGFiP or PPF announcement confirming October 2024 as the discontinuation date."
-    source_url: "https://www.impots.gouv.fr/foire-aux-questions-je-decouvre-la-facturation-electronique"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Pilot phase described as running February to August 2026. Verify this timeline against official DGFiP communication. Find the source that confirms both the start date and the August 2026 end date."
-    source_url: "https://www.impots.gouv.fr/facturation-electronique-les-entreprises-se-preparent"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Penalty stated as 'EUR 15 per invoice (cap EUR 15,000/year); EUR 250 per e-reporting transmission (cap EUR 15,000/year).' No specific legislative source cited. Find the exact provision in Loi 2023-1322 or implementing regulation that states these amounts."
-    source_url: null
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Loi n° 2023-1322 du 29 décembre 2023, Article 91 — cited as the legal basis for confirmed mandate dates. Click the legifrance URL and confirm Article 91 contains the September 2026 and September 2027 dates and the built-in three-month postponement option."
-    source_url: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000048727345"
-    added: 2026-05-01
+items: []

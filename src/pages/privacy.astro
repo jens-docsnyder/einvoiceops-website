@@ -1,0 +1,194 @@
+---
+import Nav from '../components/Nav.astro';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | einvoiceops</title>
+  <meta name="description" content="Privacy policy for einvoiceops. How personal data from email enquiries is handled under GDPR." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a2b3c;
+      --accent: #2563eb;
+      --text:   #111827;
+      --sub:    #374151;
+      --muted:  #6b7280;
+      --border: #e5e7eb;
+      --bg:     #ffffff;
+      --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 2rem 80px;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+    h2 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 36px 0 10px;
+    }
+    p {
+      font-size: 0.95rem;
+      color: var(--sub);
+      line-height: 1.75;
+    }
+    p + p { margin-top: 10px; }
+    ul {
+      margin: 10px 0 10px 1.4rem;
+      font-size: 0.95rem;
+      color: var(--sub);
+      line-height: 1.75;
+    }
+    li { margin-bottom: 4px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .highlight-box {
+      background: #f0fdf4;
+      border: 1px solid #a7f3d0;
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-size: 0.875rem;
+      color: #065f46;
+      line-height: 1.65;
+      margin-top: 40px;
+    }
+    footer {
+      padding: 28px 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <Nav />
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">Last updated: 2 May 2026</p>
+
+    <h2>1. Data Controller</h2>
+    <p>
+      Jens Anttila (einvoiceops Oy, in formation)<br />
+      Finland<br />
+      Email: <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>
+    </p>
+
+    <h2>2. What This Site Collects</h2>
+    <p>
+      This website uses no cookies, analytics scripts, tracking pixels, or third-party services.
+      No personal data is collected or stored by visiting or browsing the site.
+    </p>
+    <p>
+      Personal data is processed only when you contact us by email. The data processed is:
+      your name, email address, company name, and the content of your message.
+    </p>
+
+    <h2>3. Purpose of Processing</h2>
+    <p>
+      To respond to your business enquiry and, if relevant, to provide the service you requested.
+      Your data is not used for any other purpose, including marketing.
+    </p>
+
+    <h2>4. Legal Basis</h2>
+    <p>
+      Processing is based on legitimate interests (GDPR Art.&nbsp;6(1)(f)) &mdash; responding to
+      inbound business enquiries is a legitimate interest of the operator. Where an enquiry
+      progresses to a potential engagement, processing is also based on pre-contractual steps
+      at your request (Art.&nbsp;6(1)(b)).
+    </p>
+
+    <h2>5. Retention</h2>
+    <p>
+      Email enquiries are retained for up to 2 years from the date of last contact, unless a
+      contract is established. Where a contract is signed, relevant correspondence is retained
+      for the duration of the contract plus any legally required accounting retention period
+      (6 years under Finnish Accounting Act 1336/1997).
+    </p>
+
+    <h2>6. Recipients and Sub-processors</h2>
+    <p>
+      Your data is not shared with third parties, sold, or used for advertising or profiling.
+    </p>
+    <p>
+      This website is hosted on GitHub Pages (GitHub, Inc., a Microsoft subsidiary). GitHub
+      processes web server logs (including IP addresses) as part of standard hosting operations.
+      GitHub's privacy statement is available at github.com/site/privacy. Email enquiries are
+      handled via Google Workspace (Google LLC) and stored on Google's EU infrastructure.
+      No personal data is transferred outside the European Economic Area.
+    </p>
+
+    <h2>7. Your Rights</h2>
+    <p>Under GDPR (EU 2016/679), you have the right to:</p>
+    <ul>
+      <li>Access the personal data we hold about you</li>
+      <li>Request correction of inaccurate data</li>
+      <li>Request deletion of your data</li>
+      <li>Object to or request restriction of processing</li>
+      <li>Receive your data in a portable format</li>
+    </ul>
+    <p>
+      To exercise any of these rights, email <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>.
+      We will respond within 30 days.
+    </p>
+    <p>
+      If you are not satisfied with our handling of a request, you may lodge a complaint with the
+      Finnish Data Protection Ombudsman (<em>Tietosuojavaltuutettu</em>):
+      <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a>.
+    </p>
+
+    <h2>8. Cookies and Tracking</h2>
+    <p>
+      This site sets no cookies and runs no analytics or third-party scripts. No cookie consent
+      banner is displayed because none is required.
+    </p>
+
+    <h2>9. Changes to This Policy</h2>
+    <p>
+      If this policy changes materially, the "Last updated" date above will be revised.
+      Given the minimal scope of data processing, significant changes are unlikely.
+    </p>
+
+    <div class="highlight-box">
+      Short version: we only receive your data if you email us, we use it to reply,
+      we do not share it, and you can ask us to delete it at any time.
+    </div>
+  </main>
+
+  <footer>
+    <p>einvoiceops &nbsp;&middot;&nbsp; <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> &nbsp;&middot;&nbsp; Finland</p>
+    <p>&copy; 2026 einvoiceops &nbsp;&middot;&nbsp; <a href="/legal/">Legal Notice</a> &nbsp;&middot;&nbsp; <a href="/privacy/">Privacy Policy</a></p>
+  </footer>
+</body>
+</html>

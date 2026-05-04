@@ -1,10 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+
+const allCountries = await getCollection('countries');
+
+function urgencyOrder(data: any): number {
+  if (data.status === 'live' && data.b2b === 'mandatory' && data.mandate_hardness !== 'hard-inbound-soft-outbound') return 0;
+  if (data.status === 'pilot') return 1;
+  if (data.status === 'live' && data.mandate_hardness === 'hard-inbound-soft-outbound') return 2;
+  if (data.status === 'live') return 3;
+  return 4;
+}
+
+const countries = [...allCountries].sort((a, b) => urgencyOrder(a.data) - urgencyOrder(b.data));
+
+function cardClass(data: any): string {
+  if (data.status === 'live' && data.b2b === 'mandatory' && data.mandate_hardness !== 'hard-inbound-soft-outbound') return 'c-live';
+  if (data.status === 'pilot') return 'c-urgent';
+  if (data.status === 'live') return 'c-coming';
+  return 'c-future';
+}
+
+function statusPill(data: any): string {
+  if (data.status === 'live' && data.b2b === 'mandatory' && data.mandate_hardness !== 'hard-inbound-soft-outbound') return 'Live';
+  if (data.status === 'pilot' && data.inbound_mandate_date) {
+    const months = Math.round((data.inbound_mandate_date.getTime() - Date.now()) / (1000 * 60 * 60 * 24 * 30));
+    return months > 0 ? `${months} months` : 'Imminent';
+  }
+  if (data.mandate_hardness === 'hard-inbound-soft-outbound') return 'Partial';
+  if (data.status === 'announced') return 'Announced';
+  if (data.status === 'proposed') return 'Proposed';
+  if (data.b2b === 'voluntary') return 'B2G only';
+  return 'Live';
+}
+
+function mandateLabel(data: any): string {
+  if (data.mandate_type === 'clearance-pdp') return 'PDP / Y-Model';
+  if (data.mandate_type === 'centralized-clearance') {
+    const m: Record<string, string> = { PL: 'KSeF / Clearance', IT: 'SdI / Clearance', RO: 'RO e-Factura' };
+    return m[data.code] ?? `${data.formats?.[0] ?? ''} / Clearance`;
+  }
+  return data.formats?.[0] ?? 'Peppol BIS';
+}
+
+// Hardcoded notes for countries with split timelines; all others are computed.
+// When adding a new country with complex phase-in, add an entry here.
+const CARD_NOTES: Record<string, string> = {
+  FR: 'Large companies Sept 2026<br>SME / micro Sept 2027',
+  DE: 'Reception live Jan 2025<br>Issuance from Jan 2027',
+  PL: 'Large taxpayers Feb 2026<br>All VAT-registered Apr 2026',
+  IT: 'Mandatory since Jan 2019<br>Microenterprises from Jan 2024',
+  DK: 'B2G since 2005<br>B2B bookkeeping capability live',
+};
+
+function cardNote(data: any): string {
+  if (CARD_NOTES[data.code]) return CARD_NOTES[data.code];
+  if (data.status === 'live' && data.b2b === 'mandatory') {
+    const d: Date = data.inbound_mandate_date ?? new Date();
+    return `Mandatory since ${d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}`;
+  }
+  if (data.b2b === 'voluntary') return 'B2G mandatory<br>B2B voluntary';
+  const deadlines = (data.key_deadlines ?? []) as Array<{date: Date; description: string}>;
+  const upcoming = deadlines.filter(d => d.date.getTime() >= Date.now());
+  if (upcoming.length > 0) {
+    const w = upcoming[0].description.split(' ');
+    return w.slice(0, 7).join(' ') + (w.length > 7 ? '...' : '');
+  }
+  return 'No confirmed date yet';
+}
+
+const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>einvoiceops — EU E-invoice Mandate Readiness</title>
-  <meta name="description" content="Fixed-scope readiness sprints for EU e-invoicing mandates. Built for finance and tax teams managing multi-country rollouts without the bandwidth to do it alone." />
+  <title>einvoiceops - EU E-invoice Mandate Readiness | France PDP · Poland KSeF · Germany B2B</title>
+  <meta name="description" content="EU e-invoicing mandate readiness for finance teams. Structured work packets for France PDP (Sept 2026), Poland KSeF, Germany B2B. Fixed scope, fixed fee, routed to the right internal owners." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -141,10 +213,19 @@
       color: var(--accent);
     }
 
+    .hero-pull {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+      max-width: 600px;
+      margin: 0 auto 16px;
+      line-height: 1.5;
+    }
+
     .hero-sub {
-      font-size: 1.125rem;
+      font-size: 1rem;
       color: var(--muted);
-      max-width: 560px;
+      max-width: 540px;
       margin: 0 auto 40px;
       line-height: 1.7;
     }
@@ -160,8 +241,8 @@
 
     .btn-primary {
       display: inline-block;
-      background: var(--navy);
-      color: var(--bg);
+      background: var(--accent);
+      color: #ffffff;
       font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: 0.02em;
@@ -171,7 +252,7 @@
       transition: background 0.15s;
     }
 
-    .btn-primary:hover { background: #162540; }
+    .btn-primary:hover { background: var(--accent-dark); }
 
     .btn-ghost {
       display: inline-block;
@@ -187,21 +268,20 @@
 
     .btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
 
-    .hero-mandates {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px 20px;
-      font-size: 0.8rem;
-      color: var(--muted);
+    .btn-light {
+      display: inline-block;
+      color: #f3f4f6;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.35);
+      transition: border-color 0.15s, background 0.15s;
+      letter-spacing: 0.01em;
     }
 
-    .hero-mandates span {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .btn-light:hover { border-color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.07); }
 
     .dot {
       width: 7px;
@@ -266,14 +346,50 @@
       line-height: 1.65;
     }
 
-    .clocks-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
-      gap: 14px;
+    /* ---- CAROUSEL ---- */
+    .carousel-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 44px;
     }
 
+    .carousel-viewport {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 14px;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .carousel-arrow {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #d1d5db;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .carousel-arrow:hover:not(:disabled) { background: rgba(255,255,255,0.14); }
+    .carousel-arrow:disabled { opacity: 0.25; cursor: default; }
+
     .clock-card {
+      flex-shrink: 0;
+      width: 192px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 14px;
@@ -282,7 +398,9 @@
       position: relative;
       overflow: hidden;
       transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      cursor: default;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
     }
 
     .clock-card:hover {
@@ -317,7 +435,7 @@
 
     .clock-mandate {
       font-size: 0.7rem;
-      color: #6b7280;
+      color: #9ca3af;
       margin-bottom: 14px;
       line-height: 1.4;
     }
@@ -340,40 +458,135 @@
     .clock-note {
       display: block;
       font-size: 0.68rem;
-      color: #4b5563;
+      color: #6b7280;
       margin-top: 8px;
       line-height: 1.45;
     }
 
-    .sources-bar {
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding-top: 28px;
-      text-align: center;
+    /* ---- SOURCES PANEL ---- */
+    .sources-panel {
+      margin-top: 36px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
-    .sources-label {
+    .sources-panel-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.05);
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-align: left;
+    }
+
+    .sources-panel-toggle:hover { background: rgba(255,255,255,0.09); }
+
+    .sources-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sources-panel-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    .sources-panel-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #60a5fa;
+      background: rgba(37,99,235,0.15);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .sources-panel-icon {
+      font-size: 1rem;
+      color: #6b7280;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .sources-panel-toggle[aria-expanded="true"] .sources-panel-icon {
+      transform: rotate(45deg);
+    }
+
+    .sources-panel-drawer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .sources-panel-drawer.open {
+      max-height: 220px;
+    }
+
+    .sources-panel-scroll {
+      height: 220px;
+      overflow-y: auto;
+      padding: 20px 24px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.15) transparent;
+    }
+
+    .sources-panel-scroll::-webkit-scrollbar { width: 4px; }
+    .sources-panel-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sources-panel-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    .source-group {
+      margin-bottom: 20px;
+    }
+
+    .source-group:last-child { margin-bottom: 0; }
+
+    .source-group h5 {
       font-size: 0.68rem;
+      font-weight: 700;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: #4b5563;
-      margin-bottom: 12px;
+      color: #60a5fa;
+      margin-bottom: 8px;
     }
 
-    .sources-links {
+    .source-group ul {
+      list-style: none;
+      padding: 0;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px 24px;
+      flex-direction: column;
+      gap: 5px;
     }
 
-    .sources-links a {
-      font-size: 0.78rem;
-      color: #6b7280;
+    .source-group li {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      line-height: 1.4;
+    }
+
+    .source-group a {
+      color: #9ca3af;
       text-decoration: none;
       transition: color 0.15s;
     }
 
-    .sources-links a:hover { color: #d1d5db; }
+    .source-group a:hover { color: #e5e7eb; }
+
+    .sources-panel-footer {
+      padding: 10px 24px 16px;
+      font-size: 0.72rem;
+      color: #4b5563;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
 
     /* ---- SECTIONS ---- */
     .section { padding: 88px 2rem; }
@@ -406,52 +619,6 @@
       max-width: 580px;
       line-height: 1.7;
       margin-bottom: 56px;
-    }
-
-    /* ---- PROBLEM ---- */
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .problem-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px 24px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: default;
-    }
-
-    .problem-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.07);
-    }
-
-    .problem-card .p-icon {
-      width: 38px;
-      height: 38px;
-      background: var(--ice);
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      margin-bottom: 16px;
-    }
-
-    .problem-card h3 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 8px;
-    }
-
-    .problem-card p {
-      font-size: 0.875rem;
-      color: var(--muted);
-      line-height: 1.65;
     }
 
     /* ---- SPRINT BOX ---- */
@@ -491,7 +658,7 @@
 
     .sprint-tagline {
       font-size: 0.875rem;
-      color: #6b7280;
+      color: #9ca3af;
       margin-bottom: 36px;
     }
 
@@ -526,7 +693,7 @@
 
     .deliverable p {
       font-size: 0.8rem;
-      color: #6b7280;
+      color: #9ca3af;
       line-height: 1.6;
     }
 
@@ -551,6 +718,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
+      align-items: start;
     }
 
     .icp-card {
@@ -558,20 +726,137 @@
       border-radius: 12px;
       padding: 28px 24px;
       background: var(--bg);
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: default;
+      transition: box-shadow 0.2s;
+      cursor: pointer;
     }
 
-    .icp-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.07);
-    }
+    .icp-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
 
     .icp-card h3 {
       font-size: 0.95rem;
       font-weight: 700;
       color: var(--navy);
-      margin-bottom: 14px;
+      margin-bottom: 0;
+    }
+
+    .icp-card-header {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .icp-teaser {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    .icp-toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .icp-toggle-icon {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--muted);
+      transition: color 0.15s;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .icp-card.ic-open .icp-toggle-icon { color: var(--accent); }
+
+    .icp-card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+      margin-top: 0;
+    }
+
+    .icp-card.ic-open .icp-card-body {
+      max-height: 500px;
+      margin-top: 14px;
+    }
+
+    /* ---- CONTACT FORM ---- */
+    .contact-form {
+      max-width: 520px;
+      margin: 36px auto 0;
+      text-align: left;
+    }
+
+    .form-row {
+      margin-bottom: 18px;
+    }
+
+    .form-row label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .form-optional {
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .form-row input,
+    .form-row textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      color: #f9fafb;
+      font-family: var(--sans);
+      transition: border-color 0.15s, background 0.15s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .form-row input::placeholder,
+    .form-row textarea::placeholder { color: rgba(255,255,255,0.28); }
+
+    .form-row input:focus,
+    .form-row textarea:focus {
+      border-color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.10);
+    }
+
+    .form-row textarea { resize: vertical; min-height: 96px; }
+
+    .contact-submit {
+      width: 100%;
+      text-align: center;
+      padding: 14px;
+      margin-top: 8px;
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border-radius: 4px;
+      background: var(--accent);
+      color: #fff;
+      transition: background 0.15s;
+    }
+
+    .contact-submit:hover:not(:disabled) { background: var(--accent-dark); }
+    .contact-submit:disabled { opacity: 0.6; cursor: default; }
+
+    .form-success {
+      text-align: center;
+      color: #86efac;
+      font-size: 1rem;
+      padding: 24px 0;
+      line-height: 1.6;
     }
 
     .icp-card ul {
@@ -595,6 +880,12 @@
       position: absolute;
       left: 0;
       color: var(--border);
+    }
+
+    .icp-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
     }
 
     /* ---- MID CTA ---- */
@@ -1182,7 +1473,7 @@
     .compare-value.green { color: #16a34a; }
     .compare-value.accent { color: var(--accent); }
 
-    .saving-badge { display: none; } /* hidden — replaced by saving-hero */
+    .saving-badge { display: none; } /* hidden - replaced by saving-hero */
 
     .saving-hero {
       display: none;
@@ -1596,6 +1887,243 @@
 
     .meth-table tr:last-child td { border-bottom: none; }
 
+    /* ---- JOURNEY TRACK ---- */
+    .journey-track {
+      display: grid;
+      grid-template-columns: 1fr 36px 1fr 36px 1fr;
+      align-items: start;
+      margin: 48px 0 40px;
+    }
+
+    .journey-phase {
+      border-radius: 12px;
+      padding: 24px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      min-height: 148px;
+    }
+
+    .journey-phase:hover { opacity: 0.88; }
+
+    .journey-phase.jp-pale {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+    }
+
+    .journey-phase.jp-mid {
+      background: var(--ice);
+      border: 2px solid var(--accent);
+    }
+
+    .journey-phase.jp-dark {
+      background: var(--accent);
+      border: 2px solid var(--accent-dark);
+    }
+
+    .journey-phase-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .phase-label {
+      display: block;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .jp-mid .phase-label { color: var(--accent); }
+    .jp-dark .phase-label { color: rgba(255,255,255,0.55); }
+
+    .journey-phase h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .jp-dark h4 { color: #ffffff; }
+
+    /* ---- EXPAND ICON (journey + icp cards) ---- */
+    .phase-icon-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .expand-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 400;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .jp-dark .expand-icon {
+      background: rgba(255,255,255,0.9);
+      color: var(--accent);
+    }
+
+    .journey-phase.jp-open .expand-icon,
+    .icp-card.ic-open .expand-icon { transform: rotate(45deg); }
+
+    .journey-phase-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+    }
+
+    .journey-phase.jp-open .journey-phase-body { max-height: 500px; }
+
+    .phase-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 4px;
+    }
+
+    .phase-bullets li {
+      font-size: 0.855rem;
+      color: var(--sub);
+      line-height: 1.65;
+      padding: 3px 0 3px 18px;
+      position: relative;
+    }
+
+    .phase-bullets li::before {
+      content: '\00B7';
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .jp-dark .phase-bullets li { color: rgba(255,255,255,0.82); }
+    .jp-dark .phase-bullets li::before { color: #93c5fd; }
+
+    .journey-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      color: var(--muted);
+      font-size: 1.5rem;
+    }
+
+    /* ---- SERVICE TEASER ---- */
+    .service-teaser {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 600px) { .service-teaser { padding: 24px 20px; } }
+
+    .service-teaser p {
+      font-size: 0.95rem;
+      color: var(--sub);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .teaser-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .teaser-link:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .journey-track {
+        grid-template-columns: 1fr;
+      }
+      .journey-arrow {
+        padding-top: 0;
+        height: 28px;
+        transform: rotate(90deg);
+      }
+    }
+
+    /* ---- COVERAGE BOX ---- */
+    .coverage-box {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 600px) { .coverage-box { padding: 28px 20px; } }
+
+    .coverage-badge {
+      display: inline-block;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 4px 10px;
+      margin-bottom: 12px;
+    }
+
+    .coverage-box h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .coverage-tagline {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.55;
+    }
+
+    .coverage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 600px) { .coverage-grid { grid-template-columns: 1fr; } }
+
+    .coverage-point h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .coverage-point p {
+      font-size: 0.875rem;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
     /* ---- DISCLAIMER ---- */
     .disclaimer {
       background: var(--bg-alt);
@@ -1611,6 +2139,81 @@
       margin: 0 auto;
       line-height: 1.65;
     }
+
+    /* ── Orchestration diagram ── */
+    .orch-diagram {
+      max-width: 680px;
+      margin: 36px auto 28px;
+    }
+    .orch-top {
+      background: var(--navy);
+      border-radius: 12px 12px 4px 4px;
+      padding: 16px 28px;
+      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+    }
+    .orch-you {
+      font-size: 1.1rem; font-weight: 800;
+      color: #ffffff; letter-spacing: -0.02em;
+    }
+    .orch-sub {
+      font-size: 0.65rem; font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .orch-nodes {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .orch-node-group {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+    }
+    .orch-arrow {
+      font-size: 1.5rem; line-height: 1;
+      color: var(--muted);
+      user-select: none;
+    }
+    .orch-node {
+      border-radius: 9px;
+      padding: 12px 6px 10px;
+      text-align: center;
+      font-size: 0.72rem; font-weight: 700;
+      line-height: 1.35; width: 100%;
+    }
+    .n-systems  { background: #eff6ff; color: #1e40af; }
+    .n-tax      { background: #fef3c7; color: #92400e; }
+    .n-ap       { background: #dcfce7; color: #166534; }
+    .n-ar       { background: #ede9fe; color: #5b21b6; }
+    .n-archive  { background: #ffedd5; color: #9a3412; }
+    .n-partners { background: #fce7f3; color: #9d174d; }
+    .orch-entity-bar {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; align-items: center;
+      gap: 6px 8px;
+      margin-top: 12px;
+      padding: 10px 0 0;
+      border-top: 2px dashed var(--border);
+    }
+    .orch-entity {
+      background: var(--ice);
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--accent-dark);
+    }
+    .orch-caption {
+      font-size: 0.9rem; color: var(--sub);
+      line-height: 1.72; max-width: 620px;
+      margin: 0 auto; text-align: center;
+    }
+    @media (max-width: 540px) {
+      .orch-nodes { grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -1620,9 +2223,8 @@
   <a href="#" class="logo">einvoice<span>ops</span></a>
   <div class="nav-links">
     <a href="#calculator" class="hide-mobile">Mandate Cost Calculator</a>
-    <a href="#product" class="hide-mobile">Services</a>
+    <a href="/services/" class="hide-mobile">Services</a>
     <a href="/map/" class="hide-mobile">Compliance Map</a>
-    <a href="#about" class="hide-mobile">About</a>
     <a href="#faq" class="hide-mobile">FAQ</a>
     <a href="#contact" class="btn-nav">Get in touch</a>
   </div>
@@ -1630,12 +2232,10 @@
 
 <!-- HERO -->
 <section class="hero">
-  <span class="hero-eyebrow">Poland live &nbsp;·&nbsp; France Sept 2026 &nbsp;·&nbsp; Germany Jan 2027</span>
-  <h1>A single mandate change costs your finance team <em>270 to 430 hours</em> before the ERP work even starts.</h1>
-  <p class="hero-sub">Most of that time is invisible - distributed across Tax, IT, and Finance Ops and absorbed as coordination overhead that nobody budgets for.</p>
+  <h1>France, Poland, and Germany are mandating e-invoicing - <em>each in a completely different way.</em></h1>
   <div class="hero-actions">
-    <a href="#calculator" class="btn-primary">Calculate your exposure</a>
-    <a href="#product" class="btn-ghost">What's included</a>
+    <a href="/map/" class="btn-primary">See what each country requires</a>
+    <a href="#calculator" class="btn-ghost">Calculate your team's cost</a>
   </div>
 </section>
 
@@ -1646,23 +2246,23 @@
   <div class="stats-inner">
     <div class="stat-item">
       <div class="stat-number"><em>4–7</em>+</div>
-      <div class="stat-label">significant mandate change events per year for a 4-6 country EU footprint</div>
+      <div class="stat-label">e-invoicing regulatory updates per year across a typical 4-6 country EU footprint</div>
       <div class="stat-source">Vertex Regulatory Tracker Q4 2025</div>
     </div>
     <div class="stat-item">
       <div class="stat-number"><em>85</em>%</div>
-      <div class="stat-label">of finance time during mandate-active periods goes to triage and coordination, not strategy</div>
+      <div class="stat-label">of finance team time during an active rollout goes to coordination and triage, not execution</div>
       <div class="stat-source">Accenture 2024</div>
     </div>
     <div class="stat-item">
       <div class="stat-number"><em>15–25</em>%</div>
-      <div class="stat-label">invoice exception rate in the first 30 days after go-live without structured preparation</div>
+      <div class="stat-label">of invoices fail validation in the first 30 days after go-live when preparation was unstructured</div>
       <div class="stat-source">IOFM / SoftCo 2026</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number"><em>18</em>%</div>
-      <div class="stat-label">lower IT operations spend in unified vs. fragmented ERP environments</div>
-      <div class="stat-source">Hackett Group 2025-26</div>
+      <div class="stat-number"><em>270–430</em>h</div>
+      <div class="stat-label">internal preparation hours per mandate per entity, before ERP configuration begins</div>
+      <div class="stat-source">Ardent Partners / Gartner 2024-26</div>
     </div>
   </div>
 </section>
@@ -1670,9 +2270,9 @@
 <!-- CALCULATOR -->
 <section class="calc-section" id="calculator">
   <div class="calc-inner">
-    <span class="eyebrow">Your mandate cost</span>
-    <h2 class="section-h">What is your mandate exposure actually costing?</h2>
-    <p class="section-lead">Select your mandates, ERP, and team rate. The output on the right is your team's real internal readiness cost.</p>
+    <span class="eyebrow">Internal preparation cost</span>
+    <h2 class="section-h">How much does getting ready actually cost your team?</h2>
+    <p class="section-lead">Select your countries, ERP, and team rate. The calculator estimates the internal preparation work your team will absorb before any external vendor or consulting costs.</p>
 
     <div class="calc-layout">
 
@@ -1680,7 +2280,7 @@
       <div class="calc-inputs">
 
         <div class="calc-field">
-          <label class="calc-label">Legal entities affected <span style="font-weight:400;color:var(--muted)">(across all selected mandates)</span><span class="help-tip" data-tip="A legal entity is a registered company (e.g. French SAS, Polish sp. z o.o., German GmbH). Set how many of your own entities need to comply — not the number of countries you sell into.">?</span></label>
+          <label class="calc-label">Legal entities affected <span style="font-weight:400;color:var(--muted)">(across all selected mandates)</span><span class="help-tip" data-tip="A legal entity is a registered company (e.g. French SAS, Polish sp. z o.o., German GmbH). Set how many of your own entities need to comply, not the number of countries you sell into.">?</span></label>
           <div class="calc-slider-wrap">
             <input type="range" id="calc-countries" min="1" max="10" value="1" oninput="calcUpdate()">
             <span class="slider-val" id="countries-display">1</span>
@@ -1774,7 +2374,7 @@
       <!-- OUTPUT -->
       <div class="calc-output">
 
-        <!-- 1. RANGE VIZ — most prominent element -->
+        <!-- 1. RANGE VIZ - most prominent element -->
         <div class="range-viz" id="range-viz">
           <div class="range-viz-header">
             <div class="range-viz-title">Nobody budgets for this. Everyone pays it.</div>
@@ -1784,76 +2384,52 @@
             <div class="range-track-wrap">
               <div class="range-track" id="range-track-el">
                 <div class="range-band" id="range-band"></div>
-                <div class="range-sprint-marker" id="range-sprint-marker">
-                  <div class="sprint-marker-card">
-                    <span class="sprint-card-label">Sprint fee</span>
-                    <span class="sprint-card-price" id="sprint-marker-pip">—</span>
-                  </div>
-                </div>
               </div>
             </div>
             <div class="range-point-labels">
               <div class="range-point-label lbl-low" id="lbl-low-pos">
-                <strong id="range-label-low">—</strong>
+                <strong id="range-label-low">--</strong>
                 <span>Structured</span>
               </div>
               <div class="range-point-label lbl-high" id="lbl-high-pos">
-                <strong id="range-label-high">—</strong>
+                <strong id="range-label-high">--</strong>
                 <span>Reactive</span>
               </div>
             </div>
-            <div class="range-legend">Grey bar: full cost spectrum &nbsp;·&nbsp; Blue band: your team's estimated range &nbsp;·&nbsp; Dark line: Readiness Sprint fee &nbsp;·&nbsp; Hover to read values</div>
+            <div class="range-legend">Grey bar: full cost spectrum &nbsp;·&nbsp; Blue band: your team's estimated range &nbsp;·&nbsp; Hover to read values</div>
           </div>
         </div>
 
-        <!-- 2. SAVING HERO — right after the graph -->
-        <div class="saving-hero" id="saving-hero">
-          <div class="saving-hero-label">Sprint saving — this mandate cycle</div>
-          <div class="saving-hero-amount" id="saving-hero-amount">—</div>
-          <div class="saving-hero-sub" id="saving-hero-sub"></div>
-          <hr class="saving-hero-divider" id="saving-hero-divider" style="display:none">
-          <div id="saving-hero-annual-block" style="display:none">
-            <div class="saving-hero-annual-label">Annual mandate burden — your team</div>
-            <div class="saving-hero-annual-amount" id="saving-hero-annual-amount">—</div>
-            <div class="saving-hero-annual-sub" id="saving-hero-annual-sub"></div>
-          </div>
-        </div>
-
-        <!-- 3. SPRINT COMPARISON -->
+        <!-- 2. COST COMPARISON -->
         <div class="calc-comparison">
           <div class="compare-row">
             <span class="compare-label">Your internal cost (typical midpoint)</span>
-            <span class="compare-value" id="out-scope-internal">—</span>
-          </div>
-          <div class="compare-row">
-            <span class="compare-label" id="sprint-label">Readiness Sprint (fixed fee)</span>
-            <span class="compare-value accent" id="sprint-price-display">€24,500</span>
+            <span class="compare-value" id="out-scope-internal">--</span>
           </div>
           <div class="compare-row" id="penalty-row" style="display:none">
-            <span class="compare-label">France penalty risk <span style="font-size:0.68rem;color:var(--muted)">(2026 Budget Law — €50/invoice, cap €15K/yr/entity)</span></span>
+            <span class="compare-label">France penalty risk <span style="font-size:0.68rem;color:var(--muted)">(2026 Budget Law: €50/invoice, cap €15K/yr/entity)</span></span>
             <span class="compare-value" id="penalty-value" style="color:var(--urgent)"></span>
           </div>
           <div class="compare-row" id="poland-penalty-row" style="display:none">
-            <span class="compare-label">Poland KSeF penalty risk <span style="font-size:0.68rem;color:var(--muted)">(Art. 106ni VAT Act — 100% of VAT per invoice post Jan 2027)</span></span>
+            <span class="compare-label">Poland KSeF penalty risk <span style="font-size:0.68rem;color:var(--muted)">(Art. 106ni VAT Act: up to 100% of VAT per invoice post Jan 2027)</span></span>
             <span class="compare-value" style="color:var(--urgent);font-size:0.82rem">Per-invoice · no cap</span>
           </div>
           <div class="compare-row" id="germany-penalty-row" style="display:none">
-            <span class="compare-label">Germany penalty risk <span style="font-size:0.68rem;color:var(--muted)">(§26a UStG — up to €5K/invoice; GoBD non-compliance: VAT deduction denial + bookkeeping rejection)</span></span>
+            <span class="compare-label">Germany penalty risk <span style="font-size:0.68rem;color:var(--muted)">(§26a UStG: up to €5K/invoice; GoBD non-compliance: VAT deduction denial + bookkeeping rejection)</span></span>
             <span class="compare-value" style="color:var(--urgent);font-size:0.82rem">Per-invoice · no annual cap</span>
           </div>
           <div class="saving-badge" id="saving-badge"></div>
-          <div style="margin-top:12px;font-size:0.75rem;color:var(--muted);line-height:1.55;" id="sprint-note"></div>
         </div>
 
-        <!-- 4. HOURS BOX — supporting detail -->
+        <!-- 4. HOURS BOX - supporting detail -->
         <div class="calc-out-box">
           <div class="calc-out-label">Estimated readiness hours</div>
-          <div class="calc-big-number accent" id="out-hours">—</div>
+          <div class="calc-big-number accent" id="out-hours">--</div>
           <div class="calc-sub-note" id="out-hours-note">Select a mandate above</div>
           <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="out-range-pills"></div>
         </div>
 
-        <!-- 5. METHODOLOGY — collapsible -->
+        <!-- 5. METHODOLOGY - collapsible -->
         <div class="calc-methodology">
           <button class="meth-toggle" onclick="toggleMethodology()" aria-expanded="false">
             <span>Methodology &amp; sources</span>
@@ -1865,9 +2441,9 @@
             <table class="meth-table">
               <thead><tr><th>Input</th><th>Value</th><th>Source / basis</th></tr></thead>
               <tbody>
-                <tr><td>Annual tax compliance burden per company</td><td>~900h/year (384h research + 510h returns)</td><td><a href="https://www.vertexinc.com/resources/resource-library/gartner-global-e-invoicing-strategy-report" target="_blank" rel="noopener">Forrester TEI of Avalara (2024)</a> — per-company baseline for mid-sized EU firm</td></tr>
-                <tr><td>Single-country e-invoicing go-live project duration</td><td>6–12 months</td><td>Billentis "Riding the Tornado" 2026 (Bruno Koch) — implementation timeline benchmark</td></tr>
-                <tr><td>Readiness effort per mandate (internal prep only, excl. ERP config)</td><td>270–430h per mandate per entity</td><td>Derived from Avalara/Billentis anchors above; consistent with implementation partner project benchmarks. Not a single published benchmark — treated as internal estimate.</td></tr>
+                <tr><td>Annual tax compliance burden per company</td><td>~900h/year (384h research + 510h returns)</td><td><a href="https://www.vertexinc.com/resources/resource-library/gartner-global-e-invoicing-strategy-report" target="_blank" rel="noopener">Forrester TEI of Avalara (2024)</a> - per-company baseline for mid-sized EU firm</td></tr>
+                <tr><td>Single-country e-invoicing go-live project duration</td><td>6–12 months</td><td>Billentis "Riding the Tornado" 2026 (Bruno Koch) - implementation timeline benchmark</td></tr>
+                <tr><td>Readiness effort per mandate (internal prep only, excl. ERP config)</td><td>270–430h per mandate per entity</td><td>Derived from Avalara/Billentis anchors above; consistent with implementation partner project benchmarks. Not a single published benchmark - treated as internal estimate.</td></tr>
                 <tr><td>Structured team (low end)</td><td>270–290h</td><td>Organised ownership, clear mandate lead, proactive partner coordination</td></tr>
                 <tr><td>Reactive team (high end)</td><td>405–430h</td><td>Distributed ownership, coordination overhead, post-go-live exception management</td></tr>
               </tbody>
@@ -1877,11 +2453,11 @@
             <table class="meth-table">
               <thead><tr><th>ERP</th><th>Multiplier</th><th>Entity scaling (2nd entity+)</th></tr></thead>
               <tbody>
-                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+25% per entity — baseline, consistent with SAPinsider implementation patterns and industry standard</td></tr>
-                <tr><td>Sage X3</td><td>×1.2 (estimated)</td><td>+30% per entity — directional estimate based on single-tenant architecture; no published benchmark. Higher UAT overhead for localised compliance patches vs. multi-tenant cloud ERPs</td></tr>
-                <tr><td>Oracle Cloud ERP</td><td>×1.3 (estimated)</td><td>+50% per entity — directional estimate. Forrester ERP Solutions Landscape Q1 2026 cites higher configuration complexity for Oracle Fusion vs. lightweight cloud ERPs in regulatory compliance scenarios</td></tr>
-                <tr><td>SAP S/4HANA</td><td>×1.5</td><td>+60% per entity — supported by SAPinsider S/4HANA Migration Benchmark 2025 and Forrester ERP Solutions Landscape Q1 2026 (higher "configuration complexity" rating)</td></tr>
-                <tr><td>Multi-ERP (2+ systems)</td><td>Avg multiplier ×1.135</td><td>+13.5% integration penalty — IDC 2025 "SaaS ERP Multi-Cloud Complexity" survey (12–15% integration and reconciliation penalty for heterogeneous ERP environments)</td></tr>
+                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+25% per entity - baseline, consistent with SAPinsider implementation patterns and industry standard</td></tr>
+                <tr><td>Sage X3</td><td>×1.2 (estimated)</td><td>+30% per entity - directional estimate based on single-tenant architecture; no published benchmark. Higher UAT overhead for localised compliance patches vs. multi-tenant cloud ERPs</td></tr>
+                <tr><td>Oracle Cloud ERP</td><td>×1.3 (estimated)</td><td>+50% per entity - directional estimate. Forrester ERP Solutions Landscape Q1 2026 cites higher configuration complexity for Oracle Fusion vs. lightweight cloud ERPs in regulatory compliance scenarios</td></tr>
+                <tr><td>SAP S/4HANA</td><td>×1.5</td><td>+60% per entity - supported by SAPinsider S/4HANA Migration Benchmark 2025 and Forrester ERP Solutions Landscape Q1 2026 (higher "configuration complexity" rating)</td></tr>
+                <tr><td>Multi-ERP (2+ systems)</td><td>Avg multiplier ×1.135</td><td>+13.5% integration penalty - IDC 2025 "SaaS ERP Multi-Cloud Complexity" survey (12–15% integration and reconciliation penalty for heterogeneous ERP environments)</td></tr>
               </tbody>
             </table>
 
@@ -1889,27 +2465,27 @@
             <table class="meth-table">
               <thead><tr><th>Rate</th><th>Profile</th></tr></thead>
               <tbody>
-                <tr><td>€85/h</td><td>Lean finance team — <a href="https://www.roberthalf.com/be/en/insights/salary-guide" target="_blank" rel="noopener">Robert Half 2026</a></td></tr>
-                <tr><td>€100/h</td><td>Finance + Tax + ERP cross-functional — <a href="https://www.hays.com/salary-guide" target="_blank" rel="noopener">Hays 2026</a></td></tr>
-                <tr><td>€120/h</td><td>Enterprise specialists — <a href="https://www.morganmckinley.com/salary-guides" target="_blank" rel="noopener">Morgan McKinley 2026</a></td></tr>
+                <tr><td>€85/h</td><td>Lean finance team - <a href="https://www.roberthalf.com/be/en/insights/salary-guide" target="_blank" rel="noopener">Robert Half 2026</a></td></tr>
+                <tr><td>€100/h</td><td>Finance + Tax + ERP cross-functional - <a href="https://www.hays.com/salary-guide" target="_blank" rel="noopener">Hays 2026</a></td></tr>
+                <tr><td>€120/h</td><td>Enterprise specialists - <a href="https://www.morganmckinley.com/salary-guides" target="_blank" rel="noopener">Morgan McKinley 2026</a></td></tr>
               </tbody>
             </table>
             <p style="margin-top:4px">Rates are fully loaded (1,650 productive hours/year). ERP reconfiguration and technical testing excluded.</p>
 
             <p class="meth-section-head">Annual mandate burden</p>
-            <p>Mandate readiness is recurring, not one-time. <a href="https://www.vertexinc.com/resources/resource-library/navigating-urgent-e-invoicing-mandates-december-2025-regulatory-alert" target="_blank" rel="noopener">Vertex Regulatory Tracker (Jan 2026)</a> recorded 11 significant regulatory events across France, Poland, Belgium, Spain, Latvia, and Greece in Q4 2025 alone — new technical schemas, pilot launches, legal amendments, and enforcement date confirmations. For a 4–6 country EU footprint, this suggests 4–7+ significant events per year is a conservative floor, not a ceiling. Event types carry different effort weights: go-live events (~100% readiness effort), schema/format updates (~40%), legislative tuning (~20%). Annual estimate uses 2.5–3.5 full-mandate equivalents per year. Note: the Sovos and Billentis reports are cited as general sources for EU mandate complexity; neither report contains the specific per-company frequency figure.</p>
+            <p>Mandate readiness is recurring, not one-time. <a href="https://www.vertexinc.com/resources/resource-library/navigating-urgent-e-invoicing-mandates-december-2025-regulatory-alert" target="_blank" rel="noopener">Vertex Regulatory Tracker (Jan 2026)</a> recorded 11 significant regulatory events across France, Poland, Belgium, Spain, Latvia, and Greece in Q4 2025 alone: new technical schemas, pilot launches, legal amendments, and enforcement date confirmations. For a 4–6 country EU footprint, this suggests 4–7+ significant events per year is a conservative floor, not a ceiling. Event types carry different effort weights: go-live events (~100% readiness effort), schema/format updates (~40%), legislative tuning (~20%). Annual estimate uses 2.5–3.5 full-mandate equivalents per year. Note: the Sovos and Billentis reports are cited as general sources for EU mandate complexity; neither report contains the specific per-company frequency figure.</p>
 
             <p class="meth-section-head">Penalty exposure</p>
             <table class="meth-table">
               <thead><tr><th>Country</th><th>Penalty</th><th>Source</th></tr></thead>
               <tbody>
-                <tr><td>France</td><td>€50/invoice, capped €15,000/year/entity</td><td>France 2026 Budget Law (approved Feb 2026) — <a href="https://www.dynatos.com/blog/france-e-invoicing-penalties-enforcement-2026/" target="_blank" rel="noopener">Dynatos 2026</a>; <a href="https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/" target="_blank" rel="noopener">Sovos France Budget Law</a></td></tr>
+                <tr><td>France</td><td>€50/invoice, capped €15,000/year/entity</td><td>France 2026 Budget Law (approved Feb 2026) - <a href="https://www.dynatos.com/blog/france-e-invoicing-penalties-enforcement-2026/" target="_blank" rel="noopener">Dynatos 2026</a>; <a href="https://sovos.com/regulatory-updates/vat/france-approves-2026-budget-law-confirming-key-amendments-to-the-e-invoicing-and-e-reporting-mandate/" target="_blank" rel="noopener">Sovos France Budget Law</a></td></tr>
                 <tr><td>Poland (KSeF)</td><td>100% of VAT per invoice, no cap (post Jan 2027)</td><td><a href="https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/podstawy-prawne-oraz-kluczowe-terminy/" target="_blank" rel="noopener">Art. 106ni VAT Act</a></td></tr>
-                <tr><td>Germany</td><td>Up to €5,000/invoice (§26a UStG); GoBD non-compliance: VAT deduction denial, bookkeeping rejection — no fixed fine, tax authority discretion (AO)</td><td><a href="https://www.gesetze-im-internet.de/ustg_1980/__26a.html" target="_blank" rel="noopener">§26a UStG (official text)</a>; <a href="https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html" target="_blank" rel="noopener">BMF E-Rechnung FAQ</a></td></tr>
+                <tr><td>Germany</td><td>Up to €5,000/invoice (§26a UStG); GoBD non-compliance: VAT deduction denial, bookkeeping rejection; no fixed fine, tax authority discretion (AO)</td><td><a href="https://www.gesetze-im-internet.de/ustg_1980/__26a.html" target="_blank" rel="noopener">§26a UStG (official text)</a>; <a href="https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html" target="_blank" rel="noopener">BMF E-Rechnung FAQ</a></td></tr>
               </tbody>
             </table>
 
-            <p style="margin-top:10px">Sprint: fixed fee €24,500 per mandate, 6-month engagement, 50% on start / 50% on delivery. One primary legal entity.</p>
+            <p style="margin-top:10px">Sprint fee shown is an indicative example for a single-mandate engagement. Fixed fee, 50% on start / 50% on delivery. Actual fee depends on footprint - get in touch for a quote.</p>
           </div>
         </div>
 
@@ -1922,222 +2498,357 @@
 <section class="clocks-section">
   <div class="clocks-inner">
     <div class="clocks-header">
-      <span class="eyebrow-light">Mandate status — April 2026</span>
-      <h2>Six clocks. All running.<br>None synchronised.</h2>
-      <p>Think of each EU mandate as a clock set to a different alarm time. Poland's went off in February. France rings in September. Germany's issuance alarm sounds in January 2027. They do not run at the same speed, they do not warn you in advance, and none of them wait for each other. Your readiness gap is the distance between where your organisation is today and where each clock says you need to be.</p>
+      <h2>We track the entire European mandate landscape and translate it into what it means for your team.</h2>
     </div>
 
-    <div class="clocks-grid">
-      <div class="clock-card c-live">
-        <span class="clock-flag">🇵🇱</span>
-        <div class="clock-country">Poland</div>
-        <div class="clock-mandate">KSeF — Clearance</div>
-        <span class="status-pill">Live</span>
-        <span class="clock-note">Large taxpayers Feb 2026<br>All VAT-registered Apr 2026</span>
+    <div class="carousel-container">
+      <button class="carousel-arrow" id="carousel-prev" onclick="carouselMove(-1)" aria-label="Previous" disabled>&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="carousel-track">
+          {countries.map(c => (
+            <a href={`/map/${c.data.code}/`} class={`clock-card ${cardClass(c.data)}`}>
+              <span class="clock-flag">{c.data.flag}</span>
+              <div class="clock-country">{c.data.country}</div>
+              <div class="clock-mandate">{mandateLabel(c.data)}</div>
+              <span class="status-pill">{statusPill(c.data)}</span>
+              <span class="clock-note" set:html={cardNote(c.data)} />
+            </a>
+          ))}
+        </div>
       </div>
-      <div class="clock-card c-live">
-        <span class="clock-flag">🇧🇪</span>
-        <div class="clock-country">Belgium</div>
-        <div class="clock-mandate">Peppol BIS B2B</div>
-        <span class="status-pill">Live</span>
-        <span class="clock-note">Mandatory since Jan 2026</span>
-      </div>
-      <div class="clock-card c-live">
-        <span class="clock-flag">🇷🇴</span>
-        <div class="clock-country">Romania</div>
-        <div class="clock-mandate">RO e-Factura</div>
-        <span class="status-pill">Live</span>
-        <span class="clock-note">Mandatory since Jan 2024</span>
-      </div>
-      <div class="clock-card c-urgent">
-        <span class="clock-flag">🇫🇷</span>
-        <div class="clock-country">France</div>
-        <div class="clock-mandate">PDP / Y-Model</div>
-        <span class="status-pill">5 months</span>
-        <span class="clock-note">Large companies<br>Sept 1, 2026</span>
-      </div>
-      <div class="clock-card c-coming">
-        <span class="clock-flag">🇩🇪</span>
-        <div class="clock-country">Germany</div>
-        <div class="clock-mandate">XRechnung / ZUGFeRD</div>
-        <span class="status-pill">Partial</span>
-        <span class="clock-note">Reception: live Jan 2025<br>Issuance: Jan 2027</span>
-      </div>
-      <div class="clock-card c-future">
-        <span class="clock-flag">🇪🇺</span>
-        <div class="clock-country">ViDA</div>
-        <div class="clock-mandate">VAT in the Digital Age</div>
-        <span class="status-pill">Incoming</span>
-        <span class="clock-note">Digital reporting<br>from 2030</span>
-      </div>
+      <button class="carousel-arrow" id="carousel-next" onclick="carouselMove(1)" aria-label="Next">&#8594;</button>
     </div>
 
-    <div class="sources-bar">
-      <p class="sources-label">Mandate data cross-referenced with</p>
-      <div class="sources-links">
-        <a href="https://www.basware.com/en/compliance-map" target="_blank" rel="noopener">Basware Country Compliance Map</a>
-        <a href="https://sovos.com/regulatory-analysis/" target="_blank" rel="noopener">Sovos Regulatory Analysis</a>
-        <a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/" target="_blank" rel="noopener">EU Commission Country Factsheets</a>
-        <a href="https://peppol.org/learn-more/country-profiles/" target="_blank" rel="noopener">OpenPEPPOL Country Profiles</a>
+    <div class="sources-panel">
+      <button class="sources-panel-toggle" onclick="toggleSources(this)" aria-expanded="false">
+        <div class="sources-panel-header">
+          <span class="sources-panel-title">Primary sources</span>
+          <span class="sources-panel-badge">40+ sources across 11 countries</span>
+        </div>
+        <span class="sources-panel-icon">+</span>
+      </button>
+      <div class="sources-panel-drawer" id="sources-drawer">
+        <div class="sources-panel-scroll">
+
+          <div class="source-group">
+            <h5>France: legislation</h5>
+            <ul>
+              <li><a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000048727345" target="_blank" rel="noopener">Loi n° 2023-1322 du 29 décembre 2023, Article 91 - e-invoicing mandate and phase-in schedule</a></li>
+              <li><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869201" target="_blank" rel="noopener">Article 1737 CGI - penalty provisions (EUR 15/invoice, cap EUR 15,000/year)</a></li>
+              <li>Article 289 CGI - invoice format definitions and signature requirements</li>
+              <li>Article L123-22 Code de commerce - commercial archiving (10 years)</li>
+              <li><a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000029140226" target="_blank" rel="noopener">Ordonnance n° 2014-697 du 26 juin 2014 - B2G e-invoicing (Chorus Pro)</a></li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>France: official portals</h5>
+            <ul>
+              <li><a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr - DGFiP external technical specification, FAQ, and e-reporting rules</a></li>
+              <li><a href="https://www.aife.economie.gouv.fr" target="_blank" rel="noopener">aife.economie.gouv.fr - AIFE mandate authority: PDP certification, Annuaire, PPF announcements</a></li>
+              <li><a href="https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees" target="_blank" rel="noopener">impots.gouv.fr - Certified PDP registry (Plateformes Agréées)</a></li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Poland: legislation</h5>
+            <ul>
+              <li><a href="https://dziennikustaw.gov.pl/DU/2024/852" target="_blank" rel="noopener">Act of 9 May 2024, Dz.U. 2024 poz. 852 - KSeF mandatory phases (Feb and Apr 2026)</a></li>
+              <li>VAT Act Art. 106ga - B2B e-invoicing scope and exclusions</li>
+              <li>VAT Act Art. 106j - correction invoice (Faktura korygujaca) rules</li>
+              <li>VAT Act Art. 106na - KSeF platform legal basis</li>
+              <li>VAT Act Art. 106ni - penalty provisions (up to 100% of VAT)</li>
+              <li>VAT Act Art. 106nn - archiving obligations within KSeF (10 years)</li>
+              <li>Council Implementing Decision (EU) 2022/1003 - EU derogation permitting KSeF ahead of ViDA</li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Poland: official portals</h5>
+            <ul>
+              <li><a href="https://www.podatki.gov.pl" target="_blank" rel="noopener">podatki.gov.pl - Polish national tax portal: KSeF Q&A, implementation guides</a></li>
+              <li><a href="https://ksef.podatki.gov.pl" target="_blank" rel="noopener">ksef.podatki.gov.pl - KSeF system portal: FA(3) schema, access, test environment</a></li>
+              <li><a href="https://ksef.mf.gov.pl" target="_blank" rel="noopener">ksef.mf.gov.pl - KSeF REST API v2.0 documentation and OAuth2 authentication</a></li>
+              <li><a href="https://www.mf.gov.pl" target="_blank" rel="noopener">mf.gov.pl - Polish Ministry of Finance: ViDA alignment and consultation outcomes</a></li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Germany: legislation</h5>
+            <ul>
+              <li><a href="https://www.recht.bund.de/bgbl/1/2024/108/VO.html" target="_blank" rel="noopener">Wachstumschancengesetz, BGBl. 2024 I Nr. 108 - Growth Opportunities Act (March 2024)</a></li>
+              <li>§14 UStG - e-invoice definition, format requirements, and transition rules</li>
+              <li>§27 Abs. 38 UStG - phase-in timeline by prior-year turnover threshold</li>
+              <li>E-Rechnungsverordnung (E-RechV, September 2017) - B2G e-invoicing mandate</li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Germany: official sources</h5>
+            <ul>
+              <li>BMF letter, 15 October 2024 - technical requirements, accepted formats, and FAQ</li>
+              <li><a href="https://www.recht.bund.de" target="_blank" rel="noopener">recht.bund.de - German federal law database</a></li>
+              <li>KoSIT / IT Planning Council - XRechnung core invoice usage specification (CIUS DE)</li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Format and interchange standards</h5>
+            <ul>
+              <li>EN 16931-1 - European e-invoice semantic data model (CEN/TC 434)</li>
+              <li>XRechnung - German CIUS on EN 16931 (KoSIT, IT Planning Council)</li>
+              <li>Factur-X - Franco-German hybrid PDF/XML format (FNFE-MPE, AFNOR, FeRD)</li>
+              <li>FA (Faktura) schema v3 - KSeF proprietary XML, Polish Ministry of Finance</li>
+              <li>UBL 2.1 - OASIS Universal Business Language standard</li>
+              <li>Peppol BIS Billing 3.0 - OpenPEPPOL business interoperability specification</li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Cross-referencing platforms and registries</h5>
+            <ul>
+              <li><a href="https://peppol.org/learn-more/country-profiles/" target="_blank" rel="noopener">OpenPEPPOL country profiles - Peppol network coverage and access point requirements</a></li>
+              <li><a href="https://www.basware.com/en/compliance-map" target="_blank" rel="noopener">Basware Country Compliance Map - mandate timeline and format reference</a></li>
+              <li><a href="https://sovos.com/regulatory-analysis/" target="_blank" rel="noopener">Sovos Regulatory Analysis - ongoing mandate tracking across EU jurisdictions</a></li>
+            </ul>
+          </div>
+
+          <div class="source-group">
+            <h5>Industry research</h5>
+            <ul>
+              <li>Vertex Regulatory Tracker, Q4 2025 - mandate change frequency analysis</li>
+              <li>Accenture: The Finance Function Transformation, 2024 - coordination and triage time benchmarks</li>
+              <li>IOFM / SoftCo: AP Processing Benchmark Survey, 2026 - go-live exception rate data</li>
+              <li>Ardent Partners: AP Metrics That Matter, 2024-26 - ERP implementation hour benchmarks</li>
+              <li>Gartner: ERP Complexity Benchmarks, 2024-26 - ERP implementation multipliers</li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="sources-panel-footer">
+          Belgium, Romania, Italy, Denmark, Netherlands, Sweden, Spain, and Finland are covered with equivalent primary legislation and official portal sources in their individual compliance map entries.
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PROBLEM -->
+
+<!-- WHAT PREPARATION INVOLVES -->
 <section class="section bg-alt">
   <div class="inner">
-    <span class="eyebrow">Why readiness fails</span>
-    <h2 class="section-h">Mandate readiness stalls for the same four reasons.</h2>
-    <p class="section-lead">The mandate is known. The deadline is visible. Nothing moves because nobody owns the translation from regulation to operational action - and every function assumes someone else is covering it.</p>
+    <h2 class="section-h">What getting ready actually requires.</h2>
 
-    <div class="problem-grid">
-      <div class="problem-card">
-        <div class="p-icon">⇄</div>
-        <h3>No single owner</h3>
-        <p>Tax interprets. Finance Ops escalates. IT configures. Nobody coordinates the full chain and action sits in the gap between functions.</p>
+    <div class="icp-grid">
+      <div class="icp-card" onclick="toggleIcpCard(this)">
+        <h3>France: new vendor to onboard, master data to clean, September 2026</h3>
+        <div class="phase-icon-row">
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="icp-card-body">
+          <ul>
+            <li>Selecting a certified PDP platform is a full vendor procurement - plan 6-12 weeks through InfoSec and legal before integration can even begin</li>
+            <li>Your ERP connector must be built and validated against the PDP API; the standard "send invoice" process does not work until this is done</li>
+            <li>SIRET master data for every French establishment must be verified and corrected - often months of cleanup work</li>
+            <li>Finance Systems, Tax, and Finance Ops each have distinct preparation tasks with no natural coordinator between them</li>
+          </ul>
+        </div>
       </div>
-      <div class="problem-card">
-        <div class="p-icon">⊙</div>
-        <h3>Local visibility gap</h3>
-        <p>Local accounting partners handle each country. HQ has no structured view of readiness across entities. Problems surface too late to fix cleanly.</p>
+      <div class="icp-card" onclick="toggleIcpCard(this)">
+        <h3>Poland: government API already live, penalties from August 2026</h3>
+        <div class="phase-icon-row">
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="icp-card-body">
+          <ul>
+            <li>KSeF uses FA-3, a government-specific XML schema - no standard ERP connector covers it out of the box, custom mapping required</li>
+            <li>Every invoice is validated in real time by the government platform; a rejection means the invoice does not legally exist yet</li>
+            <li>Your ERP needs a dedicated API connection per company NIP, authenticated with OAuth2 to the KSeF system</li>
+            <li>If your Polish entity is not yet connected and tested, the penalty window opens in August 2026</li>
+          </ul>
+        </div>
       </div>
-      <div class="problem-card">
-        <div class="p-icon">⊟</div>
-        <h3>ERP assumptions that do not hold</h3>
-        <p>Many ERPs do not natively support new mandate formats. SIRET mismatches, missing connectors, and format gaps generate exception volume from day one.</p>
+      <div class="icp-card" onclick="toggleIcpCard(this)">
+        <h3>Germany: two separate obligations, ERP output often not yet correct</h3>
+        <div class="phase-icon-row">
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="icp-card-body">
+          <ul>
+            <li>The receiving obligation has been live since January 2025 - many ERP systems were never configured to ingest structured XML from suppliers</li>
+            <li>Outbound XRechnung or ZUGFeRD output is required by January 2027 - this is an ERP output configuration change, not a platform selection</li>
+            <li>There is no central platform: exchange is peer-to-peer, which means every counterparty relationship relies on your ERP being configured correctly</li>
+            <li>Many teams discover their current setup outputs a PDF attachment - not a machine-readable XML - only when a customer rejects an invoice</li>
+          </ul>
+        </div>
       </div>
-      <div class="problem-card">
-        <div class="p-icon">↧</div>
-        <h3>HQ deprioritisation</h3>
-        <p>HQ ranks problems by Euro impact and headcount. Small-country mandate pressure is structurally invisible at group level until it becomes an emergency.</p>
-      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 48px;">
+      <a href="/map/" class="btn-primary">See the full breakdown for each country</a>
     </div>
   </div>
 </section>
 
 <!-- PRODUCT -->
-<section class="section" id="product">
+<section class="section" id="product" style="padding-bottom: 48px;">
   <div class="inner">
-    <span class="eyebrow">The Readiness Sprint</span>
-    <h2 class="section-h">One mandate. One country. Six months to go-live.</h2>
-    <p class="section-lead">Structured work packets routed to the right owners inside your finance function - with a partner accountability module that creates visibility across your local entities. Fixed scope, fixed fee, no surprises.</p>
+    <span class="eyebrow">Our services</span>
+    <h2 class="section-h">One track, two stages. Your team gets to ready - and stays there.</h2>
+    <p class="section-lead">Our service is a structured engagement. We enable your finance teams so you meet e-invoicing mandates - continuously as mandates develop.</p>
+
+    <div class="journey-track">
+      <div class="journey-phase jp-pale" onclick="toggleJourneyPhase(this)">
+        <div class="journey-phase-header">
+          <span class="phase-label">Scoping &amp; Onboarding</span>
+          <h4>Mapping your mandate footprint</h4>
+        </div>
+        <div class="phase-icon-row">
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="journey-phase-body">
+          <ul class="phase-bullets">
+            <li>We identify which e-invoicing laws apply to which of your business units, and when</li>
+            <li>We assess how ready your current systems and processes are</li>
+            <li>You get a clear plan before any preparation work begins</li>
+          </ul>
+        </div>
+      </div>
+      <div class="journey-arrow">&#8594;</div>
+      <div class="journey-phase jp-mid" onclick="toggleJourneyPhase(this)">
+        <div class="journey-phase-header">
+          <span class="phase-label">Readiness Sprint</span>
+          <h4>Get the bases covered</h4>
+        </div>
+        <div class="phase-icon-row">
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="journey-phase-body">
+          <ul class="phase-bullets">
+            <li>Every function that needs to act gets a structured action list, specific to their role</li>
+            <li>Finance Systems, Tax, Finance Ops, and local accounting partners - all in one plan</li>
+            <li>Named owners, a shared timeline, and documented completion per mandate</li>
+          </ul>
+        </div>
+      </div>
+      <div class="journey-arrow">&#8594;</div>
+      <div class="journey-phase jp-dark" onclick="toggleJourneyPhase(this)">
+        <div class="journey-phase-header">
+          <span class="phase-label">Continuous Mandate Coverage</span>
+          <h4>Stay ready</h4>
+        </div>
+        <div class="phase-icon-row">
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="journey-phase-body">
+          <ul class="phase-bullets">
+            <li>When regulations change, the affected teams receive updated instructions automatically</li>
+            <li>Your lead has one view across all countries: what is open, what is handled</li>
+            <li>Quarterly. Sized to your footprint. No noise when nothing changes.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <div class="sprint-box">
       <div class="sprint-meta">
         <span class="sprint-badge">Example scope</span>
       </div>
-      <h3>France B2B Readiness Sprint</h3>
-      <p class="sprint-tagline">France PDP mandate &nbsp;·&nbsp; September 2026 deadline &nbsp;·&nbsp; one legal entity</p>
+      <h3>France PDP Readiness Sprint</h3>
+      <p class="sprint-tagline">France PDP &nbsp;·&nbsp; September 2026 (large companies and ETIs) &nbsp;·&nbsp; one legal entity</p>
 
       <div class="deliverables-grid">
         <div class="deliverable">
           <h4>Finance Systems Owner</h4>
-          <p>ERP connector gap analysis, SIRET/SIREN master data audit, PDP vendor decision framework, T-minus action sequence.</p>
+          <p>What your ERP needs to produce and accept, which master data fields need to be corrected before go-live, what to require from your platform vendor, and a week-by-week action sequence from now to the deadline.</p>
         </div>
         <div class="deliverable">
           <h4>Tax / Compliance</h4>
-          <p>Mandate applicability confirmation, format and field requirements, correction and cancellation flow, archival obligations.</p>
+          <p>Which entities and transactions are in scope, what the format requirements mean for your VAT reporting, how corrections and cancellations work, and what needs to be retained for audit.</p>
         </div>
         <div class="deliverable">
           <h4>Finance Ops</h4>
-          <p>Exception handling protocol, reception obligation readiness, escalation path, go-live monitoring setup.</p>
+          <p>What to expect in the first 30 days after go-live, how to handle invoices that fail validation, who escalates what, and how to monitor for exceptions before they become a backlog.</p>
         </div>
         <div class="deliverable">
-          <h4>Partner Accountability</h4>
-          <p>Structured questions and required artifacts for local accounting partners and entity finance leads. Response SLA and escalation path.</p>
+          <h4>Local Partner Accountability</h4>
+          <p>A structured question set for your accounting partners in each country, what they need to confirm and by when, and a clear record that it was done - not an email chain.</p>
         </div>
       </div>
 
       <div class="sprint-pills">
         <span class="sprint-pill">Fixed scope</span>
-        <span class="sprint-pill">Six months</span>
         <span class="sprint-pill">Fixed fee</span>
         <span class="sprint-pill">50% on start · 50% on delivery</span>
-        <span class="sprint-pill">Non-authoritative — always source-linked</span>
+        <span class="sprint-pill">Source-linked with snapshot dates</span>
       </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 48px;">
+      <a href="/services/" class="btn-primary">Learn more about our services</a>
     </div>
   </div>
 </section>
 
 <!-- FOR WHO -->
-<section class="section bg-alt" id="for-who">
+<section class="section bg-alt" id="for-who" style="padding-top: 48px;">
   <div class="inner">
-    <span class="eyebrow">Is this you?</span>
-    <h2 class="section-h">Built for finance teams managing EU mandate rollouts without dedicated compliance headcount.</h2>
-    <p class="section-lead">This is not tax advice. It is operational readiness support for the people responsible for making sure nothing breaks at go-live.</p>
+    <span class="eyebrow">Who is this service for?</span>
+    <h2 class="section-h">You're holding the full picture. Nobody else is.</h2>
+    <p class="section-lead">Getting ready for an e-invoicing mandate is not one task. It is six parallel workstreams, across every entity in your footprint, each requiring time and internal effort to coordinate.</p>
 
-    <div class="icp-grid">
-      <div class="icp-card">
-        <h3>Multi-country European groups</h3>
-        <ul>
-          <li>3 to 20 EU countries with active entities</li>
-          <li>Lean central finance team, coordinated operations</li>
-          <li>No dedicated e-invoicing programme manager</li>
-          <li>Local partners handling country-level accounting</li>
-        </ul>
+    <div class="orch-diagram">
+      <div class="orch-top">
+        <span class="orch-you">VP Finance Ops &nbsp;/&nbsp; Group Controller</span>
+        <span class="orch-sub">E-invoice compliance orchestration</span>
       </div>
-      <div class="icp-card">
-        <h3>Active mandate pressure</h3>
-        <ul>
-          <li>French SAS or subsidiary in scope for Sept 2026</li>
-          <li>Polish entity managing KSeF go-live</li>
-          <li>German B2B reception live, issuance Jan 2027</li>
-          <li>ERP that does not natively handle mandate formats</li>
-        </ul>
+
+      <div class="orch-nodes">
+        <div class="orch-node-group">
+          <span class="orch-arrow">&#8597;</span>
+          <div class="orch-node n-systems">Finance<br/>Systems</div>
+        </div>
+        <div class="orch-node-group">
+          <span class="orch-arrow">&#8597;</span>
+          <div class="orch-node n-tax">Tax /<br/>Compliance</div>
+        </div>
+        <div class="orch-node-group">
+          <span class="orch-arrow">&#8597;</span>
+          <div class="orch-node n-ap">AP /<br/>Inbound</div>
+        </div>
+        <div class="orch-node-group">
+          <span class="orch-arrow">&#8597;</span>
+          <div class="orch-node n-ar">AR /<br/>Outbound</div>
+        </div>
+        <div class="orch-node-group">
+          <span class="orch-arrow">&#8597;</span>
+          <div class="orch-node n-archive">Archiving<br/>&amp; Audit</div>
+        </div>
+        <div class="orch-node-group">
+          <span class="orch-arrow">&#8597;</span>
+          <div class="orch-node n-partners">Local<br/>Partners</div>
+        </div>
       </div>
-      <div class="icp-card">
-        <h3>Governance gap</h3>
-        <ul>
-          <li>No single named mandate owner across countries</li>
-          <li>Ownership sits between Tax, IT, and Finance Ops</li>
-          <li>Relying on local partners for central visibility</li>
-          <li>Internal governance project moving slowly</li>
-        </ul>
+
+      <div class="orch-entity-bar">
+        <span class="orch-entity">France entity</span>
+        <span class="orch-entity">Poland entity</span>
+        <span class="orch-entity">Germany entity</span>
+        <span class="orch-entity">+ every other entity in scope</span>
       </div>
     </div>
+
+    <p class="orch-caption">Finance Systems configures the ERP. Tax interprets the mandate. Finance Ops handles go-live exceptions. AP and AR change how invoices move. Archiving must store them correctly. And in each country, the local accounting partner has it covered - on whose timeline, confirmed how? You are the one who needs to turn all of that into a single shared plan before the deadline.</p>
   </div>
 </section>
 
 <!-- MID CTA -->
 <section class="section">
   <div class="inner">
-    <div class="mid-cta">
-      <div class="mid-cta-text">
-        <h3>France or Poland deadline on your radar?</h3>
-        <p>Send a short note about your situation. We will come back with a frank read on your readiness gap and what a sprint would cover - no sales sequence, no demo call.</p>
-      </div>
+    <div class="mid-cta" style="flex-direction:column; align-items:center; text-align:center; gap:24px;">
+      <h3 style="font-size:1.2rem; font-weight:800; letter-spacing:-0.02em; color:var(--navy); max-width:520px;">Tell us about your mandate footprint. We come back with a frank read of where you stand.</h3>
       <a href="#contact" class="btn-primary">Get in touch</a>
-    </div>
-  </div>
-</section>
-
-<!-- CREDENTIALS -->
-<section class="section bg-alt" id="about">
-  <div class="inner">
-    <span class="eyebrow">Who is behind this</span>
-    <h2 class="section-h">Built by someone who mapped EU mandate complexity from the inside.</h2>
-
-    <div class="cred-layout">
-      <div class="cred-bio">
-        <h3>Jens Anttila</h3>
-        <span class="cred-role">Founder, einvoiceops</span>
-        <p>Former product marketer at Basware, covering AP and e-invoice compliance for 2.5 years. Built the internal compliance country map and worked directly with product and GTM teams on how mandate changes translate into customer impact.</p>
-        <p>Since leaving, I have conducted independent buyer and expert research across EU mandate readiness - interviewing finance and tax leads at multi-country European groups, compliance experts, and platform product leaders. einvoiceops is built from that research, not from a consulting template.</p>
-        <p>Based in Finland. Native German speaker. Available across EU time zones.</p>
-      </div>
-
-      <div class="cred-facts">
-        <h4>Background</h4>
-        <ul>
-          <li>2.5 years at Basware — AP and e-invoice compliance product marketing</li>
-          <li>Built internal EU mandate country map and compliance taxonomy</li>
-          <li>Independent buyer research across France, Poland, Germany, Belgium, Romania</li>
-          <li>Interviewed finance and tax leads at multi-country EU groups on mandate readiness gaps</li>
-          <li>Domain expertise: EN16931, XRechnung / ZUGFeRD, PEPPOL BIS, PDP certification, KSeF architecture</li>
-          <li>Coverage: clearance platform mandates (FR, PL, IT, RO) and high-investment mandates (DE, ES, HU)</li>
-        </ul>
-      </div>
     </div>
   </div>
 </section>
@@ -2147,16 +2858,25 @@
   <div class="inner">
     <span class="eyebrow">FAQ</span>
     <h2 class="section-h">Questions we hear most.</h2>
-    <p class="section-lead">Not answered here? Email directly.</p>
+    <p class="section-lead">Not answered here? <a href="mailto:jens@einvoiceops.eu">Email directly.</a></p>
 
     <div class="faq-list">
       <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What exactly are EU e-invoicing mandates?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Several EU countries have passed laws requiring companies to use structured electronic invoice formats instead of PDF. The specifics vary significantly by country. France and Poland use clearance platforms: invoices must be validated by a government or certified platform before they reach the recipient, so any data error stops the invoice from going through. Germany and Belgium require structured formats exchanged directly between trading partners, with no central government platform. Each country has its own technical format, its own registration requirements, and its own timeline for when companies must start receiving and when they must start issuing. France, Poland, Germany, Belgium, Romania, and Italy all have active or imminent mandates affecting B2B transactions.
+        </div>
+      </div>
+      <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
           Is this tax advice or legal advice?
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          No. einvoiceops provides operational readiness support - structured work packets, action sequences, and accountability frameworks. We do not interpret tax law, give compliance opinions, or confirm that your organisation is compliant. All work packets are source-linked to official government and regulatory sources and include a clear disclaimer. For legal or tax interpretation, you need a qualified advisor. What we do is translate the operational implications of mandates into actions for the right people inside your organisation.
+          No. einvoiceops provides operational readiness support - structured work packets and action sequences for internal preparation. We do not interpret tax law, give compliance opinions, or confirm that your organisation is compliant. All work packets are source-linked to official sources and include a clear disclaimer. For tax or legal interpretation, engage a qualified advisor.
         </div>
       </div>
       <div class="faq-item">
@@ -2165,55 +2885,86 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          A set of structured work packets - one per relevant persona in your finance function (Finance Systems Owner, Tax/Compliance, Finance Ops). Each packet covers: mandate snapshot and what it means operationally, a T-minus action sequence from now to the deadline, fields and systems affected, what you need from other teams, and a partner accountability module with structured questions for your local accounting partners. Everything is source-linked with a confidence level and a snapshot date.
+          A work packet per function in your finance team - Finance Systems Owner, Tax/Compliance, Finance Ops. Each covers: what the mandate means operationally, a T-minus action sequence to the deadline, which systems and fields are affected, what you need from other teams, and a partner accountability module for your local accounting partners. Everything is source-linked with a snapshot date.
         </div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
-          My AP vendor says they already cover this. Why do I need a readiness sprint?
+          Our invoicing software vendor says they cover e-invoicing compliance. Is that not enough?
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          Platform vendors handle the technical exchange layer - sending and receiving invoices in the right format. They do not handle what needs to happen inside your organisation before that works: master data quality (SIRET for France, GTU codes for Poland), internal ownership clarity, ERP connector configuration, exception handling processes, and partner confirmation across your local entities. These are internal readiness tasks your platform vendor cannot do for you. The sprint covers the gap between what your vendor delivers and what your organisation needs to have ready.
+          Your platform vendor handles the connection to the government network and the technical exchange format. They do not configure your ERP to produce compliant output, clean your master data, coordinate the preparation work across your internal teams, or confirm that your local accounting partners are ready. Those are internal tasks your vendor cannot do for you. They are what breaks at go-live when they have not been done.
         </div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
-          How do you price the sprint?
+          How are the services priced?
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          Fixed fee per sprint - one mandate, one country, one legal entity. Pricing is deliverable-based, not day-rate based: 50% on engagement start, 50% on delivery of the final work packet set. This keeps scope clean and predictable. Pricing is discussed directly before any engagement starts - get in touch with your situation and we will give you a clear number.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          We have multiple countries with upcoming mandates. Where do we start?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          Start with the nearest hard deadline. France (Sept 2026) and Poland (live) are the most time-pressured for most European groups right now. Germany issuance (Jan 2027) has a longer runway but a more complex internal preparation requirement. We can help you triage based on your entity footprint and ERP setup - send us a short note.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Do you work with companies of any size?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          The sprint is designed for companies with 500 to 5,000 employees operating across 3 to 20 EU countries. Large enough to have multi-country mandate exposure, lean enough that no single team has the bandwidth to own all of it. If you are smaller with only one country in scope, or larger with a dedicated compliance programme, the sprint may not be the right fit - and we will tell you that directly.
+          Both the sprint and the ongoing coverage are fixed fee - no day rates, no hourly billing. The sprint is scoped to your EU entity footprint and priced per the number of countries and entities in scope. Coverage is billed quarterly. Get in touch with your countries and ERP and we will come back with a clear number upfront.
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What exactly are EU e-invoicing mandates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Several EU countries have passed laws requiring structured electronic invoicing instead of PDF. The approach differs by country: France and Poland use clearance platforms where invoices must be validated before reaching the recipient. Germany and Belgium require structured XML formats exchanged directly between trading partners, with no central government platform. Each country has its own format, registration requirements, and timeline. France, Poland, Germany, Belgium, Romania, and Italy all have active or imminent mandates affecting B2B transactions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is einvoiceops tax advice or legal advice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. einvoiceops provides operational readiness support - structured work packets and action sequences for internal preparation. We do not interpret tax law, give compliance opinions, or confirm that your organisation is compliant. All work packets are source-linked to official sources and include a clear disclaimer. For tax or legal interpretation, engage a qualified advisor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do I receive at the end of a readiness sprint?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A work packet per function in your finance team - Finance Systems Owner, Tax/Compliance, Finance Ops. Each covers: what the mandate means operationally, a T-minus action sequence to the deadline, which systems and fields are affected, what you need from other teams, and a partner accountability module for your local accounting partners. Everything is source-linked with a snapshot date."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "My platform vendor says they handle e-invoicing. Why do I need a readiness sprint?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Platform vendors handle the technical exchange layer - sending and receiving invoices in the right format. They do not handle what needs to happen inside your organisation first: master data quality, ERP connector configuration, internal ownership clarity, and partner confirmation across entities. That internal readiness gap is what the sprint covers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are the services priced?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both the sprint and the ongoing coverage are fixed fee - no day rates, no hourly billing. The sprint is scoped to your EU entity footprint and priced per the number of countries and entities in scope. Coverage is billed quarterly. Contact us with your countries and ERP for a clear number upfront."
+      }
+    }
+  ]
+}
+</script>
+
 <!-- CONTACT -->
 <section class="section bg-alt" id="contact">
   <div class="inner">
     <div class="contact-box">
-      <h2>Tell us your situation. Get back a frank read of your mandate gaps.</h2>
-      <p>If you have French, Polish, or German entities and a deadline on your radar, send a short note. We will come back with a frank read of your readiness gap and what a sprint would cover - in writing, within 48 hours.</p>
+      <h2>Tell us your footprint. Get back a frank read of where you stand.</h2>
+      <p>Share your countries, your ERP, and where you stand. We come back with a clear picture of what your situation requires - in writing, within 48 hours.</p>
       <a href="mailto:jens@einvoiceops.eu" class="email-link">jens@einvoiceops.eu</a>
     </div>
   </div>
@@ -2222,7 +2973,7 @@
 <!-- FOOTER -->
 <footer>
   <p>einvoiceops &nbsp;·&nbsp; <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> &nbsp;·&nbsp; Finland</p>
-  <p>© 2026 einvoiceops</p>
+  <p>© 2026 einvoiceops &nbsp;·&nbsp; <a href="/legal/">Legal Notice</a> &nbsp;·&nbsp; <a href="/privacy/">Privacy Policy</a></p>
 </footer>
 
 <!-- DISCLAIMER -->
@@ -2235,9 +2986,69 @@
 
 <script is:inline>
   /* ---- FAQ ---- */
+  /* ---- CAROUSEL ---- */
+  let carouselPos = 0;
+
+  function carouselVisibleCount() {
+    const vp = document.querySelector('.carousel-viewport');
+    const card = document.querySelector('.clock-card');
+    if (!vp || !card) return 4;
+    return Math.max(1, Math.floor(vp.offsetWidth / (card.offsetWidth + 14)));
+  }
+
+  function carouselMaxPos() {
+    return Math.max(0, document.querySelectorAll('.clock-card').length - carouselVisibleCount());
+  }
+
+  function carouselMove(dir) {
+    carouselPos = Math.max(0, Math.min(carouselPos + dir, carouselMaxPos()));
+    const track = document.getElementById('carousel-track');
+    const card = document.querySelector('.clock-card');
+    if (!track || !card) return;
+    track.style.transform = `translateX(-${carouselPos * (card.offsetWidth + 14)}px)`;
+    document.getElementById('carousel-prev').disabled = carouselPos === 0;
+    document.getElementById('carousel-next').disabled = carouselPos >= carouselMaxPos();
+  }
+
+  function equalizeIcpHeadings() {
+    const cards = [...document.querySelectorAll('.icp-card')];
+    cards.forEach(c => { const h = c.querySelector('h3'); if (h) h.style.minHeight = ''; });
+    const maxH = Math.max(...cards.map(c => c.querySelector('h3')?.offsetHeight || 0));
+    if (maxH > 0) cards.forEach(c => { const h = c.querySelector('h3'); if (h) h.style.minHeight = maxH + 'px'; });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    carouselMove(0);
+    equalizeIcpHeadings();
+    window.addEventListener('resize', () => {
+      carouselPos = Math.min(carouselPos, carouselMaxPos());
+      carouselMove(0);
+      equalizeIcpHeadings();
+    });
+  });
+
+  function toggleIcpCard(card) {
+    const isOpen = card.classList.contains('ic-open');
+    document.querySelectorAll('.icp-card.ic-open').forEach(c => c.classList.remove('ic-open'));
+    if (!isOpen) card.classList.add('ic-open');
+  }
+
+  function toggleJourneyPhase(card) {
+    const isOpen = card.classList.contains('jp-open');
+    document.querySelectorAll('.journey-phase.jp-open').forEach(c => c.classList.remove('jp-open'));
+    if (!isOpen) card.classList.add('jp-open');
+  }
+
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
     item.classList.toggle('open');
+  }
+
+  /* ---- SOURCES PANEL ---- */
+  function toggleSources(btn) {
+    const drawer = document.getElementById('sources-drawer');
+    const isOpen = drawer.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
   }
 
   /* ---- CALCULATOR ---- */
@@ -2254,11 +3065,11 @@
   };
 
   // ERP multiplier and per-entity scaling by named ERP
-  // NetSuite / Dynamics: 1.0x baseline — widely accepted, per SAPinsider / implementation patterns
-  // Sage X3: 1.2x — directional estimate based on architecture complexity; no published benchmark
-  // Oracle Cloud ERP: 1.3x — directional estimate; Forrester ERP Landscape Q1 2026 cites higher config complexity
-  // SAP S/4HANA: 1.5x — supported by SAPinsider 2025 complexity benchmarks; Forrester ERP Landscape Q1 2026
-  // Multi-ERP: avg mult + 17.5% coordination overhead — modelled on Hackett Group (18% higher IT ops in fragmented envs)
+  // NetSuite / Dynamics: 1.0x baseline - widely accepted, per SAPinsider / implementation patterns
+  // Sage X3: 1.2x - directional estimate based on architecture complexity; no published benchmark
+  // Oracle Cloud ERP: 1.3x - directional estimate; Forrester ERP Landscape Q1 2026 cites higher config complexity
+  // SAP S/4HANA: 1.5x - supported by SAPinsider 2025 complexity benchmarks; Forrester ERP Landscape Q1 2026
+  // Multi-ERP: avg mult + 17.5% coordination overhead - modelled on Hackett Group (18% higher IT ops in fragmented envs)
   const ERP_CONFIG = {
     netsuite:  { mult: 1.0, entityScale: 0.25 },
     dynamics:  { mult: 1.0, entityScale: 0.25 },
@@ -2268,7 +3079,7 @@
     other:     { mult: 1.0, entityScale: 0.25 }
   };
 
-  const MULTI_ERP_COORDINATION = 0.135; // 12-15% integration penalty for mixed ERP — IDC 2025 "SaaS ERP Multi-Cloud Complexity" (midpoint 13.5%)
+  const MULTI_ERP_COORDINATION = 0.135; // 12-15% integration penalty for mixed ERP - IDC 2025 "SaaS ERP Multi-Cloud Complexity" (midpoint 13.5%)
 
   function entityFactor(n, erpKey) {
     if (n <= 1) return 1.0;
@@ -2318,13 +3129,10 @@
     return '€' + Math.round(n);
   }
 
-  function updateRangeBar(costLow, costHigh, totalSprint) {
-    const viz    = document.getElementById('range-viz');
-    const band   = document.getElementById('range-band');
-    const marker = document.getElementById('range-sprint-marker');
-    const pip    = document.getElementById('sprint-marker-pip');
+  function updateRangeBar(costLow, costHigh) {
+    const viz  = document.getElementById('range-viz');
+    const band = document.getElementById('range-band');
 
-    // Scale: full track = costHigh * 2, so the team cost band always sits in the right half
     const scaleMax = costHigh * 2;
     _costLow  = costLow;
     _costHigh = costHigh;
@@ -2332,18 +3140,11 @@
 
     viz.style.display = 'block';
 
-    // Inner band: positioned at costLow..costHigh on the scale
     const bandLeftPct  = (costLow  / scaleMax) * 100;
     const bandWidthPct = ((costHigh - costLow) / scaleMax) * 100;
     band.style.left  = bandLeftPct + '%';
     band.style.width = bandWidthPct + '%';
 
-    // Sprint marker: positioned at totalSprint on the same scale (left of band in typical cases)
-    const sprintPct = Math.max(2, Math.min(96, (totalSprint / scaleMax) * 100));
-    marker.style.left = sprintPct + '%';
-    pip.textContent   = fmtShort(totalSprint);
-
-    // Position point labels under band edges
     const lblLowEl  = document.getElementById('lbl-low-pos');
     const lblHighEl = document.getElementById('lbl-high-pos');
     const lblLow    = document.getElementById('range-label-low');
@@ -2360,7 +3161,7 @@
     document.getElementById('countries-display').textContent = entities + (entities >= 10 ? '+' : '');
 
     // Multi-ERP model: average multiplier across selected ERPs + 17.5% coordination overhead
-    // Formula: Total = Σ(effort × ERP_i_mult / n_erps) × (1 + coordination) — Forrester TEI Q1 2026
+    // Formula: Total = Σ(effort × ERP_i_mult / n_erps) × (1 + coordination) - Forrester TEI Q1 2026
     // Single ERP: straight multiplier, no coordination overhead
     const selectedERPs = [...document.querySelectorAll('input[name="calc-erp"]:checked')].map(i => i.value);
     const isMultiERP = selectedERPs.length > 1;
@@ -2384,30 +3185,21 @@
     const rangePills  = document.getElementById('out-range-pills');
     const scopeInt    = document.getElementById('out-scope-internal');
     const savingBadge = document.getElementById('saving-badge');
-    const sprintLabel = document.getElementById('sprint-label');
-    const sprintPriceEl = document.getElementById('sprint-price-display');
-    const sprintNote  = document.getElementById('sprint-note');
     const penaltyRow        = document.getElementById('penalty-row');
     const penaltyVal        = document.getElementById('penalty-value');
     const polandPenaltyRow  = document.getElementById('poland-penalty-row');
     const germanyPenaltyRow = document.getElementById('germany-penalty-row');
 
     if (selected.length === 0) {
-      hoursEl.textContent    = '—';
+      hoursEl.textContent    = '--';
       hoursNote.textContent  = 'Select a mandate above';
       rangePills.innerHTML   = '';
-      scopeInt.textContent   = '—';
-      savingBadge.style.display    = 'none';
-      const sh = document.getElementById('saving-hero');
-      sh.style.display = 'none';
-      document.getElementById('saving-hero-divider').style.display     = 'none';
-      document.getElementById('saving-hero-annual-block').style.display = 'none';
+      scopeInt.textContent   = '--';
+      savingBadge.style.display = 'none';
       penaltyRow.style.display     = 'none';
       polandPenaltyRow.style.display  = 'none';
       germanyPenaltyRow.style.display = 'none';
       document.getElementById('range-viz').style.display = 'none';
-      sprintNote.textContent = '';
-      sprintPriceEl.textContent = '€24,500';
       return;
     }
 
@@ -2427,11 +3219,6 @@
     const costHigh = hoursHigh * rate;
     const costMid  = hoursMid  * rate;
 
-    const nSprints    = selected.length;
-    const totalSprint = nSprints * SPRINT_PRICE;
-    const savingLow   = costLow  - totalSprint;
-    const savingHigh  = costHigh - totalSprint;
-
     hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
     hoursNote.textContent = selected.length + ' mandate' + (selected.length > 1 ? 's' : '') +
       ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y') + ' · readiness overhead only';
@@ -2440,70 +3227,14 @@
       '<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured team: ' + hoursLow.toLocaleString('de-DE') + 'h</span>' +
       '<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc / reactive: ' + hoursHigh.toLocaleString('de-DE') + 'h</span>';
 
-    updateRangeBar(costLow, costHigh, totalSprint);
-
-    const countryShort = { france: 'France', poland: 'Poland', germany: 'Germany', belgium: 'Belgium', romania: 'Romania' };
-    const selectedNames = selected.map(m => countryShort[m]);
-    const headCountry = selectedNames.length <= 3
-      ? selectedNames.join(' + ')
-      : selectedNames.slice(0, 2).join(' + ') + ' +' + (selectedNames.length - 2) + ' more';
+    updateRangeBar(costLow, costHigh);
 
     scopeInt.textContent = fmt(costMid) + ' (typical midpoint)';
 
-    sprintLabel.textContent = nSprints > 1
-      ? nSprints + ' × Readiness Sprint (fixed fee)'
-      : 'Readiness Sprint (fixed fee)';
-    sprintPriceEl.textContent = fmt(totalSprint);
-
-    // Saving hero — large, right under the graph
-    const savingHero    = document.getElementById('saving-hero');
-    const savingHeroAmt = document.getElementById('saving-hero-amount');
-    const savingHeroSub = document.getElementById('saving-hero-sub');
-    const savingHeroDivider     = document.getElementById('saving-hero-divider');
-    const savingHeroAnnualBlock = document.getElementById('saving-hero-annual-block');
-    const savingHeroAnnualAmt   = document.getElementById('saving-hero-annual-amount');
-    const savingHeroAnnualSub   = document.getElementById('saving-hero-annual-sub');
-
-    if (savingLow > 0) {
-      savingHero.style.display  = 'block';
-      savingHeroAmt.textContent = fmt(savingLow) + ' – ' + fmt(savingHigh);
-      savingHeroSub.textContent = 'compared to your team handling this internally (' + headCountry + ')';
-    } else if (savingHigh > 0) {
-      savingHero.style.display  = 'block';
-      savingHeroAmt.textContent = 'up to ' + fmt(savingHigh);
-      savingHeroSub.textContent = 'potential saving in reactive scenarios (' + headCountry + ')';
-    } else {
-      savingHero.style.display = 'none';
-    }
-
-    // Annual mandate burden — Vertex Q4 2025: 11 events across 6 EU countries in one quarter
-    // Weighted by event type: go-lives ~100% effort, schema updates ~40%, legislative tuning ~20%
-    // Range: 2.5–3.5 full-mandate equivalents per year for a 4-6 country footprint
-    if (nSprints > 0 && savingHero.style.display !== 'none') {
-      const perMandateLow  = costLow  / nSprints;
-      const perMandateHigh = costHigh / nSprints;
-      const annualLow  = Math.round(perMandateLow  * 2.5);
-      const annualHigh = Math.round(perMandateHigh * 3.5);
-      savingHeroDivider.style.display     = 'block';
-      savingHeroAnnualBlock.style.display = 'block';
-      savingHeroAnnualAmt.textContent     = fmt(annualLow) + ' – ' + fmt(annualHigh) + '/year';
-      savingHeroAnnualSub.textContent     = '4–7 mandate change events/year (Vertex Q4 2025: 11 events across 6 EU countries in one quarter) · ' +
-        'weighted for event type: go-lives, schema updates, legislative tuning · based on your rate and ERP inputs';
-    } else {
-      savingHeroDivider.style.display     = 'none';
-      savingHeroAnnualBlock.style.display = 'none';
-    }
-
     savingBadge.style.display = 'none';
 
-    sprintNote.textContent = isMultiERP
-      ? 'Mixed ERP environment — estimate uses average multiplier across selected ERPs plus 13.5% integration overhead (IDC 2025). Actual cost depends on which entities run which system.'
-      : nSprints > 1
-        ? 'Pricing assumes one entity per mandate. For multi-entity engagements, contact us for a proposal.'
-        : '';
-
     // France: €50/invoice capped at €15,000/year/entity (2026 Budget Law, confirmed Feb 2026)
-    // Previously €15 — increased by 2026 Finance Act. Source: dynatos.com / vatcalc.com
+    // Previously €15 - increased by 2026 Finance Act. Source: dynatos.com / vatcalc.com
     if (selected.includes('france')) {
       penaltyRow.style.display = 'flex';
       penaltyVal.textContent   = fmt(15000 * entities) + '/year';

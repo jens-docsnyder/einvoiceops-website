@@ -1,5 +1,32 @@
 country_code: PL
 entries:
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "2"
+    new_value: "1"
+    description: "KSeF number 35-character claim confirmed from KSeF API v2 production spec (api.ksef.mf.gov.pl/docs/v2): schema defines KsefNumber as minLength 35, maxLength 36 (36 accepted for KSeF 1.0 backward compat only). Spec states: 'W KSeF 2.0 numery są generowane wyłącznie w formacie 35-znakowym.' One AMBER remains: FA(2) schema January 31, 2026 invalidation date — API spec confirms FA(3) as current standard but specific date not found. Research item updated with this finding and next search direction (github.com/CIRFMF/ksef-docs changelog). Confidence stays AMBER."
+    source_url: "https://api.ksef.mf.gov.pl/docs/v2/index.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_high"
+    old_value: "1"
+    new_value: "0"
+    description: "PLN 200M Phase 1 threshold and 2024 reference year confirmed from consolidated KSeF act text (Dz.U. 2023 poz. 1598, Article 145l): 'did not exceed PLN 200,000,000 in 2024' — companies below threshold received grace extension to March 31, 2026; companies above were mandatory from February 1, 2026. Page claim confirmed correct. Two AMBER items remain open (FA(2) schema date, KSeF number 35 chars). Confidence stays AMBER."
+    source_url: "https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20230001598/U/D20231598Lj.pdf"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: error-correction
+    field: "research.PL-1.source_url + research.PL-2.source_url"
+    old_value: "PL-1: isap.sejm.gov.pl poz.852 (Act of May 9, 2024). PL-2: podatki.gov.pl/ksef/ main page"
+    new_value: "PL-1: source_url null — wrong document (amending act only changes dates, does not contain PLN 200M threshold or reference year). PL-2: source_url null — wrong document (main page navigates to example invoice PDFs, not API specification)"
+    description: "Verification pass found two cited sources to be wrong documents. PL-1: the May 2024 amending act (poz. 852) only amends transition dates — the PLN 200M threshold and 2024 reference year are in the original June 2023 KSeF mandate act (poz. 1598). New source to check: isap.sejm.gov.pl poz.1598. PL-2: the podatki.gov.pl/ksef main page leads to example FA(3) invoice PDFs, not the API specification needed to confirm the 35-character KSeF number identifier. New source to check: API documentation at podatki.gov.pl or ksef.mf.gov.pl. Both items remain open — claims on page unverified, counts unchanged."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-30T00:00:00Z
     type: initial-publish
     field: null

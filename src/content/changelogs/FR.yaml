@@ -1,5 +1,77 @@
 country_code: FR
 entries:
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_amber + last_verified"
+    old_value: "amber, unresolved_amber: 1, last_verified: 2026-04-29"
+    new_value: "green, unresolved_amber: 0, last_verified: 2026-05-04"
+    description: "France reaches GREEN. Final AMBER item closed: pilot phase specific dates (Feb-Aug 2026) had no findable primary source after impots.gouv.fr sources confirmed dead and annuaire-pdp.fr confirmed as non-official independent guide. Page updated to remove specific month dates; operational substance retained ('pilot phase in progress ahead of September 2026 go-live'). All HIGH and AMBER items cleared across two sessions."
+    source_url: null
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-04T00:00:00Z
+    type: content-update
+    field: "preparation_timeline.testing_pilot"
+    old_value: "The official Pilot Phase runs from February to August 2026."
+    new_value: "A pilot phase is in progress ahead of the September 2026 go-live."
+    description: "Pilot phase specific dates (February to August 2026) removed — no primary source found after exhausting impots.gouv.fr and confirming annuaire-pdp.fr is a third-party guide, not official. Operational substance kept. Page remains accurate without making unverifiable date claims."
+    source_url: null
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-04T00:00:00Z
+    type: content-update
+    field: "preparation_timeline.pdp_selection + friction_map.od_transition"
+    old_value: "PPF's B2B exchange capability was discontinued in October 2024 (stated as fact, two locations)"
+    new_value: "PPF does not support B2B invoice exchange (factual, no date cited)"
+    description: "PPF B2B discontinuation date (October 2024) had no findable primary source after three confirmed dead URLs on impots.gouv.fr and no confirmation on annuaire-pdp.fr. Claim softened from dated fact to present-tense statement. The core claim (PPF does not handle B2B exchange) is consistent with the PDP ecosystem and annuaire-pdp.fr content. Specific date removed — if DGFiP source is found later, date can be re-added."
+    source_url: null
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_high"
+    old_value: "1"
+    new_value: "0"
+    description: "FR HIGH item closed by softening the unsourced claim. All HIGHs now cleared. One AMBER remains open: pilot phase dates Feb-Aug 2026 (impots.gouv.fr sources dead, annuaire-pdp.fr FAQ not yet checked). Confidence stays AMBER."
+    source_url: null
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-04T00:00:00Z
+    type: error-correction
+    field: "penalty_max"
+    old_value: "EUR 15 per invoice (cap EUR 15,000/year); EUR 250 per e-reporting transmission (cap EUR 15,000/year)"
+    new_value: "EUR 50/invoice for failure to issue electronically (Art. 1737 §III CGI, cap EUR 15,000/year); EUR 15/invoice for content errors (Art. 1737 §II CGI, cap 25% of invoice amount); EUR 500-1,000/quarter escalating for failure to use certified PDP for reception (Art. 1737 §IV bis CGI). First infraction exempt if corrected within 30 days (Art. 1737 §V CGI)."
+    description: "Penalty figures were wrong. Article 1737 CGI confirmed from legifrance: §II EUR 15/invoice applies to content errors only (cap 25% of invoice amount, no EUR 15K/year cap); §III EUR 50/invoice applies to failure to issue electronically (cap EUR 15K/year); §IV EUR 50/invoice is PDP liability for data transmission failures, not taxpayer liability (cap EUR 45K/year); §IV bis sets escalating fines for failure to use PDP for reception (warning → EUR 500 → EUR 1K/quarter). EUR 250/e-reporting figure did not appear in Article 1737 at all. mandate_version incremented."
+    source_url: "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006069577/"
+    mandate_version_before: 1
+    mandate_version_after: 2
+  - timestamp: 2026-05-04T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "2"
+    new_value: "1"
+    description: "Penalty amounts confirmed from Article 1737 CGI (with corrections — see error-correction entry). Penalty AMBER item resolved and removed. Two items remain open: HIGH (PPF B2B discontinuation — two dead source URLs on impots.gouv.fr, next search pending); AMBER (pilot phase dates Feb-Aug 2026 — same dead sources, annuaire-pdp.fr search pending). Confidence stays AMBER."
+    source_url: "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006069577/"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-04T00:00:00Z
+    type: error-correction
+    field: "research.FR-1.source_url + research.FR-2.source_url"
+    old_value: "impots.gouv.fr/facturation-electronique (suggested as next source after initial FAQ failed)"
+    new_value: "source_url: null — impots.gouv.fr/facturation-electronique also returns 404"
+    description: "Second impots.gouv.fr URL confirmed dead. PPF B2B discontinuation claim (FR HIGH) and pilot phase dates claim (FR AMBER) both now have two confirmed dead sources on the DGFiP domain. Next search: Google 'site:impots.gouv.fr PPF B2B' or annuaire-pdp.fr. If no source found after one more search: soften PPF B2B claim to [A-CONF] on page. Pilot dates: try annuaire-pdp.fr or Google. Claims on page remain unchanged pending next search."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "3"
+    new_value: "2"
+    description: "First source verification pass (partial). One AMBER item resolved: Article 91 of Loi 2023-1322 (Legifrance JORFARTI000048727444) confirmed: Sep 1, 2026 for large companies / ETI, Sep 1, 2027 for SMEs / micro, with postponement decree option up to Dec 1 / Dec 1 respectively. Two items still open: (1) HIGH - PPF B2B discontinuation October 2024: DGFiP FAQ does not contain the claim, main impots.gouv.fr page search pending; (2) AMBER - pilot phase dates Feb-Aug 2026: original source URL 404, new source search pending. Penalty amounts (AMBER) also still pending - no source URL found yet. Confidence stays AMBER."
+    source_url: "https://www.legifrance.gouv.fr/jorf/id/JORFARTI000048727444"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-27T00:00:00Z
     type: initial-publish
     field: null

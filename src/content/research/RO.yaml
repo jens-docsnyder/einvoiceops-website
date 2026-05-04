@@ -2,21 +2,21 @@ country_code: RO
 items:
   - priority: high
     type: source-verification
-    description: "OUG 89/2025 — drives the key January 2026 changes (5-day window standardization, non-resident expansion). No source URL cited for this regulation. Find the official Romanian Official Gazette (Monitorul Oficial) publication of OUG 89/2025 and confirm both changes are in the text."
+    description: "No source URL — search: 'OUG 89/2025 Monitorul Oficial Romania' OR 'Ordonanta urgenta 89 2025 e-factura'. Also try monitoruloficial.ro and search for OUG 89 from 2025. Confirm: regulation exists and its text includes (1) standardization of the 5-day submission window and (2) expansion to non-resident VAT-registered entities. If found: add source_url to this item, no page change → remove + decrement high. If regulation number is wrong (not OUG 89/2025): search for the correct OUG number that covers January 2026 e-Factura changes and update the legal citation on RO page."
     source_url: null
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "EU Council Decision 2023/1553 — cited as the derogation permitting Romania's mandate, expiring December 31, 2026. Verify the exact decision number and expiry date against the Official Journal of the EU."
+    description: "Open source link (EUR-Lex search) → the search should return Decision 2023/1553. Click the result and Ctrl+F '31 December 2026' or '2023/1553'. Confirm: exact decision number is 2023/1553 and it expires December 31, 2026. If confirmed: update source_url on this item to the direct EUR-Lex document link (not the search URL), no page change → remove + decrement amber. If expiry date differs: update the derogation_expiry note on RO page."
     source_url: "https://eur-lex.europa.eu/search.html?query=2023%2F1553"
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "Penalty of '15% of invoice value for B2B transactions outside XML system' — cited as GEO 120/2021 Art. 13^1 as amended by Law 296/2023. Verify this specific percentage and the article reference against the enacted Romanian legislation."
+    description: "No source URL — search: 'OUG 120/2021 art 13^1 Legea 296/2023 penalitate e-factura' OR 'GEO 120/2021 amendament 15 la suta'. Also try: legislatie.just.ro or monitoruloficial.ro for OUG 120/2021 as amended. Confirm: 15% of invoice value penalty in Art. 13^1 of GEO 120/2021 as amended by Law 296/2023. If found: add source_url → remove + decrement amber. If percentage or article reference is different: update penalty_pct and legal citation on RO page."
     source_url: null
     added: 2026-05-01
   - priority: amber
     type: source-verification
-    description: "BNR exchange rate requirement — VAT must be expressed in RON using the National Bank of Romania daily rate. Find the specific ANAF or fiscal code provision that mandates the BNR daily rate (as opposed to a monthly average or contractual rate)."
+    description: "Open source link (ANAF e-factura page) → look for currency or RON conversion guidance. Ctrl+F 'cursul BNR' or 'rata de schimb' or 'Banca Nationala'. Confirm: ANAF explicitly states the National Bank of Romania (BNR) daily rate must be used (not a monthly average or contractual rate). If confirmed: no page change → remove + decrement amber. If ANAF page does not address this: search ANAF for 'curs valutar factura' or check Codul Fiscal Art. 139 for the currency conversion rule."
     source_url: "https://www.anaf.ro/anaf/internet/RO/e-factura"
     added: 2026-05-01

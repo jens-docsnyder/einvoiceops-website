@@ -1,5 +1,41 @@
 country_code: BE
 entries:
+  - timestamp: 2026-05-03T00:00:00Z
+    type: confidence-upgrade
+    field: confidence_summary
+    old_value: "amber"
+    new_value: "green"
+    description: "Belgium reaches GREEN. All source verification items resolved. Pending legislative amendment to Art. 3 §2bis scope (non-established entities) documented in future_direction only - not a current accuracy gap. GREEN means current state verified, not that the law will never change. When amendment enacted, immediately returns to AMBER."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: confidence-upgrade
+    field: multiple
+    old_value: "amber - 3 high, 2 amber unresolved"
+    new_value: "amber - 0 high, 1 amber (pending-amendment monitor only)"
+    description: "First source verification pass (Country Research Protocol v1.0). All 3 HIGH items resolved: penalties text confirmed by FPS Finance (Tier 2); foreign_resident_scope confirmed false (Tier 2) with pending-amendment added for active law change; Art. 44 scope confirmed transaction-level from 2024 law Art. 3 §2bis (Tier 1). Both AMBER items resolved: 2028 coalition agreement framing confirmed (Tier 2); cius: null confirmed (Tier 2 + Tier 1). Two text precision improvements auto-applied from Tier 1 findings."
+    source_url: "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: content-update
+    field: "friction_map.art44_misapplication + operational_ownership.tax_compliance"
+    old_value: "entity-level framing: 'entities exclusively carrying out exempt activities'"
+    new_value: "transaction-level framing: 'Art. 44 exempt transactions are outside scope; any entity with taxable transactions must e-invoice those'"
+    description: "Precision improvement from Tier 1 read of 2024 law Art. 3 §2bis. Law uses transaction-level language. Previous entity-level framing was not wrong but less precise. Updated Friction Map and Operational Ownership sections."
+    source_url: "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-03T00:00:00Z
+    type: content-update
+    field: "correction_business_continuity.correction"
+    old_value: "credit note only mentioned"
+    new_value: "added: any document specifically and unambiguously modifying the original invoice is legally valid (Art. 3 §2bis)"
+    description: "Tier 1 confirmation from 2024 law: correction invoices are legally valid in addition to credit notes. Correction section updated to reflect the broader legal basis while keeping credit note as the Peppol standard practice."
+    source_url: "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-29T00:00:00Z
     type: initial-publish
     field: null

@@ -1,22 +1,2 @@
 country_code: DE
-items:
-  - priority: high
-    type: source-verification
-    description: "penalty_max is null — verify whether there are genuinely no financial penalties for non-compliance with the German e-invoice mandate (failure to receive EN 16931, failure to archive correctly) or whether the data is simply missing. Penalties may exist under UStG or GoBD."
-    source_url: null
-    added: 2026-05-01
-  - priority: high
-    type: source-verification
-    description: "BMF Schreiben October 15, 2025 — cited for the 'innerer Kontrollpfad' (internal control path) concept and Rn 35a claim that the XML is legally binding in the event of discrepancy with the PDF. Click the URL and confirm these exact claims appear at Rn 35a."
-    source_url: "https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Wachstumschancengesetz (BGBl. 2024 I Nr. 108) — cited for the EUR 800,000 threshold and the transition rule under §27 Abs. 38 UStG. Click the URL and confirm the threshold and transition rule are as described."
-    source_url: "https://www.recht.bund.de/bgbl/1/2024/108/VO.html"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "BMF FAQ on e-invoicing — cited for the correction invoice (Rechnungsberichtigung) procedure. Click the URL and confirm that the FAQ explicitly states the correction document must itself be a fully compliant EN 16931 electronic invoice."
-    source_url: "https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html"
-    added: 2026-05-01
+items: []

@@ -342,6 +342,55 @@ function getValTip(field: string, val: string | null | undefined): string | unde
       .row-label { width: 120px; }
       .row-icon { width: 16px; }
     }
+
+    .country-cta {
+      margin-top: 32px;
+      background: #f8f9fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .country-cta-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .country-cta-text strong {
+      font-size: 0.925rem;
+      color: #111827;
+      font-weight: 600;
+    }
+    .country-cta-text span {
+      font-size: 0.85rem;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+    .country-cta-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #2563eb;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .country-cta-link:hover { text-decoration: underline; }
+
+    footer {
+      padding: 24px 2rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    footer p { font-size: 0.8rem; color: #6b7280; }
+    footer a { color: #2563eb; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -547,6 +596,14 @@ function getValTip(field: string, val: string | null | undefined): string | unde
     <div class="disclaimer">
       This content is provided for operational preparation purposes only and does not constitute legal, financial, or tax advice. While we strive for accuracy, EU regulatory requirements change frequently. Validate with your legal counsel or tax advisors before implementation. einvoiceops.eu is not an authoritative source of law.
     </div>
+
+    <div class="country-cta">
+      <div class="country-cta-text">
+        <strong>Preparing your {d.country} rollout?</strong>
+        <span>Send a short note about your entity setup. We will come back with a frank read of your readiness gap &mdash; in writing, within 48 hours.</span>
+      </div>
+      <a href={`mailto:jens@einvoiceops.eu?subject=Inquiry regarding ${d.country} e-invoicing compliance`} class="country-cta-link">Email jens@einvoiceops.eu</a>
+    </div>
   </main>
 
   <GlossaryPanel country={d.code} />
@@ -654,5 +711,9 @@ function getValTip(field: string, val: string | null | undefined): string | unde
       });
     })();
   </script>
+  <footer>
+    <p>einvoiceops &nbsp;&middot;&nbsp; <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> &nbsp;&middot;&nbsp; Finland</p>
+    <p>&copy; 2026 einvoiceops &nbsp;&middot;&nbsp; <a href="/legal/">Legal Notice</a> &nbsp;&middot;&nbsp; <a href="/privacy/">Privacy Policy</a></p>
+  </footer>
 </body>
 </html>
