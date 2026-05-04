@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # local-only pages (never deploy)
 src/pages/status.astro
+src/pages/cockpit.astro

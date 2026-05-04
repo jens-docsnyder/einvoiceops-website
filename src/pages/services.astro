@@ -273,6 +273,33 @@
     }
 
     /* Pills shared */
+    /* ---- COCKPIT EMBED ---- */
+    .cockpit-wrap {
+      margin-top: 36px;
+    }
+    .cockpit-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .cockpit-frame {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .cockpit-frame img { width: 100%; display: block; }
+    .cockpit-caption {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
+
     .sprint-pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .sprint-pill {
       background: var(--bg-alt); border: 1px solid var(--border);
@@ -417,6 +444,19 @@
 
           <div class="orch-note">
             Plus: one shared plan across all roles, all mandates, all entities - so the mandate manager sees the full picture, not scattered emails.
+          </div>
+
+          <div class="cockpit-wrap">
+            <span class="cockpit-label">Readiness cockpit — mid-sprint view</span>
+            <div class="cockpit-frame">
+              <img
+                src="/cockpit-demo.png"
+                alt="Mandate readiness cockpit showing cluster matrix, work packet status, and action items for a 3-country engagement across France, Germany, and Poland."
+                width="2880"
+                height="1900"
+              />
+            </div>
+            <p class="cockpit-caption">3-mandate engagement, week 2 of 4. Each cluster shows the owner function and current status. Work packets ship per role as clusters close. Blocked items surface immediately.</p>
           </div>
 
           <div class="sprint-compact">
