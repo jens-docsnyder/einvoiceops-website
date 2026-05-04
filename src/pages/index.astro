@@ -34,7 +34,7 @@ function statusPill(data: any): string {
 }
 
 function mandateLabel(data: any): string {
-  if (data.mandate_type === 'clearance-pdp') return 'PDP / Y-Model';
+  if (data.mandate_type === 'clearance-pdp') return 'PA / Y-Model';
   if (data.mandate_type === 'centralized-clearance') {
     const m: Record<string, string> = { PL: 'KSeF / Clearance', IT: 'SdI / Clearance', RO: 'RO e-Factura' };
     return m[data.code] ?? `${data.formats?.[0] ?? ''} / Clearance`;
@@ -76,8 +76,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>einvoiceops - EU E-invoice Mandate Readiness | France PDP · Poland KSeF · Germany B2B</title>
-  <meta name="description" content="EU e-invoicing mandate readiness for finance teams. Structured work packets for France PDP (Sept 2026), Poland KSeF, Germany B2B. Fixed scope, fixed fee, routed to the right internal owners." />
+  <title>einvoiceops - EU E-invoice Mandate Readiness | France PA · Poland KSeF · Germany B2B</title>
+  <meta name="description" content="EU e-invoicing mandate readiness for finance teams. Structured work packets for France PA (Sept 2026), Poland KSeF, Germany B2B. Fixed scope, fixed fee, routed to the right internal owners." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -2197,7 +2197,7 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
             <label class="mandate-check" id="chk-france">
               <input type="checkbox" name="calc-mandate" value="france" onchange="calcUpdate(); toggleCheck(this)">
               <span class="mandate-status-dot" style="background:#d97706"></span>
-              <span class="mandate-check-label">France PDP <span>Sept 2026</span></span>
+              <span class="mandate-check-label">France PA <span>Sept 2026</span></span>
             </label>
             <label class="mandate-check" id="chk-poland">
               <input type="checkbox" name="calc-mandate" value="poland" onchange="calcUpdate(); toggleCheck(this)">
@@ -2352,7 +2352,7 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
             <table class="meth-table">
               <thead><tr><th>ERP</th><th>Multiplier</th><th>Entity scaling (2nd entity+)</th></tr></thead>
               <tbody>
-                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+15% per entity - multi-tenant cloud ERPs share PDP provider setup, format mapping, and test scripts across entities; incremental work is entity registration, master data, and local training only</td></tr>
+                <tr><td>NetSuite / Dynamics 365 / Other</td><td>×1.0</td><td>+15% per entity - multi-tenant cloud ERPs share PA provider setup, format mapping, and test scripts across entities; incremental work is entity registration, master data, and local training only</td></tr>
                 <tr><td>Sage X3</td><td>×1.2 (estimated)</td><td>+25% per entity - directional estimate based on single-tenant architecture; no published benchmark. Higher UAT overhead for localised compliance patches vs. multi-tenant cloud ERPs</td></tr>
                 <tr><td>Oracle Cloud ERP</td><td>×1.3 (estimated)</td><td>+40% per entity - directional estimate. Forrester ERP Solutions Landscape Q1 2026 cites higher configuration complexity for Oracle Fusion vs. lightweight cloud ERPs in regulatory compliance scenarios</td></tr>
                 <tr><td>SAP S/4HANA</td><td>×1.5</td><td>+60% per entity - supported by SAPinsider S/4HANA Migration Benchmark 2025 and Forrester ERP Solutions Landscape Q1 2026 (higher "configuration complexity" rating)</td></tr>
@@ -2444,8 +2444,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
             <h5>France: official portals</h5>
             <ul>
               <li><a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr - DGFiP external technical specification, FAQ, and e-reporting rules</a></li>
-              <li><a href="https://www.aife.economie.gouv.fr" target="_blank" rel="noopener">aife.economie.gouv.fr - AIFE mandate authority: PDP certification, Annuaire, PPF announcements</a></li>
-              <li><a href="https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees" target="_blank" rel="noopener">impots.gouv.fr - Certified PDP registry (Plateformes Agréées)</a></li>
+              <li><a href="https://www.aife.economie.gouv.fr" target="_blank" rel="noopener">aife.economie.gouv.fr - AIFE mandate authority: PA certification, Annuaire, PPF announcements</a></li>
+              <li><a href="https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees" target="_blank" rel="noopener">impots.gouv.fr - Certified PA registry (Plateformes Agréées)</a></li>
             </ul>
           </div>
 
@@ -2530,7 +2530,7 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
               <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Belgium — B2G/B2B mandate status, Mercurius platform, Peppol BIS 3.0, phased B2G rollout by contract value. EC verified.</a></li>
               <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Denmark — B2G mandatory April 2019, NemHandel platform, OIOUBL/Peppol BIS 3.0, Bookkeeping Act 2022 (DKK 300,000 threshold, January 2026).</a></li>
               <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Finland — B2G mandatory April 2019 (Act 241/2019), B2B right to request e-invoices, Finvoice 3.0 and Peppol BIS 3.0. EC verified.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">France — B2B mandate September 2026 (receive), private PDP model, Chorus Pro for B2G, Factur-X/UBL 2.1/CII formats. EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">France — B2B mandate September 2026 (receive), private PA (Plateforme Agréée) model, Chorus Pro for B2G, Factur-X/UBL 2.1/CII formats. EC verified.</a></li>
               <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Germany — B2B reception mandatory January 2025, issuance phased 2027–2028 by turnover, XRechnung/ZUGFeRD, decentralised B2G (ZRE/OZG-RE).</a></li>
               <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Italy — B2B/B2C mandatory January 2019 (all sizes from January 2024), SDI platform, FatturaPA format, Decision (EU) 2024/3150. EC verified.</a></li>
               <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Netherlands — B2G mandatory November 2019 (law of December 2017), Peppol network routing via Digipoort, NLCIUS/SI-UBL 2.0. EC verified.</a></li>
@@ -2565,8 +2565,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
         </div>
         <div class="icp-card-body">
           <ul>
-            <li>Selecting a certified PDP platform is a full vendor procurement - plan 6-12 weeks through InfoSec and legal before integration can even begin</li>
-            <li>Your ERP connector must be built and validated against the PDP API; the standard "send invoice" process does not work until this is done</li>
+            <li>Selecting a certified PA (Plateforme Agréée) is a full vendor procurement - plan 6-12 weeks through InfoSec and legal before integration can even begin</li>
+            <li>Your ERP connector must be built and validated against the PA API; the standard "send invoice" process does not work until this is done</li>
             <li>SIRET master data for every French establishment must be verified and corrected - often months of cleanup work</li>
             <li>Finance Systems, Tax, and Finance Ops each have distinct preparation tasks with no natural coordinator between them</li>
           </ul>
@@ -2672,8 +2672,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
       <div class="sprint-meta">
         <span class="sprint-badge">Example scope</span>
       </div>
-      <h3>France PDP Readiness Sprint</h3>
-      <p class="sprint-tagline">France PDP &nbsp;·&nbsp; September 2026 (large companies and ETIs) &nbsp;·&nbsp; one legal entity</p>
+      <h3>France PA Readiness Sprint</h3>
+      <p class="sprint-tagline">France PA &nbsp;·&nbsp; September 2026 (large companies and ETIs) &nbsp;·&nbsp; one legal entity</p>
 
       <div class="deliverables-grid">
         <div class="deliverable">
@@ -2971,7 +2971,7 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   // Low = 600h full impl × 45% readiness fraction; High = 900h × 45%
   // Source: Ardent Partners / Gartner 2024-26 lighter ERP benchmarks
   const MANDATE_BASE = {
-    france:  { name: "France PDP",        low: 270, high: 405 },
+    france:  { name: "France PA",          low: 270, high: 405 },
     poland:  { name: "Poland KSeF",       low: 290, high: 430 },
     germany: { name: "Germany B2B",       low: 270, high: 405 },
     belgium: { name: "Belgium Peppol",    low: 200, high: 300 },

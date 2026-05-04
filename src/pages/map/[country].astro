@@ -59,13 +59,13 @@ const VALUE_TIPS: Record<string, Record<string, string>> = {
   mandate_type: {
     interoperability: "Companies exchange invoices directly with each other through a shared network (Peppol) or agreed channels. No government platform sits in the middle. Germany uses this model.",
     'centralized-clearance': "Every invoice must pass through a single government platform that validates it before the buyer receives it. The invoice is only legally issued once the government system has processed it. Italy uses this model.",
-    'clearance-pdp': "Similar to centralised clearance, but exchange happens through certified private platforms (PDPs) rather than a single government portal. The government platform acts as a directory and data receiver. France uses this model.",
+    'clearance-pdp': "Similar to centralised clearance, but exchange happens through certified private platforms (PAs - Plateformes Agréées) rather than a single government portal. The government platform acts as a directory and data receiver. France uses this model.",
     'post-audit': "Invoices are exchanged directly and reported to the government after the fact. The government reviews data periodically rather than in real time. The older model - most countries are moving away from it.",
   },
   vida_alignment: {
     'DRR-compliant': "This country's mandate is designed to align with the EU's ViDA Digital Reporting Requirements, which will govern cross-border transactions from around 2030. Germany is positioned here.",
     'legacy-clearance': "This country built its clearance model before ViDA was designed. The existing system will need to be partially rebuilt or bridged when ViDA cross-border rules arrive. Italy is in this category.",
-    'ctc-national': "A national continuous transaction control model that predates ViDA and runs independently of it. Alignment with ViDA's cross-border requirements is planned for 2030+. France's PDP model is in this category.",
+    'ctc-national': "A national continuous transaction control model that predates ViDA and runs independently of it. Alignment with ViDA's cross-border requirements is planned for 2030+. France's PA model is in this category.",
   },
   b2c_scope: {
     none: "Invoices to private consumers are not covered by this mandate.",
@@ -92,7 +92,7 @@ const VALUE_TIPS: Record<string, Record<string, string>> = {
   transport_protocol: {
     'Peppol-BIS-3.0': "The standard used by the Peppol network. Invoices are transmitted via certified access point providers using the AS4 protocol. Peppol is the recommended path for Germany's B2B mandate.",
     SFTP: "Secure file transfer - the high-volume direct channel for connecting to Italy's SdI platform. Used by large-scale senders.",
-    PDP: "All B2B invoice exchange in France must go through a certified PDP (Plateforme Agréée). The PDP handles format conversion, transmission, and tax data reporting.",
+    PA: "All B2B invoice exchange in France must go through a certified PA (Plateforme Agréée). The PA handles format conversion, transmission, and tax data reporting.",
     'API-OAuth2': "API-based transmission using OAuth2 authentication. Used in clearance models where real-time government validation is required.",
   },
   b2g_signature: {

@@ -1,5 +1,14 @@
 country_code: FR
 entries:
+  - timestamp: 2026-05-04T17:00:00Z
+    type: content-update
+    field: "All page body + frontmatter transport_protocol"
+    old_value: "PDP (Plateforme de Dématérialisation Partenaire)"
+    new_value: "PA (Plateforme Agréée)"
+    description: "Terminology update: French authorities renamed the certified private platforms from PDP (Plateforme de Dématérialisation Partenaire) to PA (Plateforme Agréée). All 20+ body references updated across FR.md, index.astro, services.astro, GlossaryPanel.astro, [country].astro, PL.md, RO.md. Glossary entry updated: PDP entry renamed to PA, definition notes the former PDP name. Historical changelog entries not changed."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
     field: "confidence_summary + unresolved_amber + last_verified"

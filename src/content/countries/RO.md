@@ -70,7 +70,7 @@ Romania's e-Factura mandate is fully live. The clearance model - where paper inv
 
 A structural time pressure: the EU derogation permitting Romania's mandate expires December 31, 2026 (EU Council Decision 2023/1553). Romania will either transition to the ViDA permanent framework or seek extension. The specific changes required are currently undefined.
 
-Unlike Italy (SdI delivers invoices to the buyer) and France (PDP exchanges between parties), Romania requires the buyer to actively download the ANAF-signed XML from the SPV (Virtual Private Space). AP teams without an automated SPV download process are processing PDFs, not legal documents.
+Unlike Italy (SdI delivers invoices to the buyer) and France (PA exchanges between parties), Romania requires the buyer to actively download the ANAF-signed XML from the SPV (Virtual Private Space). AP teams without an automated SPV download process are processing PDFs, not legal documents.
 
 For a foreign group onboarding a Romanian entity, implementation from a standing start takes 3-6 months:
 
@@ -102,7 +102,7 @@ The configuration work items in each of these areas vary by ERP system, entity s
 
 **ANAF submission flow.** The API cycle is asynchronous. Sender submits XML, receives an upload ID, polls for status, then downloads a ZIP containing the original XML plus the ANAF digital signature when accepted. This ZIP is the legal original. Standard ERP integrations expect synchronous responses - the asynchronous poll cycle requires middleware or a custom integration layer.
 
-**The SPV buyer inbox.** Buyers must actively download incoming invoices from the SPV. This is the key architectural difference from Italy's SdI and France's PDP model. AP teams without automated SPV download will have invoices accumulating in the inbox unprocessed.
+**The SPV buyer inbox.** Buyers must actively download incoming invoices from the SPV. This is the key architectural difference from Italy's SdI and France's PA model. AP teams without automated SPV download will have invoices accumulating in the inbox unprocessed.
 
 **D406 SAF-T cross-reference.** The ANAF index number assigned to each accepted invoice must appear in the D406 SalesInvoices XML block. The index must flow from the e-Factura callback into the ERP document header before the D406 extraction runs.
 
