@@ -1474,8 +1474,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     .compare-value.green { color: #16a34a; }
     .compare-value.accent { color: var(--accent); }
 
-    .saving-badge { display: none; } /* hidden - replaced by saving-hero */
-
     .saving-hero {
       display: none;
       background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
@@ -1548,31 +1546,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
 
 
     /* ---- RANGE TOOLTIP ---- */
-    .range-tooltip {
-      position: fixed;
-      pointer-events: none;
-      z-index: 999;
-      background: var(--navy);
-      color: white;
-      padding: 5px 11px;
-      border-radius: 7px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      white-space: nowrap;
-      transform: translate(14px, -50%);
-      display: none;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));
-    }
-
-    .range-tooltip::before {
-      content: '';
-      position: absolute;
-      right: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      border: 5px solid transparent;
-      border-right-color: var(--navy);
-    }
 
     /* ---- RANGE SOURCES ---- */
     .range-sources {
@@ -1658,13 +1631,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
 
     .range-viz-sub strong { color: white; font-weight: 700; }
 
-    .range-legend {
-      font-size: 0.68rem;
-      color: #6b94c4;
-      margin-top: 12px;
-      line-height: 1.5;
-    }
-
     .range-sources a {
       color: #2563eb;
       text-decoration: underline;
@@ -1672,113 +1638,50 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     }
     .range-sources a:hover { color: #1d4ed8; }
 
-    .range-track-wrap {
-      position: relative;
-      padding-top: 60px;
-      margin-bottom: 4px;
-    }
-
-    .range-track {
-      height: 30px;
-      background: #dce6f0;
-      border-radius: 14px;
-      position: relative;
-      overflow: visible;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    .range-band {
-      position: absolute;
-      top: 0;
-      height: 100%;
-      background: linear-gradient(90deg, #93c5fd 0%, #2563eb 100%);
-      border-radius: 14px;
-      transition: left 0.55s cubic-bezier(0.34, 1.3, 0.64, 1),
-                  width 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
-      left: 50%;
-      width: 0%;
-    }
-
-
-    .range-sprint-marker {
-      position: absolute;
-      top: -10px;
-      width: 3px;
-      height: calc(100% + 20px);
-      background: var(--navy);
-      border-radius: 2px;
-      transition: left 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
-      left: 25%;
-    }
-
-    .sprint-marker-card {
-      position: absolute;
-      bottom: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--navy);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 8px;
-      white-space: nowrap;
+    .range-bar-vals {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 9px;
+    }
+
+    .range-bar-vals strong {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .range-bar-vals strong:first-child { color: var(--accent); }
+    .range-bar-vals strong:last-child  { color: var(--sub); }
+
+    .range-bar {
+      height: 38px;
+      background: linear-gradient(90deg, #93c5fd 0%, #2563eb 100%);
+      border-radius: 12px;
+      display: flex;
       align-items: center;
-      gap: 1px;
-      filter: drop-shadow(0 2px 8px rgba(26,43,60,0.3));
+      justify-content: space-between;
+      padding: 0 16px;
     }
 
-    .sprint-marker-card::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: var(--navy);
-    }
-
-    .sprint-card-label {
-      font-size: 0.58rem;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      opacity: 0.65;
-    }
-
-    .sprint-card-price {
-      font-size: 1rem;
-      font-weight: 800;
+    .range-end-marker {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.7);
       line-height: 1;
+      user-select: none;
     }
 
-    .range-point-labels {
-      position: relative;
-      height: 52px;
-      margin-top: 10px;
+    .range-bar-descs {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
     }
 
-    .range-point-label {
-      position: absolute;
-      transform: translateX(-50%);
-      text-align: center;
+    .range-bar-descs span {
       font-size: 0.68rem;
-      line-height: 1.35;
       color: var(--muted);
-      white-space: nowrap;
-      transition: left 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
     }
-
-    .range-point-label strong {
-      display: block;
-      font-size: 0.88rem;
-      font-weight: 800;
-      margin-bottom: 1px;
-    }
-
-    .range-point-label.lbl-sprint strong { color: var(--navy); }
-    .range-point-label.lbl-low strong    { color: #2563eb; }
-    .range-point-label.lbl-high strong   { color: var(--sub); }
 
     /* ---- ERP SELECT ---- */
     .erp-select {
@@ -2382,22 +2285,18 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
             <div class="range-viz-sub">Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.</div>
           </div>
           <div style="padding: 0 18px">
-            <div class="range-track-wrap">
-              <div class="range-track" id="range-track-el">
-                <div class="range-band" id="range-band"></div>
-              </div>
+            <div class="range-bar-vals">
+              <strong id="range-label-low">--</strong>
+              <strong id="range-label-high">--</strong>
             </div>
-            <div class="range-point-labels">
-              <div class="range-point-label lbl-low" id="lbl-low-pos">
-                <strong id="range-label-low">--</strong>
-                <span>Structured</span>
-              </div>
-              <div class="range-point-label lbl-high" id="lbl-high-pos">
-                <strong id="range-label-high">--</strong>
-                <span>Reactive</span>
-              </div>
+            <div class="range-bar">
+              <span class="range-end-marker">&#171;</span>
+              <span class="range-end-marker">&#187;</span>
             </div>
-            <div class="range-legend">Grey bar: full cost spectrum &nbsp;·&nbsp; Blue band: your team's estimated range &nbsp;·&nbsp; Hover to read values</div>
+            <div class="range-bar-descs">
+              <span>Structured team</span>
+              <span>Reactive / ad-hoc</span>
+            </div>
           </div>
         </div>
 
@@ -2981,9 +2880,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   <p>einvoiceops provides operational readiness support and is not a tax advisor, legal advisor, or compliance authority. All work packets are informational and operational planning aids only. Customers remain responsible for all compliance decisions and their execution. Confirm regulatory applicability with a qualified advisor where required.</p>
 </div>
 
-<!-- RANGE HOVER TOOLTIP -->
-<div class="range-tooltip" id="range-tooltip"></div>
-
 <script is:inline>
   /* ---- FAQ ---- */
   /* ---- CAROUSEL ---- */
@@ -3087,28 +2983,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     return 1.0 + (n - 1) * cfg.entityScale;
   }
 
-  let _costLow = 0, _costHigh = 0, _scaleMax = 0;
-
-  /* ---- HOVER TOOLTIP ON RANGE TRACK ---- */
+  /* ---- BANDEROLE RETIRE ---- */
   document.addEventListener('DOMContentLoaded', function() {
-    const track   = document.getElementById('range-track-el');
-    const tooltip = document.getElementById('range-tooltip');
-    if (!track || !tooltip) return;
-    track.addEventListener('mousemove', function(e) {
-      if (!_scaleMax) return;
-      const rect = track.getBoundingClientRect();
-      const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      const val  = pct * _scaleMax;
-      tooltip.textContent    = fmtShort(val);
-      tooltip.style.left     = e.clientX + 'px';
-      tooltip.style.top      = e.clientY + 'px';
-      tooltip.style.display  = 'block';
-    });
-    track.addEventListener('mouseleave', function() {
-      tooltip.style.display = 'none';
-    });
-
-    /* ---- BANDEROLE RETIRE ---- */
     const title = document.querySelector('.range-viz-title');
     if (title) {
       title.addEventListener('animationend', function() {
@@ -3128,30 +3004,11 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   }
 
   function updateRangeBar(costLow, costHigh) {
-    const viz  = document.getElementById('range-viz');
-    const band = document.getElementById('range-band');
-
-    const scaleMax = costHigh * 2;
-    _costLow  = costLow;
-    _costHigh = costHigh;
-    _scaleMax = scaleMax;
-
-    viz.style.display = 'block';
-
-    const bandLeftPct  = (costLow  / scaleMax) * 100;
-    const bandWidthPct = ((costHigh - costLow) / scaleMax) * 100;
-    band.style.left  = bandLeftPct + '%';
-    band.style.width = bandWidthPct + '%';
-
-    const lblLowEl  = document.getElementById('lbl-low-pos');
-    const lblHighEl = document.getElementById('lbl-high-pos');
-    const lblLow    = document.getElementById('range-label-low');
-    const lblHigh   = document.getElementById('range-label-high');
-
-    if (lblLowEl)  lblLowEl.style.left  = bandLeftPct + '%';
-    if (lblHighEl) lblHighEl.style.left = (bandLeftPct + bandWidthPct) + '%';
-    if (lblLow)    lblLow.textContent   = fmtShort(costLow);
-    if (lblHigh)   lblHigh.textContent  = fmtShort(costHigh);
+    document.getElementById('range-viz').style.display = 'block';
+    const lblLow  = document.getElementById('range-label-low');
+    const lblHigh = document.getElementById('range-label-high');
+    if (lblLow)  lblLow.textContent  = fmtShort(costLow);
+    if (lblHigh) lblHigh.textContent = fmtShort(costHigh);
   }
 
   function calcUpdate() {
