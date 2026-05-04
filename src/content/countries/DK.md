@@ -57,7 +57,7 @@ has_sandbox: true
 last_verified: 2026-04-30
 mandate_version: 1
 confidence_summary: amber
-unresolved_high: 1
+unresolved_high: 0
 unresolved_amber: 2
 ---
 

@@ -1,5 +1,14 @@
 country_code: DK
 entries:
+  - timestamp: 2026-05-04T16:30:00Z
+    type: confidence-upgrade
+    field: unresolved_high
+    old_value: "1"
+    new_value: "0"
+    description: "OIOUBL 3.0 cancellation confirmed via WebFetch of nemhandel.dk source. Page explicitly states: 'Der kommer ikke en OIOUBL 3.0' (There will be no OIOUBL 3.0), announced January 14, 2026 by Danish Business Authority. Matches claim on DK page exactly. HIGH research item removed."
+    source_url: "https://nemhandel.dk/oioubl-30-aflyses-tillmeld-dig-til-naeste-nemhandelsforum-24-februar-i-koebenhavn-0"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-30T00:00:00Z
     type: initial-publish
     field: null

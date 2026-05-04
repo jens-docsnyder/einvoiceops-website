@@ -1,5 +1,14 @@
 country_code: IT
 entries:
+  - timestamp: 2026-05-04T16:30:00Z
+    type: content-update
+    field: future_direction
+    old_value: "FatturaPA v1.9.1 takes effect May 2026. Long-term ViDA alignment anticipated 2028-2030."
+    new_value: "FatturaPA v1.9.1 takes effect May 2026. Decision (EU) 2024/3150 authorises Italy's SDI clearance model through December 31, 2027. Long-term ViDA alignment anticipated 2028-2030."
+    description: "Added Decision (EU) 2024/3150 — European Council decision published December 19, 2024 authorizing Italy to continue using SDI for three years, until December 31, 2027. Source: EC eInvoicing Country Factsheet IT (verified, last updated August 14, 2025)."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-27T00:00:00Z
     type: initial-publish
     field: null

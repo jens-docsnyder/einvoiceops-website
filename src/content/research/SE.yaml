@@ -2,21 +2,16 @@ country_code: SE
 items:
   - priority: amber
     type: source-verification
-    description: "Open source link (DIGG e-handel page) → Ctrl+F 'Svefaktura' or '1 juli 2025' or 'upphandling'. Confirm: July 1, 2025 as the phase-out date for Svefaktura 1.0 and EDIFACT in new public procurement contracts, and clarify scope — whether this applies only to new contracts signed after that date or also to contracts already in progress. If confirmed with scope clarified: if scope differs from current page description, update the format_notes on SE page → remove + decrement amber. If date is different: update the format_deprecation timeline on SE page."
-    source_url: "https://www.digg.se/e-handel/e-faktura"
-    added: 2026-05-01
+    description: "Previous source URL (digg.se/e-handel/e-faktura) returns 404 — DIGG has reorganised its site. Search: digg.se → 'e-faktura' or 'Svefaktura'. Confirm: July 1, 2025 as the phase-out date for Svefaktura 1.0 and EDIFACT in new public procurement contracts, and confirm scope (new contracts only, or also contracts already in progress). If confirmed with correct date: no page change → remove + decrement amber. If date or scope differs: update the key_deadlines and future_direction on SE page."
+    source_url: null
+    added: 2026-05-04
   - priority: amber
     type: source-verification
-    description: "Open source link (regeringen.se kommittédirektiv page) → search for 'fakturaering' or 'ViDA' or 'elektronisk faktura' in the kommittédirektiv listing. Find the directive from around February 2026. Confirm: inquiry launched February 5, 2026 with a report due November 30, 2027. If confirmed: no page change → remove + decrement amber. If dates differ: update the inquiry_timeline note in SE page future_direction section."
+    description: "INQUIRY CLAIM UNVERIFIED: SE page future_direction previously stated 'Ministry of Finance formal inquiry into EU ViDA B2B mandate launched February 5, 2026, report due November 30, 2027.' Swedish government website (regeringen.se/rattsliga-dokument/kommittedirektiv/2026/02/) shows only two Feb 2026 kommittédirektiv — neither about e-invoicing or ViDA. Claim was removed from SE page and key_deadlines on 2026-05-04. If an inquiry was subsequently launched: search regeringen.se for 'elektronisk faktura' or 'ViDA' in kommittédirektiv; find the correct date and report deadline; add back to SE page future_direction and key_deadlines."
     source_url: "https://www.regeringen.se/rattsliga-dokument/kommittedirektiv/"
-    added: 2026-05-01
+    added: 2026-05-04
   - priority: amber
     type: source-verification
-    description: "Open source link (Bokföringslaget 1999:1078 on riksdagen.se) → Ctrl+F '7 kap' (Chapter 7) then '2 §'. Confirm: 7-year archiving obligation stated in Chapter 7, Section 2. If confirmed: no page change → remove + decrement amber. If the archiving rule is in a different chapter or section: update the archiving_reference citation on SE page."
+    description: "Open source link (Bokföringslaget 1999:1078 on riksdagen.se) → Ctrl+F '7 kap' (Chapter 7) then '2 §'. Confirm: 7-year archiving obligation stated in Chapter 7, Section 2. If confirmed: no page change → remove + decrement amber. If the archiving rule is in a different chapter or section: update the archiving_reference citation on SE page. Note: riksdagen.se and lagen.nu both returned server errors on automated fetch — Jens must click directly."
     source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/bokforingslag-19991078_sfs-1999-1078/"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Open source link (Lag 2018:1277 on riksdagen.se) → Ctrl+F '7 §' or 'vitesföreläggande' or 'Viteslag'. Confirm: Section 7 designates vitesföreläggande (conditional fine) under Viteslag (1985:206) as the enforcement tool for the designated authority. If confirmed: no page change → remove + decrement amber. If the penalty mechanism is in a different section or references a different law: update the penalty_mechanism note on SE page."
-    source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20181277-om-elektroniska-fakturor-till_sfs-2018-1277/"
     added: 2026-05-01

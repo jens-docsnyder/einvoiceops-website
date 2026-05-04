@@ -5,7 +5,7 @@ flag: 🇸🇪
 
 mandate_type: interoperability
 vida_alignment: DRR-inquiry
-future_direction: "Ministry of Finance formal inquiry into EU ViDA B2B mandate launched February 5, 2026. Inquiry report due November 30, 2027. Legacy Svefaktura 1.0 and EDIFACT formats phased out for new public procurement from July 1, 2025 — all new B2G contracts must use Peppol BIS 3.0."
+future_direction: "Legacy Svefaktura 1.0 and EDIFACT formats phased out for new public procurement from July 1, 2025 — all new B2G contracts must use Peppol BIS 3.0. No B2B mandate enacted. Sweden is monitoring EU ViDA initiative; no formal B2B inquiry confirmed as of May 2026."
 
 b2b: voluntary
 b2g: mandatory
@@ -19,8 +19,6 @@ key_deadlines:
     description: B2G mandatory for all contracting authorities and their suppliers (Lag 2018:1277, §4 and §5)
   - date: 2025-07-01
     description: Svefaktura 1.0 and EDIFACT phase-out for new public procurement — Peppol BIS 3.0 mandatory for all new contracts
-  - date: 2027-11-30
-    description: B2B ViDA inquiry report due (Ministry of Finance inquiry launched February 5, 2026)
 
 formats: [Peppol-BIS-3.0]
 cius: null
@@ -52,7 +50,7 @@ last_verified: null
 
 mandate_version: 1
 unresolved_high: 0
-unresolved_amber: 4
+unresolved_amber: 3
 confidence_summary: amber
 ---
 

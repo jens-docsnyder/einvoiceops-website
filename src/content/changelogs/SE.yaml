@@ -1,5 +1,23 @@
 country_code: SE
 entries:
+  - timestamp: 2026-05-04T16:30:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "4"
+    new_value: "3"
+    description: "Vitesföreläggande enforcement mechanism confirmed via WebFetch of lagen.nu (Lag 2018:1277). §7 states: 'Ett beslut om föreläggande får förenas med vite' — confirmed vitesföreläggande is the enforcement tool. AMBER 4 research item removed."
+    source_url: "https://lagen.nu/2018:1277"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T16:30:00Z
+    type: error-correction
+    field: "future_direction + key_deadlines"
+    old_value: "Ministry of Finance formal inquiry into EU ViDA B2B mandate launched February 5, 2026. Inquiry report due November 30, 2027."
+    new_value: "No B2B mandate enacted. Sweden monitoring EU ViDA initiative; no formal B2B inquiry confirmed as of May 2026."
+    description: "Inquiry claim removed. Swedish government website (regeringen.se/rattsliga-dokument/kommittedirektiv/2026/02/) lists only two Feb 2026 kommittédirektiv — neither about e-invoicing or ViDA. The specific dates (Feb 5, 2026 launch, Nov 30, 2027 report) could not be verified. key_deadline entry for 2027-11-30 removed. future_direction updated. vida_alignment unchanged pending further verification."
+    source_url: "https://www.regeringen.se/rattsliga-dokument/kommittedirektiv/2026/02/"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-01T00:00:00Z
     type: initial-publish
     field: null

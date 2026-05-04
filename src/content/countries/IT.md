@@ -5,7 +5,7 @@ flag: "🇮🇹"
 
 mandate_type: centralized-clearance
 vida_alignment: legacy-clearance
-future_direction: "FatturaPA v1.9.1 takes effect May 2026. Long-term ViDA alignment anticipated 2028-2030."
+future_direction: "FatturaPA v1.9.1 takes effect May 2026. Decision (EU) 2024/3150 authorises Italy's SDI clearance model through December 31, 2027. Long-term ViDA alignment anticipated 2028-2030."
 
 b2b: mandatory
 b2g: mandatory
