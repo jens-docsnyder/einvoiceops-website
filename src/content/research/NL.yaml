@@ -1,12 +1,2 @@
 country_code: NL
-items:
-  - priority: high
-    type: source-verification
-    description: "Previous source (logius.nl/diensten/digipoort) is the Digipoort developer suite - does not contain UBL-OHNL conversion behavior. The NL page cites 'EU Commission eInvoicing Country Sheet NL, updated February 2026' as the actual source. Open source link → find Netherlands country factsheet → Ctrl+F 'UBL-OHNL' or 'conversion' or 'Digipoort'. Confirm: Digipoort converts incoming Peppol BIS 3.0 to UBL-OHNL for government system consumption. Also confirm this still applies to the new Digipoort infrastructure (launched November 2025). If confirmed: no page change → remove item + decrement high. If conversion behavior differs or no longer applies: update prose in Data & Infrastructure section."
-    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+Country+Factsheets"
-    added: 2026-05-04
-  - priority: amber
-    type: source-verification
-    description: "Previous source URL (rijksoverheid.nl/onderwerpen/e-factureren) returns 404 - page removed. Try: (1) rijksoverheid.nl → search 'elektronisch factureren overheid'; or (2) forumstandaardisatie.nl → search 'e-facturatie'; or (3) EC eInvoicing country factsheet (same source as HIGH item above). Confirm: central government mandate April 2017, all public sector April 18, 2019, both under EU Directive 2014/55/EU implementation. Also check for any B2B mandate announcement language - if page now references enacted B2B legislation, update b2b status field. If dates confirmed: no page change → remove item + decrement amber."
-    source_url: null
-    added: 2026-05-04
+items: []

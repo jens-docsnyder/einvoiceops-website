@@ -1,5 +1,23 @@
 country_code: NL
 entries:
+  - timestamp: 2026-05-04T15:20:00Z
+    type: error-correction
+    field: "prose-Data & Infrastructure + key_deadlines"
+    old_value: "Digipoort automatically converts incoming Peppol BIS 3.0 to UBL-OHNL; all public sector mandatory April 18, 2019"
+    new_value: "Peppol network converts and routes via Digipoort; all public sector mandatory November 1, 2019; January 2017 reframed as Dutch administrative programme pre-Directive"
+    description: "Two corrections from EC eInvoicing Country Factsheet NL (last updated August 2025). (1) Attribution error: it is the Peppol network that converts invoices to government format and routes via Digipoort - not Digipoort itself that converts. Both Peppol BIS 3.0 and UBL-OHNL are accepted natively. (2) Date error: all-public-sector B2G mandate date was April 18, 2019 (EU Directive default deadline) - factsheet confirms Netherlands date is November 1, 2019 per law of 20 December 2017. January 2017 central government date reframed from 'mandatory' to Dutch administrative programme pre-Directive transposition."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-04T15:20:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_high + unresolved_amber + last_verified"
+    old_value: "amber, high: 1, amber: 1, last_verified: 2026-04-30"
+    new_value: "green, high: 0, amber: 0, last_verified: 2026-05-04"
+    description: "Full NL verification pass complete. All research items resolved: SI-UBL 1.x confirmed via peppol.nl FAQ; UBL-OHNL conversion claim corrected and sourced to EC factsheet; B2G dates corrected from EC factsheet. NL promoted to GREEN."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T14:45:00Z
     type: confidence-upgrade
     field: unresolved_high
