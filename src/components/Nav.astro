@@ -7,9 +7,10 @@ const { active } = Astro.props;
 <nav>
   <a href="/" class="logo">einvoice<span>ops</span></a>
   <div class="nav-links">
-    <a href="/" class:list={[{ active: active === 'home' }]}>Home</a>
+    <a href="/#calculator" class="hide-mobile">Mandate Cost Calculator</a>
     <a href="/services/" class:list={['hide-mobile', { active: active === 'services' }]}>Services</a>
     <a href="/map/" class:list={['hide-mobile', { active: active === 'map' }]}>Compliance Map</a>
+    <a href="/#faq" class="hide-mobile">FAQ</a>
     <a href="/#contact" class="btn-nav">Get in touch</a>
     <button class="hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -17,9 +18,10 @@ const { active } = Astro.props;
   </div>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
-  <a href="/">Home</a>
+  <a href="/#calculator">Mandate Cost Calculator</a>
   <a href="/services/">Services</a>
   <a href="/map/">Compliance Map</a>
+  <a href="/#faq">FAQ</a>
   <a href="/#contact">Get in touch</a>
 </div>
 
