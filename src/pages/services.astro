@@ -61,7 +61,51 @@
       border-radius: 8px; transition: background 0.15s;
     }
     nav a.btn-nav:hover { background: var(--accent-dark); }
-    @media (max-width: 600px) { .nav-links .hide-mobile { display: none; } }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px; height: 36px;
+      background: none; border: none; cursor: pointer;
+      padding: 4px; border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .hamburger:hover { background: rgba(0,0,0,0.06); }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--navy); border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      flex-direction: column;
+      padding: 1rem 1.5rem 1.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1rem; font-weight: 500;
+      color: var(--text); text-decoration: none;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; padding-bottom: 0; }
+    .mobile-menu a:hover { color: var(--accent); }
+    @media (max-width: 600px) {
+      .nav-links .hide-mobile { display: none; }
+      .hamburger { display: flex; }
+    }
 
     .page-hero {
       background: var(--navy);
@@ -383,8 +427,19 @@
     <a href="/map/" class="hide-mobile">Compliance Map</a>
     <a href="/#faq" class="hide-mobile">FAQ</a>
     <a href="/#contact" class="btn-nav">Get in touch</a>
+    <button class="hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Home</a>
+  <a href="/#calculator">Mandate Cost Calculator</a>
+  <a href="/services/">Services</a>
+  <a href="/map/">Compliance Map</a>
+  <a href="/#faq">FAQ</a>
+  <a href="/#contact">Get in touch</a>
+</div>
 
 <div class="page-hero">
   <span class="page-eyebrow">Service model</span>
@@ -547,6 +602,26 @@
 </div>
 
 <script>
+  (function () {
+    const btn = document.getElementById('nav-hamburger');
+    const menu = document.getElementById('mobile-menu');
+    if (!btn || !menu) return;
+    function closeMenu() {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    btn.addEventListener('click', () => {
+      const opening = !menu.classList.contains('open');
+      if (opening) { btn.classList.add('open'); menu.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+      else closeMenu();
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('click', e => {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) closeMenu();
+    });
+  })();
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
