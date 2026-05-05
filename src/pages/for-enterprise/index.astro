@@ -7,8 +7,8 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>For Service Providers | einvoiceops</title>
-  <meta name="description" content="Two commercial models for e-invoice service providers and platform teams: embed the operational readiness layer in your product, or deliver it to your customers under your brand." />
+  <title>For Enterprise Finance Teams | einvoiceops</title>
+  <meta name="description" content="Structured mandate readiness for enterprise finance teams. Fixed scope, fixed fee. France PA, Poland KSeF, Germany B2B - mapped by internal role, routed to the right owners." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -129,12 +129,12 @@
     .page-hero h1 {
       font-size: clamp(1.65rem, 3.5vw, 2.4rem);
       font-weight: 800; letter-spacing: -0.03em;
-      color: #ffffff; max-width: 720px;
+      color: #ffffff; max-width: 760px;
       margin: 0 auto 20px; line-height: 1.2;
     }
     .page-hero p {
       font-size: 1.05rem; color: rgba(255,255,255,0.65);
-      max-width: 580px; margin: 0 auto; line-height: 1.7;
+      max-width: 600px; margin: 0 auto; line-height: 1.7;
     }
 
     /* ── Layout ── */
@@ -142,7 +142,7 @@
     .section { padding: 72px 0; }
     .section.bg-alt { background: var(--bg-alt); }
 
-    /* ── Two-column angles ── */
+    /* ── Two-column cards ── */
     .angles-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -161,11 +161,11 @@
       flex-direction: column;
       gap: 20px;
     }
-    .angle-card.angle-product {
+    .angle-card.angle-sprint {
       background: var(--ice);
       border-color: var(--accent);
     }
-    .angle-card.angle-delivery {
+    .angle-card.angle-retainer {
       background: var(--teal-light);
       border-color: var(--teal-border);
     }
@@ -176,12 +176,8 @@
       letter-spacing: 0.1em; text-transform: uppercase;
       padding: 4px 10px; border-radius: 100px;
     }
-    .angle-product .angle-tag {
-      background: var(--accent); color: #fff;
-    }
-    .angle-delivery .angle-tag {
-      background: var(--teal); color: #fff;
-    }
+    .angle-sprint .angle-tag { background: var(--accent); color: #fff; }
+    .angle-retainer .angle-tag { background: var(--teal); color: #fff; }
 
     .angle-card h2 {
       font-size: 1.25rem; font-weight: 800;
@@ -197,8 +193,8 @@
       border-radius: 10px;
       border-left: 3px solid;
     }
-    .angle-product .angle-pain { border-color: var(--accent); }
-    .angle-delivery .angle-pain { border-color: var(--teal); }
+    .angle-sprint .angle-pain { border-color: var(--accent); }
+    .angle-retainer .angle-pain { border-color: var(--teal); }
 
     .angle-what-label {
       font-size: 0.68rem; font-weight: 700;
@@ -221,8 +217,20 @@
       position: absolute; left: 4px;
       font-weight: 700; font-size: 1.1rem; line-height: 1.5;
     }
-    .angle-product .angle-bullets li::before { color: var(--accent); }
-    .angle-delivery .angle-bullets li::before { color: var(--teal); }
+    .angle-sprint .angle-bullets li::before { color: var(--accent); }
+    .angle-retainer .angle-bullets li::before { color: var(--teal); }
+
+    .angle-price {
+      font-size: 0.85rem; color: var(--sub);
+      line-height: 1.6;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 8px;
+      border-left: 3px solid;
+    }
+    .angle-sprint .angle-price { border-color: var(--accent); }
+    .angle-retainer .angle-price { border-color: var(--teal); }
+    .angle-price strong { color: var(--navy); }
 
     .angle-fit {
       font-size: 0.8rem; color: var(--muted);
@@ -241,14 +249,10 @@
       align-self: flex-start;
     }
     .angle-cta:hover { opacity: 0.85; }
-    .angle-product .angle-cta {
-      background: var(--accent); color: #fff;
-    }
-    .angle-delivery .angle-cta {
-      background: var(--teal); color: #fff;
-    }
+    .angle-sprint .angle-cta { background: var(--accent); color: #fff; }
+    .angle-retainer .angle-cta { background: var(--teal); color: #fff; }
 
-    /* ── Intro strip above two columns ── */
+    /* ── Intro strip ── */
     .intro-strip {
       text-align: center;
       padding-bottom: 48px;
@@ -337,62 +341,67 @@
 </div>
 
 <div class="page-hero">
-  <span class="page-eyebrow">For service providers</span>
-  <h1>Your services must be compliant. Your customers must stay compliant. Staying ahead of every mandate is the work that never stops. Your customers expect you to close that gap.</h1>
-  <p>You handle the exchange. We package how enterprise customers prepare for mandates inside their organisation. Two ways to deliver it.</p>
+  <span class="page-eyebrow">For enterprise finance teams</span>
+  <h1>Three teams own e-invoice mandate preparation: Finance Systems, Tax, and Finance Ops. None has the full picture of what the others are doing. That gap is where go-lives break.</h1>
+  <p>France: September 2026. Poland: already live. Germany: January 2027. We map what your organisation needs to have ready - role by role, mandate by mandate - and route the work to the right owners.</p>
 </div>
 
 <section class="section">
   <div class="inner">
 
     <div class="intro-strip">
-      <span class="eyebrow">Two commercial models</span>
-      <h2>Same core problem. Different place in the value chain.</h2>
-      <p>When France, Poland, or Germany goes live, your customers need to know what their finance team, IT team, and local accounting partners each need to do. That question is not answered by the exchange layer. Here is how we can work together to close it.</p>
+      <span class="eyebrow">Two engagement models</span>
+      <h2>One urgent deadline or a sequence across countries.</h2>
+      <p>Whether you have one mandate landing imminently or several arriving across countries in the next 18 months, the internal preparation problem is the same: nobody has mapped it. Here is how we work together to close it.</p>
     </div>
 
     <div class="angles-grid">
 
-      <!-- Angle 1: For your product -->
-      <div class="angle-card angle-product">
-        <span class="angle-tag">For your product</span>
-        <h2>Embed the operational layer in your platform</h2>
+      <!-- Card 1: Readiness Sprint -->
+      <div class="angle-card angle-sprint">
+        <span class="angle-tag">One mandate. One country.</span>
+        <h2>Readiness Sprint - map the work before the deadline arrives</h2>
 
-        <p class="angle-pain">Building the mandate readiness layer from scratch - country by country, ERP cluster by cluster, updated as legislation changes - takes 18 months or more. Licensing it means your product team ships the capability without the research burden.</p>
+        <p class="angle-pain">The gap between "mandate known" and "ERP ready" is specific and mappable. Finance Systems, Tax, AP Operations, and IT each have distinct work to do - different owners, different timelines, rarely coordinated. We produce the full internal readiness picture before your deadline.</p>
 
-        <span class="angle-what-label">What you get</span>
+        <span class="angle-what-label">What you receive</span>
         <ul class="angle-bullets">
-          <li>Structured, country-by-country mandate readiness content you can surface in your platform or tooling</li>
-          <li>Mapped by internal role - Finance Systems, Tax, AP Operations, IT - per mandate</li>
-          <li>Inbound and outbound flows covered separately, because the deadlines almost never match</li>
-          <li>Updated as mandates change, before your customers' go-live deadlines</li>
-          <li>Deployable as a product feature, implementation tool, or CSM enablement layer</li>
+          <li>ERP footprint audit for the mandate in scope - what your systems need to do</li>
+          <li>Work items mapped by internal role: Finance Systems, Tax, AP Operations, IT</li>
+          <li>Inbound and outbound flows covered separately - because the deadlines almost never match</li>
+          <li>Named owners, clear action sequence, no ambiguity about who does what</li>
+          <li>Source-linked, non-authoritative - every claim traceable, no compliance interpretation</li>
+          <li>Delivered in 4 weeks</li>
         </ul>
 
-        <p class="angle-fit"><strong>Who this fits:</strong> Product and platform teams adding mandate compliance features who run into the internal preparation question at every implementation. Teams where go-live failures trace back to customer prep, not platform coverage.</p>
+        <p class="angle-price"><strong>EUR 24,500.</strong> 50% on engagement start, 50% on delivery. Fixed scope, fixed fee - no hourly billing, no scope creep.</p>
 
-        <a href="mailto:jens@einvoiceops.eu" class="angle-cta">Talk about the product model</a>
+        <p class="angle-fit"><strong>Who this fits:</strong> Lean finance team with one urgent mandate deadline. No internal bandwidth to run the mapping exercise in parallel with BAU. Needs a clear owner map and work sequence in writing before go-live.</p>
+
+        <a href="mailto:jens@einvoiceops.eu" class="angle-cta">Talk about the Sprint</a>
       </div>
 
-      <!-- Angle 2: White-label delivery -->
-      <div class="angle-card angle-delivery">
-        <span class="angle-tag">For your customers</span>
-        <h2>Deliver mandate readiness under your brand</h2>
+      <!-- Card 2: Retainer -->
+      <div class="angle-card angle-retainer">
+        <span class="angle-tag">Multiple mandates. Multiple countries.</span>
+        <h2>60-day Retainer - ongoing coverage as mandates arrive in sequence</h2>
 
-        <p class="angle-pain">A mandate changes. Your customers call asking what they need to do internally. Your platform covers the exchange - it was never designed to answer what their AP team, Finance Systems, and IT each need to configure before the deadline. That support gap is your problem to absorb.</p>
+        <p class="angle-pain">France and Germany and Poland are not a one-time event. Mandates update. Implementation guidance shifts. Your ERP configuration that was correct in January may need a delta check by June. And if you have entities in four countries with live or imminent mandates, a single Sprint does not cover the full footprint.</p>
 
-        <span class="angle-what-label">What you deliver to your customers</span>
+        <span class="angle-what-label">What you receive</span>
         <ul class="angle-bullets">
-          <li>Mandate readiness deliverables produced for your customers, under your brand</li>
-          <li>Structured by internal role, mapped per mandate, source-linked with snapshot dates</li>
-          <li>Inbound and outbound covered separately - because go-live obligations rarely land on the same date</li>
-          <li>Named owners, clear action sequence, no ambiguity about who does what</li>
-          <li>Jens produces it. Your customer sees your service.</li>
+          <li>Sprint deliverables for your primary mandate, plus delta monitoring for the 60-day window</li>
+          <li>Mandate change alerts when official guidance updates in your active countries</li>
+          <li>Coverage across mandates running in parallel - France + Germany + Poland treated as a coordinated programme</li>
+          <li>Structured hand-off to your ERP team at each milestone</li>
+          <li>One point of contact across all mandates in scope</li>
         </ul>
 
-        <p class="angle-fit"><strong>Who this fits:</strong> Consolidators and service providers whose enterprise customers need more than exchange coverage. Teams where "we handle your e-invoice connection" does not get the customer through go-live without support calls.</p>
+        <p class="angle-price"><strong>Pricing on scope.</strong> Typically scoped after an initial Sprint or in a joint scoping call. Depends on number of active mandates and entity footprint.</p>
 
-        <a href="mailto:jens@einvoiceops.eu" class="angle-cta">Talk about the delivery model</a>
+        <p class="angle-fit"><strong>Who this fits:</strong> Multi-country group with mandates landing in sequence over the next 12-18 months. Or a single high-complexity mandate with ongoing uncertainty - KSeF update risk, PDP platform changes, or a mid-year ERP migration collision.</p>
+
+        <a href="mailto:jens@einvoiceops.eu" class="angle-cta">Talk about the Retainer</a>
       </div>
 
     </div>
@@ -402,8 +411,8 @@
 <section class="section bg-alt" id="contact">
   <div class="inner">
     <div class="contact-box">
-      <h2>Not sure which model fits? That is the conversation.</h2>
-      <p>Tell us what your customers are asking. We will figure out the right shape together - product licence, content layer, or white-label delivery.</p>
+      <h2>Not sure which fits? Send your country footprint.</h2>
+      <p>Tell us which mandates are live or imminent for your entities. We come back with a frank read of your situation in writing within 48 hours - no call required to start.</p>
       <a href="mailto:jens@einvoiceops.eu" class="email-link">jens@einvoiceops.eu</a>
     </div>
   </div>
