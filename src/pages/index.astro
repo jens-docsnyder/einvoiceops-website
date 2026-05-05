@@ -3005,7 +3005,32 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     <div class="contact-box">
       <h2>Tell us your footprint. Get a frank read of where you stand.</h2>
       <p>Share your countries, your ERP, and where you stand. We come back with a clear picture of what your situation requires - in writing, within 48 hours.</p>
-      <a href="mailto:jens@einvoiceops.eu" class="email-link">jens@einvoiceops.eu</a>
+      <form class="contact-form" id="contact-form">
+        <input type="hidden" name="access_key" value="74316e93-929e-4d80-99d0-66e71dd10237">
+        <input type="hidden" name="subject" value="New inquiry - einvoiceops.eu">
+        <input type="hidden" name="from_name" value="einvoiceops contact form">
+        <input type="checkbox" name="botcheck" style="display:none;">
+        <div class="form-row">
+          <label for="cf-name">Name / Company</label>
+          <input type="text" id="cf-name" name="name" placeholder="Jens Anttila, Nomos Digital" required autocomplete="name">
+        </div>
+        <div class="form-row">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" placeholder="you@company.com" required autocomplete="email">
+        </div>
+        <div class="form-row">
+          <label for="cf-footprint">Countries in scope / ERP <span class="form-optional">(optional)</span></label>
+          <input type="text" id="cf-footprint" name="footprint" placeholder="Germany and Poland / SAP S/4HANA">
+        </div>
+        <div class="form-row">
+          <label for="cf-message">Your situation</label>
+          <textarea id="cf-message" name="message" placeholder="Where you stand and what's on your plate" required></textarea>
+        </div>
+        <button type="submit" class="contact-submit" id="cf-submit">Send</button>
+      </form>
+      <div class="form-success" id="cf-success" style="display:none;">
+        <p>Got it. We will come back with a frank read within 48 hours.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -3318,6 +3343,38 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
 
   // Init
   calcUpdate();
+
+  /* ---- CONTACT FORM ---- */
+  const cfForm = document.getElementById('contact-form');
+  if (cfForm) {
+    cfForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('cf-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      const formData = new FormData(cfForm);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+        });
+        const json = await res.json();
+        if (json.success) {
+          cfForm.style.display = 'none';
+          document.getElementById('cf-success').style.display = 'block';
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Send';
+          alert('Web3Forms error: ' + (json.message || JSON.stringify(json)));
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Send';
+        alert('Network error: ' + err.message);
+      }
+    });
+  }
 </script>
 
 </body>
