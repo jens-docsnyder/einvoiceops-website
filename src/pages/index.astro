@@ -3006,10 +3006,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
       <h2>Tell us your footprint. Get a frank read of where you stand.</h2>
       <p>Share your countries, your ERP, and where you stand. We come back with a clear picture of what your situation requires - in writing, within 48 hours.</p>
       <form class="contact-form" id="contact-form">
-        <input type="hidden" name="access_key" value="74316e93-929e-4d80-99d0-66e71dd10237">
-        <input type="hidden" name="subject" value="New inquiry - einvoiceops.eu">
-        <input type="hidden" name="from_name" value="einvoiceops contact form">
-        <input type="text" name="botcheck" value="" style="display:none;" tabindex="-1" autocomplete="off">
         <div class="form-row">
           <label for="cf-name">Name / Company</label>
           <input type="text" id="cf-name" name="name" placeholder="Jens Anttila, Nomos Digital" required autocomplete="name">
@@ -3352,26 +3348,26 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
       const btn = document.getElementById('cf-submit');
       btn.disabled = true;
       btn.textContent = 'Sending...';
-      const formData = new FormData(cfForm);
+      const data = Object.fromEntries(new FormData(cfForm));
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        const res = await fetch('https://formspree.io/f/xnjwvnvb', {
           method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: formData
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
         });
         const json = await res.json();
-        if (json.success) {
+        if (json.ok) {
           cfForm.style.display = 'none';
           document.getElementById('cf-success').style.display = 'block';
         } else {
           btn.disabled = false;
           btn.textContent = 'Send';
-          alert('Web3Forms error: ' + (json.message || JSON.stringify(json)));
+          alert('Something went wrong. Email jens@einvoiceops.eu directly.');
         }
-      } catch (err) {
+      } catch {
         btn.disabled = false;
         btn.textContent = 'Send';
-        alert('Network error: ' + err.message);
+        alert('Something went wrong. Email jens@einvoiceops.eu directly.');
       }
     });
   }
