@@ -1,5 +1,14 @@
 country_code: ES
 entries:
+  - timestamp: 2026-05-04T18:30:00Z
+    type: confidence-upgrade
+    field: "unresolved_high"
+    old_value: "2"
+    new_value: "1"
+    description: "ES HIGH 1 closed. BOE preamble of Ley 18/2022 (BOE-A-2022-15818) confirms the B2B structured e-invoicing countdown starts with publication of an implementing Real Decreto ('desde la aprobación de su desarrollo reglamentario'). No such Real Decreto has been published as of May 2026 — consistent with the page future_direction stating 'implementing Real Decreto pending as of May 2026'. No page content change needed. Note: original research item source URL (BOE-A-2022-15274) was incorrect — that reference is Orden CUD/901/2022, an administrative order about a museum artifact. Correct BOE reference for Ley 18/2022 (Crea y Crece) is BOE-A-2022-15818."
+    source_url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2022-15818"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-01T00:00:00Z
     type: initial-publish
     field: null

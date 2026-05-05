@@ -2,13 +2,13 @@ country_code: IT
 items:
   - priority: high
     type: source-verification
-    description: "Open source link → navigate to the schema and documentation section of the fatturazione elettronica page. Look for 'v1.9.1' or 'versione 1.9.1' and a date around May 2026. Confirm: FatturaPA schema v1.9.1 is published with effective date May 15, 2026. If confirmed: no page change → remove + decrement high. If the version number is different (e.g., v1.8.3 is the latest) or the effective date differs: update `future_direction` and relevant `key_deadlines` entry on IT page."
-    source_url: "https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/fatture-e-corrispettivi/fattura-elettronica-b2b"
+    description: "SOURCE 404: agenziaentrate.gov.it/portale/schede/.../fattura-elettronica-b2b returns 404 — URL has changed. Jens: go to agenziaentrate.gov.it → search 'fattura elettronica specifiche tecniche' → find the technical specifications page → look for 'versione 1.9.1' and its effective date. Confirm: FatturaPA schema v1.9.1 is published with effective date May 15, 2026. If confirmed: no page change → remove + decrement high. If version number or date differs: update `future_direction` and `key_deadlines` 2026-05-15 entry on IT page."
+    source_url: null
     added: 2026-05-01
   - priority: high
     type: source-verification
-    description: "Open source link → find the FatturaPA schema specification or TD code reference table. Ctrl+F 'TD29'. Confirm: TD29 is first introduced in v1.9.1 (not an earlier version). If yes: no page change → remove + decrement high. If TD29 exists in an earlier version (e.g., v1.8.x): update the version claim in country page. If TD29 does not exist at all in the spec: remove the TD29 reference from future_direction section on IT page."
-    source_url: "https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/fatture-e-corrispettivi/fattura-elettronica-b2b"
+    description: "SOURCE 404: same URL as item above returns 404. Jens: on the FatturaPA technical specifications page (find via agenziaentrate.gov.it search), Ctrl+F 'TD29'. Confirm: TD29 first appears in v1.9.1 (not v1.8.x or earlier). If confirmed: no page change → remove + decrement high. If TD29 exists in an earlier version: update the version claim in the IT page body ('TD01 through TD29 as of v1.9.1'). If TD29 does not exist at all: remove TD29 reference from body text."
+    source_url: null
     added: 2026-05-01
   - priority: amber
     type: source-verification

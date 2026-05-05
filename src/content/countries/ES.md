@@ -59,7 +59,7 @@ has_sandbox: true
 last_verified: null
 
 mandate_version: 1
-unresolved_high: 2
+unresolved_high: 1
 unresolved_amber: 6
 confidence_summary: amber
 ---

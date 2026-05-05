@@ -2,12 +2,7 @@ country_code: ES
 items:
   - priority: high
     type: source-verification
-    description: "Open source link (BOE for Ley 18/2022) → Ctrl+F 'Real Decreto' in Art. 12 or the disposiciones finales. Confirm: as of today, no implementing Real Decreto has been published under Ley 18/2022 that would start the 12/24-month B2B go-live countdown. Also search BOE.es for 'Real Decreto Verifactu 2025' or 'Real Decreto SIF 2026' to check if it has been published since content was written. If still no Real Decreto found: no page change → remove + decrement high. If a Real Decreto has been published: update `b2b` field, add confirmed go-live dates to key_deadlines, update future_direction, and upgrade this item to a MANDATE-CHANGE commit."
-    source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-15274"
-    added: 2026-05-01
-  - priority: high
-    type: source-verification
-    description: "Open source link (BOE for Ley 58/2003, Ley General Tributaria) → Ctrl+F 'artículo 201 bis'. Confirm: EUR 150,000 (manufacturing non-compliant SIF system), EUR 50,000 (operating non-compliant SIF), and EUR 1,000 (lacking Declaración Responsable) penalty amounts stated in Art. 201 bis. If all three confirmed: no page change → remove + decrement high. If amounts differ: update penalty section on ES page with correct figures from the article."
+    description: "BOE TRUNCATION: automated fetch cuts off before Art. 201 bis (law has 200+ articles). Jens: open source link → once page loads, use browser Ctrl+F for '201 bis' — the browser can jump to it even if the page lazy-loads. Alternatively, open the ePub or PDF version linked on the BOE page and search there. Confirm: EUR 150,000 (manufacturing/distributing non-compliant SIF), EUR 50,000 (using non-compliant SIF), EUR 1,000 (lacking Declaración Responsable). If all three confirmed: no page change → remove + decrement high. If amounts differ: update penalty_max on ES page."
     source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186"
     added: 2026-05-01
   - priority: amber
