@@ -1,5 +1,41 @@
 country_code: RO
 entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: confidence-upgrade
+    field: "unresolved_amber + confidence_summary"
+    old_value: "unresolved_amber: 1 / confidence_summary: amber"
+    new_value: "unresolved_amber: 0 / confidence_summary: green"
+    description: "15% penalty confirmed: Law 296/2023 amended OUG 120/2021 to add 15% of invoice value fine for B2B e-Factura violations — both issuer (not transmitting through RO e-Factura) and recipient (recording non-transmitted invoices) are liable. Effective July 1, 2024. Article 13^1 as amended by Law 296/2023 confirmed from multiple Romanian tax sources. Page claim confirmed correct. Last amber item removed. confidence_summary upgraded to green. last_verified set to 2026-05-06."
+    source_url: "https://edicomgroup.com/blog/romania-moves-towards-electronic-invoicing-ro-efactura-platform"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-06T05:30:52Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "2"
+    new_value: "1"
+    description: "BNR exchange rate rule confirmed: Art. 290 of Codul Fiscal (formerly Art. 139^1) states 'ultimul curs de schimb comunicat de Banca Nationala a Romaniei' (last BNR rate) as the default for VAT invoice purposes. Parties may contractually specify a commercial bank rate instead. For foreign groups without such contractual specification, BNR daily rate applies. Page claim (BNR daily rate, not monthly average) confirmed substantively correct. ANAF e-factura page returns no results for 'cursul BNR' — source is Fiscal Code directly. Amber item removed."
+    source_url: "https://lege5.ro/Gratuit/g43donzvgi/cursul-de-schimb-valutar-codul-fiscal"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-05T18:33:02Z
+    type: confidence-upgrade
+    field: "unresolved_high"
+    old_value: "1"
+    new_value: "0"
+    description: "OUG 89/2025 confirmed: Ordonanta de Urgenta nr. 89 issued December 23, 2025 covers both (1) 5-working-day submission window from date of issuance and (2) non-resident VAT-registered entities without PE in Romania, in scope from January 1, 2026. Both page claims confirmed correct. High item removed."
+    source_url: "https://static.anaf.ro/static/10/Anaf/legislatie/OUG_89_2025.pdf"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-05T18:33:02Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "3"
+    new_value: "2"
+    description: "Council Implementing Decision (EU) 2023/1553 confirmed via EUR-Lex direct fetch: authorises Romania to apply mandatory electronic invoicing (derogating from Articles 218 and 232 of Directive 2006/112/EC), effective from January 1, 2024 until December 31, 2026 (or earlier upon ViDA transposition). Decision number, authorization scope, and expiry date all confirmed correct. Amber item removed. Source URL updated from search URL to direct EUR-Lex document."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023D1553"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-04-30T00:00:00Z
     type: initial-publish
     field: null

@@ -2,11 +2,6 @@ country_code: DK
 items:
   - priority: amber
     type: source-verification
-    description: "Open source link (Bogføringsloven Act 700/2022) → Ctrl+F '§ 26' or '1.500.000' or 'tvungen opløsning'. Confirm: DKK 1,500,000 cap stated in §26 and compulsory dissolution provision for repeated non-compliance also in §26. If confirmed: no page change → remove + decrement amber. If the cap amount or section number is different: update the penalty section on DK page with correct figures and section reference. Note: retsinformation.dk returned 403 on automated fetch — Jens must click directly."
-    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Open source link (Bogføringsloven Act 700/2022) → Ctrl+F '300.000' or the phase-in threshold section (likely §15 or a transitional provision). Confirm: DKK 300,000 annual turnover threshold for the small business phase-in — and whether the 'two consecutive years' condition is stated. EC eInvoicing Country Factsheet DK (August 2025) confirms 'DKK 300,000' as the threshold. The two-consecutive-year condition is not in the EC factsheet. If threshold confirmed without two-year condition: update the phase_in_scope description on DK page to remove that condition. Note: retsinformation.dk returned 403 on automated fetch — Jens must click directly."
+    description: "WRONG CITATION on DK page: penalty_max says 'Bogføringsloven Section 26' but §26 only contains enforcement options (påtale, påbud om rettelse, påbud om ophør + revisorerklæring) — no DKK 1,500,000 or compulsory dissolution. Confirmed by Jens 2026-05-06. DKK 1,500,000 as max fine is confirmed correct from secondary sources (Dansk Erhverv, PwC DK). Criminal penalty section is straffebestemmelser, likely §28 or §29. Jens: open retsinformation.dk/eli/lta/2022/700 → Ctrl+F '§ 28' or 'bøde' or '1.500.000'. Confirm: (1) DKK 1,500,000 fine is in §28 (or another section), (2) whether compulsory dissolution (tvungen opløsning) is also in that section or referenced from elsewhere. If §28 is confirmed: update penalty_max on DK page to change 'Section 26' to '§28'. If dissolution is in a different section: update citation accordingly."
     source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
     added: 2026-05-01

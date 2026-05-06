@@ -1,5 +1,14 @@
 country_code: DK
 entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "2"
+    new_value: "1"
+    description: "DKK 300,000 threshold confirmed in Bogføringsloven (Act 700/2022). Jens verified via direct browser click: §6 and §16 both state 'nettoomsætningen i 2 på hinanden følgende indkomstår overstiger 300.000 kr.' — DKK 300,000 threshold AND the two-consecutive-years condition are explicitly in the law. No page change needed. Amber item removed."
+    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T16:30:00Z
     type: confidence-upgrade
     field: unresolved_high

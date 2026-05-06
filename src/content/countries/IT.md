@@ -54,11 +54,11 @@ document_lifecycle_states:
   - REJECTED_BY_BUYER
 
 has_sandbox: true
-last_verified: 2026-04-29
+last_verified: 2026-05-06
 mandate_version: 1
-confidence_summary: amber
-unresolved_high: 2
-unresolved_amber: 2
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline
@@ -71,7 +71,7 @@ There are four stages of work:
 
 **Channel selection and setup (2-4 weeks).** For mid-market groups, the practical choice is a certified intermediary hub (Sovos, B2Brouter, Pagero, or equivalent). Direct SDICoop integration requires mutual TLS certificates from Agenzia delle Entrate, with a processing time of approximately 20 days, plus ongoing certificate renewal management. An intermediary bypasses this via REST API.
 
-**FatturaPA schema mapping (6-8 weeks).** FatturaPA is Italy's mandatory B2B e-invoice format - a structured XML schema governed by Agenzia delle Entrate. The schema includes document type codes (TipoDocumento, TD01 through TD29 as of v1.9.1) covering standard invoices, credit notes, deferred invoices, reverse charge variations for foreign purchases, and self-billing for missed invoicing. Every billing scenario in the ERP must map to the correct TD code. Errors produce SdI structural rejections that return as numeric error codes without readable descriptions. This mapping step is consistently underestimated.
+**FatturaPA schema mapping (6-8 weeks).** FatturaPA is Italy's mandatory B2B e-invoice format - a structured XML schema governed by Agenzia delle Entrate. The schema includes document type codes (TipoDocumento, TD01 through TD29 as of v1.9) covering standard invoices, credit notes, deferred invoices, reverse charge variations for foreign purchases, and self-billing for missed invoicing. Every billing scenario in the ERP must map to the correct TD code. Errors produce SdI structural rejections that return as numeric error codes without readable descriptions. This mapping step is consistently underestimated.
 
 **UAT with SdI sandbox (4 weeks).** Agenzia delle Entrate provides a test environment (Test di Interoperabilità) that requires accreditation. Test cases must cover rejection scenarios: invalid VAT IDs, wrong Codice Destinatario format, structural XML errors.
 
@@ -87,7 +87,7 @@ There are four stages of work:
 
 **IT** owns the middleware integration to the intermediary hub and status callback configuration.
 
-**Where it breaks:** The 12-day transmission window. [DL 34/2019 (Decreto Crescita), Art. 14, amending DPR 633/1972 Art. 21: https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:2019-04-30;34] Italian subsidiaries of foreign groups often run on centralised monthly billing cycles. Monthly batch billing creates a structural breach risk for the 12-day rule, because the clock starts at the date of supply, not the invoice date. Foreign billing teams running month-end cycles consistently encounter this gap.
+**Where it breaks:** The 12-day transmission window. [DL 34/2019 (Decreto Crescita), Art. 12-ter, amending DPR 633/1972 Art. 21: https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:2019-04-30;34] Italian subsidiaries of foreign groups often run on centralised monthly billing cycles. Monthly batch billing creates a structural breach risk for the 12-day rule, because the clock starts at the date of supply, not the invoice date. Foreign billing teams running month-end cycles consistently encounter this gap.
 
 The configuration work items in each of these areas vary by ERP system, entity structure, and current baseline. That specificity is what the Readiness Sprint delivers.
 

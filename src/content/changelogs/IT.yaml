@@ -1,5 +1,50 @@
 country_code: IT
 entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: error-correction
+    field: "body text (Outbound Configuration / Where it breaks section)"
+    old_value: "DL 34/2019 (Decreto Crescita), Art. 14, amending DPR 633/1972 Art. 21"
+    new_value: "DL 34/2019 (Decreto Crescita), Art. 12-ter, amending DPR 633/1972 Art. 21"
+    description: "Art. 14 of DL 34/2019 is about welfare associations (Enti associativi assistenziali), not electronic invoicing. Confirmed via normattiva.it. Correct citation: Art. 12-ter of DL 34/2019 modified DPR 633/1972 Art. 21 para 4 first period to establish the 12-day invoice transmission window from July 1, 2019. Source: Brocardi.it commentary on DPR 633/1972 Art. 21."
+    source_url: "https://www.brocardi.it/testo-unico-iva/titolo-ii/art21.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-06T05:30:52Z
+    type: confidence-upgrade
+    field: "unresolved_amber + confidence_summary"
+    old_value: "unresolved_amber: 1 / confidence_summary: amber"
+    new_value: "unresolved_amber: 0 / confidence_summary: green"
+    description: "DL 34/2019 amber research item resolved with the error-correction above. All research items cleared. IT confidence_summary upgraded to green. last_verified set to 2026-05-06."
+    source_url: "https://www.brocardi.it/testo-unico-iva/titolo-ii/art21.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-05T18:33:02Z
+    type: error-correction
+    field: "body text (FatturaPA schema mapping section)"
+    old_value: "TipoDocumento, TD01 through TD29 as of v1.9.1"
+    new_value: "TipoDocumento, TD01 through TD29 as of v1.9"
+    description: "TD29 was introduced in FatturaPA v1.9 (effective April 1, 2025), not v1.9.1 (effective May 15, 2026). Multiple Italian tax sources confirm TD29 launched in v1.9 on April 1, 2025 as a new document type for reporting omitted or irregular invoicing (partial replacement of TD20). Version reference corrected in body text. High item 2 removed."
+    source_url: "https://www.agenziaentrate.gov.it/portale/specifiche-tecniche-versione-1.9"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-05T18:33:02Z
+    type: confidence-upgrade
+    field: "unresolved_high"
+    old_value: "2"
+    new_value: "0"
+    description: "FatturaPA v1.9.1 confirmed: published March 31, 2026, usable from May 15, 2026. New URL found after 404 on original link. Page future_direction and key_deadlines 2026-05-15 entry confirmed correct. High item 1 removed. Combined with TD29 error-correction above, unresolved_high reaches 0."
+    source_url: "https://www.agenziaentrate.gov.it/portale/specifiche-tecniche-versione-1.9.1-%C2%A0-utilizzabili-dal-15-maggio-2026-"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-05T18:33:02Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "2"
+    new_value: "1"
+    description: "70% penalty confirmed from D.Lgs. 471/1997 Art. 6 as amended by tax sanctions reform (violations from September 1, 2024): 70% of VAT, minimum EUR 300 for omitted or irregular invoicing. Confirmed from normattiva.it (vigente version) and multiple Italian tax sources. Page claim confirmed correct. Amber item removed."
+    source_url: "https://www.normattiva.it/uri-res/N2Ls?urn%3Anir%3Astato%3Adecreto.legislativo%3A1997-12-18%3B471%21vig="
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T16:30:00Z
     type: content-update
     field: future_direction

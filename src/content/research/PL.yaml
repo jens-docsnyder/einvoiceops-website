@@ -1,7 +1,2 @@
 country_code: PL
-items:
-  - priority: amber
-    type: source-verification
-    description: "Checked 2026-05-04: KSeF API v2 spec (api.ksef.mf.gov.pl/docs/v2) confirms FA(3) as the only supported schema for new sessions in KSeF 2.0 — FA(2) appears only in legacy examples. The spec states: 'W KSeF 2.0 numery są generowane wyłącznie w formacie 35-znakowym.' FA(2) is clearly being phased out but the specific January 31, 2026 invalidation date is not in this document. Next search: try github.com/CIRFMF/ksef-docs for schema changelog, or podatki.gov.pl for a Ministry of Finance communication citing that date. Confirm: January 31, 2026 as FA(2) invalid date. If confirmed: no page change → remove + decrement amber."
-    source_url: null
-    added: 2026-05-01
+items: []

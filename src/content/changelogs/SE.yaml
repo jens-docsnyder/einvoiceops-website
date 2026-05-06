@@ -1,5 +1,32 @@
 country_code: SE
 entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: error-correction
+    field: "future_direction + key_deadlines 2025-07-01 + body text (lines 61, 95)"
+    old_value: "Svefaktura 1.0 and EDIFACT phase-out for new public procurement from July 1, 2025"
+    new_value: "Svefaktura 1.0 retired from SFTI standards April 1, 2021; July 2025 applies to SFTI ESAP 6 (EDIFACT technical envelope) only, not invoice format"
+    description: "Wrong date on live page. SFTI official avförda page (sfti.se) confirms Svefaktura 1.0 was retired from SFTI standards April 1, 2021 — not July 1, 2025. July 1, 2025 is the retirement date for SFTI ESAP 6 (EDIFACT-based technical envelope), a transport layer standard unrelated to the invoice format mandate. Corrections: (1) future_direction updated, (2) 2025-07-01 key_deadline entry removed, (3) body text corrected in two places. Svefaktura 1.0 item removed from research YAML."
+    source_url: "https://sfti.se/sfti/standarder/avfordameddelandenochhandledningar/avfordameddelanden.52834.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-06T05:30:52Z
+    type: error-correction
+    field: "body text (Preparation Timeline section)"
+    old_value: "The Ministry of Finance launched a formal inquiry on February 5, 2026 to assess a domestic B2B mandate in the context of EU ViDA. The inquiry report is due November 30, 2027. The direction of travel is clear, but the mandate is not enacted."
+    new_value: "Sweden is monitoring the EU ViDA initiative; no formal B2B inquiry has been confirmed."
+    description: "Orphaned body paragraph from 2026-05-04 correction: frontmatter future_direction and key_deadlines were updated then, but the matching body paragraph was not. Inquiry claim unverifiable — regeringen.se (Feb 2026 kommittédirektiv) shows neither entry is about e-invoicing or ViDA. Body paragraph corrected to match frontmatter. Inquiry monitoring item updated in research YAML."
+    source_url: "https://www.regeringen.se/rattsliga-dokument/kommittedirektiv/2026/02/"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-06T05:30:52Z
+    type: confidence-upgrade
+    field: "unresolved_amber"
+    old_value: "3"
+    new_value: "1"
+    description: "Two amber items resolved: (1) Svefaktura 1.0 date — confirmed and corrected (see error-correction above). (2) Bokföringslaget (1999:1078) 7-year archiving — Jens confirmed §2 states 'det sjunde året efter utgången av det kalenderår då räkenskapsåret avslutades' (the seventh year after the calendar year of fiscal year close). Page claim confirmed correct, no page change. riksdagen.se source verified by direct browser click. Both items removed from research YAML. One amber item remains: ViDA inquiry monitoring."
+    source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/bokforingslag-19991078_sfs-1999-1078/"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T16:30:00Z
     type: confidence-upgrade
     field: unresolved_amber

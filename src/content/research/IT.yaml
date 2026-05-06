@@ -1,22 +1,2 @@
 country_code: IT
-items:
-  - priority: high
-    type: source-verification
-    description: "SOURCE 404: agenziaentrate.gov.it/portale/schede/.../fattura-elettronica-b2b returns 404 — URL has changed. Jens: go to agenziaentrate.gov.it → search 'fattura elettronica specifiche tecniche' → find the technical specifications page → look for 'versione 1.9.1' and its effective date. Confirm: FatturaPA schema v1.9.1 is published with effective date May 15, 2026. If confirmed: no page change → remove + decrement high. If version number or date differs: update `future_direction` and `key_deadlines` 2026-05-15 entry on IT page."
-    source_url: null
-    added: 2026-05-01
-  - priority: high
-    type: source-verification
-    description: "SOURCE 404: same URL as item above returns 404. Jens: on the FatturaPA technical specifications page (find via agenziaentrate.gov.it search), Ctrl+F 'TD29'. Confirm: TD29 first appears in v1.9.1 (not v1.8.x or earlier). If confirmed: no page change → remove + decrement high. If TD29 exists in an earlier version: update the version claim in the IT page body ('TD01 through TD29 as of v1.9.1'). If TD29 does not exist at all: remove TD29 reference from body text."
-    source_url: null
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "No source URL — search: 'DPR 633/1972 articolo 6 sanzione omessa fatturazione elettronica' OR 'Dlgs 471/1997 art 6 comma 1 fattura elettronica'. Also try normattiva.it search for 'D.Lgs. 471/1997 art. 6'. Confirm: 70% of undocumented VAT (minimum EUR 300) stated in the enacted text. If found: add source_url to this item, no page change → remove + decrement amber. If penalty is different (e.g., a different percentage or minimum): update the penalty section on IT page with correct figures and source."
-    source_url: null
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Open source link → navigate to Article 14 of Decreto Crescita (DL 34/2019). Ctrl+F 'Art. 14' then 'dodici' or '12 giorni'. Confirm: 12-day transmission window stated in that article, amending DPR 633/1972 Art. 21. If confirmed: no page change → remove + decrement amber. If the article number is wrong (e.g., it is Art. 12 or Art. 16 that amends Art. 21): correct the legal citation in the Outbound Configuration section of IT page."
-    source_url: "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:2019-04-30;34"
-    added: 2026-05-01
+items: []

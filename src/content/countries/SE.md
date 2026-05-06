@@ -5,7 +5,7 @@ flag: 🇸🇪
 
 mandate_type: interoperability
 vida_alignment: DRR-inquiry
-future_direction: "Legacy Svefaktura 1.0 and EDIFACT formats phased out for new public procurement from July 1, 2025 — all new B2G contracts must use Peppol BIS 3.0. No B2B mandate enacted. Sweden is monitoring EU ViDA initiative; no formal B2B inquiry confirmed as of May 2026."
+future_direction: "Svefaktura 1.0 retired from SFTI standards April 1, 2021; Peppol BIS 3.0 mandatory for all new B2G contracts since 2019. No B2B mandate enacted. Sweden is monitoring EU ViDA initiative; no formal B2B inquiry confirmed as of May 2026."
 
 b2b: voluntary
 b2g: mandatory
@@ -17,8 +17,7 @@ phase_in_scope: null
 key_deadlines:
   - date: 2019-04-01
     description: B2G mandatory for all contracting authorities and their suppliers (Lag 2018:1277, §4 and §5)
-  - date: 2025-07-01
-    description: Svefaktura 1.0 and EDIFACT phase-out for new public procurement — Peppol BIS 3.0 mandatory for all new contracts
+
 
 formats: [Peppol-BIS-3.0]
 cius: null
@@ -50,7 +49,7 @@ last_verified: null
 
 mandate_version: 1
 unresolved_high: 0
-unresolved_amber: 3
+unresolved_amber: 1
 confidence_summary: amber
 ---
 
@@ -58,9 +57,9 @@ confidence_summary: amber
 
 Sweden's B2G e-invoicing mandate has been live since April 1, 2019 (Lag 2018:1277, §4 and §5). Any company supplying goods or services to Swedish public authorities under contracts signed after that date must issue Peppol BIS 3.0 invoices. The law covers all contracting authorities — central government agencies, municipalities, regions, and government-owned companies — including procurement below EU thresholds and direct awards.
 
-Legacy formats (Svefaktura 1.0, EDIFACT) are no longer accepted for new public procurement as of July 1, 2025. All new Swedish B2G contracts must use Peppol BIS 3.0.
+Svefaktura 1.0 was retired from SFTI standards on April 1, 2021. All new Swedish B2G contracts must use Peppol BIS 3.0 since the 2019 mandate (Lag 2018:1277).
 
-No B2B mandate exists as of May 2026. The Ministry of Finance launched a formal inquiry on February 5, 2026 to assess a domestic B2B mandate in the context of EU ViDA. The inquiry report is due November 30, 2027. The direction of travel is clear, but the mandate is not enacted.
+No B2B mandate exists as of May 2026. Sweden is monitoring the EU ViDA initiative; no formal B2B inquiry has been confirmed.
 
 For a foreign group implementing Swedish B2G from a standing start:
 
@@ -92,7 +91,7 @@ The configuration work items in each of these areas vary by ERP system, entity s
 
 **Routing identifiers.** The Peppol participant ID for Swedish entities uses scheme code 0007 (organisationsnummer, DIGG/SFTI recommended) or 0088 (GLN). The organisationsnummer is 10 digits. For Peppol routing, the hyphen is removed: `0007:5561234567`. Standard ERP customer master setups store company name, address, and VAT ID but not Peppol participant IDs with scheme codes. The Peppol ID must be sourced from the buyer, stored in a dedicated field, and mapped to the correct Peppol routing.
 
-**Svefaktura legacy.** Svefaktura 1.0 was the Swedish national e-invoice format before the Peppol migration. It is no longer accepted for new public procurement as of July 1, 2025. ERP configurations built for Svefaktura output must be reconfigured for Peppol BIS 3.0. Finding which entities are still on Svefaktura and which have already migrated is typically the first discovery of a readiness sprint.
+**Svefaktura legacy.** Svefaktura 1.0 was the Swedish national e-invoice format before the Peppol migration. It was retired from SFTI standards on April 1, 2021; new B2G contracts have required Peppol BIS 3.0 since the 2019 mandate. ERP configurations built for Svefaktura output must be reconfigured for Peppol BIS 3.0. Finding which entities are still on Svefaktura and which have already migrated is typically the first discovery of a readiness sprint.
 
 **B2B capability gap.** No B2B mandate exists yet. But the formal ViDA inquiry signals a mandate is coming. Groups without outbound Peppol BIS 3.0 capability for B2B are building implementation debt that will become a compliance gap once the inquiry outcome becomes legislation.
 

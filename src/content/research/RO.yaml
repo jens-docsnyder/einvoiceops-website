@@ -1,22 +1,2 @@
 country_code: RO
-items:
-  - priority: high
-    type: source-verification
-    description: "OUG NUMBER SPLIT: EC factsheet RO (Aug 2025) cites OUG 138/2024 for changes effective Jan 1, 2025. Our RO page cites OUG 89/2025 for Jan 1, 2026 changes (5-day window, non-residents). These are likely two different ordinances at different amendment stages. Jens: search monitoruloficial.ro for 'OUG 89/2025' (expect a 2025 ordinance taking effect Jan 2026). Confirm: OUG 89/2025 covers (1) 5-working-day submission window and (2) non-resident VAT-registered entities without PE. If OUG 89/2025 is confirmed: no page change → remove + decrement high. If OUG 89/2025 does not exist or covers different content: correct the citation in the RO page key_deadlines 2026-01-01 entry. mfinante.gov.ro and anaf.ro return 403/timeout on automated fetch — direct browser click required."
-    source_url: null
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Open source link (EUR-Lex search) → the search should return Decision 2023/1553. Click the result and Ctrl+F '31 December 2026' or '2023/1553'. Confirm: exact decision number is 2023/1553 and it expires December 31, 2026. If confirmed: update source_url on this item to the direct EUR-Lex document link (not the search URL), no page change → remove + decrement amber. If expiry date differs: update the derogation_expiry note on RO page."
-    source_url: "https://eur-lex.europa.eu/search.html?query=2023%2F1553"
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "No source URL — search: 'OUG 120/2021 art 13^1 Legea 296/2023 penalitate e-factura' OR 'GEO 120/2021 amendament 15 la suta'. Also try: legislatie.just.ro or monitoruloficial.ro for OUG 120/2021 as amended. Confirm: 15% of invoice value penalty in Art. 13^1 of GEO 120/2021 as amended by Law 296/2023. If found: add source_url → remove + decrement amber. If percentage or article reference is different: update penalty_pct and legal citation on RO page."
-    source_url: null
-    added: 2026-05-01
-  - priority: amber
-    type: source-verification
-    description: "Open source link (ANAF e-factura page) → look for currency or RON conversion guidance. Ctrl+F 'cursul BNR' or 'rata de schimb' or 'Banca Nationala'. Confirm: ANAF explicitly states the National Bank of Romania (BNR) daily rate must be used (not a monthly average or contractual rate). If confirmed: no page change → remove + decrement amber. If ANAF page does not address this: search ANAF for 'curs valutar factura' or check Codul Fiscal Art. 139 for the currency conversion rule."
-    source_url: "https://www.anaf.ro/anaf/internet/RO/e-factura"
-    added: 2026-05-01
+items: []

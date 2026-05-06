@@ -2,16 +2,6 @@ country_code: SE
 items:
   - priority: amber
     type: source-verification
-    description: "Previous source URL (digg.se/e-handel/e-faktura) returns 404 — DIGG has reorganised its site. Search: digg.se → 'e-faktura' or 'Svefaktura'. Confirm: July 1, 2025 as the phase-out date for Svefaktura 1.0 and EDIFACT in new public procurement contracts, and confirm scope (new contracts only, or also contracts already in progress). If confirmed with correct date: no page change → remove + decrement amber. If date or scope differs: update the key_deadlines and future_direction on SE page."
-    source_url: null
-    added: 2026-05-04
-  - priority: amber
-    type: source-verification
-    description: "INQUIRY CLAIM UNVERIFIED: SE page future_direction previously stated 'Ministry of Finance formal inquiry into EU ViDA B2B mandate launched February 5, 2026, report due November 30, 2027.' Swedish government website (regeringen.se/rattsliga-dokument/kommittedirektiv/2026/02/) shows only two Feb 2026 kommittédirektiv — neither about e-invoicing or ViDA. Claim was removed from SE page and key_deadlines on 2026-05-04. If an inquiry was subsequently launched: search regeringen.se for 'elektronisk faktura' or 'ViDA' in kommittédirektiv; find the correct date and report deadline; add back to SE page future_direction and key_deadlines."
+    description: "INQUIRY CLAIM UNVERIFIED: SE page future_direction previously stated 'Ministry of Finance formal inquiry into EU ViDA B2B mandate launched February 5, 2026, report due November 30, 2027.' Swedish government website (regeringen.se/rattsliga-dokument/kommittedirektiv/2026/02/) shows only two Feb 2026 kommittédirektiv — neither about e-invoicing or ViDA. Claim was removed from SE page and key_deadlines on 2026-05-04; orphaned body paragraph also removed 2026-05-06. If an inquiry was subsequently launched: search regeringen.se for 'elektronisk faktura' or 'ViDA' in kommittédirektiv; find the correct date and report deadline; add back to SE page future_direction and key_deadlines."
     source_url: "https://www.regeringen.se/rattsliga-dokument/kommittedirektiv/"
     added: 2026-05-04
-  - priority: amber
-    type: source-verification
-    description: "Open source link (Bokföringslaget 1999:1078 on riksdagen.se) → Ctrl+F '7 kap' (Chapter 7) then '2 §'. Confirm: 7-year archiving obligation stated in Chapter 7, Section 2. If confirmed: no page change → remove + decrement amber. If the archiving rule is in a different chapter or section: update the archiving_reference citation on SE page. Note: riksdagen.se and lagen.nu both returned server errors on automated fetch — Jens must click directly."
-    source_url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/bokforingslag-19991078_sfs-1999-1078/"
-    added: 2026-05-01

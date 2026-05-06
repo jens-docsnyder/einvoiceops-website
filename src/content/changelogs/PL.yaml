@@ -1,5 +1,14 @@
 country_code: PL
 entries:
+  - timestamp: 2026-05-05T18:33:02Z
+    type: confidence-upgrade
+    field: "unresolved_amber + confidence_summary"
+    old_value: "unresolved_amber: 1 / confidence_summary: amber"
+    new_value: "unresolved_amber: 0 / confidence_summary: green"
+    description: "FA(2) schema invalidity date confirmed: FA(2) structure valid until January 31, 2026; FA(3) required from February 1, 2026. Confirmed from ksef.podatki.gov.pl (official Ministry of Finance KSeF portal) — multiple pages confirm KSeF 1.0 shutdown January 26-31, 2026 and KSeF 2.0 (FA(3) only) live February 1, 2026. Page claim confirmed correct. Last remaining amber item removed. confidence_summary upgraded to green."
+    source_url: "https://ksef.podatki.gov.pl/pliki-do-pobrania-ksef-20/"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
     field: "unresolved_amber"

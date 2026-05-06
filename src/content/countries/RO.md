@@ -57,11 +57,11 @@ document_lifecycle_states:
   - REJECTED
 
 has_sandbox: true
-last_verified: 2026-04-30
+last_verified: 2026-05-06
 mandate_version: 1
-confidence_summary: amber
-unresolved_high: 1
-unresolved_amber: 3
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline
