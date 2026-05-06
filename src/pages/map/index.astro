@@ -29,6 +29,18 @@ const countryPaths: Record<string, string> = {
   path7033: 'SE',  // Sweden (path7029 is Norway — no country page)
   path7025: 'FI',
   path7043: 'ES',
+  path2122: 'IE',
+  path7013: 'LU',
+  path7009: 'AT',
+  path8303: 'CZ',
+  path8140: 'SI',
+  path8156: 'HU',
+  path8158: 'HR',
+  path8148: 'SK',
+  path7003: 'LT',
+  path7005: 'LV',
+  path7007: 'EE',
+  path8154: 'BG',
 };
 
 // Flag overlay positions as % of SVG viewport (400x420)
@@ -44,6 +56,18 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
   SE: { x: 49.0, y: 28.0 },
   FI: { x: 62.0, y: 24.0 },
   ES: { x: 21.0, y: 89.0 },
+  IE: { x: 14.5, y: 53.2 },
+  LU: { x: 39.5, y: 63.1 },
+  AT: { x: 54.5, y: 66.5 },
+  CZ: { x: 57.1, y: 61.1 },
+  SI: { x: 57.9, y: 70.6 },
+  HU: { x: 60.9, y: 73.7 },
+  HR: { x: 63.7, y: 75.1 },
+  SK: { x: 65.5, y: 65.7 },
+  LT: { x: 66.3, y: 42.7 },
+  LV: { x: 66.9, y: 38.1 },
+  EE: { x: 65.7, y: 32.9 },
+  BG: { x: 71.2, y: 81.5 },
 };
 ---
 <!DOCTYPE html>
@@ -102,7 +126,19 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path8160,
     #eu-map #path7033,
     #eu-map #path7025,
-    #eu-map #path7043 {
+    #eu-map #path7043,
+    #eu-map #path2122,
+    #eu-map #path7013,
+    #eu-map #path7009,
+    #eu-map #path8303,
+    #eu-map #path8140,
+    #eu-map #path8156,
+    #eu-map #path8158,
+    #eu-map #path8148,
+    #eu-map #path7003,
+    #eu-map #path7005,
+    #eu-map #path7007,
+    #eu-map #path8154 {
       fill: #dbeafe;
       stroke: #93c5fd;
       stroke-width: 0.6;
@@ -120,6 +156,18 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7033:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7025:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7043:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path2122:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7013:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7009:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8303:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8140:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8156:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8158:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8148:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7003:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7005:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path7007:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8154:hover { fill: #2563eb; stroke: #1d4ed8; }
 
     /* ---- FLAG TILES overlaid on SVG ---- */
     .flag-overlay {
@@ -281,7 +329,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
 
   <script is:inline>
     // Click navigation for country paths
-    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/', path7039: '/map/DK/', path7021: '/map/DK/', path6999: '/map/PL/', path8160: '/map/RO/', path7033: '/map/SE/', path7025: '/map/FI/', path7043: '/map/ES/' };
+    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/', path7039: '/map/DK/', path7021: '/map/DK/', path6999: '/map/PL/', path8160: '/map/RO/', path7033: '/map/SE/', path7025: '/map/FI/', path7043: '/map/ES/', path2122: '/map/IE/', path7013: '/map/LU/', path7009: '/map/AT/', path8303: '/map/CZ/', path8140: '/map/SI/', path8156: '/map/HU/', path8158: '/map/HR/', path8148: '/map/SK/', path7003: '/map/LT/', path7005: '/map/LV/', path7007: '/map/EE/', path8154: '/map/BG/' };
     Object.entries(routes).forEach(([id, href]) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('click', () => location.href = href);
