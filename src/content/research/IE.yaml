@@ -1,0 +1,17 @@
+country_code: IE
+items:
+  - priority: high
+    type: source-verification
+    description: "B2B PHASE DATES - REVENUE PRESS RELEASE: Open revenue.ie/en/corporate/press-office/press-releases/2026/pr-021026-phase-one-vat-modernisation.aspx → confirm Phase 1 = November 1, 2028 (large corporates) and Phase 2 = November 1, 2029 (all VAT-registered). If yes: key_deadlines confirmed → remove item + decrement high. If dates or scope differ: update key_deadlines and phase_in_scope in IE.md + add error-correction changelog entry."
+    source_url: "https://www.revenue.ie/en/corporate/press-office/press-releases/2026/pr-021026-phase-one-vat-modernisation.aspx"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "B2G LEGAL BASIS S.I. 258/2019: Open irishstatutebook.ie → S.I. No. 258/2019 → confirm it transposes EU B2G e-invoicing directive and mandates Peppol BIS 3.0 for public procurement. If yes: B2G legal basis confirmed → no page change → remove item + decrement amber. If law reference differs: update body text in IE.md."
+    source_url: "https://www.irishstatutebook.ie/eli/2019/si/258/made/en/print"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 6 YEARS: Open revenue.ie → VAT records section → confirm 6-year archiving requirement for VAT/invoice records. If yes: archiving_years: 6 confirmed → remove item + decrement amber. If different: update archiving_years in IE.md frontmatter + add error-correction changelog entry."
+    source_url: "https://www.revenue.ie"
+    added: 2026-05-06

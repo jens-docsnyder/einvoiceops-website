@@ -1,0 +1,17 @@
+country_code: LT
+items:
+  - priority: high
+    type: source-verification
+    description: "SABIS LEGAL BASIS - GOVERNMENT RESOLUTION No. 405: Open e-seimas.lrs.lt → search Government Resolution No. 405 (May 29, 2024). Confirm: Resolution 405 is the legal basis for SABIS platform operations and NBFC as operator. If yes: legal basis note confirmed → no page change → remove item + decrement high. If resolution number or date differs: update body text in LT.md + add error-correction changelog entry."
+    source_url: "https://e-seimas.lrs.lt"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "B2B JANUARY 2028 - POLICY STATUS: Open nbfc.lrv.lt or e-seimas.lrs.lt → confirm that no B2B e-invoicing legislation has been enacted as of May 2026 and that January 2028 is a policy/RRF target only. If confirmed: policy-only status correct → no page change → remove item + decrement amber. If legislation has been enacted: update b2b status from 'announced' to 'mandatory' + update key_deadlines + add mandate-change changelog entry."
+    source_url: "https://nbfc.lrv.lt"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 10 YEARS: Open relevant Lithuanian law portal → Law on Documents and Archives → confirm 10-year archiving period for electronic records including invoices. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in LT.md frontmatter + add error-correction changelog entry."
+    source_url: "https://e-seimas.lrs.lt"
+    added: 2026-05-06

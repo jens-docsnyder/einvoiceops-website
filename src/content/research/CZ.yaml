@@ -1,0 +1,17 @@
+country_code: CZ
+items:
+  - priority: amber
+    type: source-verification
+    description: "NEN PLATFORM LEGAL BASIS (Act 134/2016): Open zakonyprolidi.cz → Act 134/2016 → confirm NEN (National Electronic Tool) is established as the mandatory B2G e-procurement platform. If yes: legal basis in body text confirmed → no page change → remove item + decrement amber. If law reference differs: update body text in CZ.md."
+    source_url: "https://www.zakonyprolidi.cz/cs/2016-134"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 10 YEARS: Open zakonyprolidi.cz → Czech Accounting Act → archiving provision. Confirm: 10-year archiving for accounting records under Czech Accounting Act. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in CZ.md frontmatter + add error-correction changelog entry."
+    source_url: "https://www.zakonyprolidi.cz"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ISDOC FORMAT ACCEPTANCE AT NEN: Open nen.nipez.cz or mf.gov.cz → e-fakturace section → confirm ISDOC is accepted alongside UBL 2.1 and Peppol BIS 3.0 for B2G submissions. If yes: formats list confirmed → no page change → remove item + decrement amber. If ISDOC not listed: update formats in CZ.md frontmatter."
+    source_url: "https://mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace"
+    added: 2026-05-06

@@ -1,0 +1,17 @@
+country_code: SI
+items:
+  - priority: high
+    type: source-verification
+    description: "ZIERDED PENALTIES - Art. 21: Open uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-3032 or pisrs.si → ZAKO9033 → Art. 21. Confirm: EUR 1,000-3,000 for legal entities; EUR 500-1,500 for sole proprietors; EUR 100-1,000 for responsible persons. If yes: penalty_max field confirmed → remove item + decrement high. If amounts differ: update penalty_max in SI.md + add error-correction changelog entry."
+    source_url: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-3032"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ZIERDED JANUARY 2028 MANDATORY DATE: Open pisrs.si → ZAKO9033 → or uradni-list.si st. 85/2025 → confirm January 1, 2028 as the B2B mandatory date. If yes: key_deadlines confirmed → remove item + decrement amber. If date differs: update key_deadlines in SI.md + add error-correction changelog entry + update inbound_mandate_date and outbound_mandate_date."
+    source_url: "https://pisrs.si"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 20 YEARS REAL ESTATE (ZDDV-1 Art. 86): Open pisrs.si → ZDDV-1 → Art. 86. Confirm: 20-year archiving period for real estate transactions stated in Art. 86. If yes: body text confirmed → no page change → remove item + decrement amber. If different: update body text in SI.md."
+    source_url: "https://pisrs.si"
+    added: 2026-05-06

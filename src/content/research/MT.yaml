@@ -1,0 +1,17 @@
+country_code: MT
+items:
+  - priority: amber
+    type: source-verification
+    description: "L.N. 403/2018 AND L.N. 404/2018 ON LEGISLATION.MT: Open legislation.mt → search L.N. 403 of 2018 and L.N. 404 of 2018 → confirm both exist and mandate Peppol BIS 3.0 for B2G. If yes: legal basis in body text and future_direction confirmed → no page change → remove item + decrement amber. If law references differ: update future_direction and body text in MT.md."
+    source_url: "https://legislation.mt"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 10 YEARS (VAT Act Chapter 406, Art. 53): Open legislation.mt → VAT Act Chapter 406 → Art. 53. Confirm: 10-year archiving period stated for invoice/VAT records. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in MT.md frontmatter + add error-correction changelog entry."
+    source_url: "https://legislation.mt"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "MFIN AS PEPPOL AUTHORITY: Open ec.europa.eu/digital-building-blocks → eInvoicing country factsheets → Malta → confirm MFIN (Ministry for Finance and Employment) is the designated Maltese Peppol Authority. If yes: future_direction reference confirmed → no page change → remove item + decrement amber. If different authority: update future_direction in MT.md."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Malta"
+    added: 2026-05-06

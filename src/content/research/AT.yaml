@@ -1,0 +1,22 @@
+country_code: AT
+items:
+  - priority: high
+    type: source-verification
+    description: "ABGAENÄNDERUNGSGESETZ 2025 - B2B JANUARY 2028: Open parlament.gv.at → search AbgÄG 2025 → confirm B2B e-invoicing mandatory from January 1, 2028 is the enacted law provision. Also confirm BGBl. I publication number. If yes: future_direction and key_deadlines confirmed → remove item + decrement high. If date or law reference differs: update future_direction and key_deadlines in AT.md + add error-correction changelog entry."
+    source_url: "https://www.parlament.gv.at"
+    added: 2026-05-06
+  - priority: high
+    type: source-verification
+    description: "CIUS-AT-NAT AND CIUS-AT-GOV: Open ebinterface.at → confirm existence and current version of CIUS-AT-NAT (B2B) and CIUS-AT-GOV (B2G). If yes: cius field confirmed → remove item + decrement high. If names differ: update cius field in AT.md + add error-correction changelog entry. Note: ebinterface.at returned ECONNREFUSED in automated fetch - manual browser access required."
+    source_url: "https://www.ebinterface.at"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "PENALTY EUR 5,000 PER VIOLATION (FinStrG): Confirm EUR 5,000 per violation penalty under FinStrG (Finanzstrafgesetz) for e-invoice non-compliance. Open ris.bka.gv.at → FinStrG → relevant penalty section. If yes: penalty_max field confirmed → remove item + decrement amber. If different: update penalty_max in AT.md + add error-correction changelog entry."
+    source_url: "https://www.ris.bka.gv.at"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 7 YEARS (BAO §132): Open ris.bka.gv.at → BAO (Bundesabgabenordnung) → §132. Confirm: 7-year archiving stated for tax/invoice records. If yes: archiving_years: 7 confirmed → remove item + decrement amber. If different: update archiving_years in AT.md frontmatter + add error-correction changelog entry."
+    source_url: "https://www.ris.bka.gv.at"
+    added: 2026-05-06

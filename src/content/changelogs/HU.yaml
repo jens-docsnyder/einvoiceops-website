@@ -1,0 +1,11 @@
+country_code: HU
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Hungary RTIR model - Online Szamla mandatory all B2B/B2C since April 1, 2021; XML v3.0 mandatory from May 15, 2025; B2C digital receipt reporting from September 1, 2026. Source: Gemini Deep Research + Cross-Examination Round 2 (2026-05-05). Key unverified items: penalty HUF 1,000,000 per invoice (A-URL - per invoice vs per audit framing needs verification), archiving split 8/5 years. unresolved_high: 2, unresolved_amber: 1."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

@@ -1,0 +1,17 @@
+country_code: EE
+items:
+  - priority: high
+    type: source-verification
+    description: "PENALTY EUR 3,200 (Accounting Act §35): Open riigiteataja.ee → Accounting Act → §35. Confirm: EUR 3,200 stated as maximum penalty for non-compliance with e-invoice obligations. Note: riigiteataja.ee cannot be WebFetched with sufficient rendering - manual browser required. If yes: penalty_max field confirmed → remove item + decrement high. If amount or article differs: update penalty_max in EE.md + add error-correction changelog entry."
+    source_url: "https://www.riigiteataja.ee"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ACCOUNTING ACT AMENDMENT RT I, 04.10.2024, 1 - PDF REJECTION ENTITLEMENT: Open riigiteataja.ee → search RT I, 04.10.2024, 1 → confirm the amendment establishes that registered e-invoice recipients can legally reject PDFs from July 1, 2025. If yes: body text and key_deadline confirmed → no page change → remove item + decrement amber. If date or entitlement differs: update key_deadlines and body text in EE.md + add error-correction changelog entry."
+    source_url: "https://www.riigiteataja.ee"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 7 YEARS (Accounting Act §12): Open riigiteataja.ee → Accounting Act → §12. Confirm: 7-year archiving stated for electronic invoice records. If yes: archiving_years: 7 confirmed → remove item + decrement amber. If different: update archiving_years in EE.md frontmatter + add error-correction changelog entry."
+    source_url: "https://www.riigiteataja.ee"
+    added: 2026-05-06

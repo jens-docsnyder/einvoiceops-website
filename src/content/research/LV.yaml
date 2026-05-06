@@ -1,0 +1,17 @@
+country_code: LV
+items:
+  - priority: high
+    type: source-verification
+    description: "PENALTY EUR 20,000: Confirm the EUR 20,000 penalty cap for systemic non-compliance in the Latvian general accounting/tax penalty framework. Open likumi.lv → search general accounting penalties or VID penalty provisions. Confirm: EUR 20,000 stated as maximum for systemic non-compliance. If yes: penalty_max field confirmed → remove item + decrement high. If different amount or no single cap: update penalty_max in LV.md to reflect correct framing."
+    source_url: "https://likumi.lv/ta/id/365040"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "5 WORKING DAYS REPORTING WINDOW: Open likumi.lv/ta/id/365040 → Cabinet Regulation 749 → Point 14. Confirm: '5 working days' stated exactly as the reporting window for e-invoice submission. WebFetch confirmed this text - Jens click to confirm. If yes: reporting_window field confirmed → remove item + decrement amber. If text differs: update reporting_window in LV.md."
+    source_url: "https://likumi.lv/ta/id/365040"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "JANUARY 1, 2026 EFFECTIVE DATE: Open likumi.lv/ta/id/365040 → Cabinet Regulation 749 → Point 19. Confirm: January 1, 2026 stated as the effective date. WebFetch confirmed this point - Jens click to confirm. If yes: key_deadlines confirmed → remove item + decrement amber. If date differs: update key_deadlines in LV.md + add error-correction changelog entry."
+    source_url: "https://likumi.lv/ta/id/365040"
+    added: 2026-05-06

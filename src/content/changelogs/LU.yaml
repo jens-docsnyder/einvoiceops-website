@@ -1,0 +1,11 @@
+country_code: LU
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Luxembourg B2G fully mandatory since March 18, 2023 (Law of 13 December 2021); no B2B mandate; CTIE platform (efacturation.public.lu); 10-year archiving (Law of 25 July 2015). Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: B2G law reference, archiving 10 years, SME phase-in date. unresolved_high: 0, unresolved_amber: 3."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

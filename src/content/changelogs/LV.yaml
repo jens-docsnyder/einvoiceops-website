@@ -1,0 +1,11 @@
+country_code: LV
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Latvia B2G/G2G CTC/reporting model from January 1, 2026 under Cabinet Regulation No. 749. 5-working-day reporting window to VID confirmed via WebFetch (likumi.lv Point 14). Source: Gemini Deep Research + Cross-Examination Round 2 (2026-05-05) + WebFetch confirmation of Cabinet Regulation 749 key provisions. unresolved_high: 1, unresolved_amber: 2."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

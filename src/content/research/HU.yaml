@@ -1,0 +1,17 @@
+country_code: HU
+items:
+  - priority: high
+    type: source-verification
+    description: "PENALTY HUF 1,000,000: Open njt.hu/jogszabaly/2017-150-00-00 → Act CL of 2017 → Art. 220. Confirm: exact HUF 1,000,000 penalty amount and whether it is stated as 'per invoice' or 'per audit' (or another basis). If yes: penalty_max field confirmed → remove item + decrement high. If the amount or basis differs: update penalty_max in HU.md + add error-correction changelog entry."
+    source_url: "https://njt.hu/jogszabaly/2017-150-00-00"
+    added: 2026-05-06
+  - priority: high
+    type: source-verification
+    description: "ARCHIVING SPLIT 8 YEARS / 5 YEARS: Open njt.hu → Act C of 2000 (Accounting Act) → Sec. 169. Confirm: 8-year archiving for accounting records AND confirm whether VAT Act specifies a separate 5-year period. If yes to both: archiving_years: 8 as longer period is correct → remove item + decrement high. If different: update archiving_years in HU.md frontmatter + add error-correction changelog entry."
+    source_url: "https://njt.hu"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ONLINE SZAMLA v3.0 MANDATORY DATE: Open onlineszamla.nav.gov.hu → interface specification section or news. Confirm: XML v3.0 became mandatory May 15, 2025 (v2.0 retired). If yes: key_deadline confirmed → no page change → remove item + decrement amber. If the date differs: update key_deadlines in HU.md + add error-correction changelog entry."
+    source_url: "https://onlineszamla.nav.gov.hu"
+    added: 2026-05-06

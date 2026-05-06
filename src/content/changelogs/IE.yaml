@@ -1,0 +1,11 @@
+country_code: IE
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Ireland B2G mandatory (S.I. 258/2019); B2B Phase 1 November 1, 2028 (large corporates), Phase 2 November 1, 2029 (all VAT-registered). OGP/einvoicingireland.ie is Irish Peppol Authority. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: Revenue press release phase dates (manual URL click required), B2G legal basis S.I. 258/2019, archiving 6 years. unresolved_high: 1, unresolved_amber: 2."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

@@ -1,0 +1,17 @@
+country_code: CY
+items:
+  - priority: amber
+    type: source-verification
+    description: "LAW 89(I)/2019 - B2G LEGAL BASIS: Open cylaw.org/nomoi/arith/2019_1_89.pdf → confirm this is Law 89(I)/2019 establishing B2G e-invoicing mandate for public procurement. Confirm: the law covers all tender values with phase-in structure. If yes: legal basis in future_direction and body text confirmed → no page change → remove item + decrement amber. If law reference differs: update future_direction in CY.md."
+    source_url: "https://cylaw.org/nomoi/arith/2019_1_89.pdf"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "TENDER THRESHOLD FIGURES (EUR 215k / 30k / 3k): Open gazettes.gov.cy → Gazette No. 4717 (June 26, 2019) or subsequent implementing regulation → confirm exact threshold figures: EUR 215,000, EUR 30,000, EUR 3,000. These figures sourced from Marosa VAT (AMBER source) - need primary source verification. If confirmed: phase_in_scope text and key_deadlines confirmed → remove item + decrement amber. If different thresholds: update phase_in_scope and key_deadlines in CY.md + add error-correction changelog entry."
+    source_url: "https://www.gazettes.gov.cy"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 7 YEARS: Confirm 7-year archiving period under Cypriot VAT law. Open tax.gov.cy or cyprus.gov.cy → VAT records section → confirm 7-year archiving. If yes: archiving_years: 7 confirmed → remove item + decrement amber. If different: update archiving_years in CY.md frontmatter + add error-correction changelog entry."
+    source_url: "https://www.tax.gov.cy"
+    added: 2026-05-06

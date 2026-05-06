@@ -1,0 +1,11 @@
+country_code: SK
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Slovakia Law 385/2025 Z.z. - B2B mandatory January 2027 (established entities), voluntary from May 2026; CTC/reporting model with Tax Data Document (TDD); Peppol scheme 0245. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: penalties EUR 10,000 / EUR 100,000 (A-URL - slov-lex.sk verification needed), January 2027 mandate date confirmation. unresolved_high: 2, unresolved_amber: 1."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

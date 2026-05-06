@@ -1,0 +1,11 @@
+country_code: CZ
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Czech Republic B2G mandatory via NEN platform; no B2B mandate; ISDOC national format significant; ISDS Data Box system for government document delivery. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: NEN Act 134/2016 basis, archiving 10 years, ISDOC acceptance at NEN. unresolved_high: 0, unresolved_amber: 3."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

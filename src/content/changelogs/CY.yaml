@@ -1,0 +1,11 @@
+country_code: CY
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Cyprus B2G mandatory (Law 89(I)/2019) - phase-in by tender value complete November 2023; no B2B mandate; Treasury of the Republic is Peppol implementation body. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: Law 89(I)/2019 legal basis (cylaw.org), threshold figures EUR 215k/30k/3k (Marosa VAT source - AMBER, needs gazette verification), archiving 7 years. unresolved_high: 0, unresolved_amber: 3."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

@@ -1,0 +1,11 @@
+country_code: MT
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Malta B2G mandatory (L.N. 403/2018 and L.N. 404/2018); no B2B mandate; Peppol BIS 3.0; MFIN as Peppol Authority; 10-year archiving (VAT Act Chapter 406, Art. 53). Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: legal notice references on legislation.mt, archiving 10 years, MFIN Peppol Authority confirmation. unresolved_high: 0, unresolved_amber: 3."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

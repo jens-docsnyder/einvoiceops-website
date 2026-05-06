@@ -1,0 +1,17 @@
+country_code: SK
+items:
+  - priority: high
+    type: source-verification
+    description: "LAW 385/2025 - PENALTIES: Open slov-lex.sk → search Law 385/2025 Z.z. → penalty articles. Confirm: EUR 10,000 single violation and EUR 100,000 systematic non-compliance as stated penalty maximums. If yes: penalty_max field confirmed → remove item + decrement high. If amounts differ: update penalty_max in SK.md frontmatter + add error-correction changelog entry."
+    source_url: "https://www.slov-lex.sk"
+    added: 2026-05-06
+  - priority: high
+    type: source-verification
+    description: "JANUARY 2027 MANDATE DATE - ENACTED LAW: Open slov-lex.sk → Law 385/2025 Z.z. → mandatory date article. Confirm: January 1, 2027 stated as the mandatory date for established entities, and May 2026 as voluntary start date. If yes: key_deadlines confirmed → remove item + decrement high. If dates differ: update key_deadlines in SK.md + add error-correction changelog entry."
+    source_url: "https://www.slov-lex.sk"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 10 YEARS AND 20 YEARS REAL ESTATE: Open slov-lex.sk → Law 385/2025 Z.z. or Slovak accounting law → confirm 10-year standard archiving and 20-year real estate archiving periods. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in SK.md + add error-correction changelog entry."
+    source_url: "https://www.slov-lex.sk"
+    added: 2026-05-06

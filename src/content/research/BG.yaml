@@ -1,0 +1,17 @@
+country_code: BG
+items:
+  - priority: amber
+    type: source-verification
+    description: "B2G LEGAL BASIS ZOP Art. 115a: Open lex.bg or dv.parliament.bg → Public Procurement Act (ZOP) → Art. 115a. Confirm: B2G e-invoicing mandate stated in Art. 115a (State Gazette No. 86/2018). If yes: legal basis in body text confirmed → no page change → remove item + decrement amber. If article number or gazette differs: update body text in BG.md."
+    source_url: "https://lex.bg"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "SAF-T THRESHOLDS AND PHASE DATES: Open nra.bg → SAF-T section → confirm the 5-phase rollout thresholds: BGN 300M/3.5M (2026), BGN 150M/3.5M (2027), BGN 15M/1.5M (2028), all SMEs (2029), micro (2030). If yes: key_deadlines confirmed → remove item + decrement amber. If thresholds or dates differ: update key_deadlines in BG.md + add error-correction changelog entry."
+    source_url: "https://nra.bg"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 10 YEARS: Confirm 10-year archiving period under Bulgarian accounting or tax law. Open lex.bg or nra.bg → Accountancy Act → relevant archiving provision. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in BG.md frontmatter + add error-correction changelog entry."
+    source_url: "https://lex.bg"
+    added: 2026-05-06

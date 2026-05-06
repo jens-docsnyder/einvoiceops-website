@@ -1,0 +1,11 @@
+country_code: SI
+entries:
+  - timestamp: 2026-05-06T05:30:52Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Slovenia ZIERDED (Uradni list RS, st. 85/2025) - B2B mandatory January 1, 2028 (enacted); B2G via UJP live; e-SLOG 2.0 national format. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: ZIERDED Art. 21 penalties (pisrs.si JS-rendered - manual click required), January 2028 date confirmation. unresolved_high: 1, unresolved_amber: 2."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1
