@@ -42,6 +42,7 @@ const countryPaths: Record<string, string> = {
   path7007: 'EE',
   path8154: 'BG',
   path7035: 'PT',
+  path8152: 'GR',
 };
 
 // Flag overlay positions as % of SVG viewport (400x420)
@@ -69,8 +70,8 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
   LV: { x: 66.9, y: 38.1 },
   EE: { x: 65.7, y: 32.9 },
   BG: { x: 71.2, y: 81.5 },
-  PT: { x: 13.0, y: 91.0 },
-  GR: { x: 74.0, y: 86.0 },
+  PT: { x: 11.0, y: 91.0 },
+  GR: { x: 76.0, y: 86.0 },
 };
 ---
 <!DOCTYPE html>
@@ -142,7 +143,8 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7005,
     #eu-map #path7007,
     #eu-map #path7035,
-    #eu-map #path8154 {
+    #eu-map #path8154,
+    #eu-map #path8152 {
       fill: #dbeafe;
       stroke: #93c5fd;
       stroke-width: 0.6;
@@ -173,6 +175,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
     #eu-map #path7007:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path8154:hover { fill: #2563eb; stroke: #1d4ed8; }
     #eu-map #path7035:hover { fill: #2563eb; stroke: #1d4ed8; }
+    #eu-map #path8152:hover { fill: #2563eb; stroke: #1d4ed8; }
 
     /* ---- FLAG TILES overlaid on SVG ---- */
     .flag-overlay {
@@ -334,7 +337,7 @@ const overlayPositions: Record<string, { x: number; y: number }> = {
 
   <script is:inline>
     // Click navigation for country paths
-    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/', path7039: '/map/DK/', path7021: '/map/DK/', path6999: '/map/PL/', path8160: '/map/RO/', path7033: '/map/SE/', path7025: '/map/FI/', path7043: '/map/ES/', path2122: '/map/IE/', path7013: '/map/LU/', path7009: '/map/AT/', path8303: '/map/CZ/', path8140: '/map/SI/', path8156: '/map/HU/', path8158: '/map/HR/', path8148: '/map/SK/', path7003: '/map/LT/', path7005: '/map/LV/', path7007: '/map/EE/', path8154: '/map/BG/', path7035: '/map/PT/' };
+    const routes = { path7015: '/map/DE/', path7031: '/map/IT/', path7041: '/map/FR/', path7019: '/map/BE/', path7017: '/map/NL/', path7039: '/map/DK/', path7021: '/map/DK/', path6999: '/map/PL/', path8160: '/map/RO/', path7033: '/map/SE/', path7025: '/map/FI/', path7043: '/map/ES/', path2122: '/map/IE/', path7013: '/map/LU/', path7009: '/map/AT/', path8303: '/map/CZ/', path8140: '/map/SI/', path8156: '/map/HU/', path8158: '/map/HR/', path8148: '/map/SK/', path7003: '/map/LT/', path7005: '/map/LV/', path7007: '/map/EE/', path8154: '/map/BG/', path7035: '/map/PT/', path8152: '/map/GR/' };
     Object.entries(routes).forEach(([id, href]) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('click', () => location.href = href);
