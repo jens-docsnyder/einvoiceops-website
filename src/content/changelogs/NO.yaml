@@ -1,0 +1,11 @@
+country_code: NO
+entries:
+  - timestamp: 2026-05-06T10:30:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Norway Peppol B2G mandate - EHF 3.0 (Peppol BIS 3.0), mandatory for all public sector suppliers. EEA member, not EU - ViDA not applicable. No B2B mandate. Key unverified items: mandate dates (July 2012 central gov, April 2019 all public entities), Anskaffelsesforskriften §11-3 legal basis, archiving period (5 years Bokføringsloven §13), Peppol scheme 0192. unresolved_high: 2, unresolved_amber: 2."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

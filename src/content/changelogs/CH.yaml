@@ -1,0 +1,11 @@
+country_code: CH
+entries:
+  - timestamp: 2026-05-06T10:30:00Z
+    type: initial-publish
+    field: null
+    old_value: null
+    new_value: null
+    description: "Initial publish. Switzerland federal B2G mandate - EVRE (SR 611.06) in force January 1, 2016. Non-EU, non-EEA - ViDA not applicable. No B2B mandate. QR invoice (October 2022) is payment instrument only, not e-invoice mandate. Key unverified items: EVRE supplier obligation scope and Art. reference, Peppol scheme for Swiss UID, archiving 10 years OR Art. 958f, EVRE federal-only scope. unresolved_high: 2, unresolved_amber: 2."
+    source_url: null
+    mandate_version_before: null
+    mandate_version_after: 1

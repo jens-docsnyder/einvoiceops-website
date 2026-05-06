@@ -1,0 +1,22 @@
+country_code: CH
+items:
+  - priority: high
+    type: source-verification
+    description: "EVRE SUPPLIER OBLIGATION UNVERIFIED: Open admin.ch → SR 611.06 (EVRE) → confirm Art. 3 or Art. 4 states that suppliers to federal administration must submit e-invoices from January 1, 2016, and confirm the scope (all federal suppliers vs. phased). If confirmed: key_deadlines and body text correct → remove item + decrement high. If different: update key_deadlines + body text + add error-correction changelog."
+    source_url: "https://www.admin.ch/opc/de/classified-compilation/20151765/index.html"
+    added: 2026-05-06
+  - priority: high
+    type: source-verification
+    description: "PEPPOL SCHEME FOR SWISS UID UNVERIFIED: Open docs.peppol.eu or ict.admin.ch → Peppol guidance for Switzerland → confirm the Peppol scheme code for Swiss UID (CHE-xxx.xxx.xxx). Current page text says 'source-verification required'. If confirmed: update master_data_id field with correct scheme + remove item + decrement high. If different scheme applies: update master_data_id + add correction changelog."
+    source_url: "https://www.ict.admin.ch/ict/de/home/digitale-transformation-ikt-lenkung/e-government/e-rechnung.html"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "ARCHIVING 10 YEARS UNVERIFIED: Open admin.ch → OR (SR 220, Obligationenrecht) → Art. 958f → confirm 10-year retention period for books and business records including electronic invoices. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If no: update archiving_years in frontmatter + add changelog entry."
+    source_url: "https://www.admin.ch/opc/de/classified-compilation/19110009/index.html"
+    added: 2026-05-06
+  - priority: amber
+    type: source-verification
+    description: "EVRE SCOPE - FEDERAL ONLY: Open admin.ch → SR 611.06 (EVRE) → confirm the regulation covers federal administration only (Bundesverwaltung) and does NOT cover cantonal or municipal procurement. If confirmed: body text scope note correct → no page change → remove item + decrement amber. If cantons are included: update body text + key_deadlines scope description."
+    source_url: "https://www.admin.ch/opc/de/classified-compilation/20151765/index.html"
+    added: 2026-05-06
