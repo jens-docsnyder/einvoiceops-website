@@ -1465,19 +1465,19 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .tile-btn[disabled]      { opacity: 0.28; cursor: not-allowed; }
 
     .range-viz-annual {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
       border-radius: 14px;
       padding: 6px 6px 20px;
       display: none;
     }
     .range-viz-header--annual {
-      background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+      background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
     }
     .range-bar--annual {
-      background: linear-gradient(90deg, #86efac 0%, #16a34a 100%);
+      background: linear-gradient(90deg, #fdba74 0%, #ea580c 100%);
     }
-    .range-viz-annual .range-bar-vals strong:first-child { color: #16a34a; }
+    .range-viz-annual .range-bar-vals strong:first-child { color: #ea580c; }
     .range-viz-annual .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .radio-group {
@@ -1569,11 +1569,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       font-weight: 600;
       color: #dc2626;
       display: none;
-      align-items: center;
-      gap: 7px;
       line-height: 1.4;
     }
-    .penalty-chip-icon { font-size: 0.82rem; flex-shrink: 0; }
 
     .calc-comparison {
       background: var(--bg);
@@ -1713,15 +1710,15 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     /* ---- RANGE VIZ ---- */
     .range-viz {
-      background: var(--ice);
-      border: 1px solid #bfdbfe;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
       border-radius: 14px;
       padding: 6px 6px 20px;
       display: none;
     }
 
     .range-viz-header {
-      background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
+      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
       border-radius: 10px;
       padding: 20px 22px 18px;
       margin-bottom: 22px;
@@ -1795,12 +1792,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       letter-spacing: -0.02em;
     }
 
-    .range-bar-vals strong:first-child { color: var(--accent); }
+    .range-bar-vals strong:first-child { color: #dc2626; }
     .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .range-bar {
       height: 38px;
-      background: linear-gradient(90deg, #93c5fd 0%, #2563eb 100%);
+      background: linear-gradient(90deg, #fca5a5 0%, #dc2626 100%);
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -1847,10 +1844,13 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       align-items: center;
       gap: 12px;
     }
-    .range-viz .range-hours-inset,
-    .range-viz-annual .range-hours-inset {
+    .range-viz .range-hours-inset {
       background: #fff7ed;
       border: 1.5px solid #fed7aa;
+    }
+    .range-viz-annual .range-hours-inset {
+      background: #ffedd5;
+      border: 1.5px solid #fdba74;
     }
     .rhi-label {
       font-size: 0.72rem;
@@ -2499,7 +2499,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
         <!-- 2. PENALTY CHIP -->
         <div class="penalty-chip" id="calc-comparison" style="display:none">
-          <span class="penalty-chip-icon">&#9888;</span>
           <span id="penalty-summary"></span>
         </div>
 
