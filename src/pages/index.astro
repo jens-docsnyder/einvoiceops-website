@@ -1474,9 +1474,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .range-viz-header--annual {
       background: linear-gradient(135deg, #14532d 0%, #166534 100%);
     }
-    .range-bar--annual {
-      background: linear-gradient(90deg, #86efac 0%, #16a34a 100%);
-    }
     .range-viz-annual .range-bar-vals strong:first-child { color: #16a34a; }
     .range-viz-annual .range-bar-vals strong:last-child  { color: var(--sub); }
 
@@ -1822,14 +1819,25 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .range-bar {
-      height: 38px;
-      background: linear-gradient(90deg, #93c5fd 0%, #2563eb 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
+      padding: 16px 20px;
     }
+    .range-bar--annual {
+      background: linear-gradient(135deg, #78350f 0%, #9a3412 100%);
+    }
+    .range-bar-end {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .range-bar-end--right { align-items: flex-end; text-align: right; }
+    .rbe-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.07em; text-transform: uppercase; }
+    .rbe-hours { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.75); }
+    .rbe-cost  { font-size: 1.15rem; font-weight: 900; color: #ffffff; letter-spacing: -0.025em; line-height: 1; }
 
     .range-end-marker {
       font-size: 1.4rem;
@@ -2507,18 +2515,16 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           <div class="range-viz-header">
             <div class="range-viz-title" id="range-viz-title">Preparation investment - before go-live.</div>
           </div>
-          <div class="range-hours-inset">
-            <span class="rhi-label">Estimated one-off readiness hours</span>
-            <span class="rhi-val" id="out-hours">--</span>
-          </div>
-          <div style="padding: 0 18px">
-            <div class="range-bar">
-              <span class="range-end-marker">&#171; <strong id="range-label-low">--</strong></span>
-              <span class="range-end-marker"><strong id="range-label-high">--</strong> &#187;</span>
+          <div class="range-bar">
+            <div class="range-bar-end">
+              <span class="rbe-label">Structured</span>
+              <span class="rbe-hours" id="out-hours">--</span>
+              <span class="rbe-cost" id="range-label-low">--</span>
             </div>
-            <div class="range-bar-descs">
-              <span>Structured team</span>
-              <span>Reactive / ad-hoc</span>
+            <div class="range-bar-end range-bar-end--right">
+              <span class="rbe-label">Reactive</span>
+              <span class="rbe-hours" id="out-hours-high">--</span>
+              <span class="rbe-cost" id="range-label-high">--</span>
             </div>
           </div>
         </div>
@@ -2553,19 +2559,18 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           <div class="range-viz-header range-viz-header--annual">
             <div class="range-viz-title">Cost of staying compliant.</div>
           </div>
-          <div class="range-hours-inset">
-            <span class="rhi-label">Estimated recurring yearly readiness hours</span>
-            <span class="rhi-val" id="out-annual-hours">--</span>
+          <div class="range-bar range-bar--annual">
+            <div class="range-bar-end">
+              <span class="rbe-label">Structured</span>
+              <span class="rbe-hours" id="out-annual-hours">--</span>
+              <span class="rbe-cost" id="range-label-annual-low">--</span>
+            </div>
+            <div class="range-bar-end range-bar-end--right">
+              <span class="rbe-label">Reactive</span>
+              <span class="rbe-hours" id="out-annual-hours-high">--</span>
+              <span class="rbe-cost" id="range-label-annual-high">--</span>
+            </div>
           </div>
-          <div style="padding: 0 18px">
-            <div class="range-bar range-bar--annual">
-              <span class="range-end-marker">&#171; <strong id="range-label-annual-low">--</strong></span>
-              <span class="range-end-marker"><strong id="range-label-annual-high">--</strong> &#187;</span>
-            </div>
-            <div class="range-bar-descs">
-              <span>Structured monitoring</span>
-              <span>Reactive / ad-hoc</span>
-            </div>
           </div>
         </div>
         <!-- 6. CTA -->
@@ -3398,7 +3403,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const readySelected   = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
     const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
 
-    const hoursEl     = document.getElementById('out-hours');
+    const hoursLowEl  = document.getElementById('out-hours');
+    const hoursHighEl = document.getElementById('out-hours-high');
     const chipEl   = document.getElementById('calc-comparison');
     const sumEl    = document.getElementById('penalty-summary');
     const penRow   = document.getElementById('penalty-row');
@@ -3411,7 +3417,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     // ---- SECTION A: GETTING READY ----
     if (readySelected.length === 0) {
-      hoursEl.textContent   = '--';
+      if (hoursLowEl)  hoursLowEl.textContent  = '--';
+      if (hoursHighEl) hoursHighEl.textContent = '--';
       if (chipEl) chipEl.style.display = 'none';
       if (penRow) penRow.style.display = 'none';
       if (plRow)  plRow.style.display  = 'none';
@@ -3431,7 +3438,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const costLow   = hoursLow  * rate;
       const costHigh  = hoursHigh * rate;
 
-      hoursEl.textContent = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
+      if (hoursLowEl)  hoursLowEl.textContent  = hoursLow.toLocaleString('de-DE') + 'h';
+      if (hoursHighEl) hoursHighEl.textContent = hoursHigh.toLocaleString('de-DE') + 'h';
 
       updateRangeBar(costLow, costHigh);
 
@@ -3460,7 +3468,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     if (maintainSelected.length === 0) {
       document.getElementById('range-viz-annual').style.display = 'none';
       const annHrsReset = document.getElementById('out-annual-hours');
-      if (annHrsReset) annHrsReset.textContent = '--';
+      const annHrsHighReset = document.getElementById('out-annual-hours-high');
+      if (annHrsReset)     annHrsReset.textContent     = '--';
+      if (annHrsHighReset) annHrsHighReset.textContent = '--';
     } else {
       let mLow = 0, mHigh = 0;
       maintainSelected.forEach(m => {
@@ -3470,8 +3480,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const mHoursHigh = Math.round(mHigh);
       const mCostLow  = mHoursLow  * rate;
       const mCostHigh = mHoursHigh * rate;
-      const annHrsEl = document.getElementById('out-annual-hours');
-      if (annHrsEl) annHrsEl.textContent = mHoursLow.toLocaleString('de-DE') + ' – ' + mHoursHigh.toLocaleString('de-DE') + 'h / yr';
+      const annHrsEl    = document.getElementById('out-annual-hours');
+      const annHrsHighEl = document.getElementById('out-annual-hours-high');
+      if (annHrsEl)     annHrsEl.textContent     = mHoursLow.toLocaleString('de-DE') + 'h / yr';
+      if (annHrsHighEl) annHrsHighEl.textContent = mHoursHigh.toLocaleString('de-DE') + 'h / yr';
       updateAnnualBar(mCostLow, mCostHigh);
     }
   }
