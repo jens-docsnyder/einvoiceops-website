@@ -1812,6 +1812,30 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       color: var(--muted);
     }
 
+    .range-hours-inset {
+      background: rgba(255,255,255,0.88);
+      border-radius: 8px;
+      margin: 0 6px 14px;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .rhi-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+    .rhi-val {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
     /* ---- ERP SELECT ---- */
     .erp-select {
       width: 100%;
@@ -2424,8 +2448,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         <!-- 1. RANGE VIZ - most prominent element -->
         <div class="range-viz" id="range-viz">
           <div class="range-viz-header">
-            <div class="range-viz-title" id="range-viz-title">Unbudgeted. Unavoidable.</div>
-            <div class="range-viz-sub" id="range-viz-sub">Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.</div>
+            <div class="range-viz-title" id="range-viz-title">Preparation investment - before go-live.</div>
+          </div>
+          <div class="range-hours-inset">
+            <span class="rhi-label">Estimated one-off readiness hours</span>
+            <span class="rhi-val" id="out-hours">--</span>
           </div>
           <div style="padding: 0 18px">
             <div class="range-bar-vals">
@@ -2459,20 +2486,17 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           </div>
         </div>
 
-        <!-- 4. HOURS BOX - supporting detail -->
-        <div class="calc-out-box">
-          <div class="calc-out-label">Estimated readiness hours</div>
-          <div class="calc-big-number accent" id="out-hours">--</div>
-          <div class="calc-sub-note" id="out-hours-note">Select a mandate above</div>
-          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="out-range-pills"></div>
-        </div>
+
 
 
         <!-- 5. ANNUAL RANGE BAR -->
         <div class="range-viz-annual" id="range-viz-annual">
           <div class="range-viz-header range-viz-header--annual">
-            <div class="range-viz-title">The ongoing cost of staying current.</div>
-            <div class="range-viz-sub">Recurring every year, independent of any go-live event. Schema updates, API changes, regulatory amendments.</div>
+            <div class="range-viz-title">Cost of staying current.</div>
+          </div>
+          <div class="range-hours-inset">
+            <span class="rhi-label">Estimated recurring yearly readiness hours</span>
+            <span class="rhi-val" id="out-annual-hours">--</span>
           </div>
           <div style="padding: 0 18px">
             <div class="range-bar-vals">
@@ -3320,8 +3344,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
 
     const hoursEl     = document.getElementById('out-hours');
-    const hoursNote   = document.getElementById('out-hours-note');
-    const rangePills  = document.getElementById('out-range-pills');
     const penaltyRow        = document.getElementById('penalty-row');
     const penaltyVal        = document.getElementById('penalty-value');
     const polandPenaltyRow  = document.getElementById('poland-penalty-row');
@@ -3333,8 +3355,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     // ---- SECTION A: GETTING READY ----
     if (readySelected.length === 0) {
       hoursEl.textContent   = '--';
-      hoursNote.textContent = 'Select mandates above';
-      rangePills.innerHTML  = '';
       penaltyRow.style.display        = 'none';
       polandPenaltyRow.style.display  = 'none';
       germanyPenaltyRow.style.display = 'none';
@@ -3344,15 +3364,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const hasLive     = readyEls.some(el => el.dataset.live === '1');
       const hasUpcoming = readyEls.some(el => el.dataset.live === '0');
       const titleEl = document.getElementById('range-viz-title');
-      const subEl   = document.getElementById('range-viz-sub');
-      if (titleEl && subEl) {
+        if (titleEl) {
         if (hasLive && !hasUpcoming) {
           titleEl.textContent = 'Active remediation risk.';
-          subEl.textContent   = 'These mandates are already live. If compliance was not established, penalty exposure and invoice rejection risk are active now.';
-        } else if (hasUpcoming && !hasLive) {
+          } else if (hasUpcoming && !hasLive) {
           titleEl.textContent = 'Preparation investment - before go-live.';
-          subEl.textContent   = 'Structured readiness costs less than reactive remediation. This is the internal cost before any external vendor or consulting fee.';
-        } else {
+          } else {
           titleEl.textContent = 'Unbudgeted. Unavoidable.';
           subEl.textContent   = "Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.";
         }
@@ -3369,13 +3386,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const costHigh  = hoursHigh * rate;
   
       hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
-      hoursNote.textContent = readySelected.length + ' mandate' + (readySelected.length > 1 ? 's' : '') +
-        ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y') + ' · readiness overhead only';
-
-      rangePills.innerHTML =
-        '<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured: ' + hoursLow.toLocaleString('de-DE') + 'h</span>' +
-        '<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc: ' + hoursHigh.toLocaleString('de-DE') + 'h</span>';
-
+  
+  
       updateRangeBar(costLow, costHigh);
   
       const hasFr = readySelected.includes('fr');
@@ -3389,13 +3401,19 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     // ---- SECTION B: STAYING CURRENT ----
     if (maintainSelected.length === 0) {
       document.getElementById('range-viz-annual').style.display = 'none';
+      const annHrsReset = document.getElementById('out-annual-hours');
+      if (annHrsReset) annHrsReset.textContent = '--';
     } else {
       let mLow = 0, mHigh = 0;
       maintainSelected.forEach(m => {
         if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].low; mHigh += MONITOR_BASE[m].high; }
       });
-      const mCostLow  = Math.round(mLow  * entities) * rate;
-      const mCostHigh = Math.round(mHigh * entities) * rate;
+      const mHoursLow  = Math.round(mLow  * entities);
+      const mHoursHigh = Math.round(mHigh * entities);
+      const mCostLow  = mHoursLow  * rate;
+      const mCostHigh = mHoursHigh * rate;
+      const annHrsEl = document.getElementById('out-annual-hours');
+      if (annHrsEl) annHrsEl.textContent = mHoursLow.toLocaleString('de-DE') + ' – ' + mHoursHigh.toLocaleString('de-DE') + 'h / yr';
       updateAnnualBar(mCostLow, mCostHigh);
     }
   }
