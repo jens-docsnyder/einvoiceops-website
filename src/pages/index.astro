@@ -2473,7 +2473,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         </div>
 
         <!-- 2. COST COMPARISON -->
-        <div class="calc-comparison">
+        <div class="calc-comparison" id="calc-comparison" style="display:none">
           <div class="compare-row" id="penalty-row" style="display:none">
             <span class="compare-label">France penalty risk <span style="font-size:0.68rem;color:var(--muted)">(2026 Budget Law: €50/invoice, cap €15K/yr/entity)</span></span>
             <span class="compare-value" id="penalty-value" style="color:var(--urgent)"></span>
@@ -3215,20 +3215,20 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     ro: { name: "Romania e-Factura",      low: 200,  high: 300  },
     be: { name: "Belgium Peppol",         low: 200,  high: 300  },
     // B2G / Peppol standard
-    pt: { name: "Portugal",               low: 250,  high: 900  },
-    dk: { name: "Denmark Peppol",         low: 200,  high: 850  },
-    sk: { name: "Slovakia",               low: 150,  high: 600  },
-    no: { name: "Norway Peppol",          low: 80,   high: 350  },
-    se: { name: "Sweden Peppol",          low: 90,   high: 400  },
-    fi: { name: "Finland Peppol",         low: 100,  high: 450  },
-    nl: { name: "Netherlands Peppol",     low: 80,   high: 350  },
-    at: { name: "Austria",                low: 120,  high: 500  },
-    ee: { name: "Estonia Peppol",         low: 80,   high: 300  },
-    lt: { name: "Lithuania",              low: 100,  high: 400  },
-    lv: { name: "Latvia",                 low: 120,  high: 450  },
-    si: { name: "Slovenia",               low: 110,  high: 420  },
-    lu: { name: "Luxembourg",             low: 80,   high: 320  },
-    ch: { name: "Switzerland",            low: 110,  high: 480  },
+    pt: { name: "Portugal",               low: 150,  high: 380  },
+    dk: { name: "Denmark Peppol",         low: 120,  high: 300  },
+    sk: { name: "Slovakia",               low: 100,  high: 260  },
+    no: { name: "Norway Peppol",          low: 80,   high: 200  },
+    se: { name: "Sweden Peppol",          low: 80,   high: 200  },
+    fi: { name: "Finland Peppol",         low: 80,   high: 210  },
+    nl: { name: "Netherlands Peppol",     low: 80,   high: 200  },
+    at: { name: "Austria",                low: 90,   high: 240  },
+    ee: { name: "Estonia Peppol",         low: 60,   high: 160  },
+    lt: { name: "Lithuania",              low: 60,   high: 160  },
+    lv: { name: "Latvia",                 low: 60,   high: 160  },
+    si: { name: "Slovenia",               low: 60,   high: 160  },
+    lu: { name: "Luxembourg",             low: 60,   high: 160  },
+    ch: { name: "Switzerland",            low: 80,   high: 220  },
     // ViDA horizon
     cz: { name: "Czech Republic",         low: 50,   high: 200  },
     ie: { name: "Ireland",                low: 30,   high: 120  },
@@ -3361,6 +3361,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       polandPenaltyRow.style.display  = 'none';
       germanyPenaltyRow.style.display = 'none';
       document.getElementById('range-viz').style.display = 'none';
+      const compBox = document.getElementById('calc-comparison');
+      if (compBox) compBox.style.display = 'none';
     } else {
       const readyEls = [...document.querySelectorAll('.tile-btn.tile-ready.on')];
       const hasLive     = readyEls.some(el => el.dataset.live === '1');
@@ -3381,8 +3383,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         if (MANDATE_BASE[m]) { totalLow += MANDATE_BASE[m].low; totalHigh += MANDATE_BASE[m].high; }
       });
 
-      const hoursLow  = Math.round(totalLow  * erpMult * eFactor);
-      const hoursHigh = Math.round(totalHigh * erpMult * eFactor);
+      const hoursLow  = Math.round(totalLow  * erpMult);
+      const hoursHigh = Math.round(totalHigh * erpMult);
       const costLow   = hoursLow  * rate;
       const costHigh  = hoursHigh * rate;
 
@@ -3396,6 +3398,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
       polandPenaltyRow.style.display  = readySelected.includes('pl') ? 'flex' : 'none';
       germanyPenaltyRow.style.display = readySelected.includes('de') ? 'flex' : 'none';
+      const compEl = document.getElementById('calc-comparison');
+      if (compEl) {
+        const anyPenalty = readySelected.includes('fr') || readySelected.includes('pl') || readySelected.includes('de');
+        compEl.style.display = anyPenalty ? 'block' : 'none';
+      }
     }
 
     // ---- SECTION B: STAYING CURRENT ----
@@ -3408,8 +3415,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       maintainSelected.forEach(m => {
         if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].low; mHigh += MONITOR_BASE[m].high; }
       });
-      const mHoursLow  = Math.round(mLow  * entities);
-      const mHoursHigh = Math.round(mHigh * entities);
+      const mHoursLow  = Math.round(mLow);
+      const mHoursHigh = Math.round(mHigh);
       const mCostLow  = mHoursLow  * rate;
       const mCostHigh = mHoursHigh * rate;
       const annHrsEl = document.getElementById('out-annual-hours');
