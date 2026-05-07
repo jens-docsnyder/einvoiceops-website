@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 const allCountries = await getCollection('countries');
 
@@ -69,6 +71,46 @@ function cardNote(data: any): string {
 }
 
 const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+
+const homeSvgRaw = readFileSync(resolve('./public/BlankMap-Europe.svg'), 'utf-8');
+const homeSvgContent = homeSvgRaw
+  .replace(/<\?xml[^?]*\?>\s*/g, '')
+  .replace(/(<svg)(\s)/, '$1 id="home-eu-map" viewBox="0 0 400.87827 419.87268" preserveAspectRatio="xMidYMid meet"$2')
+  .replace(/\s*style="fill:#c5c5c5;fill-opacity:1"/g, '');
+
+const homeCountryMap: Record<string, { color: string; url: string }> = {};
+const mapCdata: Record<string, any> = {};
+
+for (const c of allCountries) {
+  const d = c.data;
+  let color: string;
+  if (d.b2b === 'mandatory' && (d.status === 'live' || d.status === 'pilot')) color = '#1e40af';
+  else if (d.b2b === 'announced') color = '#2563eb';
+  else if (d.b2b === 'voluntary' || d.b2b === 'not-yet') color = '#374f8c';
+  else color = '#1e2d40';
+  homeCountryMap[d.code] = { color, url: `/map/${d.code}/` };
+
+  const ds = (dt: Date | null | undefined) => dt ? dt.toISOString().slice(0, 10) : null;
+  mapCdata[d.code] = {
+    name: d.country, flag: d.flag,
+    status: d.status, b2b: d.b2b, b2g: d.b2g,
+    mandate_type: d.mandate_type, vida: d.vida_alignment,
+    future: d.future_direction ?? null,
+    formats: d.formats, cius: d.cius ?? null,
+    platform: d.platform !== 'none' ? d.platform : null,
+    transport: d.transport_protocol,
+    inbound: ds(d.inbound_mandate_date), outbound: ds(d.outbound_mandate_date),
+    outbound2: ds(d.outbound_mandate_date_phase2),
+    master_data: d.master_data_id, archiving: d.archiving_years,
+    penalty: d.penalty_max ?? null, reportingWindow: d.reporting_window ?? null,
+    correction: d.correction_mechanism, hasSandbox: d.has_sandbox,
+    lastVerified: ds(d.last_verified), confidence: d.confidence_summary,
+    deadlines: d.key_deadlines.map(dl => [ds(dl.date), dl.description]),
+  };
+}
+
+const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeCompare(b.data.country));
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -448,122 +490,21 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
       line-height: 1.65;
     }
 
-    /* ---- CAROUSEL ---- */
-    .carousel-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 44px;
-    }
-
-    .carousel-viewport {
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .carousel-track {
-      display: flex;
-      gap: 14px;
-      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: transform;
-    }
-
-    .carousel-arrow {
-      flex-shrink: 0;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.14);
-      color: #d1d5db;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s;
-      line-height: 1;
-      padding: 0;
-    }
-
-    .carousel-arrow:hover:not(:disabled) { background: rgba(255,255,255,0.14); }
-    .carousel-arrow:disabled { opacity: 0.25; cursor: default; }
-
-    .clock-card {
-      flex-shrink: 0;
-      width: 192px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 24px 16px 20px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-    }
-
-    .clock-card:hover {
-      background: rgba(255,255,255,0.09);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-    }
-
-    .clock-card::after {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      border-radius: 14px 14px 0 0;
-    }
-
-    .clock-card.c-live::after   { background: var(--live); }
-    .clock-card.c-urgent::after { background: var(--urgent); }
-    .clock-card.c-coming::after { background: var(--coming); }
-    .clock-card.c-future::after { background: #4b5563; }
-
-    .clock-flag { font-size: 2rem; display: block; margin-bottom: 10px; }
-
-    .clock-country {
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #f3f4f6;
-      margin-bottom: 3px;
-    }
-
-    .clock-mandate {
-      font-size: 0.7rem;
-      color: #9ca3af;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-
-    .status-pill {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 4px 11px;
-      border-radius: 100px;
-    }
-
-    .c-live   .status-pill { background: rgba(220,38,38,0.15);  color: #fca5a5; }
-    .c-urgent .status-pill { background: rgba(212,160,23,0.15);  color: #ffe082; }
-    .c-coming .status-pill { background: rgba(37,99,235,0.15);  color: #93c5fd; }
-    .c-future .status-pill { background: rgba(75,85,99,0.25);   color: #9ca3af; }
-
-    .clock-note {
-      display: block;
-      font-size: 0.68rem;
-      color: #6b7280;
-      margin-top: 8px;
-      line-height: 1.45;
-    }
+    /* ---- HOMEPAGE MAP ---- */
+    .home-map-row { display: flex; align-items: flex-start; gap: 28px; margin-bottom: 16px; }
+    .home-map-svg-col { flex: 0 0 58%; min-width: 0; background: #0f172a; border-radius: 8px; padding: 8px; }
+    #home-eu-map { width: 100%; height: auto; display: block; }
+    #home-eu-map path { fill: #1e293b; stroke: #0f172a; stroke-width: 1.5; cursor: default; transition: stroke 0.12s, stroke-width 0.12s, opacity 0.12s; }
+    #home-eu-map path.hm-click { cursor: pointer; }
+    #home-eu-map path.hm-click:hover { stroke: #60a5fa; stroke-width: 2.5; opacity: 0.85; }
+    .home-map-grid-col { flex: 1; border-left: 1px solid #1e293b; padding-left: 20px; display: flex; flex-direction: column; gap: 0; }
+    .home-map-grid-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 10px; font-weight: 700; }
+    .home-country-grid { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 36px; }
+    .home-country-btn { background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 4px 10px; font-size: 12px; text-decoration: none; color: #94a3b8; transition: all 0.12s; white-space: nowrap; display: inline-block; }
+    .home-country-btn:hover { border-color: #3b82f6; color: #93c5fd; }
+    .home-map-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+    .home-map-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #64748b; }
+    .home-map-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
     /* ---- SOURCES PANEL ---- */
     .sources-panel {
@@ -1452,6 +1393,33 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
       flex-shrink: 0;
     }
 
+    .mandate-group-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 0 2px;
+      margin-top: 2px;
+      border-top: 1px solid var(--border);
+    }
+    .mandate-group-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+    .calc-section-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin: -2px 0 8px;
+      line-height: 1.5;
+    }
+
+    .maintain-out-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 20px 24px;
+      display: none;
+    }
+
     .radio-group {
       display: flex;
       flex-direction: column;
@@ -2228,8 +2196,9 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   <a href="/" class="logo">einvoice<span>ops</span></a>
   <div class="nav-links">
     <a href="#calculator" class="hide-mobile">Mandate Cost Calculator</a>
-    <a href="/services/" class="hide-mobile">Services</a>
-    <a href="/map/" class="hide-mobile">Compliance Map</a>
+    <a href="/for-enterprise/" class="hide-mobile">For Enterprises</a>
+    <a href="/for_Service_Providers/" class="hide-mobile">For Finance Platform Service Providers</a>
+    <a href="#map" class="hide-mobile">Compliance Map</a>
     <a href="#faq" class="hide-mobile">FAQ</a>
     <a href="#contact" class="btn-nav">Get in touch</a>
     <button class="hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
@@ -2239,8 +2208,9 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <a href="#calculator">Mandate Cost Calculator</a>
-  <a href="/services/">Services</a>
-  <a href="/map/">Compliance Map</a>
+  <a href="/for-enterprise/">For Enterprises</a>
+  <a href="/for_Service_Providers/">For Finance Platform Service Providers</a>
+  <a href="#map">Compliance Map</a>
   <a href="#faq">FAQ</a>
   <a href="#contact">Get in touch</a>
 </div>
@@ -2248,9 +2218,9 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
 <!-- HERO -->
 <section class="hero">
   <h1>E-invoicing mandates multiply and shift. Finance teams need structure.</h1>
-  <p class="hero-sub">Turn confusing country requirements into reliable internal preparation with clear ownership across IT, tax, and operations.</p>
+  <p class="hero-sub">EU countries are making electronic invoicing mandatory by law - each with its own format, platform, and deadline. Your invoicing platform handles the exchange. The internal preparation across Finance Systems, Tax, and AP Operations is your team's job.</p>
   <div class="hero-actions">
-    <a href="/map/" class="btn-primary">See what each country requires</a>
+    <a href="#map" class="btn-primary">See what each country requires</a>
     <a href="#calculator" class="btn-ghost">See the enterprise benchmark</a>
   </div>
 </section>
@@ -2288,7 +2258,7 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   <div class="calc-inner">
     <span class="eyebrow">Internal preparation cost</span>
     <h2 class="section-h">What mandate readiness costs for an enterprise</h2>
-    <p class="section-lead">Select a footprint. The calculator estimates the internal preparation cost for a comparable enterprise - before any external vendor or consulting fees.</p>
+    <p class="section-lead">Two questions, two cost views. <strong>Getting ready</strong> estimates your one-time internal preparation cost per mandate - structured vs. reactive. <strong>Staying current</strong> estimates what you spend each year keeping live mandates up to date as schemas, APIs, and regulations change. All figures are internal team time only, before any external vendor fee.</p>
 
     <div class="calc-layout">
 
@@ -2304,33 +2274,73 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
         </div>
 
         <div class="calc-field">
-          <label class="calc-label">Mandates active or upcoming for you</label>
+          <label class="calc-label">Getting ready for</label>
+          <p class="calc-section-label">Select every country where you need to establish or verify compliance for the first time - including M&amp;A-driven additions.</p>
           <div class="mandate-checks">
-            <label class="mandate-check" id="chk-france">
-              <input type="checkbox" name="calc-mandate" value="france" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-status-dot" style="background:#d97706"></span>
-              <span class="mandate-check-label">France PA <span>Sept 2026</span></span>
-            </label>
-            <label class="mandate-check" id="chk-poland">
-              <input type="checkbox" name="calc-mandate" value="poland" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-status-dot" style="background:#dc2626"></span>
-              <span class="mandate-check-label">Poland KSeF <span>Live</span></span>
-            </label>
-            <label class="mandate-check" id="chk-germany">
-              <input type="checkbox" name="calc-mandate" value="germany" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-status-dot" style="background:#2563eb"></span>
-              <span class="mandate-check-label">Germany B2B <span>Jan 2027</span></span>
-            </label>
-            <label class="mandate-check" id="chk-belgium">
-              <input type="checkbox" name="calc-mandate" value="belgium" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-status-dot" style="background:#dc2626"></span>
-              <span class="mandate-check-label">Belgium Peppol <span>Live</span></span>
-            </label>
-            <label class="mandate-check" id="chk-romania">
-              <input type="checkbox" name="calc-mandate" value="romania" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-status-dot" style="background:#dc2626"></span>
-              <span class="mandate-check-label">Romania e-Factura <span>Live</span></span>
-            </label>
+            <p class="mandate-group-label">Upcoming B2B</p>
+            <label class="mandate-check" id="chk-ready-fr"><input type="checkbox" name="calc-ready" value="fr" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#d97706"></span><span class="mandate-check-label">🇫🇷 France PDP <span>Sept 2026</span></span></label>
+            <label class="mandate-check" id="chk-ready-de"><input type="checkbox" name="calc-ready" value="de" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#2563eb"></span><span class="mandate-check-label">🇩🇪 Germany B2B <span>Jan 2027</span></span></label>
+            <label class="mandate-check" id="chk-ready-es"><input type="checkbox" name="calc-ready" value="es" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#2563eb"></span><span class="mandate-check-label">🇪🇸 Spain Verifactu <span>2025-27</span></span></label>
+            <p class="mandate-group-label">Live B2B clearance</p>
+            <label class="mandate-check" id="chk-ready-pl"><input type="checkbox" name="calc-ready" value="pl" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇱 Poland KSeF <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-ready-it"><input type="checkbox" name="calc-ready" value="it" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇮🇹 Italy SdI <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-ready-gr"><input type="checkbox" name="calc-ready" value="gr" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇬🇷 Greece myDATA <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-ready-hu"><input type="checkbox" name="calc-ready" value="hu" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇺 Hungary RTIR <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-ready-hr"><input type="checkbox" name="calc-ready" value="hr" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇷 Croatia Fiscalization <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-ready-ro"><input type="checkbox" name="calc-ready" value="ro" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇷🇴 Romania e-Factura <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-ready-be"><input type="checkbox" name="calc-ready" value="be" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇧🇪 Belgium Peppol <span>Live</span></span></label>
+            <p class="mandate-group-label">Live B2G / Peppol standard</p>
+            <label class="mandate-check" id="chk-ready-pt"><input type="checkbox" name="calc-ready" value="pt" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇹 Portugal <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-dk"><input type="checkbox" name="calc-ready" value="dk" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇩🇰 Denmark Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-se"><input type="checkbox" name="calc-ready" value="se" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇪 Sweden Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-fi"><input type="checkbox" name="calc-ready" value="fi" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇫🇮 Finland Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-nl"><input type="checkbox" name="calc-ready" value="nl" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇱 Netherlands Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-no"><input type="checkbox" name="calc-ready" value="no" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇴 Norway Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-at"><input type="checkbox" name="calc-ready" value="at" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇦🇹 Austria <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-sk"><input type="checkbox" name="calc-ready" value="sk" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇰 Slovakia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-ch"><input type="checkbox" name="calc-ready" value="ch" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇨🇭 Switzerland <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-lv"><input type="checkbox" name="calc-ready" value="lv" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇻 Latvia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-lt"><input type="checkbox" name="calc-ready" value="lt" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇹 Lithuania <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-si"><input type="checkbox" name="calc-ready" value="si" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇮 Slovenia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-ee"><input type="checkbox" name="calc-ready" value="ee" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇪🇪 Estonia Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-ready-lu"><input type="checkbox" name="calc-ready" value="lu" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇺 Luxembourg <span>Live B2G</span></span></label>
+            <p class="mandate-group-label">ViDA horizon only</p>
+            <label class="mandate-check" id="chk-ready-cz"><input type="checkbox" name="calc-ready" value="cz" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇨🇿 Czech Republic <span>ViDA prep</span></span></label>
+            <label class="mandate-check" id="chk-ready-ie"><input type="checkbox" name="calc-ready" value="ie" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇮🇪 Ireland <span>ViDA prep</span></span></label>
+            <label class="mandate-check" id="chk-ready-bg"><input type="checkbox" name="calc-ready" value="bg" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇧🇬 Bulgaria <span>ViDA prep</span></span></label>
+            <label class="mandate-check" id="chk-ready-mt"><input type="checkbox" name="calc-ready" value="mt" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇲🇹 Malta <span>B2G only</span></span></label>
+            <label class="mandate-check" id="chk-ready-cy"><input type="checkbox" name="calc-ready" value="cy" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇨🇾 Cyprus <span>B2G only</span></span></label>
+          </div>
+        </div>
+
+        <div class="calc-field" style="margin-top:8px">
+          <label class="calc-label">Staying current on</label>
+          <p class="calc-section-label">Select mandates already in production. Costs here cover schema updates, API changes, regulatory amendments, and ongoing validation - per year.</p>
+          <div class="mandate-checks">
+            <p class="mandate-group-label">CTC / clearance</p>
+            <label class="mandate-check" id="chk-maint-pl"><input type="checkbox" name="calc-maintain" value="pl" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇱 Poland KSeF <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-maint-it"><input type="checkbox" name="calc-maintain" value="it" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇮🇹 Italy SdI <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-maint-gr"><input type="checkbox" name="calc-maintain" value="gr" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇬🇷 Greece myDATA <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-maint-hu"><input type="checkbox" name="calc-maintain" value="hu" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇺 Hungary RTIR <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-maint-hr"><input type="checkbox" name="calc-maintain" value="hr" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇷 Croatia Fiscalization <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-maint-ro"><input type="checkbox" name="calc-maintain" value="ro" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇷🇴 Romania e-Factura <span>Live</span></span></label>
+            <label class="mandate-check" id="chk-maint-be"><input type="checkbox" name="calc-maintain" value="be" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇧🇪 Belgium Peppol <span>Live</span></span></label>
+            <p class="mandate-group-label">Peppol / standard B2G</p>
+            <label class="mandate-check" id="chk-maint-de"><input type="checkbox" name="calc-maintain" value="de" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇩🇪 Germany XRechnung <span>B2G live</span></span></label>
+            <label class="mandate-check" id="chk-maint-pt"><input type="checkbox" name="calc-maintain" value="pt" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇹 Portugal <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-dk"><input type="checkbox" name="calc-maintain" value="dk" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇩🇰 Denmark Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-se"><input type="checkbox" name="calc-maintain" value="se" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇪 Sweden Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-fi"><input type="checkbox" name="calc-maintain" value="fi" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇫🇮 Finland Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-nl"><input type="checkbox" name="calc-maintain" value="nl" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇱 Netherlands Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-no"><input type="checkbox" name="calc-maintain" value="no" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇴 Norway Peppol <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-at"><input type="checkbox" name="calc-maintain" value="at" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇦🇹 Austria <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-sk"><input type="checkbox" name="calc-maintain" value="sk" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇰 Slovakia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-ch"><input type="checkbox" name="calc-maintain" value="ch" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇨🇭 Switzerland <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-lv"><input type="checkbox" name="calc-maintain" value="lv" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇻 Latvia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-lt"><input type="checkbox" name="calc-maintain" value="lt" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇹 Lithuania <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-si"><input type="checkbox" name="calc-maintain" value="si" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇮 Slovenia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-ee"><input type="checkbox" name="calc-maintain" value="ee" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇪🇪 Estonia <span>Live B2G</span></span></label>
+            <label class="mandate-check" id="chk-maint-lu"><input type="checkbox" name="calc-maintain" value="lu" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇺 Luxembourg <span>Live B2G</span></span></label>
           </div>
         </div>
 
@@ -2393,8 +2403,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
         <!-- 1. RANGE VIZ - most prominent element -->
         <div class="range-viz" id="range-viz">
           <div class="range-viz-header">
-            <div class="range-viz-title">Unbudgeted. Unavoidable.</div>
-            <div class="range-viz-sub">Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.</div>
+            <div class="range-viz-title" id="range-viz-title">Unbudgeted. Unavoidable.</div>
+            <div class="range-viz-sub" id="range-viz-sub">Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.</div>
           </div>
           <div style="padding: 0 18px">
             <div class="range-bar-vals">
@@ -2440,7 +2450,27 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
           <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="out-range-pills"></div>
         </div>
 
-        <!-- 5. METHODOLOGY - collapsible -->
+        <!-- 5. MAINTENANCE BOX -->
+        <div class="maintain-out-box" id="maintain-box">
+          <div class="calc-out-label" style="color:#166534">Annual compliance maintenance</div>
+          <div class="calc-big-number" id="maintain-hours" style="color:#16a34a">--</div>
+          <div class="calc-sub-note" id="maintain-note">hours/year · select mandates above</div>
+          <div style="margin-top:10px">
+            <div class="compare-row">
+              <span class="compare-label">Structured monitoring (low)</span>
+              <span class="compare-value" id="maintain-cost-low" style="color:#166534">--</span>
+            </div>
+            <div class="compare-row" style="margin-top:4px">
+              <span class="compare-label">Reactive / ad-hoc (high)</span>
+              <span class="compare-value" id="maintain-cost-high" style="color:#b45309">--</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. CTA -->
+        <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:4px">Get a frank read on your readiness gap</a>
+
+        <!-- 7. METHODOLOGY - collapsible -->
         <div class="calc-methodology">
           <button class="meth-toggle" onclick="toggleMethodology()" aria-expanded="false">
             <span>Methodology &amp; sources</span>
@@ -2496,7 +2526,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
               </tbody>
             </table>
 
-            <p style="margin-top:10px">Sprint fee shown is an indicative example for a single-mandate engagement. Fixed fee, 50% on start / 50% on delivery. Actual fee depends on footprint - get in touch for a quote.</p>
           </div>
         </div>
 
@@ -2505,46 +2534,48 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   </div>
 </section>
 
-<!-- CALCULATOR CTA -->
-<div style="max-width:960px;margin:0 auto;padding:48px 2rem 72px;">
-  <div class="mid-cta" style="flex-direction:column;align-items:center;text-align:center;">
-    <div class="mid-cta-text" style="width:100%;text-align:center;">
-      <h3 style="text-align:center;">That's your internal cost before engaging with any external vendor.</h3>
-    </div>
-    <a href="#contact" class="btn-primary">Get a frank read on your readiness gap</a>
-  </div>
-</div>
 
 <!-- CLOCKS -->
-<section class="clocks-section">
-  <div class="clocks-inner">
-    <div class="clocks-header">
-      <h2>We track the entire European mandate landscape and translate it into what it means for your team.</h2>
+<section id="map" class="map-embed-section">
+  <div class="map-embed-left">
+    <div class="map-embed-top">
+      <span class="map-embed-tag">The Mandate Map</span>
+      <h2>Which mandate is most on your radar?</h2>
     </div>
+    <div class="map-embed-svg-wrap">
+      <Fragment set:html={homeSvgContent} />
+    </div>
+    <div class="map-embed-legend">
+      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#1e40af"></div>B2B live</div>
+      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#2563eb"></div>B2B announced</div>
+      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#374f8c"></div>B2G / voluntary</div>
+      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#1e2d40;border:1px solid #334155"></div>No B2B mandate</div>
+    </div>
+    <div class="map-embed-grid" id="map-embed-grid">
+      {mapSortedEntries.map(e => (
+        <button class="map-embed-btn" data-cc={e.data.code} title={e.data.country}>
+          {e.data.flag} {e.data.country}
+        </button>
+      ))}
+    </div>
+  </div>
 
-    <div class="carousel-container">
-      <button class="carousel-arrow" id="carousel-prev" onclick="carouselMove(-1)" aria-label="Previous" disabled>&#8592;</button>
-      <div class="carousel-viewport">
-        <div class="carousel-track" id="carousel-track">
-          {countries.map(c => (
-            <a href={`/map/${c.data.code}/`} class={`clock-card ${cardClass(c.data)}`}>
-              <span class="clock-flag">{c.data.flag}</span>
-              <div class="clock-country">{c.data.country}</div>
-              <div class="clock-mandate">{mandateLabel(c.data)}</div>
-              <span class="status-pill">{statusPill(c.data)}</span>
-              <span class="clock-note" set:html={cardNote(c.data)} />
-            </a>
-          ))}
-        </div>
-      </div>
-      <button class="carousel-arrow" id="carousel-next" onclick="carouselMove(1)" aria-label="Next">&#8594;</button>
+  <div class="map-embed-right">
+    <div class="map-embed-empty" id="map-embed-empty">
+      <div class="map-embed-empty-icon">&#9664;</div>
+      <p>Click a country on the map<br>to see its full compliance picture.</p>
     </div>
+    <div class="map-embed-panel" id="map-embed-panel"></div>
+  </div>
+</section>
+
+<div class="map-sources-outer">
 
     <div class="sources-panel">
       <button class="sources-panel-toggle" onclick="toggleSources(this)" aria-expanded="false">
         <div class="sources-panel-header">
           <span class="sources-panel-title">Primary sources</span>
-          <span class="sources-panel-badge">50+ sources across 11 countries</span>
+          <span class="sources-panel-badge">50+ sources across {allCountries.length} countries</span>
         </div>
         <span class="sources-panel-icon">+</span>
       </button>
@@ -2647,242 +2678,53 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
 
         </div>
           <div class="source-group">
-            <h5>EU Commission eInvoicing Country Factsheets — all countries (last updated August 14, 2025)</h5>
+            <h5>EU Commission eInvoicing Country Factsheets -all countries (last updated August 14, 2025)</h5>
             <ul>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Belgium — B2G/B2B mandate status, Mercurius platform, Peppol BIS 3.0, phased B2G rollout by contract value. EC verified.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Denmark — B2G mandatory April 2019, NemHandel platform, OIOUBL/Peppol BIS 3.0, Bookkeeping Act 2022 (DKK 300,000 threshold, January 2026).</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Finland — B2G mandatory April 2019 (Act 241/2019), B2B right to request e-invoices, Finvoice 3.0 and Peppol BIS 3.0. EC verified.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">France — B2B mandate September 2026 (receive), private PA (Plateforme Agréée) model, Chorus Pro for B2G, Factur-X/UBL 2.1/CII formats. EC verified.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Germany — B2B reception mandatory January 2025, issuance phased 2027–2028 by turnover, XRechnung/ZUGFeRD, decentralised B2G (ZRE/OZG-RE).</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Italy — B2B/B2C mandatory January 2019 (all sizes from January 2024), SDI platform, FatturaPA format, Decision (EU) 2024/3150. EC verified.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Netherlands — B2G mandatory November 2019 (law of December 2017), Peppol network routing via Digipoort, NLCIUS/SI-UBL 2.0. EC verified.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Poland — B2B mandatory February–April 2026 (KSeF), PEF continues for B2G, Peppol BIS 3.0/FA(3) schema.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Romania — B2B mandatory January 2024 (Law 296/2023), B2C mandatory January 2025, RO e-Factura platform, 5-day submission window.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Spain — B2G mandatory since January 2015 (Law 25/2013), B2B mandate Law 18/2022 (implementation dates pending Royal Decree), FACe platform, Facturae format.</a></li>
-              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Sweden — B2G mandatory November 2019 (Act 2018:1277), no central platform, Peppol BIS 3.0 as-is (no national CIUS blend). EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Belgium -B2G/B2B mandate status, Mercurius platform, Peppol BIS 3.0, phased B2G rollout by contract value. EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Denmark -B2G mandatory April 2019, NemHandel platform, OIOUBL/Peppol BIS 3.0, Bookkeeping Act 2022 (DKK 300,000 threshold, January 2026).</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Finland -B2G mandatory April 2019 (Act 241/2019), B2B right to request e-invoices, Finvoice 3.0 and Peppol BIS 3.0. EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">France -B2B mandate September 2026 (receive), private PA (Plateforme Agréée) model, Chorus Pro for B2G, Factur-X/UBL 2.1/CII formats. EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Germany -B2B reception mandatory January 2025, issuance phased 2027–2028 by turnover, XRechnung/ZUGFeRD, decentralised B2G (ZRE/OZG-RE).</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Italy -B2B/B2C mandatory January 2019 (all sizes from January 2024), SDI platform, FatturaPA format, Decision (EU) 2024/3150. EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Netherlands -B2G mandatory November 2019 (law of December 2017), Peppol network routing via Digipoort, NLCIUS/SI-UBL 2.0. EC verified.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Poland -B2B mandatory February–April 2026 (KSeF), PEF continues for B2G, Peppol BIS 3.0/FA(3) schema.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Romania -B2B mandatory January 2024 (Law 296/2023), B2C mandatory January 2025, RO e-Factura platform, 5-day submission window.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Spain -B2G mandatory since January 2015 (Law 25/2013), B2B mandate Law 18/2022 (implementation dates pending Royal Decree), FACe platform, Facturae format.</a></li>
+              <li><a href="https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries" target="_blank" rel="noopener">Sweden -B2G mandatory November 2019 (Act 2018:1277), no central platform, Peppol BIS 3.0 as-is (no national CIUS blend). EC verified.</a></li>
             </ul>
           </div>
 
         </div>
         <div class="sources-panel-footer">
-          Primary legislation and official portal sources for all 11 countries are listed in their individual compliance map entries. EC factsheets above are Tier 2 sources; country pages are sourced directly to enacted legislation where available.
+          Primary legislation and official portal sources for all {allCountries.length} countries are listed in their individual compliance map entries. EC factsheets above are Tier 2 sources; country pages are sourced directly to enacted legislation where available.
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- PROBLEM -->
+<!-- ROUTING CTAs -->
+<section style="background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 2rem;">
+  <div style="max-width:880px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
 
-<!-- WHAT PREPARATION INVOLVES -->
-<section class="section bg-alt">
-  <div class="inner">
-    <h2 class="section-h">What getting ready actually requires.</h2>
+      <a href="/for-enterprise/" style="display:flex;flex-direction:column;gap:14px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 32px;text-decoration:none;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor='#2563eb';this.style.boxShadow='0 4px 20px rgba(37,99,235,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+        <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--ice);border:1px solid #bfdbfe;padding:4px 10px;border-radius:100px;width:fit-content;">For enterprises</span>
+        <h3 style="font-size:1.1rem;font-weight:800;color:var(--navy);line-height:1.3;letter-spacing:-0.02em;">Readiness Sprint and ongoing mandate monitoring for your finance team.</h3>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;">Tax, Finance Systems, and AP Operations - each with their own preparation work. We map it, route it to the right owners, and keep it current as mandates change.</p>
+        <span style="font-size:0.85rem;font-weight:700;color:var(--accent);margin-top:auto;">See how it works &#8594;</span>
+      </a>
 
-    <div class="icp-grid">
-      <div class="icp-card" onclick="toggleIcpCard(this)">
-        <h3>France: new vendor to onboard, master data to clean, September 2026</h3>
-        <div class="phase-icon-row">
-          <span class="expand-icon">+</span>
-        </div>
-        <div class="icp-card-body">
-          <ul>
-            <li>Selecting a certified PA (Plateforme Agréée) is a full vendor procurement - plan 6-12 weeks through InfoSec and legal before integration can even begin</li>
-            <li>Your ERP connector must be built and validated against the PA API; the standard "send invoice" process does not work until this is done</li>
-            <li>SIRET master data for every French establishment must be verified and corrected - often months of cleanup work</li>
-            <li>Finance Systems, Tax, and Finance Ops each have distinct preparation tasks with no natural coordinator between them</li>
-          </ul>
-        </div>
-      </div>
-      <div class="icp-card" onclick="toggleIcpCard(this)">
-        <h3>Poland: government API already live, penalties from August 2026</h3>
-        <div class="phase-icon-row">
-          <span class="expand-icon">+</span>
-        </div>
-        <div class="icp-card-body">
-          <ul>
-            <li>KSeF uses FA-3, a government-specific XML schema - no standard ERP connector covers it out of the box, custom mapping required</li>
-            <li>Every invoice is validated in real time by the government platform; a rejection means the invoice does not legally exist yet</li>
-            <li>Your ERP needs a dedicated API connection per company NIP, authenticated with OAuth2 to the KSeF system</li>
-            <li>If your Polish entity is not yet connected and tested, the penalty window opens in August 2026</li>
-          </ul>
-        </div>
-      </div>
-      <div class="icp-card" onclick="toggleIcpCard(this)">
-        <h3>Germany: two separate obligations, ERP output often not yet correct</h3>
-        <div class="phase-icon-row">
-          <span class="expand-icon">+</span>
-        </div>
-        <div class="icp-card-body">
-          <ul>
-            <li>The receiving obligation has been live since January 2025 - many ERP systems were never configured to ingest structured XML from suppliers</li>
-            <li>Outbound XRechnung or ZUGFeRD output is required by January 2027 - this is an ERP output configuration change, not a platform selection</li>
-            <li>There is no central platform: exchange is peer-to-peer, which means every counterparty relationship relies on your ERP being configured correctly</li>
-            <li>Many teams discover their current setup outputs a PDF attachment - not a machine-readable XML - only when a customer rejects an invoice</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+      <a href="/for_Service_Providers/" style="display:flex;flex-direction:column;gap:14px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 32px;text-decoration:none;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor='#0f766e';this.style.boxShadow='0 4px 20px rgba(15,118,110,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+        <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#0f766e;background:#f0fdfa;border:1px solid #99f6e4;padding:4px 10px;border-radius:100px;width:fit-content;">For finance platform service providers</span>
+        <h3 style="font-size:1.1rem;font-weight:800;color:var(--navy);line-height:1.3;letter-spacing:-0.02em;">White-label mandate readiness delivered to your customers under your brand.</h3>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;">Your platform covers the exchange. We cover the internal preparation gap your customers ask about. Delivered as your service, to their Finance Systems, Tax, and IT teams.</p>
+        <span style="font-size:0.85rem;font-weight:700;color:#0f766e;margin-top:auto;">See how it works &#8594;</span>
+      </a>
 
-    <div style="text-align:center; margin-top: 48px;">
-      <a href="/map/" class="btn-primary">See the full breakdown for each country</a>
     </div>
   </div>
 </section>
-
-<!-- PRODUCT -->
-<section class="section" id="product" style="padding-bottom: 48px;">
-  <div class="inner">
-    <span class="eyebrow">Our services</span>
-    <h2 class="section-h">One track, two stages. Your team gets to ready - and stays there.</h2>
-    <p class="section-lead">Our service is a structured engagement. We enable your finance teams so you meet e-invoicing mandates - continuously as mandates develop.</p>
-
-    <div class="journey-track">
-      <div class="journey-phase jp-pale" onclick="toggleJourneyPhase(this)">
-        <div class="journey-phase-header">
-          <span class="phase-label">Scoping &amp; Onboarding</span>
-          <h4>Mapping your mandate footprint</h4>
-        </div>
-        <div class="phase-icon-row">
-          <span class="expand-icon">+</span>
-        </div>
-        <div class="journey-phase-body">
-          <ul class="phase-bullets">
-            <li>We identify which e-invoicing laws apply to which of your business units, and when</li>
-            <li>We assess how ready your current systems and processes are</li>
-            <li>You get a clear plan before any preparation work begins</li>
-          </ul>
-        </div>
-      </div>
-      <div class="journey-arrow">&#8594;</div>
-      <div class="journey-phase jp-mid" onclick="toggleJourneyPhase(this)">
-        <div class="journey-phase-header">
-          <span class="phase-label">Readiness Sprint</span>
-          <h4>Get the bases covered</h4>
-        </div>
-        <div class="phase-icon-row">
-          <span class="expand-icon">+</span>
-        </div>
-        <div class="journey-phase-body">
-          <ul class="phase-bullets">
-            <li>Every function that needs to act gets a structured action list, specific to their role</li>
-            <li>Finance Systems, Tax, Finance Ops, and local accounting partners - all in one plan</li>
-            <li>Named owners, a shared timeline, and documented completion per mandate</li>
-          </ul>
-        </div>
-      </div>
-      <div class="journey-arrow">&#8594;</div>
-      <div class="journey-phase jp-dark" onclick="toggleJourneyPhase(this)">
-        <div class="journey-phase-header">
-          <span class="phase-label">Continuous Mandate Coverage</span>
-          <h4>Stay ready</h4>
-        </div>
-        <div class="phase-icon-row">
-          <span class="expand-icon">+</span>
-        </div>
-        <div class="journey-phase-body">
-          <ul class="phase-bullets">
-            <li>When regulations change, the affected teams receive updated instructions automatically</li>
-            <li>Your lead has one view across all countries: what is open, what is handled</li>
-            <li>Quarterly. Sized to your footprint. No noise when nothing changes.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="sprint-box">
-      <div class="sprint-meta">
-        <span class="sprint-badge">Example scope</span>
-      </div>
-      <h3>France PA Readiness Sprint</h3>
-      <p class="sprint-tagline">France PA &nbsp;·&nbsp; September 2026 (large companies and ETIs) &nbsp;·&nbsp; one legal entity</p>
-
-      <div class="deliverables-grid">
-        <div class="deliverable">
-          <h4>Finance Systems Owner</h4>
-          <p>What your ERP needs to produce and accept, which master data fields need to be corrected before go-live, what to require from your platform vendor, and a week-by-week action sequence from now to the deadline.</p>
-        </div>
-        <div class="deliverable">
-          <h4>Tax / Compliance</h4>
-          <p>Which entities and transactions are in scope, what the format requirements mean for your VAT reporting, how corrections and cancellations work, and what needs to be retained for audit.</p>
-        </div>
-        <div class="deliverable">
-          <h4>Finance Ops</h4>
-          <p>What to expect in the first 30 days after go-live, how to handle invoices that fail validation, who escalates what, and how to monitor for exceptions before they become a backlog.</p>
-        </div>
-        <div class="deliverable">
-          <h4>Local Partner Accountability</h4>
-          <p>A structured question set for your accounting partners in each country, what they need to confirm and by when, and a clear record that it was done - not an email chain.</p>
-        </div>
-      </div>
-
-      <div class="sprint-pills">
-        <span class="sprint-pill">Fixed scope</span>
-        <span class="sprint-pill">Fixed fee</span>
-        <span class="sprint-pill">50% on start · 50% on delivery</span>
-        <span class="sprint-pill">Source-linked with snapshot dates</span>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin-top: 40px;">
-      <a href="/services/" class="btn-primary">Learn more about our services</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOR WHO -->
-<section class="section bg-alt" id="for-who" style="padding-top: 48px;">
-  <div class="inner">
-    <span class="eyebrow">Who is this service for?</span>
-    <h2 class="section-h">You're holding the full picture. Nobody else is.</h2>
-    <p class="section-lead">Getting ready for an e-invoicing mandate is not one task. It is six parallel workstreams, across every entity in your footprint, each requiring time and internal effort to coordinate.</p>
-
-    <div class="orch-diagram">
-      <div class="orch-top">
-        <span class="orch-you">VP Finance Ops &nbsp;/&nbsp; Group Controller</span>
-        <span class="orch-sub">E-invoice compliance orchestration</span>
-      </div>
-
-      <div class="orch-nodes">
-        <div class="orch-node-group">
-          <span class="orch-arrow">&#8597;</span>
-          <div class="orch-node n-systems">Finance<br/>Systems</div>
-        </div>
-        <div class="orch-node-group">
-          <span class="orch-arrow">&#8597;</span>
-          <div class="orch-node n-tax">Tax /<br/>Compliance</div>
-        </div>
-        <div class="orch-node-group">
-          <span class="orch-arrow">&#8597;</span>
-          <div class="orch-node n-ap">AP /<br/>Inbound</div>
-        </div>
-        <div class="orch-node-group">
-          <span class="orch-arrow">&#8597;</span>
-          <div class="orch-node n-ar">AR /<br/>Outbound</div>
-        </div>
-        <div class="orch-node-group">
-          <span class="orch-arrow">&#8597;</span>
-          <div class="orch-node n-archive">Archiving<br/>&amp; Audit</div>
-        </div>
-        <div class="orch-node-group">
-          <span class="orch-arrow">&#8597;</span>
-          <div class="orch-node n-partners">Local<br/>Partners</div>
-        </div>
-      </div>
-
-      <div class="orch-entity-bar">
-        <span class="orch-entity">France entity</span>
-        <span class="orch-entity">Poland entity</span>
-        <span class="orch-entity">Germany entity</span>
-        <span class="orch-entity">+ every other entity in scope</span>
-      </div>
-    </div>
-
-    <p class="orch-caption">Finance Systems configures the ERP. Tax interprets the mandate. Finance Ops handles go-live exceptions. AP and AR change how invoices move. Archiving must store them correctly. And in each country, the local accounting partner has it covered - on whose timeline, confirmed how? You are the one who needs to turn all of that into a single shared plan before the deadline.</p>
-  </div>
-</section>
-
-
 <!-- FAQ -->
 <section class="section" id="faq">
   <div class="inner">
@@ -2933,7 +2775,7 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          Both the sprint and the ongoing coverage are fixed fee - no day rates, no hourly billing. The sprint is scoped to your EU entity footprint and priced per the number of countries and entities in scope. Coverage is billed quarterly. Get in touch with your countries and ERP and we will come back with a clear number upfront.
+          Fixed fee across all engagements - no day rates, no hourly billing. The Readiness Sprint is scoped to one country and one mandate, delivered in four weeks. Work Packets are available on demand for individual mandates after the Sprint. The Retainer covers ongoing monitoring as mandates update. Get in touch with your country footprint and ERP - we come back with a clear scope and fee upfront.
         </div>
       </div>
     </div>
@@ -3031,31 +2873,214 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   <p>einvoiceops provides operational readiness support and is not a tax advisor, legal advisor, or compliance authority. All work packets are informational and operational planning aids only. Customers remain responsible for all compliance decisions and their execution. Confirm regulatory applicability with a qualified advisor where required.</p>
 </div>
 
+<script is:inline define:vars={{ homeCountryMap, mapCdata }}>
+  (function() {
+    var PATH_MAP = {
+      path7015:'DE', path7031:'IT', path7041:'FR', path7019:'BE',
+      path7017:'NL', path7039:'DK', path7021:'DK', path6999:'PL',
+      path8142:'RO', path7033:'SE', path7029:'NO', path7025:'FI',
+      path7043:'ES', path2122:'IE', path7013:'LU', path7009:'AT',
+      path7011:'CH', path8303:'CZ', path8140:'SI', path8156:'HR',
+      path8148:'HU', path8164:'SK', path7003:'LT', path7005:'LV',
+      path7007:'EE', path8150:'BG', path7035:'PT', path8136:'GR'
+    };
+
+    function fmtD(d) {
+      if (!d) return '—';
+      return new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function getBadge(c) {
+      if (c.b2b === 'mandatory') return '<span class="mec-badge mec-badge-live">B2B Live</span>';
+      if (c.b2b === 'announced')  return '<span class="mec-badge mec-badge-announced">B2B Announced</span>';
+      if (c.b2b === 'voluntary')  return '<span class="mec-badge mec-badge-partial">B2B Voluntary</span>';
+      if (c.b2b === 'not-yet')    return '<span class="mec-badge mec-badge-partial">B2G Live &ndash; B2B Pending</span>';
+      return '<span class="mec-badge mec-badge-none">B2G Only</span>';
+    }
+
+    function showCountry(cc) {
+      var c = mapCdata[cc];
+      if (!c) return;
+
+      document.querySelectorAll('#home-eu-map path.hm-selected').forEach(function(p) { p.classList.remove('hm-selected'); });
+      Object.keys(PATH_MAP).forEach(function(pid) {
+        if (PATH_MAP[pid] === cc) { var el = document.getElementById(pid); if (el) el.classList.add('hm-selected'); }
+      });
+      document.querySelectorAll('.map-embed-btn').forEach(function(b) { b.classList.toggle('selected', b.dataset.cc === cc); });
+
+      var dlHtml = c.deadlines.length
+        ? c.deadlines.map(function(dl) { return '<div class="mec-dl-item"><div class="mec-dl-date">' + fmtD(dl[0]) + '</div><div class="mec-dl-desc">' + dl[1] + '</div></div>'; }).join('')
+        : '<div class="mec-dl-item"><div class="mec-dl-desc" style="color:#334155">No upcoming deadlines logged.</div></div>';
+
+      var fmtTags = c.formats.map(function(f) { return '<span class="mec-tag">' + f + '</span>'; }).join('');
+      var platHtml = c.platform ? '<div class="mec-sec"><div class="mec-sec-label">Platform</div><div class="mec-tag-row"><span class="mec-tag mec-platform-tag">' + c.platform + '</span></div></div>' : '';
+      var penaltyHtml = c.penalty ? '<div class="mec-penalty"><div class="label">Penalties</div><p>' + c.penalty + '</p></div>' : '';
+      var futureHtml = c.future ? '<div class="mec-future"><div class="label">Direction</div><p>' + c.future + '</p></div>' : '';
+      var confLabel = c.confidence === 'green'
+        ? '<span class="mec-conf-dot green"></span><span class="mec-conf-text">GREEN &mdash; source-verified</span>'
+        : c.confidence === 'red'
+        ? '<span class="mec-conf-dot red"></span><span class="mec-conf-text">RED &mdash; review required</span>'
+        : '<span class="mec-conf-dot amber"></span><span class="mec-conf-text">AMBER &mdash; cross-referenced, primary click pending</span>';
+
+      document.getElementById('map-embed-empty').style.display = 'none';
+      var panel = document.getElementById('map-embed-panel');
+      panel.style.display = 'block';
+      panel.innerHTML =
+        '<div class="mec-header">' +
+          '<div class="mec-flag">' + c.flag + '</div>' +
+          '<div class="mec-title"><h2>' + c.name + '</h2><div class="code">' + cc + ' &bull; ' + c.mandate_type + '</div></div>' +
+          '<a class="mec-full-btn" href="/map/' + cc + '/" target="_blank">Full country profile &rarr;</a>' +
+        '</div>' +
+        getBadge(c) +
+        '<div class="mec-dates">' +
+          '<div class="mec-date-box"><div class="label">Receiving obligation</div><div class="val">' + fmtD(c.inbound) + '</div><div class="sub">When you must accept compliant e-invoices</div></div>' +
+          '<div class="mec-date-box"><div class="label">Sending obligation</div><div class="val">' + fmtD(c.outbound) + '</div>' + (c.outbound2 ? '<div class="phase2">Phase 2: ' + fmtD(c.outbound2) + '</div>' : '') + '<div class="sub">When you must issue compliant e-invoices</div></div>' +
+        '</div>' +
+        '<div class="mec-sec"><div class="mec-sec-label">Formats</div><div class="mec-tag-row">' + fmtTags + '</div></div>' +
+        platHtml +
+        '<div class="mec-sec"><div class="mec-sec-label">Transport</div><div class="mec-tag-row"><span class="mec-tag">' + c.transport + '</span></div></div>' +
+        '<div class="mec-sec"><div class="mec-sec-label">All key deadlines</div>' + dlHtml + '</div>' +
+        '<div class="mec-sec"><div class="mec-sec-label">Operational details</div>' +
+          '<div class="mec-info-row"><div class="mec-info-label">Master data ID</div><div class="mec-info-val">' + c.master_data + '</div></div>' +
+          '<div class="mec-info-row"><div class="mec-info-label">Archiving</div><div class="mec-info-val">' + c.archiving + ' years</div></div>' +
+          (c.cius ? '<div class="mec-info-row"><div class="mec-info-label">CIUS</div><div class="mec-info-val">' + c.cius + '</div></div>' : '') +
+        '</div>' +
+        penaltyHtml + futureHtml +
+        '<div class="mec-conf-row">' + confLabel + '</div>';
+
+      document.querySelector('.map-embed-right').scrollTop = 0;
+    }
+
+    function initMap() {
+      Object.keys(PATH_MAP).forEach(function(pid) {
+        var cc = PATH_MAP[pid];
+        var el = document.getElementById(pid);
+        if (!el) return;
+        var c = homeCountryMap[cc];
+        if (c) {
+          el.style.fill = c.color;
+          el.classList.add('hm-click');
+          el.addEventListener('click', function() { showCountry(cc); });
+        }
+      });
+      document.querySelectorAll('.map-embed-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { showCountry(btn.dataset.cc); });
+      });
+      // Pre-select from hash (e.g. /#map + ?country=DE handled via hash)
+      var hash = location.hash.replace('#', '').toUpperCase();
+      if (hash && mapCdata[hash]) showCountry(hash);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMap);
+    } else {
+      initMap();
+    }
+  })();
+</script>
+
+<style is:global>
+  /* ---- EMBEDDED MAP SECTION ---- */
+  .map-embed-section {
+    display: flex; flex-direction: row; align-items: stretch;
+    min-height: 100vh; background: #0f172a;
+  }
+  .map-embed-left {
+    flex: 0 0 52%; display: flex; flex-direction: column;
+    padding: 32px 24px 24px 48px; border-right: 1px solid #1e293b; overflow: hidden;
+  }
+  .map-embed-top { margin-bottom: 16px; flex-shrink: 0; }
+  .map-embed-tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #3b82f6; margin-bottom: 8px; }
+  .map-embed-top h2 { font-size: 22px; font-weight: 700; color: #f1f5f9; margin-bottom: 0; }
+  .map-embed-svg-wrap { flex: 1; min-height: 0; display: flex; align-items: center; }
+  .map-embed-svg-wrap svg { width: 100%; height: auto; display: block; }
+
+  #home-eu-map { width: 100%; height: auto; display: block; }
+  #home-eu-map path { fill: #1e293b; stroke: #0f172a; stroke-width: 1.5; cursor: default; transition: fill 0.12s, stroke 0.15s, stroke-width 0.15s, opacity 0.15s; }
+  #home-eu-map path.hm-click { cursor: pointer; }
+  #home-eu-map path.hm-click:hover { stroke: #60a5fa; stroke-width: 2.5; opacity: 0.85; }
+  #home-eu-map path.hm-selected { stroke: #60a5fa !important; stroke-width: 3; }
+
+  .map-embed-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; flex-shrink: 0; }
+  .map-embed-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #64748b; }
+  .map-embed-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .map-embed-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #1e293b; flex-shrink: 0; }
+  .map-embed-btn { background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; color: #94a3b8; transition: all 0.12s; white-space: nowrap; font-family: inherit; }
+  .map-embed-btn:hover { border-color: #3b82f6; color: #93c5fd; }
+  .map-embed-btn.selected { border-color: #3b82f6; background: #1e3a5f; color: #60a5fa; font-weight: 600; }
+
+  .map-embed-right { flex: 1; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; background: #111827; }
+
+  .map-embed-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #334155; text-align: center; padding: 40px; }
+  .map-embed-empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
+  .map-embed-empty p { font-size: 14px; line-height: 1.6; }
+
+  .map-embed-panel { padding: 28px 28px 40px; display: none; }
+
+  /* Panel content - same as /map/ */
+  .mec-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #1e293b; }
+  .mec-flag { font-size: 32px; flex-shrink: 0; }
+  .mec-title { flex: 1; min-width: 0; }
+  .mec-title h2 { font-size: 20px; font-weight: 700; color: #f1f5f9; margin-bottom: 2px; }
+  .mec-title .code { font-size: 12px; color: #475569; }
+  .mec-full-btn { flex-shrink: 0; display: inline-block; background: #2563eb; color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; padding: 9px 16px; border-radius: 6px; white-space: nowrap; letter-spacing: 0.02em; animation: mecBtnPulse 0.9s ease 3; }
+  .mec-full-btn:hover { background: #1d4ed8; animation: none; }
+  @keyframes mecBtnPulse { 0% { box-shadow: 0 0 0 0 rgba(37,99,235,0.7); } 60% { box-shadow: 0 0 0 10px rgba(37,99,235,0); } 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); } }
+
+  .mec-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; margin-bottom: 16px; }
+  .mec-badge-live { background: rgba(30,64,175,0.3); color: #93c5fd; border: 1px solid #1e40af; }
+  .mec-badge-live::before { content:""; width:6px; height:6px; border-radius:50%; background:#60a5fa; display:inline-block; }
+  .mec-badge-announced { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid #3b82f6; }
+  .mec-badge-announced::before { content:""; width:6px; height:6px; border-radius:50%; background:#3b82f6; display:inline-block; }
+  .mec-badge-partial { background: rgba(147,197,253,0.15); color: #93c5fd; border: 1px solid #475569; }
+  .mec-badge-partial::before { content:""; width:6px; height:6px; border-radius:50%; background:#93c5fd; display:inline-block; }
+  .mec-badge-none { background: #1e293b; color: #64748b; border: 1px solid #334155; }
+  .mec-badge-none::before { content:""; width:6px; height:6px; border-radius:50%; background:#475569; display:inline-block; }
+
+  .mec-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .mec-date-box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; }
+  .mec-date-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; margin-bottom: 4px; }
+  .mec-date-box .val { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+  .mec-date-box .phase2 { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .mec-date-box .sub { font-size: 10px; color: #475569; margin-top: 3px; }
+
+  .mec-sec { margin-top: 18px; }
+  .mec-sec-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .mec-sec-label::after { content:""; flex:1; height:1px; background:#1e293b; }
+  .mec-tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .mec-tag { background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #94a3b8; font-family: monospace; }
+  .mec-platform-tag { background: rgba(251,191,36,0.1); border-color: #92400e; color: #fbbf24; }
+
+  .mec-dl-item { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1a2234; align-items: flex-start; }
+  .mec-dl-item:last-child { border-bottom: none; }
+  .mec-dl-date { font-size: 11px; font-weight: 700; color: #60a5fa; min-width: 80px; padding-top: 1px; }
+  .mec-dl-desc { font-size: 12px; color: #64748b; line-height: 1.5; }
+
+  .mec-info-row { display: flex; gap: 10px; margin-bottom: 6px; }
+  .mec-info-label { font-size: 11px; color: #475569; min-width: 90px; flex-shrink: 0; }
+  .mec-info-val { font-size: 12px; color: #94a3b8; }
+
+  .mec-future { background: rgba(59,130,246,0.08); border-left: 2px solid #3b82f6; border-radius: 0 6px 6px 0; padding: 12px 14px; margin-top: 18px; }
+  .mec-future .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #3b82f6; margin-bottom: 6px; }
+  .mec-future p { font-size: 12px; color: #64748b; line-height: 1.6; }
+
+  .mec-penalty { background: rgba(239,68,68,0.07); border-left: 2px solid #7f1d1d; border-radius: 0 6px 6px 0; padding: 12px 14px; margin-top: 10px; }
+  .mec-penalty .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #ef4444; margin-bottom: 6px; }
+  .mec-penalty p { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+  .mec-conf-row { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #1e293b; }
+  .mec-conf-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .mec-conf-dot.green { background: #22c55e; }
+  .mec-conf-dot.amber { background: #f59e0b; }
+  .mec-conf-dot.red { background: #ef4444; }
+  .mec-conf-text { font-size: 11px; color: #475569; }
+
+  .map-sources-outer { background: #0f172a; padding: 0 48px 32px 48px; border-top: 1px solid #1e293b; }
+</style>
+
 <script is:inline>
   /* ---- FAQ ---- */
-  /* ---- CAROUSEL ---- */
-  let carouselPos = 0;
-
-  function carouselVisibleCount() {
-    const vp = document.querySelector('.carousel-viewport');
-    const card = document.querySelector('.clock-card');
-    if (!vp || !card) return 4;
-    return Math.max(1, Math.floor(vp.offsetWidth / (card.offsetWidth + 14)));
-  }
-
-  function carouselMaxPos() {
-    return Math.max(0, document.querySelectorAll('.clock-card').length - carouselVisibleCount());
-  }
-
-  function carouselMove(dir) {
-    carouselPos = Math.max(0, Math.min(carouselPos + dir, carouselMaxPos()));
-    const track = document.getElementById('carousel-track');
-    const card = document.querySelector('.clock-card');
-    if (!track || !card) return;
-    track.style.transform = `translateX(-${carouselPos * (card.offsetWidth + 14)}px)`;
-    document.getElementById('carousel-prev').disabled = carouselPos === 0;
-    document.getElementById('carousel-next').disabled = carouselPos >= carouselMaxPos();
-  }
 
   function equalizeIcpHeadings() {
     const cards = [...document.querySelectorAll('.icp-card')];
@@ -3065,42 +3090,8 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    carouselMove(0);
     equalizeIcpHeadings();
-    window.addEventListener('resize', () => {
-      carouselPos = Math.min(carouselPos, carouselMaxPos());
-      carouselMove(0);
-      equalizeIcpHeadings();
-    });
-
-    const track = document.getElementById('carousel-track');
-    if (track) {
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let isDragging = false;
-
-      track.addEventListener('touchstart', e => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        isDragging = false;
-      }, { passive: true });
-
-      track.addEventListener('touchmove', e => {
-        const dx = e.touches[0].clientX - touchStartX;
-        const dy = e.touches[0].clientY - touchStartY;
-        if (!isDragging && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
-          isDragging = true;
-        }
-        if (isDragging) e.preventDefault();
-      }, { passive: false });
-
-      track.addEventListener('touchend', e => {
-        if (!isDragging) return;
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 40) carouselMove(dx < 0 ? 1 : -1);
-        isDragging = false;
-      });
-    }
+    window.addEventListener('resize', equalizeIcpHeadings);
   });
 
   function toggleIcpCard(card) {
@@ -3155,12 +3146,67 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
   // Base hours = readiness-only per mandate per entity
   // Low = 600h full impl × 45% readiness fraction; High = 900h × 45%
   // Source: Ardent Partners / Gartner 2024-26 lighter ERP benchmarks
+  // Initial readiness hours per mandate per entity (Ardent Partners / Gartner 2024-26 + Gemini research May 2026)
   const MANDATE_BASE = {
-    france:  { name: "France PA",          low: 270, high: 405 },
-    poland:  { name: "Poland KSeF",       low: 290, high: 430 },
-    germany: { name: "Germany B2B",       low: 270, high: 405 },
-    belgium: { name: "Belgium Peppol",    low: 200, high: 300 },
-    romania: { name: "Romania e-Factura", low: 200, high: 300 }
+    // Upcoming B2B
+    fr: { name: "France PDP",             low: 270,  high: 405  },
+    de: { name: "Germany B2B",            low: 270,  high: 405  },
+    es: { name: "Spain Verifactu",        low: 240,  high: 360  },
+    // Live B2B clearance
+    pl: { name: "Poland KSeF",            low: 290,  high: 430  },
+    it: { name: "Italy SdI",              low: 160,  high: 240  },
+    gr: { name: "Greece myDATA",          low: 500,  high: 2200 },
+    hu: { name: "Hungary RTIR",           low: 450,  high: 1800 },
+    hr: { name: "Croatia Fiscalization",  low: 550,  high: 2000 },
+    ro: { name: "Romania e-Factura",      low: 200,  high: 300  },
+    be: { name: "Belgium Peppol",         low: 200,  high: 300  },
+    // B2G / Peppol standard
+    pt: { name: "Portugal",               low: 250,  high: 900  },
+    dk: { name: "Denmark Peppol",         low: 200,  high: 850  },
+    sk: { name: "Slovakia",               low: 150,  high: 600  },
+    no: { name: "Norway Peppol",          low: 80,   high: 350  },
+    se: { name: "Sweden Peppol",          low: 90,   high: 400  },
+    fi: { name: "Finland Peppol",         low: 100,  high: 450  },
+    nl: { name: "Netherlands Peppol",     low: 80,   high: 350  },
+    at: { name: "Austria",                low: 120,  high: 500  },
+    ee: { name: "Estonia Peppol",         low: 80,   high: 300  },
+    lt: { name: "Lithuania",              low: 100,  high: 400  },
+    lv: { name: "Latvia",                 low: 120,  high: 450  },
+    si: { name: "Slovenia",               low: 110,  high: 420  },
+    lu: { name: "Luxembourg",             low: 80,   high: 320  },
+    ch: { name: "Switzerland",            low: 110,  high: 480  },
+    // ViDA horizon
+    cz: { name: "Czech Republic",         low: 50,   high: 200  },
+    ie: { name: "Ireland",                low: 30,   high: 120  },
+    bg: { name: "Bulgaria",               low: 30,   high: 120  },
+    mt: { name: "Malta",                  low: 40,   high: 150  },
+    cy: { name: "Cyprus",                 low: 40,   high: 150  },
+  };
+
+  // Annual maintenance hours per live mandate (Gemini research May 2026: schema/API update cycles)
+  const MONITOR_BASE = {
+    pl: { name: "Poland KSeF",            low: 60,   high: 350  },
+    gr: { name: "Greece myDATA",          low: 60,   high: 320  },
+    it: { name: "Italy SdI",              low: 45,   high: 280  },
+    hu: { name: "Hungary RTIR",           low: 40,   high: 200  },
+    hr: { name: "Croatia Fiscalization",  low: 35,   high: 150  },
+    ro: { name: "Romania e-Factura",      low: 30,   high: 180  },
+    pt: { name: "Portugal",               low: 30,   high: 140  },
+    be: { name: "Belgium Peppol",         low: 20,   high: 100  },
+    de: { name: "Germany XRechnung",      low: 25,   high: 120  },
+    dk: { name: "Denmark Peppol",         low: 15,   high: 80   },
+    se: { name: "Sweden Peppol",          low: 15,   high: 80   },
+    fi: { name: "Finland Peppol",         low: 15,   high: 80   },
+    nl: { name: "Netherlands Peppol",     low: 15,   high: 80   },
+    no: { name: "Norway Peppol",          low: 15,   high: 80   },
+    at: { name: "Austria",                low: 15,   high: 80   },
+    sk: { name: "Slovakia",               low: 20,   high: 80   },
+    ch: { name: "Switzerland",            low: 20,   high: 90   },
+    lv: { name: "Latvia",                 low: 15,   high: 70   },
+    lt: { name: "Lithuania",              low: 15,   high: 70   },
+    si: { name: "Slovenia",               low: 15,   high: 70   },
+    ee: { name: "Estonia",                low: 15,   high: 60   },
+    lu: { name: "Luxembourg",             low: 15,   high: 60   },
   };
 
   // ERP multiplier and per-entity scaling by named ERP
@@ -3218,9 +3264,6 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     const entities = parseInt(document.getElementById('calc-countries').value);
     document.getElementById('countries-display').textContent = entities + (entities >= 10 ? '+' : '');
 
-    // Multi-ERP model: average multiplier across selected ERPs + 17.5% coordination overhead
-    // Formula: Total = Σ(effort × ERP_i_mult / n_erps) × (1 + coordination) - Forrester TEI Q1 2026
-    // Single ERP: straight multiplier, no coordination overhead
     const selectedERPs = [...document.querySelectorAll('input[name="calc-erp"]:checked')].map(i => i.value);
     const isMultiERP = selectedERPs.length > 1;
     const avgMult = selectedERPs.length > 0
@@ -3236,71 +3279,104 @@ const buildMonth = new Date().toLocaleDateString('en-US', { month: 'long', year:
     const rateEl  = document.querySelector('input[name="calc-rate"]:checked');
     const rate    = rateEl ? parseInt(rateEl.value) : 85;
 
-    const selected = [...document.querySelectorAll('input[name="calc-mandate"]:checked')].map(i => i.value);
+    const readySelected   = [...document.querySelectorAll(‘input[name="calc-ready"]:checked’)].map(i => i.value);
+    const maintainSelected = [...document.querySelectorAll(‘input[name="calc-maintain"]:checked’)].map(i => i.value);
 
-    const hoursEl     = document.getElementById('out-hours');
-    const hoursNote   = document.getElementById('out-hours-note');
-    const rangePills  = document.getElementById('out-range-pills');
-    const scopeInt    = document.getElementById('out-scope-internal');
-    const penaltyRow        = document.getElementById('penalty-row');
-    const penaltyVal        = document.getElementById('penalty-value');
-    const polandPenaltyRow  = document.getElementById('poland-penalty-row');
-    const germanyPenaltyRow = document.getElementById('germany-penalty-row');
-
-    if (selected.length === 0) {
-      hoursEl.textContent    = '--';
-      hoursNote.textContent  = 'Select a mandate above';
-      rangePills.innerHTML   = '';
-      scopeInt.textContent   = '--';
-      penaltyRow.style.display     = 'none';
-      polandPenaltyRow.style.display  = 'none';
-      germanyPenaltyRow.style.display = 'none';
-      document.getElementById('range-viz').style.display = 'none';
-      return;
-    }
+    const hoursEl     = document.getElementById(‘out-hours’);
+    const hoursNote   = document.getElementById(‘out-hours-note’);
+    const rangePills  = document.getElementById(‘out-range-pills’);
+    const scopeInt    = document.getElementById(‘out-scope-internal’);
+    const penaltyRow        = document.getElementById(‘penalty-row’);
+    const penaltyVal        = document.getElementById(‘penalty-value’);
+    const polandPenaltyRow  = document.getElementById(‘poland-penalty-row’);
+    const germanyPenaltyRow = document.getElementById(‘germany-penalty-row’);
+    const maintainBox  = document.getElementById(‘maintain-box’);
+    const maintainHrs  = document.getElementById(‘maintain-hours’);
+    const maintainNote = document.getElementById(‘maintain-note’);
+    const maintainCostLow  = document.getElementById(‘maintain-cost-low’);
+    const maintainCostHigh = document.getElementById(‘maintain-cost-high’);
 
     const eFactor = entityFactor(entities, erpKey);
 
-    let totalLow = 0, totalHigh = 0;
-    selected.forEach(m => {
-      totalLow  += MANDATE_BASE[m].low;
-      totalHigh += MANDATE_BASE[m].high;
-    });
-
-    const hoursLow  = Math.round(totalLow  * erpMult * eFactor);
-    const hoursHigh = Math.round(totalHigh * erpMult * eFactor);
-    const hoursMid  = Math.round((hoursLow + hoursHigh) / 2);
-
-    const costLow  = hoursLow  * rate;
-    const costHigh = hoursHigh * rate;
-    const costMid  = hoursMid  * rate;
-
-    hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
-    hoursNote.textContent = selected.length + ' mandate' + (selected.length > 1 ? 's' : '') +
-      ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y') + ' · readiness overhead only';
-
-    rangePills.innerHTML =
-      '<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured team: ' + hoursLow.toLocaleString('de-DE') + 'h</span>' +
-      '<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc / reactive: ' + hoursHigh.toLocaleString('de-DE') + 'h</span>';
-
-    updateRangeBar(costLow, costHigh);
-
-    scopeInt.textContent = fmt(costMid) + ' (typical midpoint)';
-
-    // France: €50/invoice capped at €15,000/year/entity (2026 Budget Law, confirmed Feb 2026)
-    // Previously €15 - increased by 2026 Finance Act. Source: dynatos.com / vatcalc.com
-    if (selected.includes('france')) {
-      penaltyRow.style.display = 'flex';
-      penaltyVal.textContent   = fmt(15000 * entities) + '/year';
+    // ---- SECTION A: GETTING READY ----
+    if (readySelected.length === 0) {
+      hoursEl.textContent   = ‘--’;
+      hoursNote.textContent = ‘Select mandates above’;
+      rangePills.innerHTML  = ‘’;
+      scopeInt.textContent  = ‘--’;
+      penaltyRow.style.display        = ‘none’;
+      polandPenaltyRow.style.display  = ‘none’;
+      germanyPenaltyRow.style.display = ‘none’;
+      document.getElementById(‘range-viz’).style.display = ‘none’;
     } else {
-      penaltyRow.style.display = 'none';
+      const readyEls = [...document.querySelectorAll(‘input[name="calc-ready"]:checked’)];
+      const hasLive     = readyEls.some(el => el.dataset.live === ‘1’);
+      const hasUpcoming = readyEls.some(el => el.dataset.live === ‘0’);
+      const titleEl = document.getElementById(‘range-viz-title’);
+      const subEl   = document.getElementById(‘range-viz-sub’);
+      if (titleEl && subEl) {
+        if (hasLive && !hasUpcoming) {
+          titleEl.textContent = ‘Active remediation risk.’;
+          subEl.textContent   = ‘These mandates are already live. If compliance was not established, penalty exposure and invoice rejection risk are active now.’;
+        } else if (hasUpcoming && !hasLive) {
+          titleEl.textContent = ‘Preparation investment - before go-live.’;
+          subEl.textContent   = ‘Structured readiness costs less than reactive remediation. This is the internal cost before any external vendor or consulting fee.’;
+        } else {
+          titleEl.textContent = ‘Unbudgeted. Unavoidable.’;
+          subEl.textContent   = "Mandate readiness doesn’t disappear when it’s unplanned - it gets absorbed as coordination, research and post-go-live firefighting.";
+        }
+      }
+
+      let totalLow = 0, totalHigh = 0;
+      readySelected.forEach(m => {
+        if (MANDATE_BASE[m]) { totalLow += MANDATE_BASE[m].low; totalHigh += MANDATE_BASE[m].high; }
+      });
+
+      const hoursLow  = Math.round(totalLow  * erpMult * eFactor);
+      const hoursHigh = Math.round(totalHigh * erpMult * eFactor);
+      const hoursMid  = Math.round((hoursLow + hoursHigh) / 2);
+      const costLow   = hoursLow  * rate;
+      const costHigh  = hoursHigh * rate;
+      const costMid   = hoursMid  * rate;
+
+      hoursEl.textContent   = hoursLow.toLocaleString(‘de-DE’) + ‘ – ‘ + hoursHigh.toLocaleString(‘de-DE’) + ‘h’;
+      hoursNote.textContent = readySelected.length + ‘ mandate’ + (readySelected.length > 1 ? ‘s’ : ‘’) +
+        ‘ · ‘ + entities + ‘ entit’ + (entities > 1 ? ‘ies’ : ‘y’) + ‘ · readiness overhead only’;
+
+      rangePills.innerHTML =
+        ‘<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured: ‘ + hoursLow.toLocaleString(‘de-DE’) + ‘h</span>’ +
+        ‘<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc: ‘ + hoursHigh.toLocaleString(‘de-DE’) + ‘h</span>’;
+
+      updateRangeBar(costLow, costHigh);
+      scopeInt.textContent = fmt(costMid) + ‘ (typical midpoint)’;
+
+      const hasFr = readySelected.includes(‘fr’);
+      penaltyRow.style.display = hasFr ? ‘flex’ : ‘none’;
+      if (hasFr) penaltyVal.textContent = fmt(15000 * entities) + ‘/year’;
+
+      polandPenaltyRow.style.display  = readySelected.includes(‘pl’) ? ‘flex’ : ‘none’;
+      germanyPenaltyRow.style.display = readySelected.includes(‘de’) ? ‘flex’ : ‘none’;
     }
 
-    // Poland: 100% of VAT per invoice, no cap (Art. 106ni VAT Act, post Jan 2027)
-    polandPenaltyRow.style.display = selected.includes('poland') ? 'flex' : 'none';
+    // ---- SECTION B: STAYING CURRENT ----
+    if (maintainSelected.length === 0) {
+      maintainBox.style.display = ‘none’;
+    } else {
+      let mLow = 0, mHigh = 0;
+      maintainSelected.forEach(m => {
+        if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].low; mHigh += MONITOR_BASE[m].high; }
+      });
 
-    // Germany: €5K/invoice + €30K GoBD archiving (§26a UStG + BMF March 2026)
-    germanyPenaltyRow.style.display = selected.includes('germany') ? 'flex' : 'none';
+      const mHoursLow  = Math.round(mLow  * entities);
+      const mHoursHigh = Math.round(mHigh * entities);
+
+      maintainHrs.textContent  = mHoursLow.toLocaleString(‘de-DE’) + ‘ – ‘ + mHoursHigh.toLocaleString(‘de-DE’) + ‘h/year’;
+      maintainNote.textContent = maintainSelected.length + ‘ mandate’ + (maintainSelected.length > 1 ? ‘s’ : ‘’) +
+        ‘ · ‘ + entities + ‘ entit’ + (entities > 1 ? ‘ies’ : ‘y’);
+      maintainCostLow.textContent  = fmt(mHoursLow  * rate) + ‘/year’;
+      maintainCostHigh.textContent = fmt(mHoursHigh * rate) + ‘/year’;
+      maintainBox.style.display = ‘block’;
+    }
   }
 
   function toggleCheck(el) {
