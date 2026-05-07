@@ -8,7 +8,7 @@ const { active } = Astro.props;
   <a href="/" class="logo">einvoice<span>ops</span></a>
   <div class="nav-links">
     <a href="/for-enterprise/" class:list={['hide-mobile', { active: active === 'enterprise' }]}>For Enterprises</a>
-    <a href="/for_Service_Providers/" class:list={['hide-mobile', { active: active === 'sp' }]}>For Service Providers</a>
+    <a href="/for_Service_Providers/" class:list={['hide-mobile', { active: active === 'sp' }]}>For Finance Platform Service Providers</a>
     <a href="/#calculator" class="hide-mobile">Mandate Cost Calculator</a>
     <a href="/#map" class:list={['hide-mobile', { active: active === 'map' }]}>Compliance Map</a>
     <a href="/#faq" class="hide-mobile">FAQ</a>
@@ -20,7 +20,7 @@ const { active } = Astro.props;
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <a href="/for-enterprise/">For Enterprises</a>
-  <a href="/for_Service_Providers/">For Service Providers</a>
+  <a href="/for_Service_Providers/">For Finance Platform Service Providers</a>
   <a href="/#calculator">Mandate Cost Calculator</a>
   <a href="/#map">Compliance Map</a>
   <a href="/#faq">FAQ</a>
