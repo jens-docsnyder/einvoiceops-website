@@ -87,7 +87,7 @@ for (const c of allCountries) {
   let color: string;
   if (d.b2b === 'mandatory' && (d.status === 'live' || d.status === 'pilot')) color = '#1e40af';
   else if (d.b2b === 'announced') color = '#2563eb';
-  else if (d.b2b === 'voluntary' || d.b2b === 'not-yet') color = '#374f8c';
+  else if (d.b2b === 'voluntary' || d.b2b === 'not-yet') color = '#3d7ab5';
   else color = '#1e2d40';
   homeCountryMap[d.code] = { color, url: `/map/${d.code}/` };
 
@@ -509,9 +509,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     /* ---- SOURCES PANEL ---- */
     .sources-panel {
       margin-top: 36px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 12px;
       overflow: hidden;
+      background: #fff;
     }
 
     .sources-panel-toggle {
@@ -521,14 +522,14 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       justify-content: space-between;
       gap: 12px;
       padding: 14px 20px;
-      background: rgba(255,255,255,0.05);
+      background: #fff;
       border: none;
       cursor: pointer;
       transition: background 0.15s;
       text-align: left;
     }
 
-    .sources-panel-toggle:hover { background: rgba(255,255,255,0.09); }
+    .sources-panel-toggle:hover { background: #f9fafb; }
 
     .sources-panel-header {
       display: flex;
@@ -542,21 +543,21 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #9ca3af;
+      color: #374151;
     }
 
     .sources-panel-badge {
       font-size: 0.72rem;
       font-weight: 600;
-      color: #60a5fa;
-      background: rgba(37,99,235,0.15);
+      color: #1d4ed8;
+      background: #eff6ff;
       padding: 3px 10px;
       border-radius: 100px;
     }
 
     .sources-panel-icon {
       font-size: 1rem;
-      color: #6b7280;
+      color: #9ca3af;
       transition: transform 0.2s;
       flex-shrink: 0;
     }
@@ -585,7 +586,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     .sources-panel-scroll::-webkit-scrollbar { width: 4px; }
     .sources-panel-scroll::-webkit-scrollbar-track { background: transparent; }
-    .sources-panel-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .sources-panel-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
 
     .source-group {
       margin-bottom: 20px;
@@ -598,7 +599,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       font-weight: 700;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: #60a5fa;
+      color: #2563eb;
       margin-bottom: 8px;
     }
 
@@ -612,23 +613,23 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     .source-group li {
       font-size: 0.75rem;
-      color: #9ca3af;
+      color: #6b7280;
       line-height: 1.4;
     }
 
     .source-group a {
-      color: #9ca3af;
+      color: #6b7280;
       text-decoration: none;
       transition: color 0.15s;
     }
 
-    .source-group a:hover { color: #e5e7eb; }
+    .source-group a:hover { color: #111827; }
 
     .sources-panel-footer {
       padding: 10px 24px 16px;
       font-size: 0.72rem;
-      color: #4b5563;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      color: #9ca3af;
+      border-top: 1px solid #e5e7eb;
     }
 
     /* ---- SECTIONS ---- */
@@ -1102,7 +1103,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     .contact-box p {
       font-size: 1rem;
-      color: #9ca3af;
+      color: #d1d5db;
       max-width: 480px;
       margin: 0 auto 36px;
       line-height: 1.7;
@@ -1297,10 +1298,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .help-tip:hover::before { opacity: 1; }
 
     .calc-label {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--sub);
-      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.01em;
       margin-bottom: 12px;
       display: block;
     }
@@ -1449,7 +1450,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       flex: 1;
       font-size: 0.58rem;
       font-weight: 600;
-      padding: 3px 2px;
+      padding: 3px 4px;
       border-radius: 4px;
       border: 1.5px solid var(--border);
       background: var(--bg);
@@ -1457,7 +1458,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       cursor: pointer;
       transition: all 0.12s;
       text-align: center;
-      line-height: 1.35;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .tile-btn:hover:not([disabled]) { border-color: #93c5fd; color: var(--text); }
     .tile-btn.tile-ready.on  { background: var(--ice); border-color: var(--accent); color: var(--accent); }
@@ -1525,77 +1529,105 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       top: 76px;
     }
 
-    /* ---- PANEL 1: PREPARATION INVESTMENT
-       Deep Garnet — acute, one-time pain ---- */
-    .range-viz {
-      background: #FDF2F2;
-      border: 1.5px solid #EAC7C7;
-      border-radius: 14px;
-      padding: 6px 6px 20px;
-      display: none;
-    }
-    .range-viz-header {
-      background: linear-gradient(135deg, #581C1C 0%, #3A1010 100%);
-      border-radius: 10px;
-      padding: 20px 22px 18px;
-      margin-bottom: 16px;
-    }
-    .range-viz .range-viz-title { color: #FFF5F5; }
-
-    /* ---- PANEL 2: COST OF STAYING COMPLIANT
-       Heavy Slate-Indigo — chronic, recurring drain ---- */
-    .range-viz-annual {
+    /* ---- OUTPUT PANEL: YEAR 1 TOTAL ---- */
+    .co-hero {
       background: #F0F4F8;
       border: 1.5px solid #CFD9E3;
       border-radius: 14px;
-      padding: 6px 6px 20px;
+      overflow: hidden;
       display: none;
     }
-    .range-viz-header--annual {
+    .co-hero-header {
       background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      padding: 20px 22px 18px;
     }
-    .range-viz-annual .range-viz-title { color: #F7FAFC; }
-
-    /* Shared header title */
-    .range-viz-title {
-      font-size: 1.35rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-    }
-
-    /* ---- COST BAR ---- */
-    .range-bar {
-      background: linear-gradient(135deg, #9B2C2C 0%, #742222 100%);
-      border-radius: 12px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      padding: 16px 20px;
-      gap: 8px;
-    }
-    .range-bar--annual {
-      background: linear-gradient(135deg, #334155 0%, #1E293B 100%);
-    }
-    .range-bar-end {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-    .range-bar-end--right { align-items: flex-end; text-align: right; }
-    .rbe-range {
-      font-size: 0.6rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.38);
-      letter-spacing: 0.14em;
+    .co-hero-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.62);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      text-align: center;
+      margin-bottom: 8px;
+    }
+    .co-hero-range {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .co-hero-num {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .co-hero-sep {
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.35);
+    }
+    .co-hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .co-tag {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      padding: 2px 7px;
+      letter-spacing: 0.05em;
+      font-family: monospace;
       white-space: nowrap;
     }
-    .rbe-hours { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.72); }
-    .rbe-cost  { font-size: 1.15rem; font-weight: 900; color: white; letter-spacing: -0.025em; line-height: 1; }
+    .co-breakdown {
+      padding: 4px 20px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+    .co-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #D1D5DB;
+    }
+    .co-row:last-child { border-bottom: none; }
+    .co-row-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1E293B;
+      white-space: nowrap;
+    }
+    .co-row-sub {
+      font-weight: 400;
+      color: #9CA3AF;
+      font-size: 0.7rem;
+      margin-left: 5px;
+    }
+    .co-row-vals {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1E293B;
+      white-space: nowrap;
+    }
+    .co-row-sep { color: #9CA3AF; font-weight: 400; }
+    .co-row-hrs {
+      font-size: 0.67rem;
+      color: #9CA3AF;
+      font-weight: 500;
+      margin-left: 6px;
+    }
 
-    /* ---- PENALTY CHIP (garnet family — cost consequence of not preparing) ---- */
+    /* ---- PENALTY CHIP (garnet family - statutory risk) ---- */
     .penalty-chip {
       background: #FDF2F2;
       border: 1.5px solid #EAC7C7;
@@ -2078,8 +2110,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   <a href="/" class="logo">einvoice<span>ops</span></a>
   <div class="nav-links">
     <a href="#calculator" class="hide-mobile">Mandate Cost Calculator</a>
-    <a href="/for-enterprise/" class="hide-mobile">For Enterprises</a>
-    <a href="/for_Service_Providers/" class="hide-mobile">For Finance Platform Service Providers</a>
+    <a href="/for-enterprises/" class="hide-mobile">For Enterprises</a>
+    <a href="/for-service-providers/" class="hide-mobile">For Finance Platform Service Providers</a>
     <a href="#map" class="hide-mobile">Compliance Map</a>
     <a href="#faq" class="hide-mobile">FAQ</a>
     <a href="#contact" class="btn-nav">Get in touch</a>
@@ -2090,8 +2122,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <a href="#calculator">Mandate Cost Calculator</a>
-  <a href="/for-enterprise/">For Enterprises</a>
-  <a href="/for_Service_Providers/">For Finance Platform Service Providers</a>
+  <a href="/for-enterprises/">For Enterprises</a>
+  <a href="/for-service-providers/">For Finance Platform Service Providers</a>
   <a href="#map">Compliance Map</a>
   <a href="#faq">FAQ</a>
   <a href="#contact">Get in touch</a>
@@ -2099,11 +2131,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
 <!-- HERO -->
 <section class="hero">
-  <h1>E-invoicing mandates multiply and shift. Finance teams need structure.</h1>
-  <p class="hero-sub">EU countries are making electronic invoicing mandatory by law - each with its own format, platform, and deadline. Your invoicing platform handles the exchange. The internal preparation across Finance Systems, Tax, and AP Operations is your team's job.</p>
+  <h1>E-invoicing mandates create work across AP, AR, Tax and IT - none of it coordinates itself.</h1>
+  <p class="hero-sub">We map what each function needs to do, route it to named owners, and keep it current as mandates change.</p>
   <div class="hero-actions">
-    <a href="#map" class="btn-primary">See what each country requires</a>
-    <a href="#calculator" class="btn-ghost">See the enterprise benchmark</a>
+    <a href="#calculator" class="btn-primary">See the cost it creates</a>
+    <a href="#map" class="btn-ghost">See what each country requires</a>
   </div>
 </section>
 
@@ -2149,46 +2181,46 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
         <div class="calc-field">
           <label class="calc-label">Your European mandate footprint</label>
-          <p class="calc-section-label">For each country: <strong>New for us</strong> = first-time setup, incl. M&amp;A additions. <strong>Stay current</strong> = mandate live, need to track ongoing changes.</p>
+          <p class="calc-section-label">For each country: <strong>New for us</strong> = first-time setup, incl. M&amp;A additions. <strong>Stay compliant</strong> = mandate live, track ongoing changes to stay compliant.</p>
           <div class="country-grid">
             <div class="country-group-head">Upcoming B2B</div>
-            <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PDP · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>B2B · Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇪🇸 Spain <span>Verifactu · 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="es" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="Not yet live">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PDP · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>B2B · Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇪🇸 Spain <span>Verifactu · 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="es" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="Not yet live">Stay compliant</button></div></div>
             <div class="country-group-head">Live B2B clearance</div>
-            <div class="country-tile"><div class="tile-head">🇵🇱 Poland <span>KSeF · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pl" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇮🇹 Italy <span>SdI · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="it" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="it" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇬🇷 Greece <span>myDATA · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="gr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="gr" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇭🇺 Hungary <span>RTIR · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hu" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇭🇷 Croatia <span>Fiscalization · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hr" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇷🇴 Romania <span>e-Factura · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ro" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ro" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇧🇪 Belgium <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="be" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="be" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇵🇱 Poland <span>KSeF · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pl" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇮🇹 Italy <span>SdI · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="it" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="it" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇬🇷 Greece <span>myDATA · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="gr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="gr" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇭🇺 Hungary <span>RTIR · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hu" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇭🇷 Croatia <span>Fiscalization · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hr" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇷🇴 Romania <span>e-Factura · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ro" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ro" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇧🇪 Belgium <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="be" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="be" onclick="tileToggle(this)">Stay compliant</button></div></div>
             <div class="country-group-head">Live B2G / Peppol</div>
-            <div class="country-tile"><div class="tile-head">🇵🇹 Portugal <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pt" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇩🇰 Denmark <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="dk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="dk" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇸🇪 Sweden <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="se" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="se" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇫🇮 Finland <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fi" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="fi" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇳🇱 Netherlands <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="nl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="nl" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇳🇴 Norway <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="no" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="no" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇦🇹 Austria <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="at" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="at" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇸🇰 Slovakia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="sk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="sk" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇨🇭 Switzerland <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ch" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ch" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇱🇻 Latvia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lv" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lv" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇱🇹 Lithuania <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lt" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇸🇮 Slovenia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="si" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="si" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇪🇪 Estonia <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ee" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ee" onclick="tileToggle(this)">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇱🇺 Luxembourg <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lu" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇵🇹 Portugal <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pt" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇩🇰 Denmark <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="dk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="dk" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇸🇪 Sweden <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="se" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="se" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇫🇮 Finland <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fi" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="fi" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇳🇱 Netherlands <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="nl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="nl" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇳🇴 Norway <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="no" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="no" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇦🇹 Austria <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="at" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="at" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇸🇰 Slovakia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="sk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="sk" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇨🇭 Switzerland <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ch" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ch" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇱🇻 Latvia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lv" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lv" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇱🇹 Lithuania <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lt" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇸🇮 Slovenia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="si" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="si" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇪🇪 Estonia <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ee" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ee" onclick="tileToggle(this)">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇱🇺 Luxembourg <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lu" onclick="tileToggle(this)">Stay compliant</button></div></div>
             <div class="country-group-head">ViDA horizon — no active mandate</div>
-            <div class="country-tile"><div class="tile-head">🇨🇿 Czech Rep. <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cz" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇮🇪 Ireland <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ie" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇧🇬 Bulgaria <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="bg" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇲🇹 Malta <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="mt" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇨🇾 Cyprus <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cy" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇨🇿 Czech Rep. <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cz" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇮🇪 Ireland <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ie" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇧🇬 Bulgaria <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="bg" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇲🇹 Malta <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="mt" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇨🇾 Cyprus <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cy" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
           </div>
         </div>
 
-        <div class="calc-field">
-          <label class="calc-label">ERP environment <span style="font-weight:400;color:var(--muted)">(select all that apply)</span></label>
+        <div class="calc-field" id="calc-erp-field">
+          <label class="calc-label" id="calc-erp-label">ERP environment <span id="calc-erp-sub" style="font-weight:400;color:var(--muted)">(select all that apply)</span></label>
           <div class="mandate-checks" id="erp-checks">
             <label class="mandate-check" id="chk-netsuite">
               <input type="checkbox" name="calc-erp" value="netsuite" onchange="calcUpdate(); toggleCheck(this)">
@@ -2220,13 +2252,13 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         <div class="calc-field">
           <label class="calc-label">Your team's blended hourly rate</label>
           <div class="radio-group">
-            <label class="radio-option checked" id="rate-lean">
-              <input type="radio" name="calc-rate" value="85" checked onchange="calcUpdate(); toggleRadioGroup('rate')">
+            <label class="radio-option" id="rate-lean">
+              <input type="radio" name="calc-rate" value="85" onchange="calcUpdate(); toggleRadioGroup('rate')">
               <span class="radio-label">€85 / hour</span>
               <span class="radio-sub">Lean finance team</span>
             </label>
-            <label class="radio-option" id="rate-cross">
-              <input type="radio" name="calc-rate" value="100" onchange="calcUpdate(); toggleRadioGroup('rate')">
+            <label class="radio-option checked" id="rate-cross">
+              <input type="radio" name="calc-rate" value="100" checked onchange="calcUpdate(); toggleRadioGroup('rate')">
               <span class="radio-label">€100 / hour</span>
               <span class="radio-sub">Finance + Tax + ERP</span>
             </label>
@@ -2243,69 +2275,56 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       <!-- OUTPUT -->
       <div class="calc-output">
 
-        <!-- 1. RANGE VIZ - most prominent element -->
-        <div class="range-viz" id="range-viz">
-          <div class="range-viz-header">
-            <div class="range-viz-title" id="range-viz-title">Preparation investment - before go-live.</div>
-          </div>
-          <div class="range-bar">
-            <div class="range-bar-end">
-              <span class="rbe-hours" id="out-hours">--</span>
-              <span class="rbe-cost" id="range-label-low">--</span>
+        <!-- OUTPUT HERO: YEAR 1 TOTAL -->
+        <div class="co-hero" id="co-hero">
+          <div class="co-hero-header">
+            <div class="co-hero-label">Total Year 1 budget exposure</div>
+            <div class="co-hero-range">
+              <span class="co-hero-num" id="co-y1-low">--</span>
+              <span class="co-hero-sep"> - </span>
+              <span class="co-hero-num" id="co-y1-high">--</span>
             </div>
-            <span class="rbe-range">&#171;&nbsp;&nbsp;range&nbsp;&nbsp;&#187;</span>
-            <div class="range-bar-end range-bar-end--right">
-              <span class="rbe-hours" id="out-hours-high">--</span>
-              <span class="rbe-cost" id="range-label-high">--</span>
+            <div class="co-hero-tags" id="co-hero-tags"></div>
+          </div>
+          <div class="co-breakdown">
+            <div class="co-row" id="co-row-ready" style="display:none">
+              <div class="co-row-label">One-time readiness investment</div>
+              <div class="co-row-vals">
+                <span id="co-ready-low">--</span><span class="co-row-sep"> - </span><span id="co-ready-high">--</span><span class="co-row-hrs" id="co-ready-hrs"></span>
+              </div>
+            </div>
+            <div class="co-row" id="co-row-maint" style="display:none">
+              <div class="co-row-label">Annual compliance cost</div>
+              <div class="co-row-vals">
+                <span id="co-maint-low">--</span><span class="co-row-sep"> - </span><span id="co-maint-high">--</span><span class="co-row-hrs" id="co-maint-hrs"></span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- 2. PENALTY CHIP -->
+        <!-- PENALTY CHIP: STATUTORY RISK -->
         <div id="calc-comparison" style="display:none">
           <button class="penalty-chip" onclick="togglePenalties()" aria-expanded="false">
-            <span id="penalty-summary">Penalty exposure</span>
+            <span id="penalty-summary">Statutory risk if unprepared</span>
             <span class="meth-arrow">&#9660;</span>
           </button>
           <div id="penalties-body" style="display:none" class="penalties-body">
             <div class="pen-row" id="penalty-row" style="display:none">
-              <span>France &mdash; €50/invoice, capped €15,000/year/entity (2026 Budget Law)</span>
+              <span>France - EUR 50/invoice, capped EUR 15,000/year/entity (2026 Budget Law)</span>
               <span class="pen-row-val" id="penalty-value"></span>
             </div>
             <div class="pen-row" id="poland-penalty-row" style="display:none">
-              <span>Poland KSeF &mdash; up to 100% of VAT per invoice, no cap (post Jan 2027)</span>
+              <span>Poland KSeF - up to 100% of VAT per invoice, no cap (post Jan 2027)</span>
               <span class="pen-row-val">Per-invoice</span>
             </div>
             <div class="pen-row" id="germany-penalty-row" style="display:none">
-              <span>Germany &mdash; up to €5,000/invoice (§26a UStG); GoBD: VAT deduction denial</span>
+              <span>Germany - up to EUR 5,000/invoice (Sec. 26a UStG); GoBD: VAT deduction denial</span>
               <span class="pen-row-val">Per-invoice</span>
             </div>
           </div>
         </div>
-
-
-
-
-        <!-- 5. ANNUAL RANGE BAR -->
-        <div class="range-viz-annual" id="range-viz-annual">
-          <div class="range-viz-header range-viz-header--annual">
-            <div class="range-viz-title">Cost of staying compliant.</div>
-          </div>
-          <div class="range-bar range-bar--annual">
-            <div class="range-bar-end">
-              <span class="rbe-hours" id="out-annual-hours">--</span>
-              <span class="rbe-cost" id="range-label-annual-low">--</span>
-            </div>
-            <span class="rbe-range">&#171;&nbsp;&nbsp;range&nbsp;&nbsp;&#187;</span>
-            <div class="range-bar-end range-bar-end--right">
-              <span class="rbe-hours" id="out-annual-hours-high">--</span>
-              <span class="rbe-cost" id="range-label-annual-high">--</span>
-            </div>
-          </div>
-          </div>
-        </div>
         <!-- 6. CTA -->
-        <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:4px">Get a frank read on your readiness gap</a>
+        <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:4px">Pressure-test this estimate</a>
 
         <!-- 7. METHODOLOGY - collapsible -->
         <div class="calc-methodology">
@@ -2391,8 +2410,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     <div class="map-embed-legend">
       <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#1e40af"></div>B2B live</div>
       <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#2563eb"></div>B2B announced</div>
-      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#374f8c"></div>B2G / voluntary</div>
-      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#1e2d40;border:1px solid #334155"></div>No B2B mandate</div>
+      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#3d7ab5"></div>B2G / voluntary</div>
+      <div class="map-embed-legend-item"><div class="map-embed-legend-dot" style="background:#0f1e2c;border:1px solid #243447"></div>No B2B mandate</div>
     </div>
     <div class="map-embed-grid" id="map-embed-grid">
       {mapSortedEntries.map(e => (
@@ -2400,6 +2419,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           {e.data.flag} {e.data.country}
         </button>
       ))}
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="map-embed-btn map-src-btn" id="sources-panel-btn" onclick="showSources()">Primary sources</button>
     </div>
   </div>
 
@@ -2423,7 +2445,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         <span class="sources-panel-icon">+</span>
       </button>
       <div class="sources-panel-drawer" id="sources-drawer">
-        <div class="sources-panel-scroll">
+        <div class="sources-panel-scroll" id="sources-inner-content">
 
           <div class="source-group">
             <h5>France: legislation</h5>
@@ -2538,7 +2560,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           </div>
 
         </div>
-        <div class="sources-panel-footer">
+        <div class="sources-panel-footer" id="sources-footer-content">
           Primary legislation and official portal sources for all {allCountries.length} countries are listed in their individual compliance map entries. EC factsheets above are Tier 2 sources; country pages are sourced directly to enacted legislation where available.
         </div>
       </div>
@@ -2546,23 +2568,30 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   </div>
 </div>
 
-<!-- ROUTING CTAs -->
-<section style="background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 2rem;">
-  <div style="max-width:880px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+<!-- BRIDGE CTA -->
+<div style="background:#1a2b3c;padding:40px 2rem;text-align:center;border-top:1px solid #243447;">
+  <a href="#contact" class="btn-primary">Tell us your footprint</a>
+</div>
 
-      <a href="/for-enterprise/" style="display:flex;flex-direction:column;gap:14px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 32px;text-decoration:none;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor='#2563eb';this.style.boxShadow='0 4px 20px rgba(37,99,235,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-        <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--ice);border:1px solid #bfdbfe;padding:4px 10px;border-radius:100px;width:fit-content;">For enterprises</span>
-        <h3 style="font-size:1.1rem;font-weight:800;color:var(--navy);line-height:1.3;letter-spacing:-0.02em;">Readiness Sprint and ongoing mandate monitoring for your finance team.</h3>
-        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;">Tax, Finance Systems, and AP Operations - each with their own preparation work. We map it, route it to the right owners, and keep it current as mandates change.</p>
-        <span style="font-size:0.85rem;font-weight:700;color:var(--accent);margin-top:auto;">See how it works &#8594;</span>
+<!-- ROUTING CTAs -->
+<section style="background:#f1f5f9;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:64px 2rem;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+
+      <!-- Enterprise -->
+      <a href="/for-enterprises/" style="display:flex;flex-direction:column;background:#0f1f35;border-left:4px solid #3b82f6;border-radius:12px;padding:32px 32px 36px;text-decoration:none;transition:box-shadow 0.2s,transform 0.2s;" onmouseover="this.style.boxShadow='0 12px 40px rgba(15,31,53,0.35)';this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='none';this.style.transform='none';">
+        <span style="font-size:1rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#60a5fa;margin-bottom:22px;display:block;min-height:3.2rem;">For enterprise finance teams</span>
+        <h3 style="font-size:1.4rem;font-weight:800;color:#f1f5f9;line-height:1.2;letter-spacing:-0.025em;margin-bottom:16px;">Finance owns it. Tax owns it. IT owns it. Nobody coordinates it.</h3>
+        <p style="font-size:0.88rem;color:#94a3b8;line-height:1.6;margin-bottom:36px;flex:1;">We map it. We route it to the right owner. We keep it current.</p>
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:0.85rem;font-weight:700;color:#fff;background:#2563eb;border-radius:8px;padding:12px 20px;width:fit-content;">See the Readiness Sprint &#8594;</span>
       </a>
 
-      <a href="/for_Service_Providers/" style="display:flex;flex-direction:column;gap:14px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 32px;text-decoration:none;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor='#0f766e';this.style.boxShadow='0 4px 20px rgba(15,118,110,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-        <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#0f766e;background:#f0fdfa;border:1px solid #99f6e4;padding:4px 10px;border-radius:100px;width:fit-content;">For finance platform service providers</span>
-        <h3 style="font-size:1.1rem;font-weight:800;color:var(--navy);line-height:1.3;letter-spacing:-0.02em;">White-label mandate readiness delivered to your customers under your brand.</h3>
-        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;">Your platform covers the exchange. We cover the internal preparation gap your customers ask about. Delivered as your service, to their Finance Systems, Tax, and IT teams.</p>
-        <span style="font-size:0.85rem;font-weight:700;color:#0f766e;margin-top:auto;">See how it works &#8594;</span>
+      <!-- SP -->
+      <a href="/for-service-providers/" style="display:flex;flex-direction:column;background:#0c2320;border-left:4px solid #0d9488;border-radius:12px;padding:32px 32px 36px;text-decoration:none;transition:box-shadow 0.2s,transform 0.2s;" onmouseover="this.style.boxShadow='0 12px 40px rgba(12,35,32,0.35)';this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='none';this.style.transform='none';">
+        <span style="font-size:1rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#2dd4bf;margin-bottom:22px;display:block;min-height:3.2rem;">For finance platform service providers</span>
+        <h3 style="font-size:1.4rem;font-weight:800;color:#f1f5f9;line-height:1.2;letter-spacing:-0.025em;margin-bottom:16px;">Your customers ask what their team needs to do. Your platform doesn't answer that.</h3>
+        <p style="font-size:0.88rem;color:#94a3b8;line-height:1.6;margin-bottom:36px;flex:1;">We answer it. Delivered as your service, under your brand.</p>
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:0.85rem;font-weight:700;color:#fff;background:#0d9488;border-radius:8px;padding:12px 20px;width:fit-content;">See how white-label delivery works &#8594;</span>
       </a>
 
     </div>
@@ -2678,7 +2707,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 <section class="section bg-alt" id="contact">
   <div class="inner">
     <div class="contact-box">
-      <h2>Tell us your footprint. Get a frank read of where you stand.</h2>
+      <h2>Tell us your footprint. We'll find your gap.</h2>
       <form class="contact-form" id="contact-form">
         <div class="form-row">
           <label for="cf-name">Name / Company</label>
@@ -2772,7 +2801,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         '<div class="mec-header">' +
           '<div class="mec-flag">' + c.flag + '</div>' +
           '<div class="mec-title"><h2>' + c.name + '</h2><div class="code">' + cc + ' &bull; ' + c.mandate_type + '</div></div>' +
-          '<a class="mec-full-btn" href="/map/' + cc + '/" target="_blank">Full country profile &rarr;</a>' +
+          '<a class="mec-full-btn" href="/map/' + cc + '/" target="_blank">See full country profile</a>' +
         '</div>' +
         getBadge(c) +
         '<div class="mec-dates">' +
@@ -2790,6 +2819,27 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         '</div>' +
         penaltyHtml + futureHtml +
         '<div class="mec-conf-row">' + confLabel + '</div>';
+
+      document.querySelector('.map-embed-right').scrollTop = 0;
+    }
+
+    function showSources() {
+      document.querySelectorAll('#home-eu-map path.hm-selected').forEach(function(p) { p.classList.remove('hm-selected'); });
+      document.querySelectorAll('.map-embed-btn').forEach(function(b) { b.classList.remove('selected'); });
+      document.getElementById('sources-panel-btn').classList.add('selected');
+
+      document.getElementById('map-embed-empty').style.display = 'none';
+      var panel = document.getElementById('map-embed-panel');
+      panel.style.display = 'block';
+
+      var inner  = document.getElementById('sources-inner-content');
+      var footer = document.getElementById('sources-footer-content');
+      panel.innerHTML =
+        '<div class="src-panel-wrap">' +
+          '<div class="src-panel-title">Primary sources</div>' +
+          (inner  ? inner.innerHTML  : '') +
+          (footer ? '<div class="src-panel-footer">' + footer.textContent + '</div>' : '') +
+        '</div>';
 
       document.querySelector('.map-embed-right').scrollTop = 0;
     }
@@ -2819,57 +2869,82 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     } else {
       initMap();
     }
+
+    window.showSources = showSources;
   })();
 </script>
 
 <style is:global>
+  @keyframes erp-warn-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+
+  /* Primary sources button in country grid */
+  .map-embed-btn.map-src-btn { background: #fff; color: #1a2b3c; border-color: rgba(255,255,255,0.4); font-weight: 700; }
+  .map-embed-btn.map-src-btn:hover { background: #f3f4f6; border-color: #fff; color: #1a2b3c; }
+  .map-embed-btn.map-src-btn.selected { background: #f3f4f6; border-color: #fff; color: #1a2b3c; }
+
+  /* Sources content inside right panel — !important overrides Astro CID scoped styles */
+  .map-embed-panel .src-panel-wrap { padding: 24px 28px 40px; }
+  .map-embed-panel .src-panel-title { font-size: 12px; font-weight: 700; color: #f1f5f9 !important; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #243447; text-transform: uppercase; letter-spacing: 0.08em; }
+  .map-embed-panel .source-group { margin-bottom: 18px; }
+  .map-embed-panel .source-group h5 { font-size: 0.65rem !important; font-weight: 700 !important; letter-spacing: 0.09em !important; text-transform: uppercase !important; color: #93c5fd !important; margin-bottom: 6px !important; }
+  .map-embed-panel .source-group ul { list-style: none !important; padding: 0 !important; display: flex !important; flex-direction: column !important; gap: 4px !important; }
+  .map-embed-panel .source-group li { font-size: 0.72rem !important; color: #cbd5e1 !important; line-height: 1.5 !important; }
+  .map-embed-panel .source-group a { color: #cbd5e1 !important; text-decoration: underline !important; text-underline-offset: 2px; }
+  .map-embed-panel .source-group a:hover { color: #f1f5f9 !important; }
+  .map-embed-panel .src-panel-footer { font-size: 0.68rem !important; color: #94a3b8 !important; padding-top: 12px; border-top: 1px solid #243447; margin-top: 4px; line-height: 1.5; }
+
+  /* Hide the static sources section below the map */
+  .map-sources-outer { display: none !important; }
+
   /* ---- EMBEDDED MAP SECTION ---- */
   .map-embed-section {
     display: flex; flex-direction: row; align-items: stretch;
-    min-height: 100vh; background: #0f172a;
+    min-height: 80vh; background: #1a2b3c;
   }
   .map-embed-left {
     flex: 0 0 52%; display: flex; flex-direction: column;
-    padding: 32px 24px 24px 48px; border-right: 1px solid #1e293b; overflow: hidden;
+    padding: 28px 24px 20px 48px; border-right: 2px solid #3a5570; overflow: hidden;
   }
-  .map-embed-top { margin-bottom: 16px; flex-shrink: 0; }
-  .map-embed-tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #3b82f6; margin-bottom: 8px; }
+  .map-embed-top { margin-bottom: 12px; flex-shrink: 0; }
+  .map-embed-tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #3b82f6; margin-bottom: 6px; }
   .map-embed-top h2 { font-size: 22px; font-weight: 700; color: #f1f5f9; margin-bottom: 0; }
-  .map-embed-svg-wrap { flex: 1; min-height: 0; display: flex; align-items: center; }
-  .map-embed-svg-wrap svg { width: 100%; height: auto; display: block; }
+  .map-embed-svg-wrap { flex: 1; min-height: 0; display: flex; align-items: center; overflow: hidden; }
+  .map-embed-svg-wrap svg { width: 100%; height: 100%; display: block; }
 
-  #home-eu-map { width: 100%; height: auto; display: block; }
-  #home-eu-map path { fill: #1e293b; stroke: #0f172a; stroke-width: 1.5; cursor: default; transition: fill 0.12s, stroke 0.15s, stroke-width 0.15s, opacity 0.15s; }
+  #home-eu-map { width: 100%; height: 100%; display: block; }
+  #home-eu-map path { fill: #0f1e2c; stroke: #1a2b3c; stroke-width: 1.5; cursor: default; transition: fill 0.12s, stroke 0.15s, stroke-width 0.15s, opacity 0.15s; }
   #home-eu-map path.hm-click { cursor: pointer; }
   #home-eu-map path.hm-click:hover { stroke: #60a5fa; stroke-width: 2.5; opacity: 0.85; }
   #home-eu-map path.hm-selected { stroke: #60a5fa !important; stroke-width: 3; }
 
-  .map-embed-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; flex-shrink: 0; }
-  .map-embed-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #64748b; }
+  .map-embed-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; flex-shrink: 0; }
+  .map-embed-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #94a3b8; }
   .map-embed-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-  .map-embed-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #1e293b; flex-shrink: 0; }
-  .map-embed-btn { background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; color: #94a3b8; transition: all 0.12s; white-space: nowrap; font-family: inherit; }
+  .map-embed-grid { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #243447; flex-shrink: 0; }
+  .map-embed-btn { background: #0f1e2c; border: 1px solid #243447; border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; color: #94a3b8; transition: all 0.12s; white-space: nowrap; font-family: inherit; }
   .map-embed-btn:hover { border-color: #3b82f6; color: #93c5fd; }
   .map-embed-btn.selected { border-color: #3b82f6; background: #1e3a5f; color: #60a5fa; font-weight: 600; }
 
-  .map-embed-right { flex: 1; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; background: #111827; }
+  .map-embed-right { flex: 1; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; background: #1a2b3c; }
 
-  .map-embed-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #334155; text-align: center; padding: 40px; }
-  .map-embed-empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
+  .map-embed-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8; text-align: center; padding: 40px; }
+  .map-embed-empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.6; }
   .map-embed-empty p { font-size: 14px; line-height: 1.6; }
 
   .map-embed-panel { padding: 28px 28px 40px; display: none; }
 
   /* Panel content - same as /map/ */
-  .mec-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #1e293b; }
+  .mec-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #243447; }
   .mec-flag { font-size: 32px; flex-shrink: 0; }
   .mec-title { flex: 1; min-width: 0; }
   .mec-title h2 { font-size: 20px; font-weight: 700; color: #f1f5f9; margin-bottom: 2px; }
-  .mec-title .code { font-size: 12px; color: #475569; }
-  .mec-full-btn { flex-shrink: 0; display: inline-block; background: #2563eb; color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; padding: 9px 16px; border-radius: 6px; white-space: nowrap; letter-spacing: 0.02em; animation: mecBtnPulse 0.9s ease 3; }
-  .mec-full-btn:hover { background: #1d4ed8; animation: none; }
-  @keyframes mecBtnPulse { 0% { box-shadow: 0 0 0 0 rgba(37,99,235,0.7); } 60% { box-shadow: 0 0 0 10px rgba(37,99,235,0); } 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); } }
+  .mec-title .code { font-size: 12px; color: #7a9ab5; }
+  .mec-full-btn { flex-shrink: 0; display: inline-block; background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); font-size: 13px; font-weight: 600; text-decoration: none; padding: 10px 18px; border-radius: 6px; white-space: nowrap; letter-spacing: 0.05em; font-family: monospace; animation: erp-warn-pulse 0.8s ease-in-out 3; }
+  .mec-full-btn:hover { background: rgba(251,191,36,0.18); animation: none; }
 
   .mec-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; margin-bottom: 16px; }
   .mec-badge-live { background: rgba(30,64,175,0.3); color: #93c5fd; border: 1px solid #1e40af; }
@@ -2878,31 +2953,31 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   .mec-badge-announced::before { content:""; width:6px; height:6px; border-radius:50%; background:#3b82f6; display:inline-block; }
   .mec-badge-partial { background: rgba(147,197,253,0.15); color: #93c5fd; border: 1px solid #475569; }
   .mec-badge-partial::before { content:""; width:6px; height:6px; border-radius:50%; background:#93c5fd; display:inline-block; }
-  .mec-badge-none { background: #1e293b; color: #64748b; border: 1px solid #334155; }
-  .mec-badge-none::before { content:""; width:6px; height:6px; border-radius:50%; background:#475569; display:inline-block; }
+  .mec-badge-none { background: #0f1e2c; color: #94a3b8; border: 1px solid #243447; }
+  .mec-badge-none::before { content:""; width:6px; height:6px; border-radius:50%; background:#64748b; display:inline-block; }
 
   .mec-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-  .mec-date-box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; }
-  .mec-date-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; margin-bottom: 4px; }
+  .mec-date-box { background: #0f1e2c; border: 1px solid #243447; border-radius: 8px; padding: 12px; }
+  .mec-date-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #7a9ab5; margin-bottom: 4px; }
   .mec-date-box .val { font-size: 14px; font-weight: 700; color: #e2e8f0; }
-  .mec-date-box .phase2 { font-size: 11px; color: #64748b; margin-top: 2px; }
-  .mec-date-box .sub { font-size: 10px; color: #475569; margin-top: 3px; }
+  .mec-date-box .phase2 { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .mec-date-box .sub { font-size: 10px; color: #7a9ab5; margin-top: 3px; }
 
   .mec-sec { margin-top: 18px; }
-  .mec-sec-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-  .mec-sec-label::after { content:""; flex:1; height:1px; background:#1e293b; }
+  .mec-sec-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #7a9ab5; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .mec-sec-label::after { content:""; flex:1; height:1px; background:#243447; }
   .mec-tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
-  .mec-tag { background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #94a3b8; font-family: monospace; }
+  .mec-tag { background: #0f1e2c; border: 1px solid #243447; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #94a3b8; font-family: monospace; }
   .mec-platform-tag { background: rgba(251,191,36,0.1); border-color: #92400e; color: #fbbf24; }
 
-  .mec-dl-item { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1a2234; align-items: flex-start; }
+  .mec-dl-item { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1e2f42; align-items: flex-start; }
   .mec-dl-item:last-child { border-bottom: none; }
   .mec-dl-date { font-size: 11px; font-weight: 700; color: #60a5fa; min-width: 80px; padding-top: 1px; }
-  .mec-dl-desc { font-size: 12px; color: #64748b; line-height: 1.5; }
+  .mec-dl-desc { font-size: 12px; color: #7a9ab5; line-height: 1.5; }
 
   .mec-info-row { display: flex; gap: 10px; margin-bottom: 6px; }
-  .mec-info-label { font-size: 11px; color: #475569; min-width: 90px; flex-shrink: 0; }
-  .mec-info-val { font-size: 12px; color: #94a3b8; }
+  .mec-info-label { font-size: 11px; color: #7a9ab5; min-width: 90px; flex-shrink: 0; }
+  .mec-info-val { font-size: 12px; color: #a8c0d6; }
 
   .mec-future { background: rgba(59,130,246,0.08); border-left: 2px solid #3b82f6; border-radius: 0 6px 6px 0; padding: 12px 14px; margin-top: 18px; }
   .mec-future .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #3b82f6; margin-bottom: 6px; }
@@ -2919,7 +2994,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   .mec-conf-dot.red { background: #ef4444; }
   .mec-conf-text { font-size: 11px; color: #475569; }
 
-  .map-sources-outer { background: #0f172a; padding: 0 48px 32px 48px; border-top: 1px solid #1e293b; }
+  .map-sources-outer { background: #1a2b3c; padding: 0 48px 32px 48px; border-top: 1px solid #243447; }
 </style>
 
 <script is:inline>
@@ -3075,16 +3150,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     return 1.0 + (n - 1) * cfg.entityScale;
   }
 
-  /* ---- BANDEROLE RETIRE ---- */
-  document.addEventListener('DOMContentLoaded', function() {
-    const title = document.querySelector('.range-viz-title');
-    if (title) {
-      title.addEventListener('animationend', function() {
-        title.classList.add('banderole-done');
-      });
-    }
-  });
-
   function fmt(n) {
     return '€' + Math.round(n).toLocaleString('de-DE');
   }
@@ -3095,84 +3160,52 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     return '€' + Math.round(n);
   }
 
-  function updateRangeBar(costLow, costHigh) {
-    document.getElementById('range-viz').style.display = 'block';
-    const lblLow  = document.getElementById('range-label-low');
-    const lblHigh = document.getElementById('range-label-high');
-    if (lblLow)  lblLow.textContent  = fmtShort(costLow);
-    if (lblHigh) lblHigh.textContent = fmtShort(costHigh);
-  }
-
-  function updateAnnualBar(costLow, costHigh) {
-    document.getElementById('range-viz-annual').style.display = 'block';
-    const lblLow  = document.getElementById('range-label-annual-low');
-    const lblHigh = document.getElementById('range-label-annual-high');
-    if (lblLow)  lblLow.textContent  = fmtShort(costLow) + ' / yr';
-    if (lblHigh) lblHigh.textContent = fmtShort(costHigh) + ' / yr';
-  }
-
   function calcUpdate() {
-    const readySelectedEarly = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
-    const maintainSelectedEarly = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
-    const entities = Math.max(1, new Set([...readySelectedEarly, ...maintainSelectedEarly]).size);
+    const readySelected    = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
+    const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
 
     const selectedERPs = [...document.querySelectorAll('input[name="calc-erp"]:checked')].map(i => i.value);
-    const isMultiERP = selectedERPs.length > 1;
+    const isMultiERP   = selectedERPs.length > 1;
     const avgMult = selectedERPs.length > 0
       ? selectedERPs.reduce((sum, key) => sum + (ERP_CONFIG[key]?.mult || 1), 0) / selectedERPs.length
       : 1.0;
     const erpMult = isMultiERP ? avgMult * (1 + MULTI_ERP_COORDINATION) : avgMult;
-    // Entity scaling: use worst-case ERP among selected
     const erpKey = selectedERPs.length > 0
       ? selectedERPs.reduce((best, key) =>
-          (ERP_CONFIG[key]?.entityScale || 0.25) > (ERP_CONFIG[best]?.entityScale || 0.25) ? key : best
+          (ERP_CONFIG[key]?.entityScale || 0.15) > (ERP_CONFIG[best]?.entityScale || 0.15) ? key : best
         , selectedERPs[0])
       : 'other';
-    const rateEl  = document.querySelector('input[name="calc-rate"]:checked');
-    const rate    = rateEl ? parseInt(rateEl.value) : 85;
+    const rateEl = document.querySelector('input[name="calc-rate"]:checked');
+    const rate   = rateEl ? parseInt(rateEl.value) : 85;
 
-    const readySelected   = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
-    const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
-
-    const hoursLowEl  = document.getElementById('out-hours');
-    const hoursHighEl = document.getElementById('out-hours-high');
-    const chipEl   = document.getElementById('calc-comparison');
-    const sumEl    = document.getElementById('penalty-summary');
-    const penRow   = document.getElementById('penalty-row');
-    const penVal   = document.getElementById('penalty-value');
-    const plRow    = document.getElementById('poland-penalty-row');
-    const deRow    = document.getElementById('germany-penalty-row');
-
-
-    const eFactor = entityFactor(entities, erpKey);
+    const heroEl = document.getElementById('co-hero');
+    const chipEl = document.getElementById('calc-comparison');
+    const sumEl  = document.getElementById('penalty-summary');
+    const penRow = document.getElementById('penalty-row');
+    const penVal = document.getElementById('penalty-value');
+    const plRow  = document.getElementById('poland-penalty-row');
+    const deRow  = document.getElementById('germany-penalty-row');
 
     // ---- SECTION A: GETTING READY ----
-    if (readySelected.length === 0) {
-      if (hoursLowEl)  hoursLowEl.textContent  = '--';
-      if (hoursHighEl) hoursHighEl.textContent = '--';
-      if (chipEl) chipEl.style.display = 'none';
-      if (penRow) penRow.style.display = 'none';
-      if (plRow)  plRow.style.display  = 'none';
-      if (deRow)  deRow.style.display  = 'none';
-      document.getElementById('range-viz').style.display = 'none';
-    } else {
-      const readyEls = [...document.querySelectorAll('.tile-btn.tile-ready.on')];
+    let costLow = 0, costHigh = 0, hoursLow = 0, hoursHigh = 0;
+    const rowReady = document.getElementById('co-row-ready');
 
-
+    if (readySelected.length > 0) {
       let totalLow = 0, totalHigh = 0;
       readySelected.forEach(m => {
         if (MANDATE_BASE[m]) { totalLow += MANDATE_BASE[m].low; totalHigh += MANDATE_BASE[m].high; }
       });
+      hoursLow  = Math.round(totalLow  * erpMult);
+      hoursHigh = Math.round(totalHigh * erpMult);
+      costLow   = hoursLow  * rate;
+      costHigh  = hoursHigh * rate;
 
-      const hoursLow  = Math.round(totalLow  * erpMult);
-      const hoursHigh = Math.round(totalHigh * erpMult);
-      const costLow   = hoursLow  * rate;
-      const costHigh  = hoursHigh * rate;
-
-      if (hoursLowEl)  hoursLowEl.textContent  = hoursLow.toLocaleString('de-DE') + 'h';
-      if (hoursHighEl) hoursHighEl.textContent = hoursHigh.toLocaleString('de-DE') + 'h';
-
-      updateRangeBar(costLow, costHigh);
+      if (rowReady) {
+        rowReady.style.display = 'flex';
+        document.getElementById('co-ready-low').textContent  = fmtShort(costLow);
+        document.getElementById('co-ready-high').textContent = fmtShort(costHigh);
+        document.getElementById('co-ready-hrs').textContent  = hoursLow + ' - ' + hoursHigh + 'h';
+      }
 
       const hasFr = readySelected.includes('fr');
       const hasPl = readySelected.includes('pl');
@@ -3182,40 +3215,93 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       if (hasPl) penParts.push('PL');
       if (hasDe) penParts.push('DE');
       if (penRow) penRow.style.display = hasFr ? 'flex' : 'none';
-      if (penVal) penVal.textContent = hasFr ? fmt(15000) + '/yr per entity' : '';
-      if (plRow)  plRow.style.display  = hasPl ? 'flex' : 'none';
-      if (deRow)  deRow.style.display  = hasDe ? 'flex' : 'none';
+      if (penVal) penVal.textContent = hasFr ? 'Up to EUR 15K/entity/yr' : '';
+      if (plRow)  plRow.style.display = hasPl ? 'flex' : 'none';
+      if (deRow)  deRow.style.display = hasDe ? 'flex' : 'none';
       if (chipEl && sumEl) {
         if (penParts.length > 0) {
-          sumEl.textContent = 'Penalty exposure: ' + penParts.join(', ');
+          sumEl.textContent = 'Statutory risk: ' + penParts.join(', ');
           chipEl.style.display = 'block';
         } else {
           chipEl.style.display = 'none';
         }
       }
+    } else {
+      if (rowReady) rowReady.style.display = 'none';
+      if (chipEl)   chipEl.style.display = 'none';
     }
 
-    // ---- SECTION B: STAYING CURRENT ----
-    if (maintainSelected.length === 0) {
-      document.getElementById('range-viz-annual').style.display = 'none';
-      const annHrsReset = document.getElementById('out-annual-hours');
-      const annHrsHighReset = document.getElementById('out-annual-hours-high');
-      if (annHrsReset)     annHrsReset.textContent     = '--';
-      if (annHrsHighReset) annHrsHighReset.textContent = '--';
-    } else {
+    // ---- SECTION B: STAYING COMPLIANT ----
+    let mCostLow = 0, mCostHigh = 0;
+    const rowMaint = document.getElementById('co-row-maint');
+
+    if (maintainSelected.length > 0) {
       let mLow = 0, mHigh = 0;
       maintainSelected.forEach(m => {
         if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].low; mHigh += MONITOR_BASE[m].high; }
       });
       const mHoursLow  = Math.round(mLow);
       const mHoursHigh = Math.round(mHigh);
-      const mCostLow  = mHoursLow  * rate;
-      const mCostHigh = mHoursHigh * rate;
-      const annHrsEl    = document.getElementById('out-annual-hours');
-      const annHrsHighEl = document.getElementById('out-annual-hours-high');
-      if (annHrsEl)     annHrsEl.textContent     = mHoursLow.toLocaleString('de-DE') + 'h / yr';
-      if (annHrsHighEl) annHrsHighEl.textContent = mHoursHigh.toLocaleString('de-DE') + 'h / yr';
-      updateAnnualBar(mCostLow, mCostHigh);
+      mCostLow  = mHoursLow  * rate;
+      mCostHigh = mHoursHigh * rate;
+
+      if (rowMaint) {
+        rowMaint.style.display = 'flex';
+        document.getElementById('co-maint-low').textContent  = fmtShort(mCostLow);
+        document.getElementById('co-maint-high').textContent = fmtShort(mCostHigh);
+        document.getElementById('co-maint-hrs').textContent  = mHoursLow + ' - ' + mHoursHigh + 'h/yr';
+      }
+    } else {
+      if (rowMaint) rowMaint.style.display = 'none';
+    }
+
+    // ---- HERO: YEAR 1 TOTAL ----
+    const hasAny = readySelected.length > 0 || maintainSelected.length > 0;
+    if (heroEl) heroEl.style.display = hasAny ? 'block' : 'none';
+
+    if (hasAny) {
+      const y1Low  = costLow  + mCostLow;
+      const y1High = costHigh + mCostHigh;
+      document.getElementById('co-y1-low').textContent  = fmtShort(y1Low);
+      document.getElementById('co-y1-high').textContent = fmtShort(y1High);
+
+      const tagsEl = document.getElementById('co-hero-tags');
+      const ERP_LABELS = {
+        sap: 'SAP S/4HANA x1.5', oracle: 'Oracle Cloud x1.3', sage: 'Sage X3 x1.2',
+        netsuite: 'NetSuite x1.0', dynamics: 'Dynamics 365 x1.0', other: 'Other ERP'
+      };
+      const tagStyle  = 'font-size:0.62rem;font-weight:600;color:rgba(255,255,255,0.72);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:2px 7px;letter-spacing:0.05em;font-family:monospace;white-space:nowrap;';
+      const warnStyle = 'font-size:0.62rem;font-weight:600;color:#fbbf24;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:4px;padding:2px 7px;letter-spacing:0.05em;font-family:monospace;white-space:nowrap;cursor:pointer;animation:erp-warn-pulse 0.8s ease-in-out 3;';
+      const tagHtmls = [];
+      if (selectedERPs.length > 0) {
+        if (isMultiERP) {
+          tagHtmls.push('<span style="' + tagStyle + '">Multi-ERP x' + erpMult.toFixed(2) + '</span>');
+        } else {
+          const k = selectedERPs[0];
+          if (ERP_LABELS[k]) tagHtmls.push('<span style="' + tagStyle + '">' + ERP_LABELS[k] + '</span>');
+        }
+      } else {
+        tagHtmls.push('<span style="' + warnStyle + '" onclick="var el=document.getElementById(\'calc-erp-field\');if(el){el.scrollIntoView({behavior:\'smooth\',block:\'center\'});}">Select ERP to refine estimate</span>');
+      }
+      const totalCountries = new Set([...readySelected, ...maintainSelected]).size;
+      tagHtmls.push('<span style="' + tagStyle + '">' + totalCountries + (totalCountries === 1 ? ' country' : ' countries') + '</span>');
+      if (tagsEl) tagsEl.innerHTML = tagHtmls.join('');
+    }
+
+    // ---- ERP FIELD WARNING STATE ----
+    const erpField = document.getElementById('calc-erp-field');
+    const erpLbl   = document.getElementById('calc-erp-label');
+    const erpSub   = document.getElementById('calc-erp-sub');
+    if (erpField && erpLbl) {
+      if (hasAny && selectedERPs.length === 0) {
+        erpField.style.cssText = 'background:rgba(251,191,36,0.07);border:1.5px solid rgba(251,191,36,0.35);border-radius:8px;padding:10px 12px 8px;';
+        erpLbl.style.color = '#fbbf24';
+        if (erpSub) erpSub.style.color = '#b45309';
+      } else {
+        erpField.style.cssText = '';
+        erpLbl.style.color = '';
+        if (erpSub) erpSub.style.color = '';
+      }
     }
   }
 

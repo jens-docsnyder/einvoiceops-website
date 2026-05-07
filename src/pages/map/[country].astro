@@ -128,7 +128,7 @@ function getValTip(field: string, val: string | null | undefined): string | unde
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{d.country} | EU E-invoicing Compliance Map | einvoiceops</title>
   <meta name="description" content={`E-invoicing mandate facts and operational preparation guide for ${d.country}. Who owns the work, what breaks first, what ready means.`} />
-  <style>
+  <style is:global>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --navy:   #1a2b3c;
