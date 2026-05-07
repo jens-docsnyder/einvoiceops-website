@@ -2318,20 +2318,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       <div class="calc-inputs">
 
         <div class="calc-field">
-          <label class="calc-label">Legal entities affected <span style="font-weight:400;color:var(--muted)">(across all selected mandates)</span><span class="help-tip" data-tip="A legal entity is a registered company (e.g. French SAS, Polish sp. z o.o., German GmbH). Set how many of your own entities need to comply, not the number of countries you sell into.">?</span></label>
-          <div class="calc-slider-wrap">
-            <input type="range" id="calc-countries" min="1" max="10" value="1" oninput="calcUpdate()">
-            <span class="slider-val" id="countries-display">1</span>
-          </div>
-        </div>
-
-        <div class="calc-field">
-          <label class="calc-label">Your EU mandate footprint</label>
+          <label class="calc-label">Your European mandate footprint</label>
           <p class="calc-section-label">For each country: <strong>New for us</strong> = first-time setup, incl. M&amp;A additions. <strong>Stay current</strong> = mandate live, need to track ongoing changes.</p>
           <div class="country-grid">
             <div class="country-group-head">Upcoming B2B</div>
             <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PDP · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay current</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>B2B · Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="de" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>B2B · Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay current</button></div></div>
             <div class="country-tile"><div class="tile-head">🇪🇸 Spain <span>Verifactu · 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="es" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="Not yet live">Stay current</button></div></div>
             <div class="country-group-head">Live B2B clearance</div>
             <div class="country-tile"><div class="tile-head">🇵🇱 Poland <span>KSeF · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pl" onclick="tileToggle(this)">Stay current</button></div></div>
@@ -3288,8 +3280,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   }
 
   function calcUpdate() {
-    const entities = parseInt(document.getElementById('calc-countries').value);
-    document.getElementById('countries-display').textContent = entities + (entities >= 10 ? '+' : '');
+    const readySelectedEarly = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
+    const maintainSelectedEarly = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
+    const entities = Math.max(1, new Set([...readySelectedEarly, ...maintainSelectedEarly]).size);
 
     const selectedERPs = [...document.querySelectorAll('input[name="calc-erp"]:checked')].map(i => i.value);
     const isMultiERP = selectedERPs.length > 1;
