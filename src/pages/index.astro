@@ -1393,24 +1393,76 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       flex-shrink: 0;
     }
 
-    .mandate-group-label {
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 8px 0 2px;
-      margin-top: 2px;
-      border-top: 1px solid var(--border);
-    }
-    .mandate-group-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-
     .calc-section-label {
       font-size: 0.72rem;
       color: var(--muted);
       margin: -2px 0 8px;
       line-height: 1.5;
     }
+
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .country-group-head {
+      grid-column: 1 / -1;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 6px 0 1px;
+      border-top: 1px solid var(--border);
+      margin-top: 2px;
+    }
+    .country-group-head:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+    .country-tile {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 7px 7px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: border-color 0.15s;
+    }
+    .country-tile.tile-active { border-color: #93c5fd; background: #f0f6ff; }
+
+    .tile-head {
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--sub);
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .tile-head span { font-size: 0.6rem; font-weight: 400; color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+
+    .tile-btns { display: flex; gap: 3px; }
+
+    .tile-btn {
+      flex: 1;
+      font-size: 0.58rem;
+      font-weight: 600;
+      padding: 3px 2px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.12s;
+      text-align: center;
+      line-height: 1.35;
+    }
+    .tile-btn:hover:not([disabled]) { border-color: #93c5fd; color: var(--text); }
+    .tile-btn.tile-ready.on  { background: var(--ice); border-color: var(--accent); color: var(--accent); }
+    .tile-btn.tile-maint.on  { background: #f0fdf4; border-color: #16a34a; color: #166534; }
+    .tile-btn[disabled]      { opacity: 0.28; cursor: not-allowed; }
 
     .maintain-out-box {
       background: #f0fdf4;
@@ -2274,73 +2326,42 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         </div>
 
         <div class="calc-field">
-          <label class="calc-label">Getting ready for</label>
-          <p class="calc-section-label">Select every country where you need to establish or verify compliance for the first time - including M&amp;A-driven additions.</p>
-          <div class="mandate-checks">
-            <p class="mandate-group-label">Upcoming B2B</p>
-            <label class="mandate-check" id="chk-ready-fr"><input type="checkbox" name="calc-ready" value="fr" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#d97706"></span><span class="mandate-check-label">🇫🇷 France PDP <span>Sept 2026</span></span></label>
-            <label class="mandate-check" id="chk-ready-de"><input type="checkbox" name="calc-ready" value="de" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#2563eb"></span><span class="mandate-check-label">🇩🇪 Germany B2B <span>Jan 2027</span></span></label>
-            <label class="mandate-check" id="chk-ready-es"><input type="checkbox" name="calc-ready" value="es" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#2563eb"></span><span class="mandate-check-label">🇪🇸 Spain Verifactu <span>2025-27</span></span></label>
-            <p class="mandate-group-label">Live B2B clearance</p>
-            <label class="mandate-check" id="chk-ready-pl"><input type="checkbox" name="calc-ready" value="pl" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇱 Poland KSeF <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-ready-it"><input type="checkbox" name="calc-ready" value="it" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇮🇹 Italy SdI <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-ready-gr"><input type="checkbox" name="calc-ready" value="gr" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇬🇷 Greece myDATA <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-ready-hu"><input type="checkbox" name="calc-ready" value="hu" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇺 Hungary RTIR <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-ready-hr"><input type="checkbox" name="calc-ready" value="hr" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇷 Croatia Fiscalization <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-ready-ro"><input type="checkbox" name="calc-ready" value="ro" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇷🇴 Romania e-Factura <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-ready-be"><input type="checkbox" name="calc-ready" value="be" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇧🇪 Belgium Peppol <span>Live</span></span></label>
-            <p class="mandate-group-label">Live B2G / Peppol standard</p>
-            <label class="mandate-check" id="chk-ready-pt"><input type="checkbox" name="calc-ready" value="pt" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇹 Portugal <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-dk"><input type="checkbox" name="calc-ready" value="dk" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇩🇰 Denmark Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-se"><input type="checkbox" name="calc-ready" value="se" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇪 Sweden Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-fi"><input type="checkbox" name="calc-ready" value="fi" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇫🇮 Finland Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-nl"><input type="checkbox" name="calc-ready" value="nl" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇱 Netherlands Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-no"><input type="checkbox" name="calc-ready" value="no" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇴 Norway Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-at"><input type="checkbox" name="calc-ready" value="at" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇦🇹 Austria <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-sk"><input type="checkbox" name="calc-ready" value="sk" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇰 Slovakia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-ch"><input type="checkbox" name="calc-ready" value="ch" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇨🇭 Switzerland <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-lv"><input type="checkbox" name="calc-ready" value="lv" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇻 Latvia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-lt"><input type="checkbox" name="calc-ready" value="lt" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇹 Lithuania <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-si"><input type="checkbox" name="calc-ready" value="si" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇮 Slovenia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-ee"><input type="checkbox" name="calc-ready" value="ee" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇪🇪 Estonia Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-ready-lu"><input type="checkbox" name="calc-ready" value="lu" data-live="1" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇺 Luxembourg <span>Live B2G</span></span></label>
-            <p class="mandate-group-label">ViDA horizon only</p>
-            <label class="mandate-check" id="chk-ready-cz"><input type="checkbox" name="calc-ready" value="cz" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇨🇿 Czech Republic <span>ViDA prep</span></span></label>
-            <label class="mandate-check" id="chk-ready-ie"><input type="checkbox" name="calc-ready" value="ie" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇮🇪 Ireland <span>ViDA prep</span></span></label>
-            <label class="mandate-check" id="chk-ready-bg"><input type="checkbox" name="calc-ready" value="bg" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇧🇬 Bulgaria <span>ViDA prep</span></span></label>
-            <label class="mandate-check" id="chk-ready-mt"><input type="checkbox" name="calc-ready" value="mt" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇲🇹 Malta <span>B2G only</span></span></label>
-            <label class="mandate-check" id="chk-ready-cy"><input type="checkbox" name="calc-ready" value="cy" data-live="0" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#9ca3af"></span><span class="mandate-check-label">🇨🇾 Cyprus <span>B2G only</span></span></label>
-          </div>
-        </div>
-
-        <div class="calc-field" style="margin-top:8px">
-          <label class="calc-label">Staying current on</label>
-          <p class="calc-section-label">Select mandates already in production. Costs here cover schema updates, API changes, regulatory amendments, and ongoing validation - per year.</p>
-          <div class="mandate-checks">
-            <p class="mandate-group-label">CTC / clearance</p>
-            <label class="mandate-check" id="chk-maint-pl"><input type="checkbox" name="calc-maintain" value="pl" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇱 Poland KSeF <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-maint-it"><input type="checkbox" name="calc-maintain" value="it" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇮🇹 Italy SdI <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-maint-gr"><input type="checkbox" name="calc-maintain" value="gr" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇬🇷 Greece myDATA <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-maint-hu"><input type="checkbox" name="calc-maintain" value="hu" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇺 Hungary RTIR <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-maint-hr"><input type="checkbox" name="calc-maintain" value="hr" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇭🇷 Croatia Fiscalization <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-maint-ro"><input type="checkbox" name="calc-maintain" value="ro" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇷🇴 Romania e-Factura <span>Live</span></span></label>
-            <label class="mandate-check" id="chk-maint-be"><input type="checkbox" name="calc-maintain" value="be" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇧🇪 Belgium Peppol <span>Live</span></span></label>
-            <p class="mandate-group-label">Peppol / standard B2G</p>
-            <label class="mandate-check" id="chk-maint-de"><input type="checkbox" name="calc-maintain" value="de" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇩🇪 Germany XRechnung <span>B2G live</span></span></label>
-            <label class="mandate-check" id="chk-maint-pt"><input type="checkbox" name="calc-maintain" value="pt" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇵🇹 Portugal <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-dk"><input type="checkbox" name="calc-maintain" value="dk" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇩🇰 Denmark Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-se"><input type="checkbox" name="calc-maintain" value="se" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇪 Sweden Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-fi"><input type="checkbox" name="calc-maintain" value="fi" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇫🇮 Finland Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-nl"><input type="checkbox" name="calc-maintain" value="nl" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇱 Netherlands Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-no"><input type="checkbox" name="calc-maintain" value="no" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇳🇴 Norway Peppol <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-at"><input type="checkbox" name="calc-maintain" value="at" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇦🇹 Austria <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-sk"><input type="checkbox" name="calc-maintain" value="sk" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇰 Slovakia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-ch"><input type="checkbox" name="calc-maintain" value="ch" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇨🇭 Switzerland <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-lv"><input type="checkbox" name="calc-maintain" value="lv" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇻 Latvia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-lt"><input type="checkbox" name="calc-maintain" value="lt" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇹 Lithuania <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-si"><input type="checkbox" name="calc-maintain" value="si" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇸🇮 Slovenia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-ee"><input type="checkbox" name="calc-maintain" value="ee" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇪🇪 Estonia <span>Live B2G</span></span></label>
-            <label class="mandate-check" id="chk-maint-lu"><input type="checkbox" name="calc-maintain" value="lu" onchange="calcUpdate(); toggleCheck(this)"><span class="mandate-status-dot" style="background:#dc2626"></span><span class="mandate-check-label">🇱🇺 Luxembourg <span>Live B2G</span></span></label>
+          <label class="calc-label">Your EU mandate footprint</label>
+          <p class="calc-section-label">For each country: <strong>New for us</strong> = first-time setup, incl. M&amp;A additions. <strong>Stay current</strong> = mandate live, need to track ongoing changes.</p>
+          <div class="country-grid">
+            <div class="country-group-head">Upcoming B2B</div>
+            <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PDP · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>B2B · Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="de" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇪🇸 Spain <span>Verifactu · 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="es" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="Not yet live">Stay current</button></div></div>
+            <div class="country-group-head">Live B2B clearance</div>
+            <div class="country-tile"><div class="tile-head">🇵🇱 Poland <span>KSeF · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pl" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇮🇹 Italy <span>SdI · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="it" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="it" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇬🇷 Greece <span>myDATA · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="gr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="gr" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇭🇺 Hungary <span>RTIR · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hu" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇭🇷 Croatia <span>Fiscalization · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hr" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇷🇴 Romania <span>e-Factura · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ro" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ro" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇧🇪 Belgium <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="be" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="be" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-group-head">Live B2G / Peppol</div>
+            <div class="country-tile"><div class="tile-head">🇵🇹 Portugal <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pt" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇩🇰 Denmark <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="dk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="dk" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇸🇪 Sweden <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="se" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="se" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇫🇮 Finland <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fi" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="fi" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇳🇱 Netherlands <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="nl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="nl" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇳🇴 Norway <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="no" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="no" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇦🇹 Austria <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="at" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="at" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇸🇰 Slovakia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="sk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="sk" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇨🇭 Switzerland <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ch" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ch" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇱🇻 Latvia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lv" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lv" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇱🇹 Lithuania <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lt" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇸🇮 Slovenia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="si" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="si" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇪🇪 Estonia <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ee" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ee" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇱🇺 Luxembourg <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lu" onclick="tileToggle(this)">Stay current</button></div></div>
+            <div class="country-group-head">ViDA horizon — no active mandate</div>
+            <div class="country-tile"><div class="tile-head">🇨🇿 Czech Rep. <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cz" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇮🇪 Ireland <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ie" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇧🇬 Bulgaria <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="bg" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇲🇹 Malta <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="mt" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇨🇾 Cyprus <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cy" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay current</button></div></div>
           </div>
         </div>
 
@@ -2512,6 +2533,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
               </tbody>
             </table>
             <p style="margin-top:4px">Rates are fully loaded (1,650 productive hours/year). ERP reconfiguration and technical testing excluded.</p>
+
+            <p class="meth-section-head">Country coverage — readiness hours (29 countries)</p>
+            <p style="margin-top:0">Hours represent internal team time for readiness only: mandate research, ERP impact assessment, process design, and validation preparation. ERP reconfiguration, testing, and go-live support are excluded. Estimates are directional benchmarks for mid-market to enterprise companies, not project budgets. Source: Gemini Deep Research, May 2026, cross-referenced against Ardent Partners / Gartner 2024-26 ERP implementation benchmarks and OpenPeppol deployment data. Four complexity tiers: (1) CTC/clearance mandates with national APIs — France, Poland, Italy, Greece, Hungary, Croatia, Romania, Spain: 160–430h per entity. (2) Enhanced B2G with signature/certificate requirements — Portugal, Denmark, Slovakia: 150–900h. (3) Peppol standard B2G — Belgium, Netherlands, Sweden, Finland, Norway, Austria, Estonia, Latvia, Lithuania, Slovenia, Luxembourg, Switzerland: 80–500h. (4) ViDA horizon only — Czech Republic, Ireland, Bulgaria, Malta, Cyprus: 30–200h (impact assessment only).</p>
+
+            <p class="meth-section-head">Annual compliance maintenance model</p>
+            <p style="margin-top:0">Ongoing cost covers schema gap analysis and UAT for spec updates, API and certificate maintenance, regulatory change monitoring, and periodic compliance validation. Source: Gemini Deep Research, May 2026. Update frequency drives the range: CTC mandates (Poland KSeF, Greece myDATA, Italy SdI, Hungary RTIR, Croatia) update 1–2x/year with moderate-to-high internal response effort; Peppol mandates follow a bi-annual BIS 3.0 release cycle (May/November) with lower effort. Monitoring hours are scaled by entity count but not by ERP multiplier — ongoing maintenance is primarily operational, not configuration work.</p>
 
             <p class="meth-section-head">Annual mandate burden</p>
             <p>Mandate readiness is recurring, not one-time. <a href="https://www.vertexinc.com/resources/resource-library/navigating-urgent-e-invoicing-mandates-december-2025-regulatory-alert" target="_blank" rel="noopener">Vertex Regulatory Tracker (Jan 2026)</a> recorded 11 significant regulatory events across France, Poland, Belgium, Spain, Latvia, and Greece in Q4 2025 alone: new technical schemas, pilot launches, legal amendments, and enforcement date confirmations. For a 4–6 country EU footprint, this suggests 4–7+ significant events per year is a conservative floor, not a ceiling. Event types carry different effort weights: go-live events (~100% readiness effort), schema/format updates (~40%), legislative tuning (~20%). Annual estimate uses 2.5–3.5 full-mandate equivalents per year. Note: the Sovos and Billentis reports are cited as general sources for EU mandate complexity; neither report contains the specific per-company frequency figure.</p>
@@ -3155,9 +3182,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     // Live B2B clearance
     pl: { name: "Poland KSeF",            low: 290,  high: 430  },
     it: { name: "Italy SdI",              low: 160,  high: 240  },
-    gr: { name: "Greece myDATA",          low: 500,  high: 2200 },
-    hu: { name: "Hungary RTIR",           low: 450,  high: 1800 },
-    hr: { name: "Croatia Fiscalization",  low: 550,  high: 2000 },
+    gr: { name: "Greece myDATA",          low: 220,  high: 480  },
+    hu: { name: "Hungary RTIR",           low: 200,  high: 420  },
+    hr: { name: "Croatia Fiscalization",  low: 180,  high: 400  },
     ro: { name: "Romania e-Factura",      low: 200,  high: 300  },
     be: { name: "Belgium Peppol",         low: 200,  high: 300  },
     // B2G / Peppol standard
@@ -3279,8 +3306,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const rateEl  = document.querySelector('input[name="calc-rate"]:checked');
     const rate    = rateEl ? parseInt(rateEl.value) : 85;
 
-    const readySelected   = [...document.querySelectorAll(‘input[name="calc-ready"]:checked’)].map(i => i.value);
-    const maintainSelected = [...document.querySelectorAll(‘input[name="calc-maintain"]:checked’)].map(i => i.value);
+    const readySelected   = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
+    const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
 
     const hoursEl     = document.getElementById(‘out-hours’);
     const hoursNote   = document.getElementById(‘out-hours-note’);
@@ -3309,7 +3336,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       germanyPenaltyRow.style.display = ‘none’;
       document.getElementById(‘range-viz’).style.display = ‘none’;
     } else {
-      const readyEls = [...document.querySelectorAll(‘input[name="calc-ready"]:checked’)];
+      const readyEls = [...document.querySelectorAll('.tile-btn.tile-ready.on')];
       const hasLive     = readyEls.some(el => el.dataset.live === ‘1’);
       const hasUpcoming = readyEls.some(el => el.dataset.live === ‘0’);
       const titleEl = document.getElementById(‘range-viz-title’);
@@ -3379,8 +3406,19 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
   }
 
+  function tileToggle(btn) {
+    btn.classList.toggle('on');
+    const tile = btn.closest('.country-tile');
+    if (tile) {
+      const anyOn = tile.querySelectorAll('.tile-btn.on').length > 0;
+      tile.classList.toggle('tile-active', anyOn);
+    }
+    calcUpdate();
+  }
+
   function toggleCheck(el) {
     const label = el.closest('.mandate-check');
+    if (!label) return;
     if (el.checked) label.classList.add('checked');
     else label.classList.remove('checked');
   }
