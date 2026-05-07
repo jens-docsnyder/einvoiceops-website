@@ -3309,48 +3309,48 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const readySelected   = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
     const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
 
-    const hoursEl     = document.getElementById(‘out-hours’);
-    const hoursNote   = document.getElementById(‘out-hours-note’);
-    const rangePills  = document.getElementById(‘out-range-pills’);
-    const scopeInt    = document.getElementById(‘out-scope-internal’);
-    const penaltyRow        = document.getElementById(‘penalty-row’);
-    const penaltyVal        = document.getElementById(‘penalty-value’);
-    const polandPenaltyRow  = document.getElementById(‘poland-penalty-row’);
-    const germanyPenaltyRow = document.getElementById(‘germany-penalty-row’);
-    const maintainBox  = document.getElementById(‘maintain-box’);
-    const maintainHrs  = document.getElementById(‘maintain-hours’);
-    const maintainNote = document.getElementById(‘maintain-note’);
-    const maintainCostLow  = document.getElementById(‘maintain-cost-low’);
-    const maintainCostHigh = document.getElementById(‘maintain-cost-high’);
+    const hoursEl     = document.getElementById('out-hours');
+    const hoursNote   = document.getElementById('out-hours-note');
+    const rangePills  = document.getElementById('out-range-pills');
+    const scopeInt    = document.getElementById('out-scope-internal');
+    const penaltyRow        = document.getElementById('penalty-row');
+    const penaltyVal        = document.getElementById('penalty-value');
+    const polandPenaltyRow  = document.getElementById('poland-penalty-row');
+    const germanyPenaltyRow = document.getElementById('germany-penalty-row');
+    const maintainBox  = document.getElementById('maintain-box');
+    const maintainHrs  = document.getElementById('maintain-hours');
+    const maintainNote = document.getElementById('maintain-note');
+    const maintainCostLow  = document.getElementById('maintain-cost-low');
+    const maintainCostHigh = document.getElementById('maintain-cost-high');
 
     const eFactor = entityFactor(entities, erpKey);
 
     // ---- SECTION A: GETTING READY ----
     if (readySelected.length === 0) {
-      hoursEl.textContent   = ‘--’;
-      hoursNote.textContent = ‘Select mandates above’;
-      rangePills.innerHTML  = ‘’;
-      scopeInt.textContent  = ‘--’;
-      penaltyRow.style.display        = ‘none’;
-      polandPenaltyRow.style.display  = ‘none’;
-      germanyPenaltyRow.style.display = ‘none’;
-      document.getElementById(‘range-viz’).style.display = ‘none’;
+      hoursEl.textContent   = '--';
+      hoursNote.textContent = 'Select mandates above';
+      rangePills.innerHTML  = '';
+      scopeInt.textContent  = '--';
+      penaltyRow.style.display        = 'none';
+      polandPenaltyRow.style.display  = 'none';
+      germanyPenaltyRow.style.display = 'none';
+      document.getElementById('range-viz').style.display = 'none';
     } else {
       const readyEls = [...document.querySelectorAll('.tile-btn.tile-ready.on')];
-      const hasLive     = readyEls.some(el => el.dataset.live === ‘1’);
-      const hasUpcoming = readyEls.some(el => el.dataset.live === ‘0’);
-      const titleEl = document.getElementById(‘range-viz-title’);
-      const subEl   = document.getElementById(‘range-viz-sub’);
+      const hasLive     = readyEls.some(el => el.dataset.live === '1');
+      const hasUpcoming = readyEls.some(el => el.dataset.live === '0');
+      const titleEl = document.getElementById('range-viz-title');
+      const subEl   = document.getElementById('range-viz-sub');
       if (titleEl && subEl) {
         if (hasLive && !hasUpcoming) {
-          titleEl.textContent = ‘Active remediation risk.’;
-          subEl.textContent   = ‘These mandates are already live. If compliance was not established, penalty exposure and invoice rejection risk are active now.’;
+          titleEl.textContent = 'Active remediation risk.';
+          subEl.textContent   = 'These mandates are already live. If compliance was not established, penalty exposure and invoice rejection risk are active now.';
         } else if (hasUpcoming && !hasLive) {
-          titleEl.textContent = ‘Preparation investment - before go-live.’;
-          subEl.textContent   = ‘Structured readiness costs less than reactive remediation. This is the internal cost before any external vendor or consulting fee.’;
+          titleEl.textContent = 'Preparation investment - before go-live.';
+          subEl.textContent   = 'Structured readiness costs less than reactive remediation. This is the internal cost before any external vendor or consulting fee.';
         } else {
-          titleEl.textContent = ‘Unbudgeted. Unavoidable.’;
-          subEl.textContent   = "Mandate readiness doesn’t disappear when it’s unplanned - it gets absorbed as coordination, research and post-go-live firefighting.";
+          titleEl.textContent = 'Unbudgeted. Unavoidable.';
+          subEl.textContent   = "Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.";
         }
       }
 
@@ -3366,28 +3366,28 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const costHigh  = hoursHigh * rate;
       const costMid   = hoursMid  * rate;
 
-      hoursEl.textContent   = hoursLow.toLocaleString(‘de-DE’) + ‘ – ‘ + hoursHigh.toLocaleString(‘de-DE’) + ‘h’;
-      hoursNote.textContent = readySelected.length + ‘ mandate’ + (readySelected.length > 1 ? ‘s’ : ‘’) +
-        ‘ · ‘ + entities + ‘ entit’ + (entities > 1 ? ‘ies’ : ‘y’) + ‘ · readiness overhead only’;
+      hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
+      hoursNote.textContent = readySelected.length + ' mandate' + (readySelected.length > 1 ? 's' : '') +
+        ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y') + ' · readiness overhead only';
 
       rangePills.innerHTML =
-        ‘<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured: ‘ + hoursLow.toLocaleString(‘de-DE’) + ‘h</span>’ +
-        ‘<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc: ‘ + hoursHigh.toLocaleString(‘de-DE’) + ‘h</span>’;
+        '<span style="font-size:0.72rem;background:var(--ice);color:var(--accent);border:1px solid #bfdbfe;padding:3px 10px;border-radius:100px;font-weight:600">Structured: ' + hoursLow.toLocaleString('de-DE') + 'h</span>' +
+        '<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc: ' + hoursHigh.toLocaleString('de-DE') + 'h</span>';
 
       updateRangeBar(costLow, costHigh);
-      scopeInt.textContent = fmt(costMid) + ‘ (typical midpoint)’;
+      scopeInt.textContent = fmt(costMid) + ' (typical midpoint)';
 
-      const hasFr = readySelected.includes(‘fr’);
-      penaltyRow.style.display = hasFr ? ‘flex’ : ‘none’;
-      if (hasFr) penaltyVal.textContent = fmt(15000 * entities) + ‘/year’;
+      const hasFr = readySelected.includes('fr');
+      penaltyRow.style.display = hasFr ? 'flex' : 'none';
+      if (hasFr) penaltyVal.textContent = fmt(15000 * entities) + '/year';
 
-      polandPenaltyRow.style.display  = readySelected.includes(‘pl’) ? ‘flex’ : ‘none’;
-      germanyPenaltyRow.style.display = readySelected.includes(‘de’) ? ‘flex’ : ‘none’;
+      polandPenaltyRow.style.display  = readySelected.includes('pl') ? 'flex' : 'none';
+      germanyPenaltyRow.style.display = readySelected.includes('de') ? 'flex' : 'none';
     }
 
     // ---- SECTION B: STAYING CURRENT ----
     if (maintainSelected.length === 0) {
-      maintainBox.style.display = ‘none’;
+      maintainBox.style.display = 'none';
     } else {
       let mLow = 0, mHigh = 0;
       maintainSelected.forEach(m => {
@@ -3397,12 +3397,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const mHoursLow  = Math.round(mLow  * entities);
       const mHoursHigh = Math.round(mHigh * entities);
 
-      maintainHrs.textContent  = mHoursLow.toLocaleString(‘de-DE’) + ‘ – ‘ + mHoursHigh.toLocaleString(‘de-DE’) + ‘h/year’;
-      maintainNote.textContent = maintainSelected.length + ‘ mandate’ + (maintainSelected.length > 1 ? ‘s’ : ‘’) +
-        ‘ · ‘ + entities + ‘ entit’ + (entities > 1 ? ‘ies’ : ‘y’);
-      maintainCostLow.textContent  = fmt(mHoursLow  * rate) + ‘/year’;
-      maintainCostHigh.textContent = fmt(mHoursHigh * rate) + ‘/year’;
-      maintainBox.style.display = ‘block’;
+      maintainHrs.textContent  = mHoursLow.toLocaleString('de-DE') + ' – ' + mHoursHigh.toLocaleString('de-DE') + 'h/year';
+      maintainNote.textContent = maintainSelected.length + ' mandate' + (maintainSelected.length > 1 ? 's' : '') +
+        ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y');
+      maintainCostLow.textContent  = fmt(mHoursLow  * rate) + '/year';
+      maintainCostHigh.textContent = fmt(mHoursHigh * rate) + '/year';
+      maintainBox.style.display = 'block';
     }
   }
 
