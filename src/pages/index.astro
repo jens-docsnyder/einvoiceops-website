@@ -1472,7 +1472,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       display: none;
     }
     .range-viz-header--annual {
-      background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+      background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%);
     }
     .range-viz-annual .range-bar-vals strong:first-child { color: #16a34a; }
     .range-viz-annual .range-bar-vals strong:last-child  { color: var(--sub); }
@@ -1741,10 +1741,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
 
     .range-viz-header {
-      background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
+      background: linear-gradient(135deg, #881337 0%, #be123c 100%);
       border-radius: 10px;
       padding: 20px 22px 18px;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
     }
 
     @keyframes banderole {
@@ -1819,24 +1819,33 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .range-bar {
-      background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      background: linear-gradient(135deg, #9f1239 0%, #f43f5e 100%);
       border-radius: 12px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
       padding: 16px 20px;
+      gap: 8px;
     }
     .range-bar--annual {
-      background: linear-gradient(135deg, #78350f 0%, #9a3412 100%);
+      background: linear-gradient(135deg, #c2410c 0%, #fb923c 100%);
     }
     .range-bar-end {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
     .range-bar-end--right { align-items: flex-end; text-align: right; }
-    .rbe-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.07em; text-transform: uppercase; }
-    .rbe-hours { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.75); }
+    .rbe-range {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .rbe-hours { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.78); }
     .rbe-cost  { font-size: 1.15rem; font-weight: 900; color: #ffffff; letter-spacing: -0.025em; line-height: 1; }
 
     .range-end-marker {
@@ -2517,12 +2526,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           </div>
           <div class="range-bar">
             <div class="range-bar-end">
-              <span class="rbe-label">Structured</span>
               <span class="rbe-hours" id="out-hours">--</span>
               <span class="rbe-cost" id="range-label-low">--</span>
             </div>
+            <span class="rbe-range">&#171;&nbsp;&nbsp;range&nbsp;&nbsp;&#187;</span>
             <div class="range-bar-end range-bar-end--right">
-              <span class="rbe-label">Reactive</span>
               <span class="rbe-hours" id="out-hours-high">--</span>
               <span class="rbe-cost" id="range-label-high">--</span>
             </div>
@@ -2561,12 +2569,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           </div>
           <div class="range-bar range-bar--annual">
             <div class="range-bar-end">
-              <span class="rbe-label">Structured</span>
               <span class="rbe-hours" id="out-annual-hours">--</span>
               <span class="rbe-cost" id="range-label-annual-low">--</span>
             </div>
+            <span class="rbe-range">&#171;&nbsp;&nbsp;range&nbsp;&nbsp;&#187;</span>
             <div class="range-bar-end range-bar-end--right">
-              <span class="rbe-label">Reactive</span>
               <span class="rbe-hours" id="out-annual-hours-high">--</span>
               <span class="rbe-cost" id="range-label-annual-high">--</span>
             </div>
