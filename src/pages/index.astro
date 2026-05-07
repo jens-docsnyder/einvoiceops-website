@@ -1464,13 +1464,21 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .tile-btn.tile-maint.on  { background: #f0fdf4; border-color: #16a34a; color: #166534; }
     .tile-btn[disabled]      { opacity: 0.28; cursor: not-allowed; }
 
-    .maintain-out-box {
+    .range-viz-annual {
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
-      border-radius: 10px;
-      padding: 20px 24px;
+      border-radius: 14px;
+      padding: 6px 6px 20px;
       display: none;
     }
+    .range-viz-header--annual {
+      background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+    }
+    .range-bar--annual {
+      background: linear-gradient(90deg, #86efac 0%, #16a34a 100%);
+    }
+    .range-viz-annual .range-bar-vals strong:first-child { color: #16a34a; }
+    .range-viz-annual .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .radio-group {
       display: flex;
@@ -2437,10 +2445,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
         <!-- 2. COST COMPARISON -->
         <div class="calc-comparison">
-          <div class="compare-row">
-            <span class="compare-label">Comparable enterprise cost (typical midpoint)</span>
-            <span class="compare-value" id="out-scope-internal">--</span>
-          </div>
           <div class="compare-row" id="penalty-row" style="display:none">
             <span class="compare-label">France penalty risk <span style="font-size:0.68rem;color:var(--muted)">(2026 Budget Law: €50/invoice, cap €15K/yr/entity)</span></span>
             <span class="compare-value" id="penalty-value" style="color:var(--urgent)"></span>
@@ -2463,23 +2467,28 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="out-range-pills"></div>
         </div>
 
-        <!-- 5. MAINTENANCE BOX -->
-        <div class="maintain-out-box" id="maintain-box">
-          <div class="calc-out-label" style="color:#166534">Annual compliance maintenance</div>
-          <div class="calc-big-number" id="maintain-hours" style="color:#16a34a">--</div>
-          <div class="calc-sub-note" id="maintain-note">hours/year · select mandates above</div>
-          <div style="margin-top:10px">
-            <div class="compare-row">
-              <span class="compare-label">Structured monitoring (low)</span>
-              <span class="compare-value" id="maintain-cost-low" style="color:#166534">--</span>
+
+        <!-- 5. ANNUAL RANGE BAR -->
+        <div class="range-viz-annual" id="range-viz-annual">
+          <div class="range-viz-header range-viz-header--annual">
+            <div class="range-viz-title">The ongoing cost of staying current.</div>
+            <div class="range-viz-sub">Recurring every year, independent of any go-live event. Schema updates, API changes, regulatory amendments.</div>
+          </div>
+          <div style="padding: 0 18px">
+            <div class="range-bar-vals">
+              <strong id="range-label-annual-low">--</strong>
+              <strong id="range-label-annual-high">--</strong>
             </div>
-            <div class="compare-row" style="margin-top:4px">
-              <span class="compare-label">Reactive / ad-hoc (high)</span>
-              <span class="compare-value" id="maintain-cost-high" style="color:#b45309">--</span>
+            <div class="range-bar range-bar--annual">
+              <span class="range-end-marker">&#171;</span>
+              <span class="range-end-marker">&#187;</span>
+            </div>
+            <div class="range-bar-descs">
+              <span>Structured monitoring</span>
+              <span>Reactive / ad-hoc</span>
             </div>
           </div>
         </div>
-
         <!-- 6. CTA -->
         <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:4px">Get a frank read on your readiness gap</a>
 
@@ -3279,6 +3288,14 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     if (lblHigh) lblHigh.textContent = fmtShort(costHigh);
   }
 
+  function updateAnnualBar(costLow, costHigh) {
+    document.getElementById('range-viz-annual').style.display = 'block';
+    const lblLow  = document.getElementById('range-label-annual-low');
+    const lblHigh = document.getElementById('range-label-annual-high');
+    if (lblLow)  lblLow.textContent  = fmtShort(costLow) + ' / yr';
+    if (lblHigh) lblHigh.textContent = fmtShort(costHigh) + ' / yr';
+  }
+
   function calcUpdate() {
     const readySelectedEarly = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
     const maintainSelectedEarly = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
@@ -3305,16 +3322,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const hoursEl     = document.getElementById('out-hours');
     const hoursNote   = document.getElementById('out-hours-note');
     const rangePills  = document.getElementById('out-range-pills');
-    const scopeInt    = document.getElementById('out-scope-internal');
     const penaltyRow        = document.getElementById('penalty-row');
     const penaltyVal        = document.getElementById('penalty-value');
     const polandPenaltyRow  = document.getElementById('poland-penalty-row');
     const germanyPenaltyRow = document.getElementById('germany-penalty-row');
-    const maintainBox  = document.getElementById('maintain-box');
-    const maintainHrs  = document.getElementById('maintain-hours');
-    const maintainNote = document.getElementById('maintain-note');
-    const maintainCostLow  = document.getElementById('maintain-cost-low');
-    const maintainCostHigh = document.getElementById('maintain-cost-high');
+
 
     const eFactor = entityFactor(entities, erpKey);
 
@@ -3323,7 +3335,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       hoursEl.textContent   = '--';
       hoursNote.textContent = 'Select mandates above';
       rangePills.innerHTML  = '';
-      scopeInt.textContent  = '--';
       penaltyRow.style.display        = 'none';
       polandPenaltyRow.style.display  = 'none';
       germanyPenaltyRow.style.display = 'none';
@@ -3354,11 +3365,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
       const hoursLow  = Math.round(totalLow  * erpMult * eFactor);
       const hoursHigh = Math.round(totalHigh * erpMult * eFactor);
-      const hoursMid  = Math.round((hoursLow + hoursHigh) / 2);
-      const costLow   = hoursLow  * rate;
+        const costLow   = hoursLow  * rate;
       const costHigh  = hoursHigh * rate;
-      const costMid   = hoursMid  * rate;
-
+  
       hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
       hoursNote.textContent = readySelected.length + ' mandate' + (readySelected.length > 1 ? 's' : '') +
         ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y') + ' · readiness overhead only';
@@ -3368,8 +3377,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         '<span style="font-size:0.72rem;background:#fffde7;color:#7c5000;border:1px solid #ffe082;padding:3px 10px;border-radius:100px;font-weight:600">Ad-hoc: ' + hoursHigh.toLocaleString('de-DE') + 'h</span>';
 
       updateRangeBar(costLow, costHigh);
-      scopeInt.textContent = fmt(costMid) + ' (typical midpoint)';
-
+  
       const hasFr = readySelected.includes('fr');
       penaltyRow.style.display = hasFr ? 'flex' : 'none';
       if (hasFr) penaltyVal.textContent = fmt(15000 * entities) + '/year';
@@ -3380,22 +3388,15 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     // ---- SECTION B: STAYING CURRENT ----
     if (maintainSelected.length === 0) {
-      maintainBox.style.display = 'none';
+      document.getElementById('range-viz-annual').style.display = 'none';
     } else {
       let mLow = 0, mHigh = 0;
       maintainSelected.forEach(m => {
         if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].low; mHigh += MONITOR_BASE[m].high; }
       });
-
-      const mHoursLow  = Math.round(mLow  * entities);
-      const mHoursHigh = Math.round(mHigh * entities);
-
-      maintainHrs.textContent  = mHoursLow.toLocaleString('de-DE') + ' – ' + mHoursHigh.toLocaleString('de-DE') + 'h/year';
-      maintainNote.textContent = maintainSelected.length + ' mandate' + (maintainSelected.length > 1 ? 's' : '') +
-        ' · ' + entities + ' entit' + (entities > 1 ? 'ies' : 'y');
-      maintainCostLow.textContent  = fmt(mHoursLow  * rate) + '/year';
-      maintainCostHigh.textContent = fmt(mHoursHigh * rate) + '/year';
-      maintainBox.style.display = 'block';
+      const mCostLow  = Math.round(mLow  * entities) * rate;
+      const mCostHigh = Math.round(mHigh * entities) * rate;
+      updateAnnualBar(mCostLow, mCostHigh);
     }
   }
 
