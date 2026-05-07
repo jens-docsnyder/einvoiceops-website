@@ -1813,10 +1813,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
 
     .range-hours-inset {
-      background: rgba(255,255,255,0.88);
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.09);
       border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
       margin: 0 6px 14px;
-      padding: 10px 16px;
+      padding: 11px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1829,10 +1831,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       line-height: 1.3;
     }
     .rhi-val {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--navy);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       white-space: nowrap;
     }
 
@@ -3364,14 +3366,13 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       const hasLive     = readyEls.some(el => el.dataset.live === '1');
       const hasUpcoming = readyEls.some(el => el.dataset.live === '0');
       const titleEl = document.getElementById('range-viz-title');
-        if (titleEl) {
+      if (titleEl) {
         if (hasLive && !hasUpcoming) {
           titleEl.textContent = 'Active remediation risk.';
-          } else if (hasUpcoming && !hasLive) {
+        } else if (hasUpcoming && !hasLive) {
           titleEl.textContent = 'Preparation investment - before go-live.';
-          } else {
+        } else {
           titleEl.textContent = 'Unbudgeted. Unavoidable.';
-          subEl.textContent   = "Mandate readiness doesn't disappear when it's unplanned - it gets absorbed as coordination, research and post-go-live firefighting.";
         }
       }
 
@@ -3382,14 +3383,13 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
       const hoursLow  = Math.round(totalLow  * erpMult * eFactor);
       const hoursHigh = Math.round(totalHigh * erpMult * eFactor);
-        const costLow   = hoursLow  * rate;
+      const costLow   = hoursLow  * rate;
       const costHigh  = hoursHigh * rate;
-  
-      hoursEl.textContent   = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
-  
-  
+
+      hoursEl.textContent = hoursLow.toLocaleString('de-DE') + ' – ' + hoursHigh.toLocaleString('de-DE') + 'h';
+
       updateRangeBar(costLow, costHigh);
-  
+
       const hasFr = readySelected.includes('fr');
       penaltyRow.style.display = hasFr ? 'flex' : 'none';
       if (hasFr) penaltyVal.textContent = fmt(15000 * entities) + '/year';
