@@ -1472,12 +1472,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       display: none;
     }
     .range-viz-header--annual {
-      background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+      background: linear-gradient(135deg, #14532d 0%, #166534 100%);
     }
     .range-bar--annual {
-      background: linear-gradient(90deg, #fdba74 0%, #ea580c 100%);
+      background: linear-gradient(90deg, #86efac 0%, #16a34a 100%);
     }
-    .range-viz-annual .range-bar-vals strong:first-child { color: #ea580c; }
+    .range-viz-annual .range-bar-vals strong:first-child { color: #16a34a; }
     .range-viz-annual .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .radio-group {
@@ -1568,9 +1568,35 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       font-size: 0.72rem;
       font-weight: 600;
       color: #dc2626;
-      display: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      cursor: pointer;
+      font-family: var(--sans);
+      text-align: left;
       line-height: 1.4;
     }
+    .penalty-chip:hover { background: #fee2e2; }
+    .penalties-body {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      color: #991b1b;
+    }
+    .penalties-body .pen-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid #fecdd3;
+    }
+    .penalties-body .pen-row:last-child { border-bottom: none; }
+    .pen-row-val { font-weight: 700; color: #dc2626; white-space: nowrap; }
 
     .calc-comparison {
       background: var(--bg);
@@ -1718,7 +1744,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
 
     .range-viz-header {
-      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
       border-radius: 10px;
       padding: 20px 22px 18px;
       margin-bottom: 22px;
@@ -1792,12 +1818,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       letter-spacing: -0.02em;
     }
 
-    .range-bar-vals strong:first-child { color: #dc2626; }
+    .range-bar-vals strong:first-child { color: var(--accent); }
     .range-bar-vals strong:last-child  { color: var(--sub); }
 
     .range-bar {
       height: 38px;
-      background: linear-gradient(90deg, #fca5a5 0%, #dc2626 100%);
+      background: linear-gradient(90deg, #93c5fd 0%, #2563eb 100%);
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -2498,8 +2524,25 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         </div>
 
         <!-- 2. PENALTY CHIP -->
-        <div class="penalty-chip" id="calc-comparison" style="display:none">
-          <span id="penalty-summary"></span>
+        <div id="calc-comparison" style="display:none">
+          <button class="penalty-chip" onclick="togglePenalties()" aria-expanded="false">
+            <span id="penalty-summary">Penalty exposure</span>
+            <span class="meth-arrow">&#9660;</span>
+          </button>
+          <div id="penalties-body" style="display:none" class="penalties-body">
+            <div class="pen-row" id="penalty-row" style="display:none">
+              <span>France &mdash; €50/invoice, capped €15,000/year/entity (2026 Budget Law)</span>
+              <span class="pen-row-val" id="penalty-value"></span>
+            </div>
+            <div class="pen-row" id="poland-penalty-row" style="display:none">
+              <span>Poland KSeF &mdash; up to 100% of VAT per invoice, no cap (post Jan 2027)</span>
+              <span class="pen-row-val">Per-invoice</span>
+            </div>
+            <div class="pen-row" id="germany-penalty-row" style="display:none">
+              <span>Germany &mdash; up to €5,000/invoice (§26a UStG); GoBD: VAT deduction denial</span>
+              <span class="pen-row-val">Per-invoice</span>
+            </div>
+          </div>
         </div>
 
 
@@ -3356,8 +3399,12 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
 
     const hoursEl     = document.getElementById('out-hours');
-    const chipEl = document.getElementById('calc-comparison');
-    const sumEl  = document.getElementById('penalty-summary');
+    const chipEl   = document.getElementById('calc-comparison');
+    const sumEl    = document.getElementById('penalty-summary');
+    const penRow   = document.getElementById('penalty-row');
+    const penVal   = document.getElementById('penalty-value');
+    const plRow    = document.getElementById('poland-penalty-row');
+    const deRow    = document.getElementById('germany-penalty-row');
 
 
     const eFactor = entityFactor(entities, erpKey);
@@ -3366,6 +3413,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     if (readySelected.length === 0) {
       hoursEl.textContent   = '--';
       if (chipEl) chipEl.style.display = 'none';
+      if (penRow) penRow.style.display = 'none';
+      if (plRow)  plRow.style.display  = 'none';
+      if (deRow)  deRow.style.display  = 'none';
       document.getElementById('range-viz').style.display = 'none';
     } else {
       const readyEls = [...document.querySelectorAll('.tile-btn.tile-ready.on')];
@@ -3385,14 +3435,21 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
       updateRangeBar(costLow, costHigh);
 
+      const hasFr = readySelected.includes('fr');
+      const hasPl = readySelected.includes('pl');
+      const hasDe = readySelected.includes('de');
       const penParts = [];
-      if (readySelected.includes('fr')) penParts.push('FR - cap €' + (15000 * entities).toLocaleString('de-DE') + '/yr per entity');
-      if (readySelected.includes('pl')) penParts.push('PL - per invoice, no cap');
-      if (readySelected.includes('de')) penParts.push('DE - up to €5K/invoice');
+      if (hasFr) penParts.push('FR');
+      if (hasPl) penParts.push('PL');
+      if (hasDe) penParts.push('DE');
+      if (penRow) penRow.style.display = hasFr ? 'flex' : 'none';
+      if (penVal) penVal.textContent = hasFr ? fmt(15000) + '/yr per entity' : '';
+      if (plRow)  plRow.style.display  = hasPl ? 'flex' : 'none';
+      if (deRow)  deRow.style.display  = hasDe ? 'flex' : 'none';
       if (chipEl && sumEl) {
         if (penParts.length > 0) {
-          sumEl.textContent = 'Penalty exposure: ' + penParts.join(' · ');
-          chipEl.style.display = 'flex';
+          sumEl.textContent = 'Penalty exposure: ' + penParts.join(', ');
+          chipEl.style.display = 'block';
         } else {
           chipEl.style.display = 'none';
         }
@@ -3442,6 +3499,15 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       if (radio.checked) label.classList.add('checked');
       else label.classList.remove('checked');
     });
+  }
+
+  function togglePenalties() {
+    const btn  = document.querySelector('#calc-comparison .penalty-chip');
+    const body = document.getElementById('penalties-body');
+    if (!btn || !body) return;
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    body.style.display = isOpen ? 'none' : 'block';
   }
 
   function toggleMethodology() {
