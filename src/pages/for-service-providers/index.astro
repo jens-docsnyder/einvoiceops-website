@@ -189,11 +189,54 @@
     .disclaimer { background: var(--bg-alt); border-top: 1px solid var(--border); padding: 20px 2rem; text-align: center; }
     .disclaimer p { font-size: 0.72rem; color: #9ca3af; max-width: 720px; margin: 0 auto; line-height: 1.65; }
 
+    /* Mobile animation replacements */
+    .sprint-mobile { display: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; }
+    .sm-section-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #60a5fa; margin-bottom: 10px; }
+    .sm-input-row { font-size: 0.78rem; color: #9ca3af; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px; }
+    .sm-input-row:last-child { border-bottom: none; }
+    .sm-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
+    .sm-down { text-align: center; font-size: 1.2rem; color: rgba(255,255,255,0.25); padding: 8px 0; }
+    .sm-timeline { background: rgba(30,64,175,0.15); border: 1px solid rgba(96,165,250,0.2); border-radius: 8px; padding: 12px 14px; margin-bottom: 4px; }
+    .sm-timeline-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; color: #f9fafb; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
+    .sm-week { font-size: 0.74rem; color: #9ca3af; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px; }
+    .sm-week:last-child { border-bottom: none; }
+    .sm-week-num { font-size: 0.62rem; font-weight: 700; color: #60a5fa; min-width: 48px; }
+    .sm-week-done { color: #22c55e; }
+    .sm-week-done .sm-week-num { color: #22c55e; }
+    .sm-card { border-radius: 8px; padding: 11px 13px; margin-bottom: 5px; }
+    .sm-card:last-child { margin-bottom: 0; }
+    .sm-card-title { font-size: 0.74rem; font-weight: 700; margin-bottom: 6px; }
+    .sm-card-item { font-size: 0.68rem; color: #9ca3af; padding: 1px 0; }
+    .sm-card-fs { background: rgba(30,64,175,0.2); border: 1px solid rgba(96,165,250,0.3); }
+    .sm-card-fs .sm-card-title { color: #93c5fd; }
+    .sm-card-tax { background: rgba(133,77,14,0.2); border: 1px solid rgba(251,191,36,0.25); }
+    .sm-card-tax .sm-card-title { color: #fbbf24; }
+    .sm-card-it { background: rgba(22,78,99,0.3); border: 1px solid rgba(103,232,249,0.2); }
+    .sm-card-it .sm-card-title { color: #67e8f9; }
+    .ret-mobile { display: none; }
+    .rm-event { background: #141c2b; border: 1px solid #1e3a5f; border-radius: 6px; padding: 9px 12px; margin-bottom: 5px; }
+    .rm-event:last-child { margin-bottom: 0; }
+    .rm-event-name { font-size: 0.78rem; color: #94a3b8; font-family: -apple-system, sans-serif; }
+    .rm-event-sub { font-size: 0.68rem; color: #64748b; font-family: monospace; display: block; margin-top: 2px; }
+    .rm-down { text-align: center; font-size: 1.2rem; color: rgba(255,255,255,0.25); padding: 8px 0; }
+    .rm-engine { background: linear-gradient(135deg, #1e3a5f, #0f1e2c); border: 1px solid #3b82f6; border-radius: 10px; padding: 14px; text-align: center; }
+    .rm-engine-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #93c5fd; margin-bottom: 4px; }
+    .rm-engine-sub { font-size: 0.62rem; color: #475569; font-family: monospace; }
+    .rm-owner { background: #111827; border: 1px solid #1e293b; border-radius: 7px; padding: 9px 12px; margin-bottom: 5px; }
+    .rm-owner:last-child { margin-bottom: 0; }
+    .rm-owner-name { font-size: 0.78rem; font-weight: 600; color: #cbd5e1; }
+    .rm-owner-sub { font-size: 0.65rem; color: #64748b; font-family: monospace; margin-top: 2px; }
+
     @media (max-width: 768px) {
       .sp-hero { padding: 56px 1.25rem 48px; }
       .section { padding: 56px 1.25rem; }
       .contact-section { padding: 56px 1.25rem; }
       .inner { padding: 0 1.25rem; }
+      .sprint-svg-wrap { display: none; }
+      .sprint-mobile { display: block; }
+      .retainer-anim { padding: 20px 16px; }
+      .retainer-anim svg { display: none; }
+      .ret-mobile { display: block; }
     }
 
     @media (max-width: 480px) {
@@ -482,6 +525,41 @@
         </svg>
       </div>
 
+      <div class="sprint-mobile">
+        <div class="sm-section-label">Your entity</div>
+        <div class="sm-input-row"><span class="sm-dot"></span>Where you operate — EU entity footprint</div>
+        <div class="sm-input-row"><span class="sm-dot"></span>Your ERP baseline — systems + connectivity</div>
+        <div class="sm-input-row"><span class="sm-dot"></span>Your internal owners — Finance, Tax, IT</div>
+        <div class="sm-input-row"><span class="sm-dot"></span>The mandate in scope</div>
+        <div class="sm-down">&#8595;</div>
+        <div class="sm-timeline">
+          <div class="sm-timeline-title">4-Week Readiness Sprint</div>
+          <div class="sm-week"><span class="sm-week-num">Week 1</span>ERP footprint audit</div>
+          <div class="sm-week"><span class="sm-week-num">Week 2</span>Work Packet draft</div>
+          <div class="sm-week"><span class="sm-week-num">Week 3</span>Review + sign-off</div>
+          <div class="sm-week sm-week-done"><span class="sm-week-num">Week 4</span>&#10003; Delivered</div>
+        </div>
+        <div class="sm-down">&#8595;</div>
+        <div class="sm-card sm-card-fs">
+          <div class="sm-card-title">Finance Systems</div>
+          <div class="sm-card-item">ERP output configuration</div>
+          <div class="sm-card-item">Master data corrections</div>
+          <div class="sm-card-item">Inbound XML ingestion</div>
+        </div>
+        <div class="sm-card sm-card-tax">
+          <div class="sm-card-title">Tax / Compliance</div>
+          <div class="sm-card-item">Mandate scope per entity</div>
+          <div class="sm-card-item">Correction document type</div>
+          <div class="sm-card-item">Archiving period cited</div>
+        </div>
+        <div class="sm-card sm-card-it">
+          <div class="sm-card-title">IT / Middleware</div>
+          <div class="sm-card-item">Access point confirmed</div>
+          <div class="sm-card-item">API auth + endpoint</div>
+          <div class="sm-card-item">End-to-end test plan</div>
+        </div>
+      </div>
+
       <ul class="sprint-checklist" style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);">
         <li class="sprint-check-item">
           <div class="sprint-check-dot">&#10003;</div>
@@ -607,6 +685,25 @@
           <text x="0" y="5" text-anchor="middle" font-size="11" fill="#93c5fd" font-weight="700" textLength="44" lengthAdjust="spacingAndGlyphs" font-family="-apple-system,sans-serif">WORK PKT</text>
         </g>
       </svg>
+
+      <div class="ret-mobile">
+        <div class="rm-event"><span class="rm-event-name">&#127467;&#127479; FR</span><span class="rm-event-sub">PA Y-model Factur-X</span></div>
+        <div class="rm-event"><span class="rm-event-name">&#127465;&#127466; DE</span><span class="rm-event-sub">XRechnung EN16931</span></div>
+        <div class="rm-event"><span class="rm-event-name">&#127477;&#127473; PL</span><span class="rm-event-sub">KSeF clearance API</span></div>
+        <div class="rm-event"><span class="rm-event-name">&#127470;&#127481; IT</span><span class="rm-event-sub">SdI FatturaPA v1.9</span></div>
+        <div class="rm-event"><span class="rm-event-name">&#127463;&#127466; BE</span><span class="rm-event-sub">Peppol BIS 3.0</span></div>
+        <div class="rm-event"><span class="rm-event-name">&#127475;&#127473; NL</span><span class="rm-event-sub">Peppol BIS 3.0</span></div>
+        <div class="rm-down">&#8595;</div>
+        <div class="rm-engine">
+          <div class="rm-engine-label">Mandate Change Engine</div>
+          <div class="rm-engine-sub">EUR-Lex &middot; Official portals &middot; Peppol specs</div>
+        </div>
+        <div class="rm-down">&#8595;</div>
+        <div class="rm-owner"><div class="rm-owner-name">Finance Systems</div><div class="rm-owner-sub">ERP config / format mapping</div></div>
+        <div class="rm-owner"><div class="rm-owner-name">Tax / Compliance</div><div class="rm-owner-sub">VAT rules / mandate scope</div></div>
+        <div class="rm-owner"><div class="rm-owner-name">AP Operations</div><div class="rm-owner-sub">Inbound ingestion / 3-way match</div></div>
+        <div class="rm-owner"><div class="rm-owner-name">IT / Middleware</div><div class="rm-owner-sub">Transport / API / access point</div></div>
+      </div>
 
     <ul class="sprint-checklist" style="margin:24px 0 0;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);">
       <li class="sprint-check-item">
