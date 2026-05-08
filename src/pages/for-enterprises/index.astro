@@ -211,6 +211,10 @@
     .rm-owner:last-child { margin-bottom: 0; }
     .rm-owner-name { font-size: 0.78rem; font-weight: 600; color: #cbd5e1; }
     .rm-owner-sub { font-size: 0.65rem; color: #64748b; font-family: monospace; margin-top: 2px; }
+    .rm-step-label { font-size: 0.72rem; font-weight: 700; color: #94a3b8; margin-bottom: 10px; letter-spacing: 0.02em; }
+    .rm-countries-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .rm-flag-item { background: #141c2b; border: 1px solid #1e3a5f; border-radius: 6px; padding: 8px 12px; font-size: 0.78rem; font-weight: 600; color: #93c5fd; }
+    .rm-plus-more { font-size: 0.65rem; color: #475569; margin-bottom: 2px; }
 
     @media (max-width: 768px) {
       .sp-hero { padding: 56px 1.25rem 48px; }
@@ -221,7 +225,7 @@
       .sprint-svg-wrap { display: none; }
       .sprint-mobile { display: block; }
       .retainer-anim { padding: 20px 16px; }
-      .retainer-anim svg { display: none; }
+      .retainer-anim svg { display: none !important; }
       .ret-mobile { display: block; }
     }
 
@@ -669,18 +673,20 @@
       </svg>
 
       <div class="ret-mobile">
-        <div class="rm-event"><span class="rm-event-name">&#127467;&#127479; FR</span><span class="rm-event-sub">PA Y-model Factur-X</span></div>
-        <div class="rm-event"><span class="rm-event-name">&#127465;&#127466; DE</span><span class="rm-event-sub">XRechnung EN16931</span></div>
-        <div class="rm-event"><span class="rm-event-name">&#127477;&#127473; PL</span><span class="rm-event-sub">KSeF clearance API</span></div>
-        <div class="rm-event"><span class="rm-event-name">&#127470;&#127481; IT</span><span class="rm-event-sub">SdI FatturaPA v1.9</span></div>
-        <div class="rm-event"><span class="rm-event-name">&#127463;&#127466; BE</span><span class="rm-event-sub">Peppol BIS 3.0</span></div>
-        <div class="rm-event"><span class="rm-event-name">&#127475;&#127473; NL</span><span class="rm-event-sub">Peppol BIS 3.0</span></div>
+        <div class="rm-step-label">When a mandate changes in any of your active countries...</div>
+        <div class="rm-countries-row">
+          <div class="rm-flag-item">&#127467;&#127479; France</div>
+          <div class="rm-flag-item">&#127465;&#127466; Germany</div>
+          <div class="rm-flag-item">&#127477;&#127473; Poland</div>
+        </div>
+        <div class="rm-plus-more">+ Italy, Belgium, Netherlands and more monitored</div>
         <div class="rm-down">&#8595;</div>
         <div class="rm-engine">
-          <div class="rm-engine-label">Mandate Change Engine</div>
+          <div class="rm-engine-label">We detect it and translate it into work items</div>
           <div class="rm-engine-sub">EUR-Lex &middot; Official portals &middot; Peppol specs</div>
         </div>
         <div class="rm-down">&#8595;</div>
+        <div class="rm-step-label">...routed to the right internal owner before it becomes a fire</div>
         <div class="rm-owner"><div class="rm-owner-name">Finance Systems</div><div class="rm-owner-sub">ERP config / format mapping</div></div>
         <div class="rm-owner"><div class="rm-owner-name">Tax / Compliance</div><div class="rm-owner-sub">VAT rules / mandate scope</div></div>
         <div class="rm-owner"><div class="rm-owner-name">AP Operations</div><div class="rm-owner-sub">Inbound ingestion / 3-way match</div></div>
