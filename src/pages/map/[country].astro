@@ -395,6 +395,15 @@ function getValTip(field: string, val: string | null | undefined): string | unde
     footer p { font-size: 0.8rem; color: #6b7280; }
     footer a { color: #2563eb; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      main { padding: 28px 1.25rem 60px; }
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 20px 1rem 48px; }
+      .country-cta-link { display: block; text-align: center; box-sizing: border-box; }
+    }
   </style>
 </head>
 <body>

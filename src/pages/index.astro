@@ -2101,6 +2101,54 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     @media (max-width: 540px) {
       .orch-nodes { grid-template-columns: repeat(3, 1fr); }
     }
+
+    /* ===== MOBILE RESPONSIVE ===== */
+
+    /* Routing CTA grid - class-based so we can override in media queries */
+    .routing-cta-section { background: #f1f5f9; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; padding: 64px 2rem; }
+    .routing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+    @media (max-width: 768px) {
+      .section { padding: 56px 1.25rem; }
+      .hero { padding: 64px 1.25rem 52px; }
+      .stats-bar { padding: 40px 1.25rem; }
+      .clocks-section { padding: 56px 1.25rem; }
+      .calc-section { padding: 56px 1.25rem; }
+      .routing-cta-section { padding: 48px 1.25rem; }
+      .routing-grid { grid-template-columns: 1fr; }
+
+      .country-grid { grid-template-columns: repeat(2, 1fr); }
+      .tile-btn { padding: 6px 4px; font-size: 0.65rem; min-height: 28px; }
+      .tile-head { font-size: 0.7rem; }
+      .calc-inputs { padding: 24px 20px; }
+      .calc-output { position: static; }
+
+      .co-row { flex-wrap: wrap; gap: 6px; }
+      .co-row-label { white-space: normal; }
+
+      .meth-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      footer { padding: 24px 1.25rem; }
+      .disclaimer { padding: 16px 1.25rem; }
+    }
+
+    @media (max-width: 480px) {
+      .section { padding: 44px 1rem; }
+      .hero { padding: 48px 1rem 40px; }
+      .stats-bar { padding: 32px 1rem; }
+      .clocks-section { padding: 40px 1rem; }
+      .calc-section { padding: 44px 1rem; }
+      .routing-cta-section { padding: 36px 1rem; }
+
+      .country-grid { grid-template-columns: repeat(2, 1fr); }
+      .tile-btn { padding: 8px 4px; font-size: 0.68rem; min-height: 32px; }
+      .tile-head { font-size: 0.68rem; }
+
+      .co-hero-num { font-size: 1.7rem; }
+      .calc-inputs { padding: 20px 16px; }
+      .disclaimer { padding: 14px 1rem; }
+      footer { padding: 20px 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -2574,9 +2622,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 </div>
 
 <!-- ROUTING CTAs -->
-<section style="background:#f1f5f9;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:64px 2rem;">
+<section class="routing-cta-section">
   <div style="max-width:900px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+    <div class="routing-grid">
 
       <!-- Enterprise -->
       <a href="/for-enterprises/" style="display:flex;flex-direction:column;background:#0f1f35;border-left:4px solid #3b82f6;border-radius:12px;padding:32px 32px 36px;text-decoration:none;transition:box-shadow 0.2s,transform 0.2s;" onmouseover="this.style.boxShadow='0 12px 40px rgba(15,31,53,0.35)';this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='none';this.style.transform='none';">
@@ -2995,6 +3043,45 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   .mec-conf-text { font-size: 11px; color: #475569; }
 
   .map-sources-outer { background: #1a2b3c; padding: 0 48px 32px 48px; border-top: 1px solid #243447; }
+
+  /* ===== MAP SECTION MOBILE ===== */
+  @media (max-width: 768px) {
+    .map-embed-section {
+      flex-direction: column;
+      min-height: auto;
+    }
+    .map-embed-left {
+      flex: none;
+      padding: 24px 20px 16px;
+      border-right: none;
+      border-bottom: 2px solid #3a5570;
+      overflow: visible;
+    }
+    .map-embed-svg-wrap { display: none; }
+    .map-embed-legend { display: none; }
+    .map-embed-right {
+      height: auto;
+      min-height: 160px;
+      position: static;
+      overflow-y: visible;
+    }
+    .map-embed-empty {
+      height: auto;
+      min-height: 100px;
+      padding: 28px 20px;
+    }
+    .map-embed-panel { padding: 20px 20px 32px; }
+    .map-sources-outer { padding: 0 20px 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .map-embed-left { padding: 20px 16px 12px; }
+    .map-embed-btn { padding: 5px 8px; font-size: 10px; }
+    .map-embed-top h2 { font-size: 18px; }
+    .mec-dates { grid-template-columns: 1fr; }
+    .mec-header { flex-wrap: wrap; }
+    .mec-full-btn { width: 100%; text-align: center; box-sizing: border-box; }
+  }
 </style>
 
 <script is:inline>
