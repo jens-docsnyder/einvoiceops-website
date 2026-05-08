@@ -2182,7 +2182,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   <h1>E-invoicing mandates create work across AP, AR, Tax and IT - none of it coordinates itself.</h1>
   <p class="hero-sub">We map what each function needs to do, route it to named owners, and keep it current as mandates change.</p>
   <div class="hero-actions">
-    <a href="#calculator" class="btn-primary">See the cost it creates</a>
+    <a href="#calculator" class="btn-primary">See what each mandate costs your business</a>
     <a href="#map" class="btn-ghost">See what each country requires</a>
   </div>
 </section>
@@ -2232,8 +2232,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           <p class="calc-section-label">For each country: <strong>New for us</strong> = first-time setup, incl. M&amp;A additions. <strong>Stay compliant</strong> = mandate live, track ongoing changes to stay compliant.</p>
           <div class="country-grid">
             <div class="country-group-head">Upcoming B2B</div>
-            <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PDP · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>B2B · Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PA · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay compliant</button></div></div>
+            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>Receiving live · Sending Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="de" onclick="tileToggle(this)" title="Inbound mandatory since Jan 2025">Stay compliant</button></div></div>
             <div class="country-tile"><div class="tile-head">🇪🇸 Spain <span>Verifactu · 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="es" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="Not yet live">Stay compliant</button></div></div>
             <div class="country-group-head">Live B2B clearance</div>
             <div class="country-tile"><div class="tile-head">🇵🇱 Poland <span>KSeF · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pl" onclick="tileToggle(this)">Stay compliant</button></div></div>
@@ -3161,7 +3161,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   // Initial readiness hours per mandate per entity (Ardent Partners / Gartner 2024-26 + Gemini research May 2026)
   const MANDATE_BASE = {
     // Upcoming B2B
-    fr: { name: "France PDP",             low: 270,  high: 405  },
+    fr: { name: "France PA",              low: 270,  high: 405  },
     de: { name: "Germany B2B",            low: 270,  high: 405  },
     es: { name: "Spain Verifactu",        low: 240,  high: 360  },
     // Live B2B clearance
