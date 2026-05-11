@@ -3206,17 +3206,13 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
   /* ===== WIZARD MOBILE ===== */
   @media (max-width: 540px) {
-    /* Step 1: 3-column country grid instead of 4 */
-    .country-sel-grid { grid-template-columns: repeat(3, 1fr); }
+    /* Step 1: 2-column country grid — 3 columns clips flags at ~101px cells */
+    .country-sel-grid { grid-template-columns: repeat(2, 1fr); }
 
     /* Step 2: stack label above buttons so wide nowrap buttons don't overflow */
     .cdir { flex-direction: column; align-items: flex-start; gap: 4px; }
     .cdir-btns { flex-wrap: wrap; gap: 4px; }
     .cbtn { font-size: 0.65rem; padding: 0 10px; height: 28px; }
-  }
-
-  @media (max-width: 360px) {
-    .country-sel-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
