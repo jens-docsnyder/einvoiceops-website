@@ -1230,6 +1230,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .calc-inputs {
       display: flex;
       flex-direction: column;
+      min-width: 0;
     }
 
     .calc-field {
@@ -2978,7 +2979,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   .wiz-num { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; flex-shrink: 0; white-space: nowrap; transition: background 0.18s, color 0.18s; }
   .wiz-step.open .wiz-num { background: #2563eb; color: #fff; border-color: #2563eb; }
 
-  .wiz-title { font-size: 0.875rem; font-weight: 700; color: #0f172a; flex: 1; line-height: 1.3; }
+  .wiz-title { font-size: 0.875rem; font-weight: 700; color: #0f172a; flex: 1; min-width: 0; line-height: 1.3; }
   .wiz-step.locked .wiz-title { color: #94a3b8; }
 
   .wiz-summary { font-size: 0.7rem; color: #2563eb; font-weight: 600; white-space: nowrap; }
@@ -3201,6 +3202,21 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     .mec-dates { grid-template-columns: 1fr; }
     .mec-header { flex-wrap: wrap; }
     .mec-full-btn { width: 100%; text-align: center; box-sizing: border-box; }
+  }
+
+  /* ===== WIZARD MOBILE ===== */
+  @media (max-width: 540px) {
+    /* Step 1: 3-column country grid instead of 4 */
+    .country-sel-grid { grid-template-columns: repeat(3, 1fr); }
+
+    /* Step 2: stack label above buttons so wide nowrap buttons don't overflow */
+    .cdir { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .cdir-btns { flex-wrap: wrap; gap: 4px; }
+    .cbtn { font-size: 0.65rem; padding: 0 10px; height: 28px; }
+  }
+
+  @media (max-width: 360px) {
+    .country-sel-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
