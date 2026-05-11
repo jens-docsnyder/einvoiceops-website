@@ -1217,10 +1217,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
     .calc-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 56fr 44fr;
       gap: 40px;
       align-items: start;
-      margin-top: 48px;
+      margin-top: 44px;
     }
 
     @media (max-width: 720px) {
@@ -1228,10 +1228,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
 
     .calc-inputs {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 32px;
+      display: flex;
+      flex-direction: column;
     }
 
     .calc-field {
@@ -1521,12 +1519,29 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
 
     /* ---- CALC OUTPUT ---- */
+    .calc-placeholder-block {
+      background: rgba(37,99,235,0.05);
+      border: 2px solid rgba(37,99,235,0.2);
+      border-radius: 14px;
+      padding: 36px 24px;
+      text-align: center;
+      animation: erp-warn-pulse 2.5s ease-in-out infinite;
+    }
+    .calc-placeholder-block p {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.75;
+      margin: 0;
+    }
+    .calc-placeholder-block strong { color: #2563eb; }
+
     .calc-output {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       position: sticky;
-      top: 76px;
+      top: 84px;
     }
 
     /* ---- OUTPUT PANEL: YEAR 1 TOTAL ---- */
@@ -1538,16 +1553,25 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       display: none;
     }
     .co-hero-header {
-      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-      padding: 20px 22px 18px;
+      background: linear-gradient(160deg, #1a3a5c 0%, #0c1a2e 100%);
+      padding: 22px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+    .co-hero-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
     }
     .co-hero-label {
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      color: rgba(255,255,255,0.62);
-      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .co-hero-range {
       display: flex;
@@ -1556,16 +1580,17 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       margin-bottom: 12px;
     }
     .co-hero-num {
-      font-size: 2.1rem;
+      font-size: 2.6rem;
       font-weight: 900;
       color: #fff;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
       line-height: 1;
     }
     .co-hero-sep {
-      font-size: 1.2rem;
-      font-weight: 300;
-      color: rgba(255,255,255,0.35);
+      font-size: 1.4rem;
+      font-weight: 200;
+      color: rgba(255,255,255,0.3);
+      margin: 0 2px;
     }
     .co-hero-tags {
       display: flex;
@@ -1585,7 +1610,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       white-space: nowrap;
     }
     .co-breakdown {
-      padding: 4px 20px 12px;
+      padding: 6px 24px 16px;
+      background: #fff;
       display: flex;
       flex-direction: column;
     }
@@ -1594,8 +1620,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #D1D5DB;
+      padding: 11px 0;
+      border-bottom: 1px solid #f1f5f9;
     }
     .co-row:last-child { border-bottom: none; }
     .co-row-label {
@@ -1614,9 +1640,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       display: flex;
       align-items: center;
       gap: 3px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #1E293B;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #0f172a;
       white-space: nowrap;
     }
     .co-row-sep { color: #9CA3AF; font-weight: 400; }
@@ -2219,109 +2245,120 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 <section class="calc-section" id="calculator">
   <div class="calc-inner">
     <span class="eyebrow">Internal preparation cost</span>
-    <h2 class="section-h">What mandate readiness costs for an enterprise</h2>
-    <p class="section-lead">Select your EU mandate footprint. See what compliance actually costs your team - internal hours only, before any vendor.</p>
+    <h2 class="section-h">What e-invoice mandates are actually costing your team</h2>
+    <p class="section-lead">Source-verified across 29 European jurisdictions.</p>
 
     <div class="calc-layout">
 
       <!-- INPUTS -->
       <div class="calc-inputs">
 
-        <div class="calc-field">
-          <label class="calc-label">Your European mandate footprint</label>
-          <p class="calc-section-label">For each country: <strong>New for us</strong> = first-time setup, incl. M&amp;A additions. <strong>Stay compliant</strong> = mandate live, track ongoing changes to stay compliant.</p>
-          <div class="country-grid">
-            <div class="country-group-head">Upcoming B2B</div>
-            <div class="country-tile"><div class="tile-head">🇫🇷 France <span>PA · Sept 2026</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fr" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="B2B not yet live">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇩🇪 Germany <span>Receiving live · Sending Jan 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="de" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="de" onclick="tileToggle(this)" title="Inbound mandatory since Jan 2025">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇪🇸 Spain <span>Verifactu · 2027</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="es" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="Not yet live">Stay compliant</button></div></div>
-            <div class="country-group-head">Live B2B clearance</div>
-            <div class="country-tile"><div class="tile-head">🇵🇱 Poland <span>KSeF · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pl" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇮🇹 Italy <span>SdI · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="it" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="it" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇬🇷 Greece <span>myDATA · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="gr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="gr" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇭🇺 Hungary <span>RTIR · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hu" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇭🇷 Croatia <span>Fiscalization · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="hr" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="hr" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇷🇴 Romania <span>e-Factura · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ro" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ro" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇧🇪 Belgium <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="be" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="be" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-group-head">Live B2G / Peppol</div>
-            <div class="country-tile"><div class="tile-head">🇵🇹 Portugal <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="pt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="pt" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇩🇰 Denmark <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="dk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="dk" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇸🇪 Sweden <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="se" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="se" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇫🇮 Finland <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="fi" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="fi" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇳🇱 Netherlands <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="nl" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="nl" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇳🇴 Norway <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="no" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="no" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇦🇹 Austria <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="at" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="at" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇸🇰 Slovakia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="sk" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="sk" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇨🇭 Switzerland <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ch" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ch" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇱🇻 Latvia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lv" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lv" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇱🇹 Lithuania <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lt" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lt" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇸🇮 Slovenia <span>B2G · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="si" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="si" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇪🇪 Estonia <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ee" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="ee" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇱🇺 Luxembourg <span>Peppol · Live</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="lu" data-live="1" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" data-code="lu" onclick="tileToggle(this)">Stay compliant</button></div></div>
-            <div class="country-group-head">ViDA horizon — no active mandate</div>
-            <div class="country-tile"><div class="tile-head">🇨🇿 Czech Rep. <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cz" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇮🇪 Ireland <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="ie" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇧🇬 Bulgaria <span>ViDA prep</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="bg" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇲🇹 Malta <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="mt" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
-            <div class="country-tile"><div class="tile-head">🇨🇾 Cyprus <span>B2G only</span></div><div class="tile-btns"><button class="tile-btn tile-ready" data-code="cy" data-live="0" onclick="tileToggle(this)">New for us</button><button class="tile-btn tile-maint" disabled title="No active mandate">Stay compliant</button></div></div>
+        <!-- STEP 1 -->
+        <div class="wiz-step" id="wstep-1">
+          <button class="wiz-header" onclick="wizToggle(1)">
+            <span class="wiz-num">Step 1</span>
+            <span class="wiz-title">Select your country footprint</span>
+            <span class="wiz-summary" id="ws1-summary"></span>
+            <span class="wiz-chevron">&#9660;</span>
+          </button>
+          <div class="wiz-body" id="ws1-body" style="display:none">
+            <div class="country-sel-grid" id="country-sel-grid"></div>
+            <button class="wiz-next" id="ws1-next" onclick="wizNext(1)" disabled>Confirm selection &#8594;</button>
           </div>
         </div>
 
-        <div class="calc-field" id="calc-erp-field">
-          <label class="calc-label" id="calc-erp-label">ERP environment <span id="calc-erp-sub" style="font-weight:400;color:var(--muted)">(select all that apply)</span></label>
-          <div class="mandate-checks" id="erp-checks">
-            <label class="mandate-check" id="chk-netsuite">
-              <input type="checkbox" name="calc-erp" value="netsuite" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-check-label">NetSuite</span>
-            </label>
-            <label class="mandate-check" id="chk-dynamics">
-              <input type="checkbox" name="calc-erp" value="dynamics" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-check-label">Microsoft Dynamics 365</span>
-            </label>
-            <label class="mandate-check" id="chk-sap">
-              <input type="checkbox" name="calc-erp" value="sap" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-check-label">SAP S/4HANA</span>
-            </label>
-            <label class="mandate-check" id="chk-oracle">
-              <input type="checkbox" name="calc-erp" value="oracle" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-check-label">Oracle Cloud ERP</span>
-            </label>
-            <label class="mandate-check" id="chk-sage">
-              <input type="checkbox" name="calc-erp" value="sage" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-check-label">Sage X3</span>
-            </label>
-            <label class="mandate-check" id="chk-erp-other">
-              <input type="checkbox" name="calc-erp" value="other" onchange="calcUpdate(); toggleCheck(this)">
-              <span class="mandate-check-label">Other / not sure</span>
-            </label>
+        <!-- STEP 2 -->
+        <div class="wiz-step locked" id="wstep-2">
+          <button class="wiz-header" onclick="wizToggle(2)">
+            <span class="wiz-num">Step 2</span>
+            <span class="wiz-title">Which are new, which are you already compliant in?</span>
+            <span class="wiz-summary" id="ws2-summary"></span>
+            <span class="wiz-chevron">&#9660;</span>
+          </button>
+          <div class="wiz-body" id="ws2-body" style="display:none">
+            <div class="clist" id="cat-list"></div>
+            <button class="wiz-next" id="ws2-next" onclick="wizNext(2)">Confirm &amp; select ERP &#8594;</button>
           </div>
         </div>
 
-        <div class="calc-field">
-          <label class="calc-label">Your team's blended hourly rate</label>
-          <div class="radio-group">
-            <label class="radio-option" id="rate-lean">
-              <input type="radio" name="calc-rate" value="85" onchange="calcUpdate(); toggleRadioGroup('rate')">
-              <span class="radio-label">€85 / hour</span>
-              <span class="radio-sub">Lean finance team</span>
-            </label>
-            <label class="radio-option checked" id="rate-cross">
-              <input type="radio" name="calc-rate" value="100" checked onchange="calcUpdate(); toggleRadioGroup('rate')">
-              <span class="radio-label">€100 / hour</span>
-              <span class="radio-sub">Finance + Tax + ERP</span>
-            </label>
-            <label class="radio-option" id="rate-enterprise">
-              <input type="radio" name="calc-rate" value="120" onchange="calcUpdate(); toggleRadioGroup('rate')">
-              <span class="radio-label">€120 / hour</span>
-              <span class="radio-sub">Enterprise specialists</span>
-            </label>
+        <!-- STEP 3 -->
+        <div class="wiz-step locked" id="wstep-3">
+          <button class="wiz-header" onclick="wizToggle(3)">
+            <span class="wiz-num">Step 3</span>
+            <span class="wiz-title">What&#39;s your ERP?</span>
+            <span class="wiz-summary" id="ws3-summary"></span>
+            <span class="wiz-chevron">&#9660;</span>
+          </button>
+          <div class="wiz-body" id="ws3-body" style="display:none">
+            <p class="calc-section-label" style="margin-top:10px">Select all that apply.</p>
+            <div class="mandate-checks" id="erp-checks">
+              <label class="mandate-check" id="chk-netsuite">
+                <input type="checkbox" name="calc-erp" value="netsuite" onchange="calcUpdate();toggleCheck(this);wizUpdateStep3()">
+                <span class="mandate-check-label">NetSuite</span>
+              </label>
+              <label class="mandate-check" id="chk-dynamics">
+                <input type="checkbox" name="calc-erp" value="dynamics" onchange="calcUpdate();toggleCheck(this);wizUpdateStep3()">
+                <span class="mandate-check-label">Microsoft Dynamics 365</span>
+              </label>
+              <label class="mandate-check" id="chk-sap">
+                <input type="checkbox" name="calc-erp" value="sap" onchange="calcUpdate();toggleCheck(this);wizUpdateStep3()">
+                <span class="mandate-check-label">SAP S/4HANA</span>
+              </label>
+              <label class="mandate-check" id="chk-oracle">
+                <input type="checkbox" name="calc-erp" value="oracle" onchange="calcUpdate();toggleCheck(this);wizUpdateStep3()">
+                <span class="mandate-check-label">Oracle Cloud ERP</span>
+              </label>
+              <label class="mandate-check" id="chk-sage">
+                <input type="checkbox" name="calc-erp" value="sage" onchange="calcUpdate();toggleCheck(this);wizUpdateStep3()">
+                <span class="mandate-check-label">Sage X3</span>
+              </label>
+              <label class="mandate-check" id="chk-erp-other">
+                <input type="checkbox" name="calc-erp" value="other" onchange="calcUpdate();toggleCheck(this);wizUpdateStep3()">
+                <span class="mandate-check-label">Other / not sure</span>
+              </label>
+            </div>
+            <button class="wiz-next" id="ws3-next" onclick="wizNext(3)">Confirm &amp; select hourly rate &#8594;</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="wiz-step locked" id="wstep-4">
+          <button class="wiz-header" onclick="wizToggle(4)">
+            <span class="wiz-num">Step 4</span>
+            <span class="wiz-title">What&#39;s your blended hourly rate?</span>
+            <span class="wiz-summary" id="ws4-summary"></span>
+            <span class="wiz-chevron">&#9660;</span>
+          </button>
+          <div class="wiz-body" id="ws4-body" style="display:none">
+            <div class="radio-group" style="margin-top:10px">
+              <label class="radio-option" id="rate-lean">
+                <input type="radio" name="calc-rate" value="85" onchange="calcUpdate();toggleRadioGroup('rate');wizUpdateStep4()">
+                <span class="radio-label">&#8364;85 / hour</span>
+                <span class="radio-sub">Lean finance team</span>
+              </label>
+              <label class="radio-option checked" id="rate-cross">
+                <input type="radio" name="calc-rate" value="100" checked onchange="calcUpdate();toggleRadioGroup('rate');wizUpdateStep4()">
+                <span class="radio-label">&#8364;100 / hour</span>
+                <span class="radio-sub">Finance + Tax + ERP</span>
+              </label>
+              <label class="radio-option" id="rate-enterprise">
+                <input type="radio" name="calc-rate" value="120" onchange="calcUpdate();toggleRadioGroup('rate');wizUpdateStep4()">
+                <span class="radio-label">&#8364;120 / hour</span>
+                <span class="radio-sub">Enterprise specialists</span>
+              </label>
+            </div>
+            <button class="wiz-next" id="ws4-confirm" onclick="wizShowOutput()">Confirm &amp; show budget exposure &#8594;</button>
           </div>
         </div>
 
       </div>
-
-      <!-- OUTPUT -->
+            <!-- OUTPUT -->
       <div class="calc-output">
+
+        <!-- PLACEHOLDER -->
+        <div id="calc-placeholder" class="calc-placeholder-block">
+          <p>Complete all four steps,<br>then click <strong>Confirm &amp; show<br>budget exposure</strong>.</p>
+        </div>
 
         <!-- OUTPUT HERO: YEAR 1 TOTAL -->
         <div class="co-hero" id="co-hero">
@@ -2372,7 +2409,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           </div>
         </div>
         <!-- 6. CTA -->
-        <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:4px">Pressure-test this estimate</a>
+        <a href="#contact" class="btn-primary" id="calc-cta" style="display:none;text-align:center;margin-top:4px">Pressure-test this estimate</a>
 
         <!-- 7. METHODOLOGY - collapsible -->
         <div class="calc-methodology">
@@ -2618,8 +2655,13 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 </div>
 
 <!-- BRIDGE CTA -->
-<div style="background:#1a2b3c;padding:40px 2rem;text-align:center;border-top:1px solid #243447;">
-  <a href="#contact" class="btn-primary">Tell us your footprint</a>
+<div style="background:#fff;padding:80px 2rem;text-align:center;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;">
+  <div style="max-width:560px;margin:0 auto;">
+    <p style="font-size:0.75rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#2563eb;margin-bottom:20px;">Readiness Sprint</p>
+    <h2 style="font-size:2rem;font-weight:800;color:#0f172a;letter-spacing:-0.03em;line-height:1.2;margin-bottom:14px;">The landscape is clear. Your position in it isn&#39;t.</h2>
+    <p style="font-size:1rem;color:#64748b;line-height:1.6;margin-bottom:36px;">Tell us your footprint and we&#39;ll scope it with you.</p>
+    <a href="#contact" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:0.95rem;font-weight:700;padding:14px 28px;border-radius:10px;text-decoration:none;transition:background 0.12s;" onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='#2563eb'">Get in touch &#8594;</a>
+  </div>
 </div>
 
 <!-- ROUTING CTAs -->
@@ -2629,17 +2671,17 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
       <!-- Enterprise -->
       <a href="/for-enterprises/" style="display:flex;flex-direction:column;background:#0f1f35;border-left:4px solid #3b82f6;border-radius:12px;padding:32px 32px 36px;text-decoration:none;transition:box-shadow 0.2s,transform 0.2s;" onmouseover="this.style.boxShadow='0 12px 40px rgba(15,31,53,0.35)';this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='none';this.style.transform='none';">
-        <span style="font-size:1rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#60a5fa;margin-bottom:22px;display:block;min-height:3.2rem;">For enterprise finance teams</span>
-        <h3 style="font-size:1.4rem;font-weight:800;color:#f1f5f9;line-height:1.2;letter-spacing:-0.025em;margin-bottom:16px;">Finance owns it. Tax owns it. IT owns it. Nobody coordinates it.</h3>
-        <p style="font-size:0.88rem;color:#94a3b8;line-height:1.6;margin-bottom:36px;flex:1;">We map it. We route it to the right owner. We keep it current.</p>
+        <span style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#60a5fa;margin-bottom:18px;display:block;">For enterprise finance teams</span>
+        <h3 style="font-size:1.3rem;font-weight:800;color:#f1f5f9;line-height:1.25;letter-spacing:-0.02em;margin-bottom:14px;">Finance, Tax, and IT all own a piece. Nobody owns the deadline.</h3>
+        <p style="font-size:0.88rem;color:#94a3b8;line-height:1.6;margin-bottom:36px;flex:1;">We map each function's work, route it to the named owner, and keep it current.</p>
         <span style="display:inline-flex;align-items:center;gap:8px;font-size:0.85rem;font-weight:700;color:#fff;background:#2563eb;border-radius:8px;padding:12px 20px;width:fit-content;">See the Readiness Sprint &#8594;</span>
       </a>
 
       <!-- SP -->
       <a href="/for-service-providers/" style="display:flex;flex-direction:column;background:#0c2320;border-left:4px solid #0d9488;border-radius:12px;padding:32px 32px 36px;text-decoration:none;transition:box-shadow 0.2s,transform 0.2s;" onmouseover="this.style.boxShadow='0 12px 40px rgba(12,35,32,0.35)';this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='none';this.style.transform='none';">
-        <span style="font-size:1rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#2dd4bf;margin-bottom:22px;display:block;min-height:3.2rem;">For finance platform service providers</span>
-        <h3 style="font-size:1.4rem;font-weight:800;color:#f1f5f9;line-height:1.2;letter-spacing:-0.025em;margin-bottom:16px;">Your customers ask what their team needs to do. Your platform doesn't answer that.</h3>
-        <p style="font-size:0.88rem;color:#94a3b8;line-height:1.6;margin-bottom:36px;flex:1;">We answer it. Delivered as your service, under your brand.</p>
+        <span style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#2dd4bf;margin-bottom:18px;display:block;">For finance platform service providers</span>
+        <h3 style="font-size:1.3rem;font-weight:800;color:#f1f5f9;line-height:1.25;letter-spacing:-0.02em;margin-bottom:14px;">You handle the connection. That alone doesn't ready your customer's ERP.</h3>
+        <p style="font-size:0.88rem;color:#94a3b8;line-height:1.6;margin-bottom:36px;flex:1;">We close that gap. Delivered under your brand.</p>
         <span style="display:inline-flex;align-items:center;gap:8px;font-size:0.85rem;font-weight:700;color:#fff;background:#0d9488;border-radius:8px;padding:12px 20px;width:fit-content;">See how white-label delivery works &#8594;</span>
       </a>
 
@@ -2656,11 +2698,11 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     <div class="faq-list">
       <div class="faq-item open">
         <button class="faq-q" onclick="toggleFaq(this)">
-          What exactly are EU e-invoicing mandates?
+          What exactly are European e-invoicing mandates?
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          Several EU countries have passed laws requiring companies to use structured electronic invoice formats instead of PDF. The specifics vary significantly by country. France and Poland use clearance platforms: invoices must be validated by a government or certified platform before they reach the recipient, so any data error stops the invoice from going through. Germany and Belgium require structured formats exchanged directly between trading partners, with no central government platform. Each country has its own technical format, its own registration requirements, and its own timeline for when companies must start receiving and when they must start issuing. France, Poland, Germany, Belgium, Romania, and Italy all have active or imminent mandates affecting B2B transactions.
+          Several European countries have passed laws requiring companies to use structured electronic invoice formats instead of PDF. The specifics vary significantly by country. France and Poland use clearance platforms: invoices must be validated by a government or certified platform before they reach the recipient, so any data error stops the invoice from going through. Germany and Belgium require structured formats exchanged directly between trading partners, with no central government platform. Each country has its own technical format, its own registration requirements, and its own timeline for when companies must start receiving and when they must start issuing. France, Poland, Germany, Belgium, Romania, and Italy all have active or imminent mandates affecting B2B transactions across Europe.
         </div>
       </div>
       <div class="faq-item">
@@ -2710,10 +2752,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What exactly are EU e-invoicing mandates?",
+      "name": "What exactly are European e-invoicing mandates?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Several EU countries have passed laws requiring structured electronic invoicing instead of PDF. The approach differs by country: France and Poland use clearance platforms where invoices must be validated before reaching the recipient. Germany and Belgium require structured XML formats exchanged directly between trading partners, with no central government platform. Each country has its own format, registration requirements, and timeline. France, Poland, Germany, Belgium, Romania, and Italy all have active or imminent mandates affecting B2B transactions."
+        "text": "Several European countries have passed laws requiring structured electronic invoicing instead of PDF. The approach differs by country: France and Poland use clearance platforms where invoices must be validated before reaching the recipient. Germany and Belgium require structured XML formats exchanged directly between trading partners, with no central government platform. Each country has its own format, registration requirements, and timeline. France, Poland, Germany, Belgium, Romania, and Italy all have active or imminent mandates affecting B2B transactions."
       }
     },
     {
@@ -2923,7 +2965,78 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   })();
 </script>
 
+
 <style is:global>
+  /* ── WIZARD STEPS ── */
+  .wiz-step { border: 1.5px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 8px; background: #fff; transition: border-color 0.18s, box-shadow 0.18s; scroll-margin-top: 72px; }
+  .wiz-step.open { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.07); }
+  .wiz-step.locked { opacity: 0.36; pointer-events: none; }
+
+  .wiz-header { width: 100%; background: none; border: none; cursor: pointer; padding: 14px 18px; display: flex; align-items: center; gap: 12px; font-family: inherit; text-align: left; }
+  .wiz-step:not(.locked) .wiz-header:hover { background: #f8fafc; }
+
+  .wiz-num { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; flex-shrink: 0; white-space: nowrap; transition: background 0.18s, color 0.18s; }
+  .wiz-step.open .wiz-num { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+  .wiz-title { font-size: 0.875rem; font-weight: 700; color: #0f172a; flex: 1; line-height: 1.3; }
+  .wiz-step.locked .wiz-title { color: #94a3b8; }
+
+  .wiz-summary { font-size: 0.7rem; color: #2563eb; font-weight: 600; white-space: nowrap; }
+  .wiz-chevron { font-size: 0.6rem; color: #94a3b8; transition: transform 0.2s; flex-shrink: 0; margin-left: 2px; }
+  .wiz-step.open .wiz-chevron { transform: rotate(180deg); }
+
+  .wiz-body { padding: 12px 16px 16px; border-top: 1px solid #e2e8f0; }
+
+  .wiz-next { margin-top: 18px; width: 100%; padding: 11px 16px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.12s, opacity 0.12s; letter-spacing: -0.01em; }
+  .wiz-next:hover:not([disabled]) { background: #1d4ed8; }
+  .wiz-next[disabled] { opacity: 0.28; cursor: not-allowed; }
+
+  /* ── Step 1: country selector grid ── */
+  .country-sel-grid { margin-top: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+
+  .cs-group-head { grid-column: 1 / -1; font-size: 0.57rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: #94a3b8; padding: 8px 0 3px; border-top: 1px solid #e2e8f0; margin-top: 2px; }
+  .cs-group-head:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .cs-row { display: flex; align-items: center; gap: 5px; padding: 6px 7px; border-radius: 7px; border: 1.5px solid #e2e8f0; cursor: pointer; transition: border-color 0.12s, background 0.12s; user-select: none; }
+  .cs-row:hover { border-color: #93c5fd; background: #f0f6ff; }
+  .cs-row.selected { border-color: #2563eb; background: #eff6ff; }
+
+  .cs-flag { font-size: 0.88rem; flex-shrink: 0; line-height: 1; }
+  .cs-name { font-size: 0.7rem; font-weight: 600; color: #334155; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .cs-tick { width: 13px; height: 13px; border: 2px solid #cbd5e1; border-radius: 3px; flex-shrink: 0; position: relative; background: #fff; transition: all 0.12s; }
+  .cs-row.selected .cs-tick { background: #2563eb; border-color: #2563eb; }
+  .cs-row.selected .cs-tick::after { content: ''; position: absolute; left: 1px; top: 3px; width: 7px; height: 4px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg); }
+
+  /* ── Step 2: 2-row per country ── */
+  .clist { margin-top: 12px; display: flex; flex-direction: column; gap: 7px; }
+  .crow { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; }
+  .cinfo { }
+  .cname { display: block; font-size: 1rem; font-weight: 700; color: #1e293b; }
+  .chint { display: block; font-size: 0.7rem; color: #94a3b8; margin-top: 2px; }
+  .cdirs { display: flex; flex-direction: column; gap: 5px; }
+  .cdir { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .cdir-lbl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; white-space: nowrap; flex-shrink: 0; }
+  .send-lbl { color: #64748b; }
+  .recv-lbl { color: #64748b; }
+  .cdir-btns { display: flex; gap: 5px; }
+  .cbtn { display: inline-flex; align-items: center; justify-content: center; height: 30px; padding: 0 13px; border-radius: 15px; border: 1.5px solid transparent; background: #f1f5f9; color: #64748b; font-size: 0.72rem; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.15s; white-space: nowrap; -webkit-appearance: none; appearance: none; }
+  .cbtn:hover:not(:disabled) { background: #e2e8f0; color: #334155; }
+  .cbtn:disabled { opacity: 0.28; cursor: not-allowed; }
+  .send-live.on, .send-new.on { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 700; }
+  .recv-live.on, .recv-new.on { background: #16a34a; border-color: #16a34a; color: #fff; font-weight: 700; }
+
+  @keyframes crow-warn-pulse {
+    0%, 100% { border-color: #e2e8f0; }
+    50% { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.15); }
+  }
+  .crow-warn { animation: crow-warn-pulse 0.55s ease-in-out 3; }
+
+  @keyframes result-hum {
+    0%   { box-shadow: 0 0 0 0 rgba(251,191,36,0); }
+    40%  { box-shadow: 0 0 0 14px rgba(251,191,36,0.22), 0 0 40px rgba(251,191,36,0.1); }
+    100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); }
+  }
   @keyframes erp-warn-pulse {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0.35; }
@@ -3155,70 +3268,78 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
   /* ---- CALCULATOR ---- */
 
-  // Base hours = readiness-only per mandate per entity
-  // Low = 600h full impl × 45% readiness fraction; High = 900h × 45%
-  // Source: Ardent Partners / Gartner 2024-26 lighter ERP benchmarks
-  // Initial readiness hours per mandate per entity (Ardent Partners / Gartner 2024-26 + Gemini research May 2026)
+  // Readiness hours split by direction: send = outbound (issuing), recv = inbound (receiving)
+  // Source: Gemini Deep Research May 2026 cross-validated against Sovos/EDICOM/BMF aggregator pass 2026-05-11
+  // Full methodology: Product Research/Cost Model — Send-Receive Split Research.md
   const MANDATE_BASE = {
-    // Upcoming B2B
-    fr: { name: "France PA",              low: 270,  high: 405  },
-    de: { name: "Germany B2B",            low: 270,  high: 405  },
-    es: { name: "Spain Verifactu",        low: 240,  high: 360  },
+    // Upcoming B2B (2026/2027)
+    fr: { name: "France PA",             send: {low: 175, high: 265}, recv: {low:  95, high: 140} },
+    de: { name: "Germany XRechnung",     send: {low: 150, high: 225}, recv: {low: 120, high: 180} },
+    es: { name: "Spain Verifactu",       send: {low: 155, high: 235}, recv: {low:  85, high: 125} },
+    sk: { name: "Slovakia IS EFA",       send: {low:  80, high: 175}, recv: {low:  60, high: 140} },
+    bg: { name: "Bulgaria NEFS",         send: {low: 105, high: 195}, recv: {low:  45, high:  85} },
     // Live B2B clearance
-    pl: { name: "Poland KSeF",            low: 290,  high: 430  },
-    it: { name: "Italy SdI",              low: 160,  high: 240  },
-    gr: { name: "Greece myDATA",          low: 220,  high: 480  },
-    hu: { name: "Hungary RTIR",           low: 200,  high: 420  },
-    hr: { name: "Croatia Fiscalization",  low: 180,  high: 400  },
-    ro: { name: "Romania e-Factura",      low: 200,  high: 300  },
-    be: { name: "Belgium Peppol",         low: 200,  high: 300  },
-    // B2G / Peppol standard
-    pt: { name: "Portugal",               low: 150,  high: 380  },
-    dk: { name: "Denmark Peppol",         low: 120,  high: 300  },
-    sk: { name: "Slovakia",               low: 100,  high: 260  },
-    no: { name: "Norway Peppol",          low: 80,   high: 200  },
-    se: { name: "Sweden Peppol",          low: 80,   high: 200  },
-    fi: { name: "Finland Peppol",         low: 80,   high: 210  },
-    nl: { name: "Netherlands Peppol",     low: 80,   high: 200  },
-    at: { name: "Austria",                low: 90,   high: 240  },
-    ee: { name: "Estonia Peppol",         low: 60,   high: 160  },
-    lt: { name: "Lithuania",              low: 60,   high: 160  },
-    lv: { name: "Latvia",                 low: 60,   high: 160  },
-    si: { name: "Slovenia",               low: 60,   high: 160  },
-    lu: { name: "Luxembourg",             low: 60,   high: 160  },
-    ch: { name: "Switzerland",            low: 80,   high: 220  },
-    // ViDA horizon
-    cz: { name: "Czech Republic",         low: 50,   high: 200  },
-    ie: { name: "Ireland",                low: 30,   high: 120  },
-    bg: { name: "Bulgaria",               low: 30,   high: 120  },
-    mt: { name: "Malta",                  low: 40,   high: 150  },
-    cy: { name: "Cyprus",                 low: 40,   high: 150  },
+    pl: { name: "Poland KSeF",           send: {low: 160, high: 235}, recv: {low: 130, high: 195} },
+    it: { name: "Italy SdI",             send: {low:  80, high: 120}, recv: {low:  80, high: 120} },
+    gr: { name: "Greece myDATA",         send: {low: 154, high: 336}, recv: {low:  66, high: 144} },
+    hu: { name: "Hungary RTIR",          send: {low: 150, high: 315}, recv: {low:  50, high: 105} },
+    hr: { name: "Croatia Fiscaliz.",     send: {low: 126, high: 280}, recv: {low:  54, high: 120} },
+    ro: { name: "Romania e-Factura",     send: {low: 120, high: 180}, recv: {low:  80, high: 120} },
+    be: { name: "Belgium Peppol",        send: {low: 100, high: 150}, recv: {low: 100, high: 150} },
+    // Upcoming B2B (2028+)
+    lv: { name: "Latvia",                send: {low:  60, high: 110}, recv: {low:  50, high:  90} },
+    ie: { name: "Ireland",               send: {low: 105, high: 250}, recv: {low:  35, high:  80} },
+    // B2G / Peppol (inbound optional — not legally required for B2B)
+    pt: { name: "Portugal",              send: {low: 113, high: 285}, recv: {low:  38, high:  95} },
+    dk: { name: "Denmark NemHandel",     send: {low:  84, high: 210}, recv: {low:  36, high:  90} },
+    se: { name: "Sweden Peppol",         send: {low:  60, high: 150}, recv: {low:  20, high:  50} },
+    fi: { name: "Finland Peppol",        send: {low:  60, high: 160}, recv: {low:  20, high:  50} },
+    nl: { name: "Netherlands Peppol",    send: {low:  60, high: 150}, recv: {low:  20, high:  50} },
+    no: { name: "Norway Peppol",         send: {low:  60, high: 150}, recv: {low:  20, high:  50} },
+    at: { name: "Austria",               send: {low:  68, high: 180}, recv: {low:  22, high:  60} },
+    ch: { name: "Switzerland",           send: {low:  60, high: 165}, recv: {low:  20, high:  55} },
+    lt: { name: "Lithuania",             send: {low:  45, high: 120}, recv: {low:  15, high:  40} },
+    si: { name: "Slovenia",              send: {low:  45, high: 120}, recv: {low:  15, high:  40} },
+    ee: { name: "Estonia",               send: {low:  45, high: 120}, recv: {low:  15, high:  40} },
+    lu: { name: "Luxembourg",            send: {low:  45, high: 120}, recv: {low:  15, high:  40} },
+    // ViDA horizon / B2G prep
+    cz: { name: "Czech Republic",        send: {low:  50, high: 125}, recv: {low:  20, high:  55} },
+    mt: { name: "Malta",                 send: {low:  38, high: 113}, recv: {low:  12, high:  37} },
+    cy: { name: "Cyprus",                send: {low:  38, high: 113}, recv: {low:  12, high:  37} },
   };
 
-  // Annual maintenance hours per live mandate (Gemini research May 2026: schema/API update cycles)
+  // Annual maintenance hours split by direction. Source: same as MANDATE_BASE.
   const MONITOR_BASE = {
-    pl: { name: "Poland KSeF",            low: 60,   high: 350  },
-    gr: { name: "Greece myDATA",          low: 60,   high: 320  },
-    it: { name: "Italy SdI",              low: 45,   high: 280  },
-    hu: { name: "Hungary RTIR",           low: 40,   high: 200  },
-    hr: { name: "Croatia Fiscalization",  low: 35,   high: 150  },
-    ro: { name: "Romania e-Factura",      low: 30,   high: 180  },
-    pt: { name: "Portugal",               low: 30,   high: 140  },
-    be: { name: "Belgium Peppol",         low: 20,   high: 100  },
-    de: { name: "Germany XRechnung",      low: 25,   high: 120  },
-    dk: { name: "Denmark Peppol",         low: 15,   high: 80   },
-    se: { name: "Sweden Peppol",          low: 15,   high: 80   },
-    fi: { name: "Finland Peppol",         low: 15,   high: 80   },
-    nl: { name: "Netherlands Peppol",     low: 15,   high: 80   },
-    no: { name: "Norway Peppol",          low: 15,   high: 80   },
-    at: { name: "Austria",                low: 15,   high: 80   },
-    sk: { name: "Slovakia",               low: 20,   high: 80   },
-    ch: { name: "Switzerland",            low: 20,   high: 90   },
-    lv: { name: "Latvia",                 low: 15,   high: 70   },
-    lt: { name: "Lithuania",              low: 15,   high: 70   },
-    si: { name: "Slovenia",               low: 15,   high: 70   },
-    ee: { name: "Estonia",                low: 15,   high: 60   },
-    lu: { name: "Luxembourg",             low: 15,   high: 60   },
+    // Upcoming B2B (2026/2027)
+    fr: { send: {low: 15, high:  80}, recv: {low: 10, high:  40} },
+    de: { send: {low: 25, high:  60}, recv: {low: 20, high:  60} },
+    es: { send: {low: 25, high:  90}, recv: {low: 15, high:  50} },
+    sk: { send: {low: 15, high:  55}, recv: {low: 10, high:  35} },
+    bg: { send: {low: 18, high:  63}, recv: {low:  7, high:  27} },
+    // Live B2B clearance
+    pl: { send: {low: 35, high: 195}, recv: {low: 25, high: 155} },
+    it: { send: {low: 23, high: 140}, recv: {low: 22, high: 140} },
+    gr: { send: {low: 42, high: 224}, recv: {low: 18, high:  96} },
+    hu: { send: {low: 30, high: 150}, recv: {low: 10, high:  50} },
+    hr: { send: {low: 24, high: 105}, recv: {low: 11, high:  45} },
+    ro: { send: {low: 18, high: 108}, recv: {low: 12, high:  72} },
+    be: { send: {low: 10, high:  50}, recv: {low: 10, high:  50} },
+    // Upcoming B2B (2028+)
+    lv: { send: {low: 10, high:  45}, recv: {low:  8, high:  35} },
+    ie: { send: {low: 22, high:  83}, recv: {low:  8, high:  28} },
+    // B2G / Peppol
+    pt: { send: {low: 24, high: 112}, recv: {low:  6, high:  28} },
+    dk: { send: {low: 10, high:  56}, recv: {low:  5, high:  24} },
+    se: { send: {low: 11, high:  60}, recv: {low:  4, high:  20} },
+    fi: { send: {low: 11, high:  60}, recv: {low:  4, high:  20} },
+    nl: { send: {low: 11, high:  60}, recv: {low:  4, high:  20} },
+    no: { send: {low: 11, high:  60}, recv: {low:  4, high:  20} },
+    at: { send: {low: 11, high:  60}, recv: {low:  4, high:  20} },
+    ch: { send: {low: 15, high:  68}, recv: {low:  5, high:  22} },
+    lt: { send: {low: 11, high:  53}, recv: {low:  4, high:  17} },
+    si: { send: {low: 11, high:  53}, recv: {low:  4, high:  17} },
+    ee: { send: {low: 11, high:  45}, recv: {low:  4, high:  15} },
+    lu: { send: {low: 11, high:  45}, recv: {low:  4, high:  15} },
   };
 
   // ERP multiplier and per-entity scaling by named ERP
@@ -3238,6 +3359,44 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
   const MULTI_ERP_COORDINATION = 0.135; // 12-15% integration penalty for mixed ERP - IDC 2025 "SaaS ERP Multi-Cloud Complexity" (midpoint 13.5%)
 
+  // send_live: outbound mandate currently active | recv_live: inbound mandate currently active + B2B required
+  const COUNTRIES_WIZ = [
+    { g: 'Upcoming B2B' },
+    { code: 'fr', flag: '🇫🇷', name: 'France',      sub: 'PA · Sept 2026',                    send_live: false, recv_live: false, recv_mand: true  },
+    { code: 'de', flag: '🇩🇪', name: 'Germany',     sub: 'Receiving live · Sending Jan 2027', send_live: false, recv_live: true,  recv_mand: true  },
+    { code: 'es', flag: '🇪🇸', name: 'Spain',       sub: 'Verifactu · Oct 2027',             send_live: false, recv_live: false, recv_mand: true  },
+    { code: 'sk', flag: '🇸🇰', name: 'Slovakia',    sub: 'B2B mandate · Jan 2027',           send_live: false, recv_live: false, recv_mand: true  },
+    { code: 'bg', flag: '🇧🇬', name: 'Bulgaria',    sub: 'B2B mandate · Jan 2027+',          send_live: false, recv_live: false, recv_mand: true  },
+    { g: 'Live B2B clearance' },
+    { code: 'pl', flag: '🇵🇱', name: 'Poland',      sub: 'KSeF · Live',          send_live: true,  recv_live: true,  recv_mand: true  },
+    { code: 'it', flag: '🇮🇹', name: 'Italy',       sub: 'SdI · Live',           send_live: true,  recv_live: true,  recv_mand: true  },
+    { code: 'gr', flag: '🇬🇷', name: 'Greece',      sub: 'myDATA · Live',        send_live: true,  recv_live: true,  recv_mand: true  },
+    { code: 'hu', flag: '🇭🇺', name: 'Hungary',     sub: 'RTIR · Live',          send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'hr', flag: '🇭🇷', name: 'Croatia',     sub: 'Fiscalization · Live', send_live: true,  recv_live: true,  recv_mand: true  },
+    { code: 'ro', flag: '🇷🇴', name: 'Romania',     sub: 'e-Factura · Live',     send_live: true,  recv_live: true,  recv_mand: true  },
+    { code: 'be', flag: '🇧🇪', name: 'Belgium',     sub: 'Peppol · Live',        send_live: true,  recv_live: true,  recv_mand: true  },
+    { g: 'Confirmed upcoming' },
+    { code: 'lv', flag: '🇱🇻', name: 'Latvia',      sub: 'B2B mandate · Jan 2028', send_live: false, recv_live: false, recv_mand: true  },
+    { code: 'ie', flag: '🇮🇪', name: 'Ireland',     sub: 'B2B mandate · Nov 2028', send_live: false, recv_live: false, recv_mand: true  },
+    { g: 'B2G / Peppol' },
+    { code: 'pt', flag: '🇵🇹', name: 'Portugal',    sub: 'B2G · Live',           send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'dk', flag: '🇩🇰', name: 'Denmark',     sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'se', flag: '🇸🇪', name: 'Sweden',      sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'fi', flag: '🇫🇮', name: 'Finland',     sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'nl', flag: '🇳🇱', name: 'Netherlands', sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'no', flag: '🇳🇴', name: 'Norway',      sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'at', flag: '🇦🇹', name: 'Austria',     sub: 'B2G · Live',           send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'ch', flag: '🇨🇭', name: 'Switzerland', sub: 'B2G · Live',           send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'lt', flag: '🇱🇹', name: 'Lithuania',   sub: 'B2G · Live',           send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'si', flag: '🇸🇮', name: 'Slovenia',    sub: 'B2G · Live',           send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'ee', flag: '🇪🇪', name: 'Estonia',     sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { code: 'lu', flag: '🇱🇺', name: 'Luxembourg',  sub: 'Peppol · Live',        send_live: true,  recv_live: false, recv_mand: false },
+    { g: 'ViDA horizon' },
+    { code: 'cz', flag: '🇨🇿', name: 'Czech Rep.',  sub: 'ViDA prep',  send_live: false, recv_live: false, recv_mand: false },
+    { code: 'mt', flag: '🇲🇹', name: 'Malta',       sub: 'B2G only',   send_live: false, recv_live: false, recv_mand: false },
+    { code: 'cy', flag: '🇨🇾', name: 'Cyprus',      sub: 'B2G only',   send_live: false, recv_live: false, recv_mand: false },
+  ];
+
   function entityFactor(n, erpKey) {
     if (n <= 1) return 1.0;
     const cfg = ERP_CONFIG[erpKey] || ERP_CONFIG.other;
@@ -3255,8 +3414,10 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   }
 
   function calcUpdate() {
-    const readySelected    = [...document.querySelectorAll('.tile-btn.tile-ready.on')].map(b => b.dataset.code);
-    const maintainSelected = [...document.querySelectorAll('.tile-btn.tile-maint.on')].map(b => b.dataset.code);
+    var sendNewSel  = [...document.querySelectorAll('#cat-list .send-new.on')].map(function(b){ return b.dataset.code; });
+    var recvNewSel  = [...document.querySelectorAll('#cat-list .recv-new.on')].map(function(b){ return b.dataset.code; });
+    var sendLiveSel = [...document.querySelectorAll('#cat-list .send-live.on')].map(function(b){ return b.dataset.code; });
+    var recvLiveSel = [...document.querySelectorAll('#cat-list .recv-live.on')].map(function(b){ return b.dataset.code; });
 
     const selectedERPs = [...document.querySelectorAll('input[name="calc-erp"]:checked')].map(i => i.value);
     const isMultiERP   = selectedERPs.length > 1;
@@ -3280,14 +3441,18 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     const plRow  = document.getElementById('poland-penalty-row');
     const deRow  = document.getElementById('germany-penalty-row');
 
-    // ---- SECTION A: GETTING READY ----
+    // ---- SECTION A: READINESS (send + recv new) ----
     let costLow = 0, costHigh = 0, hoursLow = 0, hoursHigh = 0;
     const rowReady = document.getElementById('co-row-ready');
+    var hasReady = sendNewSel.length > 0 || recvNewSel.length > 0;
 
-    if (readySelected.length > 0) {
+    if (hasReady) {
       let totalLow = 0, totalHigh = 0;
-      readySelected.forEach(m => {
-        if (MANDATE_BASE[m]) { totalLow += MANDATE_BASE[m].low; totalHigh += MANDATE_BASE[m].high; }
+      sendNewSel.forEach(function(m) {
+        if (MANDATE_BASE[m]) { totalLow += MANDATE_BASE[m].send.low; totalHigh += MANDATE_BASE[m].send.high; }
+      });
+      recvNewSel.forEach(function(m) {
+        if (MANDATE_BASE[m]) { totalLow += MANDATE_BASE[m].recv.low; totalHigh += MANDATE_BASE[m].recv.high; }
       });
       hoursLow  = Math.round(totalLow  * erpMult);
       hoursHigh = Math.round(totalHigh * erpMult);
@@ -3301,9 +3466,9 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
         document.getElementById('co-ready-hrs').textContent  = hoursLow + ' - ' + hoursHigh + 'h';
       }
 
-      const hasFr = readySelected.includes('fr');
-      const hasPl = readySelected.includes('pl');
-      const hasDe = readySelected.includes('de');
+      const hasFr = sendNewSel.includes('fr') || recvNewSel.includes('fr');
+      const hasPl = sendNewSel.includes('pl') || recvNewSel.includes('pl');
+      const hasDe = sendNewSel.includes('de') || recvNewSel.includes('de');
       const penParts = [];
       if (hasFr) penParts.push('FR');
       if (hasPl) penParts.push('PL');
@@ -3325,14 +3490,18 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       if (chipEl)   chipEl.style.display = 'none';
     }
 
-    // ---- SECTION B: STAYING COMPLIANT ----
+    // ---- SECTION B: MAINTENANCE (send + recv compliant) ----
     let mCostLow = 0, mCostHigh = 0;
     const rowMaint = document.getElementById('co-row-maint');
+    var hasMaint = sendLiveSel.length > 0 || recvLiveSel.length > 0;
 
-    if (maintainSelected.length > 0) {
+    if (hasMaint) {
       let mLow = 0, mHigh = 0;
-      maintainSelected.forEach(m => {
-        if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].low; mHigh += MONITOR_BASE[m].high; }
+      sendLiveSel.forEach(function(m) {
+        if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].send.low; mHigh += MONITOR_BASE[m].send.high; }
+      });
+      recvLiveSel.forEach(function(m) {
+        if (MONITOR_BASE[m]) { mLow += MONITOR_BASE[m].recv.low; mHigh += MONITOR_BASE[m].recv.high; }
       });
       const mHoursLow  = Math.round(mLow);
       const mHoursHigh = Math.round(mHigh);
@@ -3350,8 +3519,8 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
     }
 
     // ---- HERO: YEAR 1 TOTAL ----
-    const hasAny = readySelected.length > 0 || maintainSelected.length > 0;
-    if (heroEl) heroEl.style.display = hasAny ? 'block' : 'none';
+    const hasAny = sendNewSel.length > 0 || recvNewSel.length > 0 || sendLiveSel.length > 0 || recvLiveSel.length > 0;
+    if (heroEl) heroEl.style.display = wizOutputReady ? 'block' : 'none';
 
     if (hasAny) {
       const y1Low  = costLow  + mCostLow;
@@ -3375,53 +3544,215 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           if (ERP_LABELS[k]) tagHtmls.push('<span style="' + tagStyle + '">' + ERP_LABELS[k] + '</span>');
         }
       } else {
-        tagHtmls.push('<span style="' + warnStyle + '" onclick="var el=document.getElementById(\'calc-erp-field\');if(el){el.scrollIntoView({behavior:\'smooth\',block:\'center\'});}">Select ERP to refine estimate</span>');
+        tagHtmls.push('<span style=\"' + warnStyle + '\" onclick=\"wizUnlock(3);wizOpen(3);var el=document.getElementById(\'wstep-3\');if(el){el.scrollIntoView({behavior:\'smooth\',block:\'center\'});}\">' + 'Select ERP to refine estimate</span>');
       }
-      const totalCountries = new Set([...readySelected, ...maintainSelected]).size;
-      tagHtmls.push('<span style="' + tagStyle + '">' + totalCountries + (totalCountries === 1 ? ' country' : ' countries') + '</span>');
+      const allCodes = new Set([...sendNewSel, ...recvNewSel, ...sendLiveSel, ...recvLiveSel]);
+      tagHtmls.push('<span style="' + tagStyle + '">' + allCodes.size + (allCodes.size === 1 ? ' country' : ' countries') + '</span>');
       if (tagsEl) tagsEl.innerHTML = tagHtmls.join('');
     }
-
-    // ---- ERP FIELD WARNING STATE ----
-    const erpField = document.getElementById('calc-erp-field');
-    const erpLbl   = document.getElementById('calc-erp-label');
-    const erpSub   = document.getElementById('calc-erp-sub');
-    if (erpField && erpLbl) {
-      if (hasAny && selectedERPs.length === 0) {
-        erpField.style.cssText = 'background:rgba(251,191,36,0.07);border:1.5px solid rgba(251,191,36,0.35);border-radius:8px;padding:10px 12px 8px;';
-        erpLbl.style.color = '#fbbf24';
-        if (erpSub) erpSub.style.color = '#b45309';
-      } else {
-        erpField.style.cssText = '';
-        erpLbl.style.color = '';
-        if (erpSub) erpSub.style.color = '';
-      }
-    }
-  }
-
-  function tileToggle(btn) {
-    btn.classList.toggle('on');
-    const tile = btn.closest('.country-tile');
-    if (tile) {
-      const anyOn = tile.querySelectorAll('.tile-btn.on').length > 0;
-      tile.classList.toggle('tile-active', anyOn);
-    }
-    calcUpdate();
   }
 
   function toggleCheck(el) {
-    const label = el.closest('.mandate-check');
+    var label = el.closest('.mandate-check');
     if (!label) return;
     if (el.checked) label.classList.add('checked');
     else label.classList.remove('checked');
   }
 
   function toggleRadioGroup(groupName) {
-    document.querySelectorAll('input[name="calc-' + groupName + '"]').forEach(radio => {
-      const label = radio.closest('.radio-option');
+    document.querySelectorAll('input[name="calc-' + groupName + '"]').forEach(function(radio) {
+      var label = radio.closest('.radio-option');
       if (radio.checked) label.classList.add('checked');
       else label.classList.remove('checked');
     });
+  }
+
+  // ── WIZARD ──────────────────────────────────────────────────────────────────
+  var wizSelected = [];
+  var wizOutputReady = false;
+
+  function wizInit() {
+    var grid = document.getElementById('country-sel-grid');
+    if (!grid) return;
+    var html = '';
+    COUNTRIES_WIZ.forEach(function(c) {
+      if (c.g) {
+        html += '<div class="cs-group-head">' + c.g + '</div>';
+      } else {
+        html += '<div class="cs-row" id="csr-' + c.code + '" onclick="wizSelectCountry(\'' + c.code + '\')">'
+          + '<span class="cs-flag">' + c.flag + '</span>'
+          + '<span class="cs-name">' + c.name + '</span>'
+          + '<div class="cs-tick" id="cstk-' + c.code + '"></div>'
+          + '</div>';
+      }
+    });
+    grid.innerHTML = html;
+  }
+
+  function wizSelectCountry(code) {
+    var idx = wizSelected.indexOf(code);
+    if (idx >= 0) wizSelected.splice(idx, 1);
+    else wizSelected.push(code);
+    var row = document.getElementById('csr-' + code);
+    if (row) row.classList.toggle('selected', wizSelected.indexOf(code) >= 0);
+    document.getElementById('ws1-next').disabled = wizSelected.length === 0;
+    var s = document.getElementById('ws1-summary');
+    if (s) s.textContent = wizSelected.length > 0 ? wizSelected.length + ' selected' : '';
+  }
+
+  function wizToggle(step) {
+    var stepEl = document.getElementById('wstep-' + step);
+    var body   = document.getElementById('ws' + step + '-body');
+    if (!stepEl || !body || stepEl.classList.contains('locked')) return;
+    var isOpen = stepEl.classList.contains('open');
+    stepEl.classList.toggle('open', !isOpen);
+    body.style.display = isOpen ? 'none' : 'block';
+  }
+
+  function wizUnlock(step) {
+    var el = document.getElementById('wstep-' + step);
+    if (el) el.classList.remove('locked');
+  }
+
+  function wizOpen(step) {
+    var stepEl = document.getElementById('wstep-' + step);
+    var body   = document.getElementById('ws' + step + '-body');
+    if (stepEl) stepEl.classList.add('open');
+    if (body)   body.style.display = 'block';
+    if (stepEl) setTimeout(function(){
+      stepEl.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 60);
+  }
+
+  function wizClose(step) {
+    var stepEl = document.getElementById('wstep-' + step);
+    var body   = document.getElementById('ws' + step + '-body');
+    if (stepEl) stepEl.classList.remove('open');
+    if (body)   body.style.display = 'none';
+  }
+
+  function wizNext(step) {
+    if (step === 1) {
+      buildCatList();
+      wizClose(1);
+      wizUnlock(2);
+      wizOpen(2);
+      var s1 = document.getElementById('ws1-summary');
+      if (s1) s1.textContent = wizSelected.length + (wizSelected.length === 1 ? ' country' : ' countries');
+    } else if (step === 2) {
+      var incomplete = wizSelected.filter(function(code) {
+        return document.querySelectorAll('#cat-list .cbtn[data-code="'+code+'"].on').length === 0;
+      });
+      if (incomplete.length > 0) {
+        document.querySelectorAll('#cat-list .crow').forEach(function(crow) {
+          var fb = crow.querySelector('.cbtn');
+          if (fb && incomplete.indexOf(fb.dataset.code) >= 0) {
+            crow.classList.remove('crow-warn');
+            void crow.offsetWidth;
+            crow.classList.add('crow-warn');
+            setTimeout(function(){ crow.classList.remove('crow-warn'); }, 1800);
+          }
+        });
+        return;
+      }
+      calcUpdate();
+      wizClose(2);
+      wizUnlock(3);
+      wizOpen(3);
+      var s2 = document.getElementById('ws2-summary');
+      if (s2) s2.textContent = wizSelected.length + (wizSelected.length === 1 ? ' country' : ' countries');
+    } else if (step === 3) {
+      wizClose(3);
+      wizUnlock(4);
+      wizOpen(4);
+      var erps = document.querySelectorAll('input[name="calc-erp"]:checked');
+      var s3 = document.getElementById('ws3-summary');
+      if (s3) s3.textContent = erps.length > 0 ? (erps.length === 1 ? erps[0].value : erps.length + ' ERPs') : 'Not specified';
+    }
+  }
+
+  function buildCatList() {
+    var list = document.getElementById('cat-list');
+    if (!list) return;
+    var metaMap = {};
+    COUNTRIES_WIZ.forEach(function(c) { if (c.code) metaMap[c.code] = c; });
+
+    list.innerHTML = '';
+    wizSelected.forEach(function(code) {
+      var m = metaMap[code];
+      if (!m) return;
+      var sLD = m.send_live ? '' : ' disabled';
+      var rLD = m.recv_live ? '' : ' disabled';
+      var row = document.createElement('div');
+      row.className = 'crow';
+      row.innerHTML =
+          '<div class="cinfo">'
+        + '<span class="cname">' + m.flag + ' ' + m.name + '</span>'
+        + (m.sub ? '<span class="chint">' + m.sub + '</span>' : '')
+        + '</div>'
+        + '<div class="cdirs">'
+        +   '<div class="cdir">'
+        +     '<span class="cdir-lbl send-lbl">Sending obligation</span>'
+        +     '<div class="cdir-btns">'
+        +       '<button type="button" class="cbtn send-live" data-code="'+code+'" onclick="catToggle(this)"'+sLD+'>We are already live</button>'
+        +       '<button type="button" class="cbtn send-new" data-code="'+code+'" onclick="catToggle(this)">We need to get ready</button>'
+        +     '</div>'
+        +   '</div>'
+        +   '<div class="cdir">'
+        +     '<span class="cdir-lbl recv-lbl">Receiving obligation</span>'
+        +     '<div class="cdir-btns">'
+        +       '<button type="button" class="cbtn recv-live" data-code="'+code+'" onclick="catToggle(this)"'+rLD+'>We are already live</button>'
+        +       '<button type="button" class="cbtn recv-new" data-code="'+code+'" onclick="catToggle(this)">We need to get ready</button>'
+        +     '</div>'
+        +   '</div>'
+        + '</div>';
+      list.appendChild(row);
+    });
+  }
+
+  function catToggle(btn) {
+    var dirRow = btn.closest('.cdir');
+    if (dirRow) { dirRow.querySelectorAll('.cbtn').forEach(function(b){ if(b!==btn) b.classList.remove('on'); }); }
+    btn.classList.toggle('on');
+    checkStep2Complete();
+    calcUpdate();
+  }
+
+  function checkStep2Complete() {
+    var btn = document.getElementById('ws2-next');
+    if (btn) btn.disabled = false;
+  }
+
+  function wizShowOutput() {
+    wizOutputReady = true;
+    calcUpdate();
+    var ph = document.getElementById('calc-placeholder');
+    if (ph) ph.style.display = 'none';
+    var cta = document.getElementById('calc-cta');
+    if (cta) cta.style.display = 'block';
+    var hero = document.getElementById('co-hero');
+    if (hero) setTimeout(function(){
+      hero.scrollIntoView({behavior:'smooth', block:'center'});
+      hero.style.animation = 'none';
+      void hero.offsetWidth;
+      hero.style.animation = 'result-hum 0.9s ease-out 2';
+      setTimeout(function(){ hero.style.animation = ''; }, 2000);
+    }, 200);
+  }
+
+  function wizUpdateStep3() {
+    var erps = document.querySelectorAll('input[name="calc-erp"]:checked');
+    var s = document.getElementById('ws3-summary');
+    if (!s) return;
+    if (erps.length === 0) s.textContent = '';
+    else if (erps.length === 1) { var v = erps[0].value; s.textContent = v.charAt(0).toUpperCase() + v.slice(1); }
+    else s.textContent = erps.length + ' ERPs';
+  }
+
+  function wizUpdateStep4() {
+    var rate = document.querySelector('input[name="calc-rate"]:checked');
+    var s = document.getElementById('ws4-summary');
+    if (s && rate) s.textContent = '\u20ac' + rate.value + '/h';
   }
 
   function togglePenalties() {
@@ -3443,6 +3774,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
   }
 
   // Init
+  wizInit();
   calcUpdate();
 
   /* ---- CONTACT FORM ---- */
