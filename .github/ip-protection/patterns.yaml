@@ -219,6 +219,37 @@ rules:
     pattern: '\bhard-coded\s+(mandate|mapping|rule)\b'
     description: "Tech debt signal to expert readers. Never use this phrasing externally."
 
+  # ── Expert vocabulary patterns (Gemini adversarial test, Prompt 4) ──────────
+  # Phrases that are safe to laypeople but reveal architecture to domain experts.
+
+  - id: IP-E01
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bjurisdictional\s+wrapper\b'
+    description: "Big Four tell: implies fragmented country-by-country code, not a unified engine."
+
+  - id: IP-E02
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bindirect\s+tax\s+engine\s+integration\b'
+    description: "Implies reliance on a third-party tax calculation layer (Vertex, Avalara). Reveals we don't own the tax math."
+
+  - id: IP-E03
+    category: B
+    severity: high
+    type: regex
+    pattern: '\bpoint-to-point\s+mapping\b'
+    description: "Scalability death knell to any RegTech investor or AP platform expert. Never use externally."
+
+  - id: IP-E04
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bimplementation[-\s]heavy\b'
+    description: "Signals consulting-firm-masquerading-as-SaaS to investors. Avoid in all external copy."
+
   - id: IP-B10
     category: B
     severity: medium

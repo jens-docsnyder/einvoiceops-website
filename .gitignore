@@ -29,3 +29,6 @@ src/pages/cockpit.astro
 
 # enterprise decks - local only, never in public repo
 public/p/
+
+# ML training data — verification records, never public
+evidence/
