@@ -144,8 +144,29 @@ rules:
     category: B
     severity: high
     type: regex
-    pattern: '\b(we|our system|einvoiceops)\s+monitor\b'
+    pattern: '\b(we|our system|einvoiceops|the retainer|the service)\s+monitor\b'
     description: "Monitoring architecture disclosure. Use: 'When requirements change, you get...'"
+
+  - id: IP-B02b
+    category: B
+    severity: high
+    type: regex
+    pattern: '\b(re-routed|rerouted)\b'
+    description: "Routing verb reveals RACI mechanism. Use 'goes to', 'delivered to', or 'sent to'."
+
+  - id: IP-B02c
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bmore monitored\b'
+    description: "Reveals active country-level monitoring capability. Use 'more covered'."
+
+  - id: IP-B02d
+    category: B
+    severity: medium
+    type: regex
+    pattern: 'the monitoring scales'
+    description: "Template-based alert architecture tell (Gemini adversarial test). Remove 'The monitoring'."
 
   - id: IP-B03
     category: B
