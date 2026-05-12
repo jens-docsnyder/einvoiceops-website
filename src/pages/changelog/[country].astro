@@ -12,18 +12,34 @@ export async function getStaticPaths() {
 const { log } = Astro.props;
 const { country_code, entries } = log.data;
 
-// Get country metadata for flag + name
 const countries = await getCollection('countries');
 const meta = countries.find(c => c.data.code === country_code);
 
-// Reverse-chronological
+// Prev / next navigation (sorted by code)
+const allCC = [...countries].sort((a, b) => a.data.code.localeCompare(b.data.code));
+const idx   = allCC.findIndex(c => c.data.code === country_code);
+const prevC = idx > 0                  ? allCC[idx - 1].data : null;
+const nextC = idx < allCC.length - 1  ? allCC[idx + 1].data : null;
+
+// Sorted entries — newest first
 const sorted = [...entries].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+// Legal history subset
+const legalOnly = sorted.filter(
+  e => e.type === 'legislative-event' || e.type === 'mandate-change'
+);
+const firstEnacted = legalOnly.length > 0 ? legalOnly[legalOnly.length - 1] : null;
+const lastAmended  = legalOnly.length > 0 ? legalOnly[0] : null;
+const provCount    = sorted.length - legalOnly.length;
 
 function fmtTs(d: Date): string {
   return d.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
 }
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
 
-const typeLabels: Record<string, string> = {
+const typeLabels = {
   'initial-publish':    'Initial publish',
   'error-correction':   'Error correction',
   'mandate-change':     'Mandate change',
@@ -31,9 +47,9 @@ const typeLabels: Record<string, string> = {
   'content-update':     'Content update',
   'conflict-detected':  'Conflict detected',
   'legislative-event':  'Legislative event',
-};
+} as {[k:string]:string};
 
-const typeColors: Record<string, string> = {
+const typeColors = {
   'initial-publish':    'type-init',
   'error-correction':   'type-error',
   'mandate-change':     'type-mandate',
@@ -41,7 +57,29 @@ const typeColors: Record<string, string> = {
   'content-update':     'type-content',
   'conflict-detected':  'type-conflict',
   'legislative-event':  'type-legislative',
-};
+} as {[k:string]:string};
+
+// Maps entry type to filter category
+const filterCat = {
+  'legislative-event':  'legal',
+  'mandate-change':     'legal',
+  'confidence-upgrade': 'provenance',
+  'error-correction':   'provenance',
+  'content-update':     'provenance',
+  'conflict-detected':  'provenance',
+  'initial-publish':    'provenance',
+} as {[k:string]:string};
+
+// Dot colour per type (CSS custom property value)
+const dotColor = {
+  'legislative-event':  '#7c3aed',
+  'mandate-change':     '#1d4ed8',
+  'confidence-upgrade': '#d97706',
+  'error-correction':   '#dc2626',
+  'content-update':     '#94a3b8',
+  'conflict-detected':  '#dc2626',
+  'initial-publish':    '#16a34a',
+} as {[k:string]:string};
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +87,7 @@ const typeColors: Record<string, string> = {
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{meta?.data.country ?? country_code} Changelog — internal</title>
+  <title>{meta?.data.country ?? country_code} Legal Timeline — internal</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -61,39 +99,81 @@ const typeColors: Record<string, string> = {
       --bg:     #ffffff;
       --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
-    body { font-family: var(--sans); color: var(--text); background: var(--bg); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    main { max-width: 760px; margin: 0 auto; padding: 48px 2rem 80px; }
+    body {
+      font-family: var(--sans); color: var(--text); background: var(--bg);
+      font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    main { max-width: 800px; margin: 0 auto; padding: 36px 2rem 80px; }
 
-    .back { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
+    /* ── nav bar ── */
+    .nav-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 10px;
+    }
+    .back { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); font-size: 0.82rem; text-decoration: none; }
     .back:hover { text-decoration: underline; }
+    .cc-nav { display: flex; gap: 8px; align-items: center; }
+    .cc-nav-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.78rem; font-weight: 600; color: var(--accent);
+      text-decoration: none; padding: 4px 12px;
+      border: 1px solid #bfdbfe; border-radius: 4px; background: #fff;
+      white-space: nowrap;
+    }
+    .cc-nav-btn:hover { background: #eff6ff; }
+    .cc-nav-sep { font-size: 0.75rem; color: var(--muted); }
 
-    .page-header { margin-bottom: 36px; padding-bottom: 20px; border-bottom: 2px solid var(--navy); }
-    .page-header h1 { font-size: 1.6rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
-    .page-header p { font-size: 0.875rem; color: var(--muted); margin-top: 4px; }
+    /* ── page header ── */
+    .page-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--navy); }
+    .page-header h1 { font-size: 1.5rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
+    .page-header p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
 
-    .empty { color: var(--muted); font-size: 0.875rem; padding: 24px 0; }
+    /* ── mandate version summary ── */
+    .mandate-summary {
+      display: flex; gap: 0; margin-bottom: 24px;
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+    }
+    .ms-item {
+      flex: 1; padding: 10px 14px; background: #f9fafb;
+      border-right: 1px solid var(--border);
+    }
+    .ms-item:last-child { border-right: none; }
+    .ms-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .ms-value { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-top: 2px; }
+    .ms-value.v-legal { color: #7c3aed; }
+    .ms-value.v-green { color: #15803d; }
 
-    /* Timeline */
-    .timeline { display: flex; flex-direction: column; gap: 0; }
+    /* ── filter tabs ── */
+    .filter-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab {
+      cursor: pointer; font-size: 0.75rem; font-weight: 600;
+      padding: 5px 14px; border-radius: 9999px;
+      border: 1px solid var(--border); background: #fff; color: var(--muted);
+      transition: all .12s;
+    }
+    .tab:hover { border-color: #93c5fd; color: var(--accent); }
+    .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* ── timeline ── */
+    .timeline { display: flex; flex-direction: column; }
 
     .entry {
       display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 0 24px;
-      padding: 20px 0;
+      grid-template-columns: 150px 1fr;
+      gap: 0 0;
       border-bottom: 1px solid var(--border);
     }
     .entry:last-child { border-bottom: none; }
 
-    .entry-meta { padding-top: 2px; }
+    .entry-meta { padding: 18px 16px 18px 0; }
     .entry-ts {
-      font-size: 0.78rem; font-variant-numeric: tabular-nums;
-      color: var(--muted); line-height: 1.4;
+      font-size: 0.74rem; font-variant-numeric: tabular-nums;
+      color: var(--muted); line-height: 1.4; white-space: nowrap;
     }
-    .entry-type {
+    .entry-type-badge {
       display: inline-block; margin-top: 6px;
       padding: 2px 8px; border-radius: 9999px;
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
     }
     .type-init        { background: #f0fdf4; color: #166534; }
     .type-error       { background: #fee2e2; color: #b91c1c; }
@@ -103,100 +183,204 @@ const typeColors: Record<string, string> = {
     .type-conflict    { background: #dc2626; color: #ffffff; }
     .type-legislative { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
 
-    .entry-body { }
-    .entry-desc { font-size: 0.875rem; line-height: 1.55; color: var(--text); margin-bottom: 8px; }
+    /* vertical spine + dot */
+    .entry-body {
+      padding: 18px 0 18px 20px;
+      border-left: 2px solid var(--border);
+      position: relative;
+    }
+    .entry-body::before {
+      content: '';
+      position: absolute;
+      left: -5px; top: 22px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 2px solid white;
+      box-shadow: 0 0 0 1px var(--border);
+    }
 
+    /* desc + diff */
+    .entry-desc { font-size: 0.875rem; line-height: 1.55; color: var(--text); margin-bottom: 8px; }
     .entry-diff {
       display: flex; gap: 8px; align-items: flex-start;
       margin-bottom: 8px; flex-wrap: wrap;
     }
     .diff-field {
-      font-size: 0.75rem; font-family: ui-monospace, monospace;
+      font-size: 0.72rem; font-family: ui-monospace, monospace;
       background: #f8fafc; border: 1px solid var(--border);
-      padding: 2px 7px; border-radius: 4px; color: var(--muted);
+      padding: 1px 6px; border-radius: 4px; color: var(--muted);
     }
-    .diff-arrow { font-size: 0.75rem; color: var(--muted); padding-top: 3px; }
+    .diff-arrow { font-size: 0.72rem; color: var(--muted); padding-top: 3px; }
     .diff-old {
-      font-size: 0.78rem; background: #fef2f2; color: #991b1b;
-      padding: 2px 8px; border-radius: 4px; text-decoration: line-through;
+      font-size: 0.76rem; background: #fef2f2; color: #991b1b;
+      padding: 1px 7px; border-radius: 4px; text-decoration: line-through;
     }
     .diff-new {
-      font-size: 0.78rem; background: #f0fdf4; color: #166534;
-      padding: 2px 8px; border-radius: 4px;
+      font-size: 0.76rem; background: #f0fdf4; color: #166534;
+      padding: 1px 7px; border-radius: 4px;
     }
-
     .version-bump {
-      font-size: 0.75rem; color: #1d4ed8;
+      font-size: 0.72rem; color: #1d4ed8;
       background: #eff6ff; border: 1px solid #bfdbfe;
-      padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;
+      padding: 1px 7px; border-radius: 4px;
+      display: inline-block; margin-bottom: 8px;
     }
-
     .entry-source a {
-      font-size: 0.78rem; color: var(--accent); text-decoration: none;
+      font-size: 0.76rem; color: var(--accent); text-decoration: none;
       display: inline-flex; align-items: center; gap: 4px;
     }
     .entry-source a:hover { text-decoration: underline; }
-    .entry-source a::after { content: '↗'; font-size: 0.65rem; }
+    .entry-source a::after { content: '\2197'; font-size: 0.65rem; }
+
+    .empty { color: var(--muted); font-size: 0.875rem; padding: 24px 0; }
   </style>
 </head>
 <body>
 <main>
-  <a href="/status/" class="back">← Research Quality Dashboard</a>
 
+  <!-- nav bar -->
+  <div class="nav-bar">
+    <a href="/status/" class="back">&#8592; Command Center</a>
+    <div class="cc-nav">
+      {prevC && (
+        <a href={`/changelog/${prevC.code}/`} class="cc-nav-btn">
+          &#8592; {prevC.flag} {prevC.code}
+        </a>
+      )}
+      {(prevC || nextC) && <span class="cc-nav-sep">·</span>}
+      {nextC && (
+        <a href={`/changelog/${nextC.code}/`} class="cc-nav-btn">
+          {nextC.flag} {nextC.code} &#8594;
+        </a>
+      )}
+    </div>
+  </div>
+
+  <!-- header -->
   <header class="page-header">
-    <h1>{meta?.data.flag} {meta?.data.country ?? country_code} — Changelog</h1>
-    <p>{sorted.length} {sorted.length === 1 ? 'entry' : 'entries'} &nbsp;·&nbsp; mandate_version {meta?.data.mandate_version ?? 1}</p>
+    <h1>{meta?.data.flag} {meta?.data.country ?? country_code} — Legal Timeline</h1>
+    <p>
+      {sorted.length} total entries &nbsp;·&nbsp;
+      mandate_version {meta?.data.mandate_version ?? 1} &nbsp;·&nbsp;
+      {legalOnly.length} legislative event{legalOnly.length !== 1 ? 's' : ''}
+    </p>
   </header>
 
+  <!-- mandate version summary -->
+  <div class="mandate-summary">
+    <div class="ms-item">
+      <div class="ms-label">Statute version</div>
+      <div class="ms-value v-legal">v{meta?.data.mandate_version ?? 1}</div>
+    </div>
+    <div class="ms-item">
+      <div class="ms-label">Legislative events</div>
+      <div class="ms-value">{legalOnly.length}</div>
+    </div>
+    <div class="ms-item">
+      <div class="ms-label">First recorded</div>
+      <div class="ms-value">
+        {firstEnacted ? fmtDate(firstEnacted.ts ?? firstEnacted.timestamp) : '—'}
+      </div>
+    </div>
+    <div class="ms-item">
+      <div class="ms-label">Last legislative event</div>
+      <div class="ms-value">
+        {lastAmended ? fmtDate(lastAmended.ts ?? lastAmended.timestamp) : '—'}
+      </div>
+    </div>
+    <div class="ms-item">
+      <div class="ms-label">Confidence</div>
+      <div class={`ms-value${meta?.data.confidence_summary === 'green' ? ' v-green' : ''}`}>
+        {meta?.data.confidence_summary?.toUpperCase() ?? '—'}
+      </div>
+    </div>
+  </div>
+
+  <!-- filter tabs -->
+  <div class="filter-tabs">
+    <button class="tab active" data-cat="all"
+      onclick="window.filterTL('all')">All ({sorted.length})</button>
+    <button class="tab" data-cat="legal"
+      onclick="window.filterTL('legal')">Legal history ({legalOnly.length})</button>
+    <button class="tab" data-cat="provenance"
+      onclick="window.filterTL('provenance')">Verification log ({provCount})</button>
+  </div>
+
+  <!-- timeline -->
   {sorted.length === 0
     ? <p class="empty">No changelog entries yet.</p>
     : (
       <div class="timeline">
-        {sorted.map(entry => (
-          <div class="entry">
-            <div class="entry-meta">
-              <div class="entry-ts">{fmtTs(entry.timestamp)}</div>
-              <span class={`entry-type ${typeColors[entry.type]}`}>
-                {typeLabels[entry.type]}
-              </span>
+        {sorted.map(entry => {
+          const cat    = filterCat[entry.type] ?? 'provenance';
+          const tCls   = typeColors[entry.type] ?? 'type-content';
+          const dot    = dotColor[entry.type] ?? '#e5e7eb';
+          return (
+            <div class="entry" data-cat={cat}>
+              <div class="entry-meta">
+                <div class="entry-ts">{fmtTs(entry.timestamp)}</div>
+                <span class={`entry-type-badge ${tCls}`}>
+                  {typeLabels[entry.type] ?? entry.type}
+                </span>
+              </div>
+              <div class="entry-body" style={`--dot:${dot}`}>
+                {entry.mandate_version_before != null && entry.mandate_version_after != null && (
+                  <div class="version-bump">
+                    v{entry.mandate_version_before} &#8594; v{entry.mandate_version_after}
+                  </div>
+                )}
+                <p class="entry-desc">{entry.description}</p>
+                {(entry.field || entry.old_value || entry.new_value) && (
+                  <div class="entry-diff">
+                    {entry.field && <span class="diff-field">{entry.field}</span>}
+                    {entry.old_value && <span class="diff-old">{entry.old_value}</span>}
+                    {entry.old_value && entry.new_value && <span class="diff-arrow">&#8594;</span>}
+                    {entry.new_value && <span class="diff-new">{entry.new_value}</span>}
+                  </div>
+                )}
+                {entry.source_url && (
+                  <div class="entry-source">
+                    <a href={entry.source_url} target="_blank" rel="noopener noreferrer">
+                      View source
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
-            <div class="entry-body">
-              {entry.mandate_version_after != null && entry.mandate_version_before != null && (
-                <div class="version-bump">
-                  mandate_version {entry.mandate_version_before} → {entry.mandate_version_after}
-                </div>
-              )}
-              {entry.mandate_version_after != null && entry.mandate_version_before == null && (
-                <div class="version-bump">
-                  mandate_version → {entry.mandate_version_after}
-                </div>
-              )}
-              <p class="entry-desc">{entry.description}</p>
-              {(entry.field || entry.old_value || entry.new_value) && (
-                <div class="entry-diff">
-                  {entry.field && <span class="diff-field">{entry.field}</span>}
-                  {(entry.old_value || entry.new_value) && (
-                    <>
-                      {entry.old_value && <span class="diff-old">{entry.old_value}</span>}
-                      {entry.old_value && entry.new_value && <span class="diff-arrow">→</span>}
-                      {entry.new_value && <span class="diff-new">{entry.new_value}</span>}
-                    </>
-                  )}
-                </div>
-              )}
-              {entry.source_url && (
-                <div class="entry-source">
-                  <a href={entry.source_url} target="_blank" rel="noopener noreferrer">
-                    View source
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     )
   }
+
 </main>
+
+<script is:inline>
+  // Apply dot colour from CSS custom property set inline
+  document.querySelectorAll('.entry-body').forEach(function(el) {
+    var dot = el.style.getPropertyValue('--dot');
+    if (dot) {
+      el.style.setProperty('--dot', dot);
+      // Apply via pseudo-element workaround: inject scoped style
+      var style = document.createElement('style');
+      var id = 'dot-' + Math.random().toString(36).slice(2);
+      el.setAttribute('data-dot-id', id);
+      style.textContent =
+        '[data-dot-id="' + id + '"]::before { background:' + dot + ' !important; ' +
+        'box-shadow: 0 0 0 1px ' + dot + ' !important; }';
+      document.head.appendChild(style);
+    }
+  });
+
+  window.filterTL = function(cat) {
+    document.querySelectorAll('.entry').forEach(function(el) {
+      el.style.display = (cat === 'all' || el.dataset.cat === cat) ? '' : 'none';
+    });
+    document.querySelectorAll('.tab').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.cat === cat);
+    });
+  };
+</script>
 </body>
 </html>
