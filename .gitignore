@@ -26,3 +26,6 @@ pnpm-debug.log*
 # local-only pages (never deploy)
 src/pages/status.astro
 src/pages/cockpit.astro
+
+# enterprise decks - local only, never in public repo
+public/p/

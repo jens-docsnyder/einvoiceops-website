@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Estonia B2G mandatory (live); PDF rejection entitlement for registered recipients from July 1, 2025 (Accounting Act amendment RT I, 04.10.2024, 1); B2B mandate under MoF drafting (~2027, no enacted law). Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: penalty EUR 3,200 (A-URL - riigiteataja.ee cannot be WebFetched), Accounting Act amendment details. unresolved_high: 1, unresolved_amber: 2."
+    description: "Initial publish. Estonia B2G mandatory (live); PDF rejection entitlement for registered recipients from July 1, 2025 (Accounting Act amendment RT I, 04.10.2024, 1); B2B mandate under MoF drafting (~2027, no enacted law). Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: penalty EUR 3,200 (A-URL - riigiteataja.ee cannot be WebFetched), Accounting Act amendment details. unresolved_high: 1, unresolved_amber: 2."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1

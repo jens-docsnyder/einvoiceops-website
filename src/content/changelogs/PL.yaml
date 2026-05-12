@@ -13,8 +13,8 @@ entries:
     type: error-correction
     field: "penalty_max + key_deadlines (2026-08-01)"
     old_value: "Penalties suspended until August 1, 2026"
-    new_value: "PENDING VERIFICATION - Augur found evidence suspension ends December 31, 2026 (enforcement from January 1, 2027) per Dz.U. 2025/1203"
-    description: "[Augur SIG-003] Penalty suspension end date flagged as potentially wrong. PL page states August 1, 2026 as penalty enforcement start. Augur WebSearch against ksef.podatki.gov.pl confirms penalties suspended Feb 1, 2026 to Dec 31, 2026, enforcement from January 1, 2027. Dz.U. 2025/1203 (Act of August 5, 2025) identified as primary source. Research YAML item added. Page not updated until Jens verifies via primary source click."
+    new_value: "PENDING VERIFICATION - Signal detected: suspension ends December 31, 2026 (enforcement from January 1, 2027) per Dz.U. 2025/1203"
+    description: "Penalty suspension end date flagged as potentially wrong. PL page states August 1, 2026 as penalty enforcement start. Mandate signal search against ksef.podatki.gov.pl confirms penalties suspended Feb 1, 2026 to Dec 31, 2026, enforcement from January 1, 2027. Dz.U. 2025/1203 (Act of August 5, 2025) identified as primary source. Research YAML item added. Page not updated until Jens verifies via primary source click."
     source_url: "https://dziennikustaw.gov.pl/DU/2025/1203"
     mandate_version_before: 1
     mandate_version_after: 1

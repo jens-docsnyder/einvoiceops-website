@@ -1,11 +1,29 @@
 country_code: MT
 entries:
+  - timestamp: 2026-05-12T10:10:00Z
+    type: error-correction
+    field: archiving_years
+    old_value: "10, Art. 53"
+    new_value: "6, Art. 48(4)"
+    description: "Archiving period corrected from 10 years to 6 years. Correct article is Art. 48(4), not Art. 53 (which covers Commissioner inspection powers). Source: VAT Act Chapter 406 (legislation.mt/eli/cap/406/eng/pdf), Art. 48(4): 'shall be retained for a period of at least six years from the end of the year to which they relate'. Four page references corrected: frontmatter archiving_years, Operational Ownership body, Data & Infrastructure body, Friction Map body. Friction Map paragraph also corrected — original described a compliance gap that does not exist (6 years is shorter than a standard 7-year policy). MT now GREEN."
+    source_url: "https://legislation.mt/eli/cap/406/eng/pdf"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T09:40:00Z
+    type: error-correction
+    field: future_direction
+    old_value: "L.N. 403 described as Public Procurement regs; L.N. 404 as Financial Administration regs"
+    new_value: "L.N. 404 = main regulation (Electronic Invoicing in Public Procurement, S.L. 174.10); L.N. 403 = Local Councils amendment (S.L. 363.01.1)"
+    description: "Legal notice descriptions were swapped throughout the page. Confirmed via EC eInvoicing factsheet (Tier 2) linking to legislation.mt: L.N. 404/2018 (S.L. 174.10, Cap. 174) is the main Electronic Invoicing in Public Procurement Regulations implementing Directive 2014/55/EU. L.N. 403/2018 (S.L. 363.01.1, Cap. 363) amends Local Councils financial regs to add electronic invoice definition. Also added missing key_deadlines: April 18 2019 (central) and April 18 2020 (sub-central) from L.N. 404/2018 Reg. 1(4) and (5). Three body text references corrected. Research item removed."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Malta"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-06T05:30:52Z
     type: initial-publish
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Malta B2G mandatory (L.N. 403/2018 and L.N. 404/2018); no B2B mandate; Peppol BIS 3.0; MFIN as Peppol Authority; 10-year archiving (VAT Act Chapter 406, Art. 53). Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: legal notice references on legislation.mt, archiving 10 years, MFIN Peppol Authority confirmation. unresolved_high: 0, unresolved_amber: 3."
+    description: "Initial publish. Malta B2G mandatory (L.N. 403/2018 and L.N. 404/2018); no B2B mandate; Peppol BIS 3.0; MFIN as Peppol Authority; 10-year archiving (VAT Act Chapter 406, Art. 53). Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: legal notice references on legislation.mt, archiving 10 years, MFIN Peppol Authority confirmation. unresolved_high: 0, unresolved_amber: 3."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1

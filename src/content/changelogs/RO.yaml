@@ -32,7 +32,7 @@ entries:
     field: "unresolved_amber"
     old_value: "3"
     new_value: "2"
-    description: "Council Implementing Decision (EU) 2023/1553 confirmed via EUR-Lex direct fetch: authorises Romania to apply mandatory electronic invoicing (derogating from Articles 218 and 232 of Directive 2006/112/EC), effective from January 1, 2024 until December 31, 2026 (or earlier upon ViDA transposition). Decision number, authorization scope, and expiry date all confirmed correct. Amber item removed. Source URL updated from search URL to direct EUR-Lex document."
+    description: "Council Implementing Decision (EU) 2023/1553 confirmed at EUR-Lex: authorises Romania to apply mandatory electronic invoicing (derogating from Articles 218 and 232 of Directive 2006/112/EC), effective from January 1, 2024 until December 31, 2026 (or earlier upon ViDA transposition). Decision number, authorization scope, and expiry date all confirmed correct. Amber item removed. Source URL updated from search URL to direct EUR-Lex document."
     source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023D1553"
     mandate_version_before: 1
     mandate_version_after: 1

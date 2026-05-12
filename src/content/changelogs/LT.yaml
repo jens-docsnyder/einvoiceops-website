@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Lithuania B2G via SABIS (Peppol, live since September 2024); B2B January 2028 at policy/announced stage only - no enacted legislation. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: Government Resolution No. 405 as SABIS legal basis (A-URL - nbfc.lrv.lt blocks automated fetch), archiving 10 years. unresolved_high: 1, unresolved_amber: 2."
+    description: "Initial publish. Lithuania B2G via SABIS (Peppol, live since September 2024); B2B January 2028 at policy/announced stage only - no enacted legislation. Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: Government Resolution No. 405 as SABIS legal basis (A-URL - nbfc.lrv.lt blocks automated fetch), archiving 10 years. unresolved_high: 1, unresolved_amber: 2."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
@@ -14,7 +14,7 @@ entries:
     field: future_direction
     old_value: "No ViDA reference"
     new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
-    description: "[Augur SIG-005] ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border mandate. Additive update - no existing GREEN claims affected. LT has a domestic B2B policy announcement (January 2028) separate from the ViDA cross-border obligation."
+    description: "ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border mandate. Additive update - no existing GREEN claims affected. LT has a domestic B2B policy announcement (January 2028) separate from the ViDA cross-border obligation."
     source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
     mandate_version_before: 1
     mandate_version_after: 1

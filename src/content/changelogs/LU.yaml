@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Luxembourg B2G fully mandatory since March 18, 2023 (Law of 13 December 2021); no B2B mandate; CTIE platform (efacturation.public.lu); 10-year archiving (Law of 25 July 2015). Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: B2G law reference, archiving 10 years, SME phase-in date. unresolved_high: 0, unresolved_amber: 3."
+    description: "Initial publish. Luxembourg B2G fully mandatory since March 18, 2023 (Law of 13 December 2021); no B2B mandate; CTIE platform (efacturation.public.lu); 10-year archiving (Law of 25 July 2015). Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: B2G law reference, archiving 10 years, SME phase-in date. unresolved_high: 0, unresolved_amber: 3."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
@@ -16,6 +16,15 @@ entries:
     new_value: "1"
     description: "Two items confirmed via EC eInvoicing factsheet: (1) Law of 13 December 2021 is confirmed as amending law establishing phased supplier deadlines. (2) SME phase-in completion March 18, 2023 confirmed exactly. Remaining: archiving 10 years needs primary law click. Claude WebFetch 2026-05-12."
     source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Luxembourg"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T08:45:00Z
+    type: confidence-upgrade
+    field: confidence_summary
+    old_value: amber
+    new_value: green
+    description: "Verified 10-year archiving period against Code de commerce Art. 16 (legilux.public.lu). Source text confirms 'dix ans' for commercial records. Corrected three body citations that incorrectly attributed the retention period to the Law of 25 July 2015 on electronic archiving (that law governs PSDC certification, not retention). Art. 16 is the correct authority. Removed from research queue. LU now GREEN."
+    source_url: "https://legilux.public.lu"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2019-05-16T00:00:00Z

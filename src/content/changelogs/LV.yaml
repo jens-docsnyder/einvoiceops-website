@@ -24,7 +24,7 @@ entries:
     field: future_direction
     old_value: "No ViDA reference"
     new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
-    description: "[Augur SIG-005] ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border mandate. Additive update - no existing GREEN claims affected. LV already has a CTC reporting model live from 2026; ViDA cross-border obligation is additive forward context."
+    description: "ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border mandate. Additive update - no existing GREEN claims affected. LV already has a CTC reporting model live from 2026; ViDA cross-border obligation is additive forward context."
     source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
     mandate_version_before: 1
     mandate_version_after: 1

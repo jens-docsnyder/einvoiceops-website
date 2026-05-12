@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Slovakia Law 385/2025 Z.z. - B2B mandatory January 2027 (established entities), voluntary from May 2026; CTC/reporting model with Tax Data Document (TDD); Peppol scheme 0245. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: penalties EUR 10,000 / EUR 100,000 (A-URL - slov-lex.sk verification needed), January 2027 mandate date confirmation. unresolved_high: 2, unresolved_amber: 1."
+    description: "Initial publish. Slovakia Law 385/2025 Z.z. - B2B mandatory January 2027 (established entities), voluntary from May 2026; CTC/reporting model with Tax Data Document (TDD); Peppol scheme 0245. Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: penalties EUR 10,000 / EUR 100,000 (A-URL - slov-lex.sk verification needed), January 2027 mandate date confirmation. unresolved_high: 2, unresolved_amber: 1."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
@@ -24,7 +24,7 @@ entries:
     field: "unresolved_high + penalty_max"
     old_value: "unresolved_high: 1 / penalty_max: source-verification required"
     new_value: "unresolved_high: 0 / penalty_max: confirmed EUR 10,000 per violation; EUR 100,000 for repeat violations"
-    description: "[Augur SIG-001] Penalty amounts confirmed in Law 385/2025 Z.z. Čl. I §85o (12)-(13) at slov-lex.sk. §85o (12): EUR 10,000 for failing to notify invoice data per paragraphs 9-10 (late, incomplete, or incorrect). §85o (13): EUR 100,000 for repeat violations. Penalties are specifically for CTC reporting failures under the B2B mandate. Amounts match page claim. Jens click 2026-05-12."
+    description: "Penalty amounts confirmed in Law 385/2025 Z.z. Čl. I §85o (12)-(13) at slov-lex.sk. §85o (12): EUR 10,000 for failing to notify invoice data per paragraphs 9-10 (late, incomplete, or incorrect). §85o (13): EUR 100,000 for repeat violations. Penalties are specifically for CTC reporting failures under the B2B mandate. Amounts match page claim. Jens click 2026-05-12."
     source_url: "https://static.slov-lex.sk/static/SK/ZZ/2025/385/20270101.html"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -33,7 +33,7 @@ entries:
     field: "unresolved_amber + last_verified + confidence_summary"
     old_value: "unresolved_amber: 1 / last_verified: null / confidence_summary: amber"
     new_value: "unresolved_amber: 0 / last_verified: 2026-05-12 / confidence_summary: green"
-    description: "[Augur SIG-001] Archiving period confirmed in Law 385/2025 Z.z. Čl. I §85o (15) at slov-lex.sk. Slovak text: 'Platitel je povinny uchovavat elektronicku fakturu po dobu desiatich rokov od skoncenia kalendarneho roka, ktoreho sa elektronicka faktura tyka.' (10 years from end of the calendar year to which the invoice relates). archiving_years: 10 confirmed. All research items resolved. SK upgraded to GREEN. Jens click 2026-05-12."
+    description: "Archiving period confirmed in Law 385/2025 Z.z. Čl. I §85o (15) at slov-lex.sk. Slovak text: 'Platitel je povinny uchovavat elektronicku fakturu po dobu desiatich rokov od skoncenia kalendarneho roka, ktoreho sa elektronicka faktura tyka.' (10 years from end of the calendar year to which the invoice relates). archiving_years: 10 confirmed. All research items resolved. SK upgraded to GREEN. Jens click 2026-05-12."
     source_url: "https://static.slov-lex.sk/static/SK/ZZ/2025/385/20270101.html"
     mandate_version_before: 1
     mandate_version_after: 1

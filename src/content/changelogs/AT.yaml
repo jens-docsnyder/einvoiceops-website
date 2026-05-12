@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Austria AbgÄG 2025 - B2B mandatory January 1, 2028 (enacted law); B2G via e-rechnung.gv.at live; CIUS-AT-NAT/CIUS-AT-GOV national CIUS; penalty EUR 5,000 FinStrG; archiving 7 years BAO §132. Source: Gemini Deep Research + Source Registry Round 2 (2026-05-05). Key unverified items: AbgÄG 2025 law reference (parlament.gv.at), CIUS-AT names (ebinterface.at ECONNREFUSED in automated fetch). unresolved_high: 2, unresolved_amber: 2."
+    description: "Initial publish. Austria AbgÄG 2025 - B2B mandatory January 1, 2028 (enacted law); B2G via e-rechnung.gv.at live; CIUS-AT-NAT/CIUS-AT-GOV national CIUS; penalty EUR 5,000 FinStrG; archiving 7 years BAO §132. Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: AbgÄG 2025 law reference (parlament.gv.at), CIUS-AT names (ebinterface.at ECONNREFUSED in automated fetch). unresolved_high: 2, unresolved_amber: 2."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
