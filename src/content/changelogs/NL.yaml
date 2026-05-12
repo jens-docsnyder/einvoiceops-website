@@ -90,3 +90,21 @@ entries:
     source_url: "https://www.peppol.nl"
     mandate_version_before: null
     mandate_version_after: null
+  - timestamp: 2019-04-18T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandatory: Netherlands transposed EU Directive 2014/55/EU. All public contracting authorities required to receive Peppol BIS 3.0 invoices via Peppol network. Peppol scheme 0106 (Chamber of Commerce number KvK) is the Dutch routing identifier."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+the+Netherlands"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-05-12T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B status: No B2B e-invoicing legislation enacted as of May 2026. EU ViDA Directive 2025/516/EU (DRR from July 1, 2030) is the expected driver for future B2B obligation. Phase: pre-legislation."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+    mandate_version_before: null
+    mandate_version_after: null

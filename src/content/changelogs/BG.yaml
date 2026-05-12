@@ -9,3 +9,30 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2026-05-12T12:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "3"
+    new_value: "2"
+    description: "ZOP Art. 115a (SG 86/18) confirmed as B2G legal basis via EC eInvoicing country factsheet: Article 115a of the Public Procurement Act (SG 86/18) transposes Directive 2014/55/EU. Mandatory from November 1, 2019. Claude WebFetch 2026-05-12."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Bulgaria"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2018-10-19T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandate established: Art. 115a added to Public Procurement Act (ZOP) via State Gazette No. 86/2018. Transposes EU Directive 2014/55/EU. All public sector entities required to receive EN 16931-compliant e-invoices. Stability: settled law, no amendments since enactment."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Bulgaria"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2019-11-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G mandate live: Art. 115a in force from November 1, 2019. All contracting authorities mandatory receivers of structured e-invoices. Phased SAF-T implementation (separate obligation) introduced for large companies from 2026."
+    source_url: "https://nra.bg"
+    mandate_version_before: null
+    mandate_version_after: null

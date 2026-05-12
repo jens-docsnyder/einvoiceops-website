@@ -46,11 +46,12 @@ document_lifecycle_states:
   - DELIVERED
 
 has_sandbox: true
-last_verified: null
+last_verified: 2026-05-12
+mandate_phase: transposition-stable
 mandate_version: 1
-confidence_summary: amber
-unresolved_high: 2
-unresolved_amber: 2
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline

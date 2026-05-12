@@ -2,16 +2,6 @@ country_code: LU
 items:
   - priority: amber
     type: source-verification
-    description: "B2G LAW OF 13 DECEMBER 2021: Open legilux.public.lu/eli/etat/leg/loi/2021/12/13/a869/jo → confirm the Law of 13 December 2021 establishes the supplier obligation to send e-invoices (not just government must receive). If yes: legal basis in body text confirmed → no page change → remove item + decrement amber. If the law reference differs or supplier obligation not stated there: update body text in LU.md."
-    source_url: "https://legilux.public.lu/eli/etat/leg/loi/2021/12/13/a869/jo"
-    added: 2026-05-06
-  - priority: amber
-    type: source-verification
-    description: "ARCHIVING 10 YEARS (Law of 25 July 2015): Open legilux.public.lu → search Law of 25 July 2015 on electronic archiving → confirm 10-year archiving period stated. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in LU.md frontmatter + add error-correction changelog entry."
+    description: "ARCHIVING 10 YEARS - WRONG SOURCE: Law of 25 July 2015 is the framework law for electronic archiving service providers (PSDC status, certification) - it does not state the invoice retention period. The 10-year period is in the Luxembourg commercial code or VAT law. Open legilux.public.lu → search 'Code de commerce' → Art. 16 (as amended). Alternatively search 'conservation' and '10 ans' or 'dix ans'. Confirm: 10-year retention stated for commercial records including invoices. If yes: archiving_years: 10 confirmed → remove item + decrement amber. Note: Art. 12 of Law of 25 July 2015 amends Code de commerce Art. 16 to add electronic copy provisions - the retention period is in Art. 16 itself."
     source_url: "https://legilux.public.lu"
-    added: 2026-05-06
-  - priority: amber
-    type: source-verification
-    description: "SME PHASE-IN COMPLETION DATE MARCH 18, 2023: Open efacturation.public.lu → platform documentation or news → confirm SME phase-in completed March 18, 2023 making all suppliers mandatory. Note: efacturation.public.lu returns 403 in automated fetch - manual browser required. If yes: key_deadline confirmed → no page change → remove item + decrement amber. If date differs: update key_deadlines and body text in LU.md + add error-correction changelog entry."
-    source_url: "https://efacturation.public.lu"
     added: 2026-05-06

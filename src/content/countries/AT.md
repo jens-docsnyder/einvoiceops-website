@@ -47,6 +47,7 @@ document_lifecycle_states:
 
 has_sandbox: true
 last_verified: null
+mandate_phase: active-rollout
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 2

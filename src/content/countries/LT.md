@@ -5,7 +5,7 @@ flag: "🇱🇹"
 
 mandate_type: interoperability
 vida_alignment: DRR-inquiry
-future_direction: "Lithuania's B2B e-invoicing mandate for January 2028 is at announced/policy stage - part of the 'Naujos kartos Lietuva' (New Generation Lithuania) national recovery plan (RRF). No legislation enacted as of May 2026. B2G via SABIS platform (replacing E.saskaita) has been live for public administration since 2024. i.MAS (Intelligent Tax Administration System) integration is planned for future B2B compliance linking."
+future_direction: "Lithuania's B2B e-invoicing mandate for January 2028 is at announced/policy stage - part of the 'Naujos kartos Lietuva' (New Generation Lithuania) national recovery plan (RRF). No legislation enacted as of May 2026. B2G via SABIS platform (replacing E.saskaita) has been live for public administration since 2024. i.MAS (Intelligent Tax Administration System) integration is planned for future B2B compliance linking. EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516, Augur SIG-005 2026-05-12): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
 
 b2b: announced
 b2g: mandatory
@@ -49,6 +49,7 @@ document_lifecycle_states:
 
 has_sandbox: true
 last_verified: null
+mandate_phase: pre-legislation
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 1

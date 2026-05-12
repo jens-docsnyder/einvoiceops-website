@@ -41,7 +41,7 @@ master_data_id: "11-digit Tax Number (adoszam): 8-digit tax ID + 1 VAT code digi
 mandatory_pdf_bundle: none
 foreign_resident_scope: true
 archiving_years: 8
-penalty_max: "HUF 1,000,000 per invoice for repeated non-compliance (Act CL of 2017 Art. 220 - source-verification required for exact per-invoice vs. per-audit framing)"
+penalty_max: "HUF 1,000,000 for legal entities per violation; HUF 400,000 for natural persons per violation (Act CL of 2017, Art. 220, paragraph 1 - verified 2026-05-12)"
 reporting_window: "Real-time for software-issued invoices; 24-hour deadline for manual/human-issued invoices above HUF 100,000 VAT; 7-day deadline for other manual invoices"
 correction_mechanism: correction_invoice
 
@@ -53,9 +53,10 @@ document_lifecycle_states:
 
 has_sandbox: true
 last_verified: null
+mandate_phase: live-stable
 mandate_version: 1
 confidence_summary: amber
-unresolved_high: 2
+unresolved_high: 1
 unresolved_amber: 1
 ---
 

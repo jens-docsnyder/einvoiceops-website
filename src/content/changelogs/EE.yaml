@@ -9,3 +9,30 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2013-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Estonian e-invoicing framework established: Accounting Act (Raamatupidamise seadus) provisions for e-invoicing entered force. E-invoices to public sector mandatory. Estonia operates its own e-invoicing infrastructure independently of Peppol for domestic B2G."
+    source_url: "https://www.riigiteataja.ee"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-10-04T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Accounting Act amendment RT I, 04.10.2024, 1: Established right for registered e-invoice recipients to legally reject PDF invoices from July 1, 2025. Strengthens the shift from PDF to structured e-invoice format. Stability: active-rollout."
+    source_url: "https://www.riigiteataja.ee"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-07-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "PDF rejection right live: Businesses registered as e-invoice recipients can legally reject PDF invoices from July 1, 2025, requiring suppliers to issue structured e-invoices instead."
+    source_url: "https://www.riigiteataja.ee"
+    mandate_version_before: null
+    mandate_version_after: null

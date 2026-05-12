@@ -9,3 +9,40 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+
+  - timestamp: 2026-05-12T09:00:00Z
+    type: confidence-upgrade
+    field: unresolved_high
+    old_value: "2"
+    new_value: "1"
+    description: "HUF 1,000,000 penalty confirmed for non-natural persons (legal entities) in Act CL of 2017, Art. 220, paragraph 1. HUF 400,000 for natural persons. Basis is per violation of obligation, not per invoice. penalty_max field updated to reflect verified framing. Jens click 2026-05-12."
+    source_url: "https://njt.hu/jogszabaly/2017-150-00-00"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2018-07-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Online Szamla launched: Hungarian Tax and Customs Authority (NAV) introduced the Online Invoice (Online Szamla) real-time reporting system. Initially voluntary for B2B invoices above HUF 100,000."
+    source_url: "https://onlineszamla.nav.gov.hu"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2021-04-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Online Szamla mandatory for all B2B: All invoices (B2B and B2C) must be reported to NAV Online Szamla in real-time (within 24 hours for software-generated invoices). No invoice value threshold for mandatory reporting. Stability: live-stable, fully operational since 2021."
+    source_url: "https://onlineszamla.nav.gov.hu"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-05-15T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "XML v3.0 mandatory: Online Szamla XML schema v3.0 became the only accepted format. XML v2.0 retired. All invoicing software must comply with the v3.0 schema from this date."
+    source_url: "https://onlineszamla.nav.gov.hu"
+    mandate_version_before: null
+    mandate_version_after: null

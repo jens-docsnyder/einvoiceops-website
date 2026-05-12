@@ -9,3 +9,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2019-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandatory: Slovenia established B2G e-invoicing via UJP (Uprava za javna placila - Public Payments Administration). All public sector suppliers required to issue structured e-invoices."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Slovenia"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-11-06T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "ZIERDED enacted (Uradni list 85/2025): Zakon o izmenjavi elektronskih racunov in drugih elektronskih dokumentov. Adopted October 23, 2025, published November 6, 2025. Transposes EU ViDA Directive 2025/516/EU. Establishes mandatory B2B e-invoicing from January 1, 2028. Chapter 4 enters force April 1, 2027 (interim provisions)."
+    source_url: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2025-01-3032"
+    mandate_version_before: null
+    mandate_version_after: null

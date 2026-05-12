@@ -5,7 +5,7 @@ flag: "🇨🇿"
 
 mandate_type: interoperability
 vida_alignment: DRR-inquiry
-future_direction: "Czech Republic has a mandatory B2G e-invoicing regime via the NEN platform (operated by Ministry of Regional Development/MMR) for public procurement. ISDOC (national format) and ISDS (Data Box system) are significant for the Czech market. No B2B mandate has been enacted. The national eInvoicing Forum monitors EU ViDA developments (mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace)."
+future_direction: "Czech Republic has a mandatory B2G e-invoicing regime via the NEN platform (operated by Ministry of Regional Development/MMR) for public procurement. ISDOC (national format) and ISDS (Data Box system) are significant for the Czech market. No B2B mandate has been enacted. The national eInvoicing Forum monitors EU ViDA developments (mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace). EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516, Augur SIG-005 2026-05-12): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
 
 b2b: none
 b2g: mandatory
@@ -16,7 +16,7 @@ phase_in_scope: null
 
 key_deadlines: []
 
-formats: [UBL-2.1, Peppol-BIS-3.0, ISDOC]
+formats: [UBL-2.1, Peppol-BIS-3.0, CII-UN-CEFACT, ISDOC]
 cius: null
 platform: NEN
 platform_model: interoperability
@@ -45,10 +45,11 @@ document_lifecycle_states:
 
 has_sandbox: false
 last_verified: null
+mandate_phase: transposition-stable
 mandate_version: 1
-confidence_summary: amber
+confidence_summary: red
 unresolved_high: 0
-unresolved_amber: 3
+unresolved_amber: 2
 ---
 
 ## Preparation Timeline

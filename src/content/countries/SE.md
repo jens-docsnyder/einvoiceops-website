@@ -47,6 +47,7 @@ document_lifecycle_states:
 has_sandbox: true
 last_verified: null
 
+mandate_phase: pre-legislation
 mandate_version: 1
 unresolved_high: 0
 unresolved_amber: 1

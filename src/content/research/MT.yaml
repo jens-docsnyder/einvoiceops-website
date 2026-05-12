@@ -10,8 +10,3 @@ items:
     description: "ARCHIVING 10 YEARS (VAT Act Chapter 406, Art. 53): Open legislation.mt → VAT Act Chapter 406 → Art. 53. Confirm: 10-year archiving period stated for invoice/VAT records. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in MT.md frontmatter + add error-correction changelog entry."
     source_url: "https://legislation.mt"
     added: 2026-05-06
-  - priority: amber
-    type: source-verification
-    description: "MFIN AS PEPPOL AUTHORITY: Open ec.europa.eu/digital-building-blocks → eInvoicing country factsheets → Malta → confirm MFIN (Ministry for Finance and Employment) is the designated Maltese Peppol Authority. If yes: future_direction reference confirmed → no page change → remove item + decrement amber. If different authority: update future_direction in MT.md."
-    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Malta"
-    added: 2026-05-06

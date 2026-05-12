@@ -50,6 +50,7 @@ document_lifecycle_states:
 
 has_sandbox: true
 last_verified: 2026-05-06
+mandate_phase: live-stable
 mandate_version: 1
 confidence_summary: green
 unresolved_high: 0

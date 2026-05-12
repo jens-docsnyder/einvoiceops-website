@@ -9,3 +9,58 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+
+  - timestamp: 2026-05-12T09:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "2"
+    new_value: "1"
+    description: "January 1, 2026 effective date confirmed in Cabinet Regulation 749, Point 19 (likumi.lv/ta/id/365040). Latvian text confirmed: e-rēķinu mandatory from 2026. gada 1. janvāri. Jens click 2026-05-12. LV penalty (EUR 20,000) research item source URL corrected - Cabinet Regulation 749 does not contain penalty provisions; penalty is in general accounting/tax law."
+    source_url: "https://likumi.lv/ta/id/365040"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T13:00:00Z
+    type: content-update
+    field: future_direction
+    old_value: "No ViDA reference"
+    new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
+    description: "[Augur SIG-005] ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border mandate. Additive update - no existing GREEN claims affected. LV already has a CTC reporting model live from 2026; ViDA cross-border obligation is additive forward context."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2024-10-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Accounting Law amendment: Latvian Accounting Law (Gramvedibas likums) amended to establish the legal basis for mandatory e-invoicing for B2G and G2G transactions. Framework for Cabinet Regulation established."
+    source_url: "https://likumi.lv"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-12-09T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Cabinet Regulation 749 enacted: Specific rules for e-invoice exchange established. Reporting model chosen (not clearance) to preserve business continuity if VID systems are unavailable. 5-working-day reporting window to VID. Voluntary for non-budget public entities from same date."
+    source_url: "https://likumi.lv/ta/id/365040"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G and G2G mandatory: Cabinet Regulation 749 enters force. All budget institutions (central government, municipalities) must receive and process e-invoices from January 1, 2026. B2B scope extension under consideration but no law enacted."
+    source_url: "https://likumi.lv/ta/id/365040"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-05-12T13:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "1"
+    new_value: "0"
+    description: "5 working day reporting window confirmed via Claude WebFetch (likumi.lv/ta/id/365040, Point 14). Exact Latvian text: 'E-rēķinu Valsts ieņēmumu dienestam iesniedz vienu reizi ne vēlāk kā piecu darbdienu laikā pēc tā nosūtīšanas dienas.' Reporting window: e-invoice must be submitted to VID no later than 5 working days after transmission date. reporting_window field confirmed."
+    source_url: "https://likumi.lv/ta/id/365040"
+    mandate_version_before: 1
+    mandate_version_after: 1

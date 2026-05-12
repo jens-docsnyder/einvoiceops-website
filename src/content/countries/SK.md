@@ -39,7 +39,7 @@ master_data_id: "Peppol Participant ID using scheme 0245 (SG:DIC - Slovak compan
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 10
-penalty_max: "Up to EUR 10,000 single violation; up to EUR 100,000 for systematic non-compliance (Law 385/2025 Z.z. - source-verification required)"
+penalty_max: "Up to EUR 10,000 per violation; up to EUR 100,000 for repeat violations (Law 385/2025 Z.z. Čl. I — confirmed slov-lex.sk 2026-05-12)"
 reporting_window: "Near real-time reporting of Tax Data Document (TDD) to tax authority"
 correction_mechanism: credit_note
 
@@ -51,11 +51,12 @@ document_lifecycle_states:
   - REJECTED
 
 has_sandbox: true
-last_verified: null
+last_verified: 2026-05-12
+mandate_phase: active-rollout
 mandate_version: 1
-confidence_summary: amber
-unresolved_high: 2
-unresolved_amber: 1
+confidence_summary: green
+unresolved_high: 0
+unresolved_amber: 0
 ---
 
 ## Preparation Timeline

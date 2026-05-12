@@ -9,3 +9,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2023-12-29T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Lei 82/2023 enacted: Art. 182-A extended B2G e-invoicing obligation to all companies including micro-enterprises. Previous law exempted micro-enterprises. Effective January 1, 2026 for all companies. SAF-T (Standard Audit File for Tax) mandatory under Portaria 302/2016 (v1.04_01). ATCUD invoice series registration established by Portaria 195/2020."
+    source_url: "https://diariodarepublica.pt/dr/detalhe/lei/82-2023-225883267"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G mandate fully inclusive: From January 1, 2026, all companies (including micro-enterprises) must issue structured e-invoices for B2G transactions. No size exemptions remain. Stability: active-rollout."
+    source_url: "https://diariodarepublica.pt/dr/detalhe/lei/82-2023-225883267"
+    mandate_version_before: null
+    mandate_version_after: null

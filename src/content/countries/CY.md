@@ -51,10 +51,11 @@ document_lifecycle_states:
 
 has_sandbox: false
 last_verified: null
+mandate_phase: transposition-stable
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 0
-unresolved_amber: 3
+unresolved_amber: 2
 ---
 
 ## Preparation Timeline

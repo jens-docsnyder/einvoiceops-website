@@ -5,7 +5,7 @@ flag: "🇵🇱"
 
 mandate_type: centralized-clearance
 vida_alignment: ctc-national
-future_direction: "Both mandatory phases now live (February 1 and April 1, 2026), per Act of May 9, 2024 (Dz.U. 2024 poz. 852). Penalties suspended until August 1, 2026. January 1, 2027 proposed for micro-businesses - pending secondary legislation. FA(3) schema is the current standard; FA(2) invalid from January 31, 2026."
+future_direction: "Both mandatory phases now live (February 1 and April 1, 2026), per Act of May 9, 2024 (Dz.U. 2024 poz. 852). Penalties (Art. 106ni ust. 1-3, 5-7) suspended until December 31, 2026; enforcement begins January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203). January 1, 2027 proposed for micro-businesses - pending secondary legislation. FA(3) schema is the current standard; FA(2) invalid from January 31, 2026."
 
 b2b: mandatory
 b2g: mandatory
@@ -21,8 +21,8 @@ key_deadlines:
     description: Mandatory Phase 1 - entities with 2024 total sales exceeding PLN 200 million
   - date: 2026-04-01
     description: Mandatory Phase 2 - all other VAT-registered entities
-  - date: 2026-08-01
-    description: Penalty enforcement begins (VAT Act Art. 106ni)
+  - date: 2027-01-01
+    description: Penalty enforcement begins — Art. 106ni ust. 1-3, 5-7 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203 Art. 23 pkt 4)
   - date: 2027-01-01
     description: Proposed mandatory date for micro-businesses (pending secondary legislation)
 
@@ -43,7 +43,7 @@ master_data_id: "NIP (Numer Identyfikacji Podatkowej) — 10-digit, no PL prefix
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 10
-penalty_max: "Up to 100% of VAT amount on invoice; or 18.7% of total if no VAT shown — VAT Act Art. 106ni. Suspended until August 1, 2026."
+penalty_max: "Up to 100% of VAT amount on invoice; or 18.7% of total if no VAT shown — VAT Act Art. 106ni ust. 1-3, 5-7. Suspended until December 31, 2026; enforcement begins January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203 Art. 23 pkt 4)."
 reporting_window: null
 correction_mechanism: correction_invoice
 
@@ -54,8 +54,9 @@ document_lifecycle_states:
   - REJECTED
 
 has_sandbox: true
-last_verified: 2026-05-05
-mandate_version: 1
+last_verified: 2026-05-12
+mandate_phase: active-rollout
+mandate_version: 2
 confidence_summary: green
 unresolved_high: 0
 unresolved_amber: 0
@@ -63,7 +64,7 @@ unresolved_amber: 0
 
 ## Preparation Timeline
 
-Both KSeF mandatory phases are now live. Phase 1 (entities with 2024 total sales exceeding PLN 200 million) went mandatory February 1, 2026. Phase 2 (all other VAT-registered entities) went mandatory April 1, 2026, per the Act of May 9, 2024 (Dz.U. 2024 poz. 852: https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20240000852). Penalty enforcement starts August 1, 2026 - giving companies a formal grace window until then.
+Both KSeF mandatory phases are now live. Phase 1 (entities with 2024 total sales exceeding PLN 200 million) went mandatory February 1, 2026. Phase 2 (all other VAT-registered entities) went mandatory April 1, 2026, per the Act of May 9, 2024 (Dz.U. 2024 poz. 852: https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20240000852). Penalty enforcement starts January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203) - giving companies a formal grace window on penalties until then.
 
 KSeF was delayed from its original 2024 launch following a technical audit. The current schedule is legally fixed. One open uncertainty: the reference year for Phase 1 threshold is stated as 2024 in the enacted law, but the Ministry of Finance held consultations on shifting it to 2025 - the enacted law remains 2024.
 

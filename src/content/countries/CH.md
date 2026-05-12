@@ -47,6 +47,7 @@ document_lifecycle_states:
 
 has_sandbox: false
 last_verified: null
+mandate_phase: transposition-stable
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 2

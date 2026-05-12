@@ -45,3 +45,30 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2019-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandatory: Belgium transposed EU Directive 2014/55/EU. All contracting authorities required to receive Peppol BIS 3.0 invoices via Peppol network. Stability: settled law."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Belgium"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2021-11-05T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B e-invoicing framework enacted: Law of November 5, 2021 (Belgian State Gazette) amended the VAT Code to establish the legal basis for mandatory B2B structured e-invoicing. Implementation dates to be set by Royal Decree."
+    source_url: "https://www.ejustice.just.fgov.be"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B mandate live: All Belgian VAT-registered businesses required to issue and receive structured e-invoices (Peppol BIS 3.0 via Peppol network). Mandate effective January 1, 2026 for established entities. Stability: active-rollout, first year of enforcement."
+    source_url: "https://einvoice.belgium.be"
+    mandate_version_before: null
+    mandate_version_after: null

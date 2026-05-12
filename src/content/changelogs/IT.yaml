@@ -63,3 +63,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2019-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B clearance mandatory: Italy extended FatturaPA (previously B2G only) to mandatory B2B e-invoicing via SdI (Sistema di Interscambio) for all resident businesses. The SdI acts as the clearance hub - invoices only become legally valid after SdI validation and assignment of a unique identifier. First EU country with mandatory B2B clearance model. Stability: live-stable, fully operational since 2019."
+    source_url: "https://www.agenziaentrate.gov.it"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2022-07-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Esterometro replaced: Cross-border invoice reporting via esterometro replaced by SdI transmission for all cross-border transactions. Unified reporting through SdI."
+    source_url: "https://www.agenziaentrate.gov.it"
+    mandate_version_before: null
+    mandate_version_after: null

@@ -9,3 +9,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2026-05-12T12:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "3"
+    new_value: "2"
+    description: "Ministry of Finance confirmed as responsible authority for B2G e-invoicing in Malta via EC eInvoicing factsheet. Peppol BIS 3.0 confirmed as accepted format. Note: factsheet does not explicitly designate MFIN as Peppol Authority but names Ministry of Finance and Malta Tax and Customs Administration as responsible. Claude WebFetch 2026-05-12."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Malta"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2018-11-16T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandate: L.N. 403 of 2018 and L.N. 404 of 2018 enacted. Transposes EU Directive 2014/55/EU. All Maltese public contracting authorities required to receive Peppol BIS 3.0 structured e-invoices. Ministry for Finance and Employment is responsible authority. Stability: transposition-stable, settled B2G law."
+    source_url: "https://legislation.mt"
+    mandate_version_before: null
+    mandate_version_after: null

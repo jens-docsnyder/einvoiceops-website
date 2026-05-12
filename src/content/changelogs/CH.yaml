@@ -9,3 +9,12 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2016-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Federal e-invoicing mandatory: EVRE (SR 611.06, Verordnung ueber die elektronische Rechnung im Bundesbereich) entered into force. All suppliers to the federal administration required to submit e-invoices from January 1, 2016. Scope: federal administration (Bundesverwaltung) only, not cantons or municipalities. Stability: settled, no B2B mandate planned."
+    source_url: "https://www.admin.ch/opc/de/classified-compilation/20151765/index.html"
+    mandate_version_before: null
+    mandate_version_after: null

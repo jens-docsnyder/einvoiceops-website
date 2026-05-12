@@ -48,6 +48,7 @@ document_lifecycle_states:
 has_sandbox: false
 last_verified: 2026-05-04
 
+mandate_phase: pre-legislation
 mandate_version: 1
 unresolved_high: 0
 unresolved_amber: 0

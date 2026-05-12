@@ -7,7 +7,7 @@ const changelogs = defineCollection({
     country_code: z.string().length(2),
     entries: z.array(z.object({
       timestamp: z.coerce.date(),
-      type: z.enum(['initial-publish', 'error-correction', 'mandate-change', 'confidence-upgrade', 'content-update']),
+      type: z.enum(['initial-publish', 'error-correction', 'mandate-change', 'confidence-upgrade', 'content-update', 'conflict-detected', 'legislative-event']),
       field: z.string().nullish(),
       old_value: z.string().nullish(),
       new_value: z.string().nullish(),
@@ -24,8 +24,8 @@ const research = defineCollection({
   schema: z.object({
     country_code: z.string().length(2),
     items: z.array(z.object({
-      priority: z.enum(['high', 'amber']),
-      type: z.enum(['source-verification', 'protocol-action', 'content-review', 'pending-amendment']),
+      priority: z.enum(['high', 'amber', 'conflict']),
+      type: z.enum(['source-verification', 'protocol-action', 'content-review', 'pending-amendment', 'conflict-detected']),
       description: z.string(),
       source_url: z.string().url().nullish(),
       added: z.coerce.date(),
@@ -81,6 +81,7 @@ const countries = defineCollection({
 
     has_sandbox: z.boolean(),
     last_verified: z.coerce.date().nullish(),
+    mandate_phase: z.enum(['transposition-stable', 'active-rollout', 'pre-legislation', 'live-stable']),
     mandate_version: z.number().int(),
     confidence_summary: z.enum(['green', 'amber', 'red']),
     unresolved_high: z.number().int().nullish(),

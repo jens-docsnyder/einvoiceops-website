@@ -63,3 +63,30 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2020-11-27T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "XRechnung mandatory for federal B2G: German federal administration mandated XRechnung (EN 16931-compliant) for all B2G invoices from November 27, 2020. State-level mandates followed with varying timelines."
+    source_url: "https://xeinkauf.de/xrechnung/"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-03-22T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Wachstumschancengesetz enacted: B2B e-invoicing framework established. Receiving obligation (inbound) mandatory from January 1, 2025 for all companies. Sending obligation (outbound) phased: large companies (>EUR 800k revenue) from January 1, 2027; all companies from January 1, 2028. Format: EN 16931-compliant structured invoices (ZUGFeRD, XRechnung, or equivalent). PDF invoices with hybrid XML (Factur-X style) accepted during transition."
+    source_url: "https://www.bundesfinanzministerium.de"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B receiving obligation live: All German companies must be able to receive structured e-invoices from January 1, 2025. Sending not yet mandatory. First phase of Wachstumschancengesetz B2B rollout active. Stability: active-rollout, sending mandate follows 2027-2028."
+    source_url: "https://www.bundesfinanzministerium.de"
+    mandate_version_before: null
+    mandate_version_after: null

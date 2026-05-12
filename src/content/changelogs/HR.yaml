@@ -27,3 +27,12 @@ entries:
     source_url: null
     mandate_version_before: 1
     mandate_version_after: 1
+  - timestamp: 2019-07-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B e-invoicing mandatory: Croatia extended the Fiscalization Act (Zakon o fiskalizaciji u prometu gotovinom) to cover e-invoicing. B2G e-invoicing established. Croatia joined EU 2013; Directive 2014/55/EU transposition completed. Stability: live-stable, mandate fully operational."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Croatia"
+    mandate_version_before: null
+    mandate_version_after: null

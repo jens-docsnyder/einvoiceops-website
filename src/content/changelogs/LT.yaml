@@ -9,3 +9,39 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2026-05-12T13:00:00Z
+    type: content-update
+    field: future_direction
+    old_value: "No ViDA reference"
+    new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
+    description: "[Augur SIG-005] ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border mandate. Additive update - no existing GREEN claims affected. LT has a domestic B2B policy announcement (January 2028) separate from the ViDA cross-border obligation."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2013-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "e.saskaita launched: Lithuanian public sector e-invoicing system established. B2G e-invoicing available for public administration."
+    source_url: "https://www.viesieji-pirkimai.lt"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-05-29T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Government Resolution 405/2024: SABIS (Sistema Automatizuoto Buhalteriniu Irastymo Sistema) platform launched as the new B2G e-invoicing infrastructure, replacing e.saskaita. NBFC (Nacionalinis bendruju funkciju centras) designated as operator. B2B mandate: not yet enacted. January 2028 target is policy/RRF commitment only."
+    source_url: "https://e-seimas.lrs.lt"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-05-12T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B status: No B2B e-invoicing legislation enacted as of May 2026. January 2028 B2B target from Naujos kartos Lietuva national recovery plan remains at policy stage. EU ViDA Directive 2025/516/EU (DRR from July 1, 2030) is the expected legal driver."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+    mandate_version_before: null
+    mandate_version_after: null

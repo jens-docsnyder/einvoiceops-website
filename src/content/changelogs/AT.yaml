@@ -9,3 +9,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2020-01-17T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandatory: Austria transposed EU Directive 2014/55/EU via IKT Konsolidierungsgesetz and BVergG 2018 §368. All contracting authorities required to receive EN 16931-compliant invoices. Two CIUS defined: one for B2G (government sector) and one for B2B (national VAT law). Stability: settled law, no amendments expected."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Austria"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "AbgAenG 2025 (Abgabenaenderungsgesetz 2025) enacted: B2B e-invoicing mandatory from January 1, 2028 for all companies established in Austria. Law published in BGBl. I. This is the first B2B mandate; prior to this law no B2B obligation existed. Stability: active-rollout, implementation window 2025-2028."
+    source_url: "https://www.parlament.gv.at"
+    mandate_version_before: null
+    mandate_version_after: null

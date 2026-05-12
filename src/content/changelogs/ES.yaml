@@ -18,3 +18,30 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2022-09-29T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Ley 18/2022 (Crea y Crece) enacted: Established mandatory B2B e-invoicing in Spain. Art. 12 requires all businesses to issue structured e-invoices to other businesses. Large companies (above threshold) first; SMEs follow. Introduced the Verifactu/SIF (Sistema de Facturacion) framework concept."
+    source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-15274"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2023-10-06T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "RD 1007/2023 enacted: Implementing regulation for Verifactu/SIF technical requirements. Defined the certified invoicing software requirements and the TicketBAI exclusion for Basque Country and Navarre (foral territories use regional TicketBAI system instead)."
+    source_url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2023-20018"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-12-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "RD-ley 15/2025: Go-live dates confirmed. January 1, 2027 for large companies (annual turnover above threshold). July 1, 2027 for SMEs. SII-registered large taxpayers and Basque/Navarre entities excluded from Verifactu scope."
+    source_url: "https://www.boe.es/boe/dias/2025/12/02/"
+    mandate_version_before: null
+    mandate_version_after: null

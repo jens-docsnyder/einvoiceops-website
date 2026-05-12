@@ -1,22 +1,2 @@
 country_code: NO
-items:
-  - priority: high
-    type: source-verification
-    description: "B2G MANDATE DATES UNVERIFIED: Open anskaffelser.no/e-handel/e-faktura → confirm (1) July 1, 2012 as central government start date, (2) April 1, 2019 as all-public-entities date. Alternatively open lovdata.no → Anskaffelsesforskriften (FOR-2016-08-12-974) § 11-3 → confirm the mandate scope and date. If confirmed: key_deadlines confirmed correct → remove item + decrement high. If different: update key_deadlines + add error-correction changelog entry."
-    source_url: "https://www.anskaffelser.no/e-handel/e-faktura"
-    added: 2026-05-06
-  - priority: high
-    type: source-verification
-    description: "LEGAL BASIS UNVERIFIED: Open lovdata.no → FOR-2016-08-12-974 (Anskaffelsesforskriften) → § 11-3 → confirm it mandates e-invoices for public procurement and gives the scope. If yes: legal basis note confirmed → remove item + decrement high. If no: update body text and key_deadlines + add correction changelog."
-    source_url: "https://lovdata.no/dokument/SF/forskrift/2016-08-12-974"
-    added: 2026-05-06
-  - priority: amber
-    type: source-verification
-    description: "ARCHIVING 5 YEARS UNVERIFIED: Open lovdata.no → Bokføringsloven (LOV-2004-11-19-73) → § 13 → confirm 5-year archiving period for business records including invoices. If yes: archiving_years: 5 confirmed → remove item + decrement amber. If no: update archiving_years in frontmatter + add changelog entry."
-    source_url: "https://lovdata.no/dokument/NL/lov/2004-11-19-73"
-    added: 2026-05-06
-  - priority: amber
-    type: source-verification
-    description: "PEPPOL SCHEME 0192 UNVERIFIED: Open digdir.no or anskaffelser.no → Peppol/EHF guidance → confirm scheme code 0192 is the correct Peppol participant ID scheme for Norwegian organisasjonsnummer. If yes: master_data_id confirmed → remove item + decrement amber. If no: update master_data_id field + add correction changelog."
-    source_url: "https://www.anskaffelser.no/e-handel/e-faktura/peppol"
-    added: 2026-05-06
+items: []

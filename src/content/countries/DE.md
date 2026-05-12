@@ -48,6 +48,7 @@ document_lifecycle_states:
 
 has_sandbox: false
 last_verified: 2026-05-04
+mandate_phase: active-rollout
 mandate_version: 1
 confidence_summary: green
 unresolved_high: 0

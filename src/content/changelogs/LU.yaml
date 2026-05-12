@@ -9,3 +9,39 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2026-05-12T12:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "3"
+    new_value: "1"
+    description: "Two items confirmed via EC eInvoicing factsheet: (1) Law of 13 December 2021 is confirmed as amending law establishing phased supplier deadlines. (2) SME phase-in completion March 18, 2023 confirmed exactly. Remaining: archiving 10 years needs primary law click. Claude WebFetch 2026-05-12."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Luxembourg"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2019-05-16T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Law of 16 May 2019: Primary B2G e-invoicing law enacted. Transposes EU Directive 2014/55/EU for public procurement and concession contracts. Establishes the legal obligation for suppliers to government."
+    source_url: "https://legilux.public.lu"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2021-12-13T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Law of 13 December 2021: Amending law establishing phased implementation deadlines by company size. Large companies: May 18, 2022. Medium companies: October 18, 2022. Small and newly established businesses: March 18, 2023."
+    source_url: "https://legilux.public.lu/eli/etat/leg/loi/2021/12/13/a869/jo"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2023-03-18T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Mandate fully live: SME and newly established business phase-in completed March 18, 2023. All Luxembourg suppliers to public sector now required to issue structured e-invoices. Mandate complete. Stability: live-stable."
+    source_url: "https://efacturation.public.lu"
+    mandate_version_before: null
+    mandate_version_after: null

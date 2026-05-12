@@ -24,19 +24,23 @@ function fmtTs(d: Date): string {
 }
 
 const typeLabels: Record<string, string> = {
-  'initial-publish':   'Initial publish',
-  'error-correction':  'Error correction',
-  'mandate-change':    'Mandate change',
-  'confidence-upgrade':'Confidence upgrade',
-  'content-update':    'Content update',
+  'initial-publish':    'Initial publish',
+  'error-correction':   'Error correction',
+  'mandate-change':     'Mandate change',
+  'confidence-upgrade': 'Confidence upgrade',
+  'content-update':     'Content update',
+  'conflict-detected':  'Conflict detected',
+  'legislative-event':  'Legislative event',
 };
 
 const typeColors: Record<string, string> = {
-  'initial-publish':   'type-init',
-  'error-correction':  'type-error',
-  'mandate-change':    'type-mandate',
-  'confidence-upgrade':'type-confidence',
-  'content-update':    'type-content',
+  'initial-publish':    'type-init',
+  'error-correction':   'type-error',
+  'mandate-change':     'type-mandate',
+  'confidence-upgrade': 'type-confidence',
+  'content-update':     'type-content',
+  'conflict-detected':  'type-conflict',
+  'legislative-event':  'type-legislative',
 };
 ---
 <!DOCTYPE html>
@@ -91,11 +95,13 @@ const typeColors: Record<string, string> = {
       padding: 2px 8px; border-radius: 9999px;
       font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
     }
-    .type-init       { background: #f0fdf4; color: #166534; }
-    .type-error      { background: #fee2e2; color: #b91c1c; }
-    .type-mandate    { background: #eff6ff; color: #1d4ed8; }
-    .type-confidence { background: #fef9c3; color: #713f12; }
-    .type-content    { background: #f1f5f9; color: #475569; }
+    .type-init        { background: #f0fdf4; color: #166534; }
+    .type-error       { background: #fee2e2; color: #b91c1c; }
+    .type-mandate     { background: #eff6ff; color: #1d4ed8; }
+    .type-confidence  { background: #fef9c3; color: #713f12; }
+    .type-content     { background: #f1f5f9; color: #475569; }
+    .type-conflict    { background: #dc2626; color: #ffffff; }
+    .type-legislative { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
 
     .entry-body { }
     .entry-desc { font-size: 0.875rem; line-height: 1.55; color: var(--text); margin-bottom: 8px; }

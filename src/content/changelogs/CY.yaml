@@ -9,3 +9,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2026-05-12T12:00:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "3"
+    new_value: "2"
+    description: "Law 89(I)/2019 confirmed via EC eInvoicing factsheet: national law of 26 June 2019 on electronic invoicing in public procurement transposes Directive 2014/55/EU. Note: EC factsheet references EU procurement thresholds generally, not specific CY threshold amounts (EUR 215k/30k/3k still need primary law verification). Claude WebFetch 2026-05-12."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Cyprus"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2019-06-26T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandate established: Law 89(I)/2019 enacted June 26, 2019. Transposes EU Directive 2014/55/EU for public procurement. Phased implementation by tender value thresholds. Stability: settled B2G law, no B2B mandate."
+    source_url: "https://cylaw.org/nomoi/indexes/2019_1_89.html"
+    mandate_version_before: null
+    mandate_version_after: null

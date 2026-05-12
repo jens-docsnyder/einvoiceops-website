@@ -10,8 +10,8 @@ items:
     description: "ARCHIVING 10 YEARS: Open zakonyprolidi.cz → Czech Accounting Act → archiving provision. Confirm: 10-year archiving for accounting records under Czech Accounting Act. If yes: archiving_years: 10 confirmed → remove item + decrement amber. If different: update archiving_years in CZ.md frontmatter + add error-correction changelog entry."
     source_url: "https://www.zakonyprolidi.cz"
     added: 2026-05-06
-  - priority: amber
-    type: source-verification
-    description: "ISDOC FORMAT ACCEPTANCE AT NEN: Open nen.nipez.cz or mf.gov.cz → e-fakturace section → confirm ISDOC is accepted alongside UBL 2.1 and Peppol BIS 3.0 for B2G submissions. If yes: formats list confirmed → no page change → remove item + decrement amber. If ISDOC not listed: update formats in CZ.md frontmatter."
-    source_url: "https://mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace"
-    added: 2026-05-06
+  - priority: conflict
+    type: conflict-detected
+    description: "[A-DIV] TRANSPORT PROTOCOL CONFLICT: CZ.md states transport_protocol: Peppol-AS4. NEN API documentation (nen.nipez.cz) shows certificate-based proprietary API access - no Peppol network mentioned. Jens click 2026-05-12: no Peppol or BIS found in NEN access docs. Resolution: open nen.nipez.cz technical spec or NIPEZ documentation for NEN integration format list. Confirm whether NEN uses Peppol AS4 transport or its own API. If Peppol AS4 not confirmed: update transport_protocol in CZ.md to reflect NEN proprietary API + remove Peppol-AS4. Note: Peppol BIS 3.0 FORMAT is legally accepted (EU Directive 2014/55 EN 16931 mandate) regardless of transport mechanism - transport and format are separate questions."
+    source_url: "https://nen.nipez.cz"
+    added: 2026-05-12

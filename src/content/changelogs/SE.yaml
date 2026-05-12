@@ -54,3 +54,21 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2019-04-18T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G e-invoicing mandatory: Sweden transposed EU Directive 2014/55/EU. All public contracting authorities required to receive Peppol BIS 3.0 invoices via Peppol network. ESV (Ekonomistyrningsverket) is Swedish Peppol Authority."
+    source_url: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+in+Sweden"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-05-12T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B status: No B2B e-invoicing legislation enacted as of May 2026. A formal government inquiry into modern VAT rules and anti-fraud tools was announced February 5, 2026 (possibly ViDA-related - URL unconfirmed as of this date). EU ViDA Directive 2025/516/EU DRR from July 1, 2030 is the expected B2B driver."
+    source_url: "https://www.regeringen.se"
+    mandate_version_before: null
+    mandate_version_after: null

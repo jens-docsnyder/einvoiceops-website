@@ -45,7 +45,7 @@ master_data_id: "GLN (Global Location Number / EAN) — 13-digit, primary routin
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 5
-penalty_max: "Up to DKK 1,500,000; compulsory dissolution for repeated non-compliance — Bogføringsloven Section 26"
+penalty_max: "Compulsory dissolution for failure to submit records or comply with accounting orders (Bogføringsloven §28, confirmed 2026-05-12); DKK 1,500,000 fine cited by secondary sources (Dansk Erhverv, PwC DK) but specific section in primary law not found"
 reporting_window: null
 correction_mechanism: credit_note
 
@@ -55,6 +55,7 @@ document_lifecycle_states:
 
 has_sandbox: true
 last_verified: 2026-04-30
+mandate_phase: live-stable
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 0

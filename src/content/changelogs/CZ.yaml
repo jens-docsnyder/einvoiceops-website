@@ -9,3 +9,48 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2026-05-12T10:00:00Z
+    type: content-update
+    field: formats
+    old_value: "[UBL-2.1, Peppol-BIS-3.0, ISDOC]"
+    new_value: "[UBL-2.1, Peppol-BIS-3.0, CII-UN-CEFACT, ISDOC]"
+    description: "Added CII-UN-CEFACT to formats list. Source: mf.gov.cz e-fakturace section confirmed UBL 2.1, CII, and ISDOC as accepted formats (Jens click 2026-05-12). Peppol BIS 3.0 retained as legally mandated under EU Directive 2014/55/EU EN 16931 compliance requirement - Czech public authorities must accept any EN 16931-compliant invoice including Peppol BIS 3.0."
+    source_url: "https://mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T10:01:00Z
+    type: conflict-detected
+    field: transport_protocol
+    old_value: "Peppol-AS4"
+    new_value: null
+    description: "[A-DIV] Transport protocol conflict detected. CZ.md states Peppol-AS4. NEN API documentation shows certificate-based proprietary API access with no Peppol network reference (Jens click 2026-05-12). Conflict item added to research YAML. confidence_summary set to red. Resolution path: confirm NEN technical spec at nen.nipez.cz for transport mechanism. Note: format acceptance (Peppol BIS 3.0) and transport protocol (Peppol AS4) are separate questions - format is legally settled via EU Directive, transport remains unresolved."
+    source_url: "https://nen.nipez.cz"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T13:00:00Z
+    type: content-update
+    field: future_direction
+    old_value: "No ViDA reference"
+    new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
+    description: "[Augur SIG-005] ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border e-invoice mandate as the confirmed legal basis for upcoming B2B obligations. Additive update - no existing GREEN claims affected."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2016-10-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "NEN platform established: Act 134/2016 on Public Procurement established NEN (Narodni elektronicky nastroj) as the mandatory B2G e-procurement platform operated by Ministry of Regional Development. Accepted formats: UBL 2.1, CII, ISDOC/ISDOCX v5.2+. Stability: settled, no B2B mandate."
+    source_url: "https://www.zakonyprolidi.cz/cs/2016-134"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2019-04-18T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "EU Directive transposition complete: Czech Republic completed transposition of Directive 2014/55/EU. All contracting authorities accept structured e-invoices via NEN. No B2B mandate enacted. eInvoicing Forum monitoring EU ViDA developments. ViDA DRR July 1, 2030 expected as future B2B driver."
+    source_url: "https://mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace"
+    mandate_version_before: null
+    mandate_version_after: null

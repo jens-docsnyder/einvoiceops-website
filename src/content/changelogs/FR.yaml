@@ -90,3 +90,57 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2014-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2G via Chorus Pro: France established Chorus Pro as the mandatory B2G e-invoicing platform. All suppliers to French public sector required to use Chorus Pro."
+    source_url: "https://chorus-pro.gouv.fr"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2021-09-26T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Ordonnance 2021-1190: B2B e-invoicing framework established in law. Original mandate dates set for 2024 (subsequently delayed). Y-model architecture (PA + certified PDPs) established as the framework."
+    source_url: "https://www.legifrance.gouv.fr"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2022-10-15T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Decret 2022-1299: Technical requirements published including SIRET as mandatory routing identifier, accepted formats (Factur-X, UBL BIS 3.0, CII), and PA/PDP certification framework."
+    source_url: "https://www.legifrance.gouv.fr"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2023-12-29T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Loi 2023-1322 Art. 91: Current mandate dates confirmed in law. September 1, 2026 for large companies and ETIs (issue and receive); September 1, 2027 for SMEs and micro-enterprises. Built-in 3-month postponement option by decree (outer limit December 2026/2027 without new legislation)."
+    source_url: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000048727345"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-10-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "PPF B2B exchange discontinued: AIFE announced the Portail Public de Facturation (PPF) will no longer handle B2B invoice exchange. All B2B flows require a certified PDP (Plateforme de Dematérialisation Partenaire). No free direct public channel for B2B. All entities must contract a certified PDP."
+    source_url: "https://aife.economie.gouv.fr"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-02-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "SAP registered as PA: SAP was officially registered as a Plateforme Agreee (PA) by DGFiP in February 2026. SAP DRC Cloud Edition customers can transmit via SAP's PA certification without contracting a separate third-party PDP."
+    source_url: "https://community.sap.com/t5/financial-management-blog-posts-by-sap/sap-is-now-plateforme-agr%C3%A9%C3%A9e-pa-for-e-invoicing-and-e-reporting/ba-p/14314339"
+    mandate_version_before: null
+    mandate_version_after: null

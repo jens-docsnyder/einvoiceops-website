@@ -45,3 +45,30 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2021-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "RO e-Factura launched: Romania introduced the national e-invoicing system (RO e-Factura) as a voluntary clearance platform for B2B and B2G. Managed by ANAF (National Agency for Fiscal Administration)."
+    source_url: "https://www.anaf.ro"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B mandatory for large companies: RO e-Factura becomes mandatory for large companies from January 1, 2024. Clearance model: invoices must be validated by ANAF before delivery to buyer. Penalty enforcement began April 1, 2024."
+    source_url: "https://www.anaf.ro"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-07-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B mandatory for all companies: RO e-Factura mandatory for all Romanian companies from July 1, 2024. Full national rollout complete. Stability: active-rollout, still in early operational phase."
+    source_url: "https://www.anaf.ro"
+    mandate_version_before: null
+    mandate_version_after: null

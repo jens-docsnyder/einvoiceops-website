@@ -9,3 +9,58 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+
+  - timestamp: 2026-05-12T09:00:00Z
+    type: confidence-upgrade
+    field: unresolved_high
+    old_value: "1"
+    new_value: "0"
+    description: "Phase 1 B2B mandate dates confirmed via Revenue.ie press release (pr-021026). November 1, 2028: large corporates must issue eInvoices; all businesses must be able to receive. Jens click 2026-05-12."
+    source_url: "https://www.revenue.ie/en/corporate/press-office/press-releases/2026/pr-021026-phase-one-vat-modernisation.aspx"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T13:00:00Z
+    type: content-update
+    field: future_direction
+    old_value: "No ViDA reference"
+    new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
+    description: "[Augur SIG-005] ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border e-invoice mandate. Additive update - no existing GREEN claims affected. IE already has a domestic B2B mandate announced (November 2028/2029 phases); ViDA cross-border obligation is additive context."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2019-04-18T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "S.I. 258/2019 enacted: European Union (Electronic Invoicing in Public Procurement) Regulations 2019. Transposes EU Directive 2014/55/EU. All contracting authorities required to receive and process electronic invoices complying with the European standard on e-invoicing. OGP (Office of Government Procurement) is Irish Peppol Authority."
+    source_url: "https://www.irishstatutebook.ie/eli/2019/si/258/made/en/print"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-10-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "B2B mandate announced: Revenue Commissioners announced phased B2B e-invoicing mandate. Phase 1 (November 1, 2028): large corporates in Revenue's Large Corporates Division must issue and all businesses must receive structured e-invoices. Phase 2 (November 1, 2029): all VAT-registered entities in domestic and intra-EU B2B trade. Based on EU ViDA framework."
+    source_url: "https://www.revenue.ie/en/corporate/press-office/press-releases/2026/pr-021026-phase-one-vat-modernisation.aspx"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-05-12T12:30:00Z
+    type: confidence-upgrade
+    field: unresolved_amber
+    old_value: "2"
+    new_value: "1"
+    description: "S.I. 258/2019 B2G legal basis confirmed via Claude WebFetch (irishstatutebook.ie). Regulation 4 states: 'A contracting authority or a contracting entity shall, where an electronic invoice complies with the European standard on electronic invoicing established under the Directive, receive and process the electronic invoice.' Preamble confirms: 'for the purpose of giving effect to Council Directive 2014/55/EU.' Note: law references European standard generally (EN 16931), not Peppol BIS 3.0 by name."
+    source_url: "https://www.irishstatutebook.ie/eli/2019/si/258/made/en/print"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-05-12T15:00:00Z
+    type: confidence-upgrade
+    field: confidence_summary
+    old_value: amber
+    new_value: green
+    description: "6-year VAT record retention confirmed via Jens click (revenue.ie, 2026-05-12). Exact text: 'Relevant records should be stored for six years' across all VAT scenarios. archiving_years: 6 confirmed. All research items resolved. IE goes GREEN."
+    source_url: "https://www.revenue.ie/en/vat/vat-records-invoices-and-credit-notes/"
+    mandate_version_before: 1
+    mandate_version_after: 1

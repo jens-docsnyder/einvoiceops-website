@@ -1,5 +1,23 @@
 country_code: PL
 entries:
+  - timestamp: 2026-05-12T09:30:00Z
+    type: mandate-change
+    field: "penalty_max + future_direction + key_deadlines + confidence_summary + last_verified + mandate_version"
+    old_value: "Penalties suspended until August 1, 2026 (from Dz.U. 2024 poz. 852)"
+    new_value: "Penalties suspended until December 31, 2026; enforcement begins January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203 Art. 23 pkt 4)"
+    description: "[SIG-003 VERIFIED] Jens verified Act of August 5, 2025 (Dz.U. 2025 poz. 1203). Art. 23 pkt 4 confirms: Art. 106ni ust. 1-3 and 5-7 (penalty provisions) enter into force January 1, 2027 - not August 1, 2026 as previously stated. Key_deadlines 2026-08-01 entry removed. New 2027-01-01 penalty enforcement entry added. penalty_max and future_direction updated. Body text in Preparation Timeline updated. All research items cleared. confidence_summary: amber → green. mandate_version: 1 → 2."
+    source_url: "https://dziennikustaw.gov.pl/DU/2025/1203"
+    mandate_version_before: 1
+    mandate_version_after: 2
+  - timestamp: 2026-05-12T10:00:00Z
+    type: error-correction
+    field: "penalty_max + key_deadlines (2026-08-01)"
+    old_value: "Penalties suspended until August 1, 2026"
+    new_value: "PENDING VERIFICATION - Augur found evidence suspension ends December 31, 2026 (enforcement from January 1, 2027) per Dz.U. 2025/1203"
+    description: "[Augur SIG-003] Penalty suspension end date flagged as potentially wrong. PL page states August 1, 2026 as penalty enforcement start. Augur WebSearch against ksef.podatki.gov.pl confirms penalties suspended Feb 1, 2026 to Dec 31, 2026, enforcement from January 1, 2027. Dz.U. 2025/1203 (Act of August 5, 2025) identified as primary source. Research YAML item added. Page not updated until Jens verifies via primary source click."
+    source_url: "https://dziennikustaw.gov.pl/DU/2025/1203"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-05T18:33:02Z
     type: confidence-upgrade
     field: "unresolved_amber + confidence_summary"
@@ -45,3 +63,39 @@ entries:
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
+  - timestamp: 2021-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "KSeF voluntary: Krajowy System e-Faktur (KSeF - National e-Invoice System) launched as voluntary platform for B2B e-invoicing. Managed by Ministerstwo Finansow (Ministry of Finance). Peppol-independent - uses national structured XML format."
+    source_url: "https://ksef.podatki.gov.pl"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2024-01-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "KSeF mandatory date delayed: Original mandatory date of July 1, 2024 postponed following technical concerns and business readiness issues. New mandatory date set for 2026."
+    source_url: "https://ksef.podatki.gov.pl"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2025-08-05T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Dz.U. 2025/1203 enacted: Act of August 5, 2025 amending the VAT Act. Contains penalty suspension provisions and KSeF outage procedure amendments (Art. 106nh/106ni). Specific penalty enforcement timeline: transitional provisions to be verified in primary law."
+    source_url: "https://dziennikustaw.gov.pl/DU/2025/1203"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-04-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "KSeF mandatory for large companies: B2B e-invoicing via KSeF mandatory from April 1, 2026 for companies with annual turnover above PLN 200 million in 2025. Smaller companies follow in later phases. IBAN mandatory in KSeF invoice header. Stability: active-rollout, penalty enforcement timeline still being confirmed."
+    source_url: "https://ksef.podatki.gov.pl"
+    mandate_version_before: null
+    mandate_version_after: null

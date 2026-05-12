@@ -27,3 +27,58 @@ entries:
     source_url: "https://nemhandel.dk"
     mandate_version_before: null
     mandate_version_after: 1
+
+  - timestamp: 2026-05-12T09:00:00Z
+    type: error-correction
+    field: penalty_max
+    old_value: "Up to DKK 1,500,000; compulsory dissolution for repeated non-compliance - Bogforingsloven Section 26"
+    new_value: "Up to DKK 1,500,000; compulsory dissolution for repeated non-compliance (secondary sources only; section reference unverified)"
+    description: "Removed wrong section citation from penalty_max. Section 26 confirmed wrong 2026-05-06 (only enforcement options, no DKK figure). Section 28 also checked 2026-05-12 (Jens click) - no DKK 1,500,000 amount found in primary law document. DKK 1,500,000 retained from secondary sources (Dansk Erhverv, PwC DK). Research item stays AMBER - penalty section in Bogforingsloven remains unverified."
+    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2005-02-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "World first: Denmark mandated e-invoicing for central government suppliers from February 1, 2005 - the first e-invoicing mandate in the world. Format: OIOUBL. Platform: NemHandel."
+    source_url: "https://nemhandel.dk"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2012-04-01T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Extended to local government: e-invoicing mandate extended to Danish municipalities and regions. All public sector procurement now covered."
+    source_url: "https://nemhandel.dk"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2022-06-24T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "Bogforingsloven enacted (Act 700/2022): New Bookkeeping Act established digital bookkeeping and e-invoicing capability requirements for B2B. Phased by company size. Separate from B2G mandate - this establishes the B2B digital record-keeping framework. Stability: live-stable, B2G long-established."
+    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-01-14T00:00:00Z
+    type: legislative-event
+    field: null
+    old_value: null
+    new_value: null
+    description: "OIOUBL 3.0 cancelled: Danish Business Authority cancelled the OIOUBL 3.0 development project. Peppol BIS 3.0 designated as the single future standard for all Danish e-invoicing. Source: nemhandel.dk announcement January 14, 2026."
+    source_url: "https://nemhandel.dk"
+    mandate_version_before: null
+    mandate_version_after: null
+  - timestamp: 2026-05-12T15:00:00Z
+    type: content-update
+    field: penalty_max
+    old_value: "DKK 1,500,000; section unverified"
+    new_value: "Compulsory dissolution §28 confirmed; DKK 1,500,000 secondary sources only"
+    description: "Bogføringsloven §28 confirmed as compulsory dissolution section via Jens click (retsinformation.dk, 2026-05-12). §28 gives Erhvervsstyrelsen power to request court dissolution for failure to submit records/declarations/comply with orders. penalty_max updated to cite §28. DKK 1,500,000 fine still not found in primary law - secondary sources (Dansk Erhverv, PwC DK) cite it. Research item updated to continue searching for the fine amount."
+    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
+    mandate_version_before: 1
+    mandate_version_after: 1
