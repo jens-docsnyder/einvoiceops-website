@@ -5,7 +5,7 @@ flag: "🇨🇿"
 
 mandate_type: interoperability
 vida_alignment: DRR-inquiry
-future_direction: "Czech Republic has a mandatory B2G e-invoicing regime via the NEN platform (operated by Ministry of Regional Development/MMR) for public procurement. ISDOC (national format) and ISDS (Data Box system) are significant for the Czech market. No B2B mandate has been enacted. The national eInvoicing Forum monitors EU ViDA developments (mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace). EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516, Augur SIG-005 2026-05-12): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
+future_direction: "Czech Republic has a mandatory B2G e-invoicing regime via the NEN platform (operated by Ministry of Regional Development/MMR) for public procurement. ISDOC (national format) and ISDS (Data Box system) are significant for the Czech market. No B2B mandate has been enacted. The national eInvoicing Forum monitors EU ViDA developments (mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace). EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
 
 b2b: none
 b2g: mandatory
@@ -56,7 +56,7 @@ unresolved_amber: 2
 
 The Czech Republic's B2G e-invoicing operates via the NEN platform (Národní elektronický nástroj - National Electronic Tool), operated by the Ministry of Regional Development (MMR). NEN handles public procurement e-invoices alongside the ISDS (Datová schránka - Data Box system), which is a de facto secure government document delivery channel used across the Czech public sector.
 
-Three formats are accepted: UBL 2.1, Peppol BIS 3.0, and ISDOC (Informacní systém pro doklady - the Czech national e-document format). ISDOC is significant - many Czech ERPs and accounting systems generate ISDOC natively. No B2B mandate exists.
+Three formats are accepted: UBL 2.1, Peppol BIS 3.0, CII (UN/CEFACT), and ISDOC (Informacní systém pro doklady - the Czech national e-document format). ISDOC is significant - many Czech ERPs and accounting systems generate ISDOC natively. No B2B mandate exists.
 
 For groups with Czech public sector customers:
 

@@ -5,7 +5,7 @@ flag: "🇱🇻"
 
 mandate_type: CTC
 vida_alignment: DRR-compliant
-future_direction: "Latvia implemented a CTC/reporting model for B2G and G2G from January 1, 2026, using Cabinet Regulation No. 749 (December 9, 2025). B2B scope extension is under consideration but not yet enacted. Latvia intentionally chose a reporting model over clearance to preserve business continuity if VID (State Revenue Service) systems are unavailable. EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516, Augur SIG-005 2026-05-12): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
+future_direction: "Latvia implemented a CTC/reporting model for B2G and G2G from January 1, 2026, using Cabinet Regulation No. 749 (December 9, 2025). B2B scope extension is under consideration but not yet enacted. Latvia intentionally chose a reporting model over clearance to preserve business continuity if VID (State Revenue Service) systems are unavailable. EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
 
 b2b: not-yet
 b2g: mandatory

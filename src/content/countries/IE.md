@@ -5,7 +5,7 @@ flag: "🇮🇪"
 
 mandate_type: interoperability
 vida_alignment: DRR-compliant
-future_direction: "Ireland's Revenue Commissioners confirmed a phased B2B e-invoicing mandate in October 2026. Phase 1 (November 1, 2028): large corporates managed by Revenue's Large Corporates Division. Phase 2 (November 1, 2029): all VAT-registered entities in domestic and intra-EU B2B trade. OGP (Office of Government Procurement) is the Irish Peppol Authority; einvoicingireland.ie is the Peppol operations domain. EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516, Augur SIG-005 2026-05-12): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
+future_direction: "Ireland's Revenue Commissioners confirmed a phased B2B e-invoicing mandate in October 2026. Phase 1 (November 1, 2028): large corporates managed by Revenue's Large Corporates Division. Phase 2 (November 1, 2029): all VAT-registered entities in domestic and intra-EU B2B trade. OGP (Office of Government Procurement) is the Irish Peppol Authority; einvoicingireland.ie is the Peppol operations domain. EU ViDA Directive 2025/516/EU confirmed at EUR-Lex (OJ:L_202500516): Digital Reporting Requirements (DRR) and cross-border e-invoice mandatory from July 1, 2030. This is the primary legal basis for future B2B e-invoicing obligations in countries currently at policy/planning stage."
 
 b2b: announced
 b2g: mandatory
