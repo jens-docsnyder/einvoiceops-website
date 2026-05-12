@@ -1,0 +1,316 @@
+# einvoiceops IP gate pattern library
+# Version: 1.0 | Last updated: 2026-05-12
+#
+# This file is public. The patterns list what we are protecting.
+# That is an accepted trade-off: the gate's primary value is blocking
+# accidental commits, not stopping a determined adversary who already
+# has repo access. Review this trade-off if the repo becomes private.
+#
+# Severity:
+#   critical → immediate exit 1, blocks deploy
+#   high     → exit 1, blocks deploy
+#   medium   → warning only, deploy proceeds but PR is annotated
+
+rules:
+
+  # ── CATEGORY A: Internal product and system names ──────────────────────────
+  # These names must never appear in public-facing files.
+
+  - id: IP-A01
+    category: A
+    severity: critical
+    type: regex
+    pattern: '\bVigil\b'
+    description: "Internal product name (monitoring pipeline). Use outcome language only."
+
+  - id: IP-A02
+    category: A
+    severity: critical
+    type: regex
+    pattern: '\bAugur\b'
+    description: "Internal product name (signal detection layer). Never external."
+
+  - id: IP-A03
+    category: A
+    severity: critical
+    type: regex
+    pattern: '\bActa\b'
+    description: "Internal registry name. Check context — 'contact' or 'exact' are false positives."
+
+  - id: IP-A04
+    category: A
+    severity: critical
+    type: literal
+    pattern: "Canonical Model"
+    description: "Internal ERP cluster framework. Never share externally."
+
+  - id: IP-A05
+    category: A
+    severity: critical
+    type: literal
+    pattern: "Readiness Map"
+    description: "Internal methodology name. Describe outputs, not the methodology."
+
+  - id: IP-A06
+    category: A
+    severity: critical
+    type: literal
+    pattern: "Content RAG"
+    description: "Internal content policy system name."
+
+  - id: IP-A07
+    category: A
+    severity: critical
+    type: literal
+    pattern: "Confidence Board"
+    description: "Internal dashboard name. Not for external audiences."
+
+  - id: IP-A08
+    category: A
+    severity: high
+    type: literal
+    pattern: "Signal Engine"
+    description: "Internal CRM outreach system name."
+
+  - id: IP-A09
+    category: A
+    severity: high
+    type: literal
+    pattern: "Source Registry"
+    description: "Internal domain trust classification document. Reveals monitoring source network."
+
+  - id: IP-A10
+    category: A
+    severity: critical
+    type: literal
+    pattern: "Provenance"
+    description: "Internal verification system name. Only flag if used as a proper noun/system name."
+
+  # ── CATEGORY A: Internal architecture terms ────────────────────────────────
+
+  - id: IP-A11
+    category: A
+    severity: critical
+    type: literal
+    pattern: "SPARQL"
+    description: "Reveals EUR-Lex monitoring query architecture."
+
+  - id: IP-A12
+    category: A
+    severity: critical
+    type: literal
+    pattern: "CELLAR"
+    description: "Reveals EUR-Lex CELLAR endpoint as monitoring source."
+
+  - id: IP-A13
+    category: A
+    severity: high
+    type: literal
+    pattern: "Cloud Function"
+    description: "GCP architecture detail. Reveals infrastructure provider and pipeline design."
+
+  - id: IP-A14
+    category: A
+    severity: high
+    type: literal
+    pattern: "europe-west3"
+    description: "GCP region identifier. Reveals hosting infrastructure."
+
+  - id: IP-A15
+    category: A
+    severity: high
+    type: literal
+    pattern: "Vertex AI"
+    description: "Reveals AI infrastructure provider."
+
+  - id: IP-A16
+    category: A
+    severity: high
+    type: literal
+    pattern: "Legifrance PISTE"
+    description: "Reveals specific French monitoring API used."
+
+  # ── CATEGORY B: Methodology language (system-agency verbs) ─────────────────
+  # Phrases that describe HOW the product works, not WHAT it produces.
+
+  - id: IP-B01
+    category: B
+    severity: high
+    type: regex
+    pattern: '\b(we|our system|the engine|einvoiceops)\s+(scan|crawl|scrape|parse|detect|extract|transform)\b'
+    description: "System-agency verb reveals internal pipeline. Rewrite as customer outcome."
+
+  - id: IP-B02
+    category: B
+    severity: high
+    type: regex
+    pattern: '\b(we|our system|einvoiceops)\s+monitor\b'
+    description: "Monitoring architecture disclosure. Use: 'When requirements change, you get...'"
+
+  - id: IP-B03
+    category: B
+    severity: high
+    type: regex
+    pattern: '\b(is|are) detected\b'
+    description: "Passive monitoring trigger language. Reveals event-based architecture."
+
+  - id: IP-B04
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bchange detection\b'
+    description: "Monitoring architecture term. Use outcome language instead."
+
+  - id: IP-B05
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bdiff-based\b'
+    description: "Technical architecture hint — diff-based monitoring."
+
+  - id: IP-B06
+    category: B
+    severity: medium
+    type: regex
+    pattern: 'when.*(?:mandate|requirement).*changes?.*(?:we|trigger|send|notif)'
+    description: "Monitoring trigger pattern — reveals event-driven architecture."
+
+  # ── CATEGORY B: Expert-readable methodology tells (from adversarial test) ───
+
+  - id: IP-B07
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bbatch\s+(sync|upload|process|job)\b'
+    description: "Expert tell: implies non-realtime/async architecture. Use 'continuous updates'."
+
+  - id: IP-B08
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\bmanual\s+(validation|override|queue)\b'
+    description: "Expert tell: reveals human-in-loop backend. Describe outcome, not process."
+
+  - id: IP-B09
+    category: B
+    severity: high
+    type: regex
+    pattern: '\bhard-coded\s+(mandate|mapping|rule)\b'
+    description: "Tech debt signal to expert readers. Never use this phrasing externally."
+
+  - id: IP-B10
+    category: B
+    severity: medium
+    type: regex
+    pattern: '\b(scales with your footprint|scales with the footprint)\b'
+    description: "Template-based alert architecture tell (Gemini adversarial test finding)."
+
+  # ── CATEGORY C: Technical architecture and credential hints ────────────────
+
+  - id: IP-C01
+    category: C
+    severity: critical
+    type: regex
+    pattern: '(apiKey|api_key|secret_key|auth_token|bearer_token)\s*[:=]\s*["\x27][^\s]'
+    description: "Hardcoded credential pattern. Remove immediately."
+
+  - id: IP-C02
+    category: C
+    severity: critical
+    type: regex
+    pattern: '\b10\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'
+    description: "Internal RFC1918 IP address detected."
+
+  - id: IP-C03
+    category: C
+    severity: high
+    type: regex
+    pattern: '\.internal\.(company|cluster)\.local'
+    description: "Internal DNS suffix detected."
+
+  - id: IP-C04
+    category: C
+    severity: high
+    type: literal
+    pattern: "direct fetch"
+    description: "Implies automated HTTP access to sources. Use 'verified against' instead."
+
+  - id: IP-C05
+    category: C
+    severity: medium
+    type: regex
+    pattern: 'we monitor.{0,40}(official|government|authority)\s+sources'
+    description: "Monitoring network disclosure. Rewrite as outcome: 'When requirements change...'"
+
+  # ── CATEGORY D: Changelog and audit trail internal references ──────────────
+
+  - id: IP-D01
+    category: D
+    severity: critical
+    type: regex
+    pattern: '\[Augur\s+SIG-\d+\]'
+    description: "Internal signal tag in public changelog. Strip prefix before committing."
+
+  - id: IP-D02
+    category: D
+    severity: high
+    type: literal
+    pattern: "Source Registry Round"
+    description: "Internal document name in changelog description. Use 'external source verification'."
+
+  - id: IP-D03
+    category: D
+    severity: high
+    type: regex
+    pattern: 'EUR-Lex\s+(?:CELLAR\s+)?SPARQL'
+    description: "Specific monitoring endpoint type revealed. Remove from any public-facing text."
+
+  - id: IP-D04
+    category: D
+    severity: medium
+    type: regex
+    pattern: 'phase2Built|Cloud Functions.*\$[0-9].*month'
+    description: "Infrastructure build status and cost details. Keep in status.astro only."
+
+
+exceptions:
+  # ── Inline citations (Provenance system — correct by design) ───────────────
+  # source_url fields pointing to eur-lex.europa.eu are citations, not disclosures.
+  - pattern: "source_url.*eur-lex.europa.eu"
+    reason: "Provenance inline citation — correct and intentional"
+
+  # "confirmed at EUR-Lex" in changelog descriptions is citation language.
+  - pattern: "confirmed at EUR-Lex"
+    reason: "Citation language — acceptable"
+
+  # recht.bund.de as top-level domain in sources panel is permitted.
+  - pattern: "recht.bund.de"
+    file_suffix: ".md"
+    reason: "Country page inline citation — correct per IP gate rules"
+
+  # ── Approved external vocabulary (CLAUDE.md canonical terms) ───────────────
+  # These terms are explicitly approved for external use in CLAUDE.md.
+  - pattern: "master data scrubbing"
+    reason: "Approved external vocabulary per CLAUDE.md"
+
+  - pattern: "mapping delta"
+    reason: "Approved external vocabulary per CLAUDE.md"
+
+  - pattern: "ERP footprint audit"
+    reason: "Approved external vocabulary per CLAUDE.md"
+
+  - pattern: "last-mile configuration"
+    reason: "Approved external vocabulary per CLAUDE.md"
+
+  - pattern: "manual queue management"
+    reason: "Describes customer email fallback process in DE.md body — not our internal backend"
+
+  - pattern: "primary source WebFetch"
+    reason: "Already corrected in HR.yaml to 'primary source verification' — scanner catches if it re-appears"
+
+  # ── Status page exclusion ──────────────────────────────────────────────────
+  # status.astro is internal-only and gitignored. Scanner excludes by filename.
+  # Listed here for documentation purposes.
+  - pattern: "*"
+    file: "src/pages/status.astro"
+    reason: "Internal dashboard — gitignored, not deployed"

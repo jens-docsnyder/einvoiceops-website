@@ -23,7 +23,7 @@ entries:
     field: confidence_summary
     old_value: amber
     new_value: green
-    description: "All 5 research items resolved via primary source WebFetch. (1) Phase-in A-DIV confirmed: current page correct - VAT-registered Jan 2026, non-VAT sole traders Jan 2027, per NN 89/25 Art. 38. (2) EUR 92,900 repeated penalty confirmed not in Art. 71 - corrected above. (3) Accounting Act 11-year archiving confirmed: NN 85/24 Art. 10 direct fetch - journal/general ledger documents minimum 11 years. (4) Fiscalization Act 6-year archiving confirmed: NN 89/25 Art. 35(1) - six godina from year-end. (5) Penalty range EUR 3,980-66,360 confirmed from NN 89/25 Art. 71(1). unresolved_high: 3->0, unresolved_amber: 2->0, last_verified: 2026-05-06."
+    description: "All 5 research items resolved via primary source verification. (1) Phase-in A-DIV confirmed: current page correct - VAT-registered Jan 2026, non-VAT sole traders Jan 2027, per NN 89/25 Art. 38. (2) EUR 92,900 repeated penalty confirmed not in Art. 71 - corrected above. (3) Accounting Act 11-year archiving confirmed: NN 85/24 Art. 10 — accessed directly - journal/general ledger documents minimum 11 years. (4) Fiscalization Act 6-year archiving confirmed: NN 89/25 Art. 35(1) - six godina from year-end. (5) Penalty range EUR 3,980-66,360 confirmed from NN 89/25 Art. 71(1). unresolved_high: 3->0, unresolved_amber: 2->0, last_verified: 2026-05-06."
     source_url: null
     mandate_version_before: 1
     mandate_version_after: 1
