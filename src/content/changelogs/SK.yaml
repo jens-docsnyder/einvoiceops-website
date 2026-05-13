@@ -73,3 +73,12 @@ entries:
     source_url: "https://www.slov-lex.sk"
     mandate_version_before: null
     mandate_version_after: null
+  - timestamp: 2026-05-13T10:00:00Z
+    type: content-update
+    field: "5-corner model / Digital Postman / TDD spec / scheme 0245 DIc distinction"
+    old_value: null
+    new_value: null
+    description: "Additive research findings added from targeted research session 2026-05-13: (1) Slovakia uses a 5-corner Peppol model with the Financial Directorate as intermediary - confirmed from Banqup secondary source + financnasprava.sk Solution Architecture reference; (2) Access Points must hold specific Slovak Digital Postman accreditation separate from standard Peppol AP registration (requirements published 2026-01-14); (3) TDD specification version 1.0.0 published April 14, 2026 on Peppol documentation portal; (4) Scheme 0245 = DIC (Tax Identification Number), distinct from scheme 0158 = ICO (company registration). Content added to Preparation Timeline, Data & Infrastructure, and Friction Map sections. SK downgraded to AMBER pending Jens browser confirmation of 3 research items. unresolved_amber: 3."
+    source_url: "https://test-docs.peppol.eu/tdd/sk/tdd-sk/"
+    mandate_version_before: 1
+    mandate_version_after: 1

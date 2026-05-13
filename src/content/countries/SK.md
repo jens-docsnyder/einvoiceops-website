@@ -35,7 +35,7 @@ outbound_mandate_date: 2027-01-01
 outbound_mandate_date_phase2: null
 mandate_hardness: "announced - mandatory from January 2027 (Law 385/2025 Z.z.)"
 
-master_data_id: "Peppol Participant ID using scheme 0245 (SG:DIC - Slovak company identifier). Slovak DIC (Danove Identifikacne Cislo) is the primary routing identifier for Peppol in Slovakia."
+master_data_id: "Peppol Participant ID using scheme 0245 (SG:DIC - Slovak DIc, Tax Identification Number). Distinct from scheme 0158 (ICO, company registration number). ERPs often store both separately - the Peppol routing uses DIC (0245), not ICO."
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 10
@@ -54,9 +54,9 @@ has_sandbox: true
 last_verified: 2026-05-12
 mandate_phase: active-rollout
 mandate_version: 1
-confidence_summary: green
+confidence_summary: amber
 unresolved_high: 0
-unresolved_amber: 0
+unresolved_amber: 3
 ---
 
 ## Preparation Timeline
@@ -67,7 +67,9 @@ The mandate timeline: voluntary adoption from May 2026, mandatory for establishe
 
 For groups with Slovak established entities:
 
-**Peppol scheme 0245 configuration (3-4 weeks).** Slovak Peppol routing uses scheme 0245 (SG:DIC - Slovak company DIC). This is a non-standard scheme not configured in most multi-country Peppol setups. Access point providers must support scheme 0245 or route via the Financial Directorate-certified registry.
+**Peppol scheme 0245 configuration (3-4 weeks).** Slovak Peppol routing uses scheme 0245 (SG:DIC - Slovak DIC, Tax Identification Number). This is distinct from scheme 0158 (IČO, company registration number) - most multi-country ERP setups store both, but the Peppol routing requires DIC. Access point providers must explicitly support scheme 0245, not just standard GLN (0088) or VAT-based schemes.
+
+**Digital Postman accreditation (4-8 weeks).** Slovakia uses a 5-corner Peppol model - the Slovak Financial Directorate sits as an intermediary between sender and receiver. Both sender-side and receiver-side Access Points must hold specific Slovak Financial Directorate accreditation to operate as Digitalny postal (Digital Postmen). Standard Peppol Access Point registration is not sufficient. Accreditation requirements were published January 14, 2026. Groups using an existing multi-country Peppol provider must confirm Slovak accreditation status before beginning integration work - this is commonly missed when Slovakia is scoped as an extension of an existing Peppol implementation.
 
 **TDD integration (6-10 weeks).** The Tax Data Document (TDD) is a structured report of invoice data submitted to the Slovak tax authority alongside the invoice transmission. This is separate from the Peppol transmission to the buyer. ERP systems must generate the TDD and submit it in near real-time. No standard ERP has TDD generation out of the box.
 
@@ -95,9 +97,11 @@ The configuration work items in each cluster vary by ERP system, entity structur
 
 ## Data & Infrastructure
 
-**Scheme 0245.** Slovakia uses a non-standard Peppol participant ID scheme (SG:DIC - 0245) based on the Slovak DIC (Danove Identifikacne Cislo). This is distinct from the Slovak IČO (company registration number) or the EU VAT number (SK prefix). ERP Peppol routing must be explicitly configured for 0245, not the more common GLN (0088) or VAT-based schemes.
+**Scheme 0245.** Slovakia uses Peppol participant identifier scheme 0245 (SG:DIC), based on the Slovak DIC (Danove Identifikacne Cislo, Tax Identification Number). This is distinct from scheme 0158 (IČO, company registration number) - both are stored in ERP master data but serve different purposes. The Peppol routing uses DIC (0245). ERP routing must be explicitly configured for 0245, not the more common GLN (0088) or VAT-based schemes.
 
-**Tax Data Document (TDD).** The TDD is a structured report accompanying each B2B invoice submission. It is submitted to the Slovak tax authority (Financna sprava) in near real-time via the Digitalny postal platform or directly. The TDD schema is defined by the Financial Directorate. Standard ERP products have no TDD generation module.
+**5-corner model.** Slovakia runs a 5-corner Peppol model, not the standard 4-corner. The Slovak Financial Directorate (Financna sprava) sits as an intermediary between sender and receiver, receiving the Tax Data Document in near real-time. Both sender-side and receiver-side Access Points must be specifically accredited as Digitalny postal (Digital Postmen) by the Financial Directorate. Standard Peppol AP certification alone is insufficient. Accreditation requirements published January 14, 2026.
+
+**Tax Data Document (TDD).** The TDD is a structured report accompanying each B2B invoice submission. The specification (version 1.0.0, published April 14, 2026) defines the schema, semantic model, syntax binding, and Schematron validation rules. It is submitted to the Slovak tax authority in near real-time via the Digitalny postal platform. Standard ERP products have no TDD generation module - this is a custom integration requirement, not a configuration of existing functionality.
 
 **Voluntary period.** Law 385/2025 Z.z. permits voluntary B2B e-invoicing from May 2026. The Financial Directorate's registry of certified providers (financnasprava.sk) is the source for approved Digitalny postal operators.
 
@@ -112,5 +116,7 @@ The configuration work items in each cluster vary by ERP system, entity structur
 **TDD not in ERP scope.** The Tax Data Document requirement is separate from the invoice and requires its own integration. Implementation teams that scope Slovak e-invoicing as a Peppol format task only find the TDD requirement in the regulatory detail, not in standard ERP documentation.
 
 **8-month voluntary window.** Groups that begin in May 2026 have 8 months of production testing before mandatory enforcement. Groups that begin after January 2027 face immediate penalty exposure. The voluntary period is a readiness advantage that expires.
+
+**Digital Postman accreditation gap.** Standard Peppol Access Point registration does not qualify for Slovakia. Access Points must hold specific Slovak Financial Directorate accreditation (Digitalny postal status). Groups that select an access point provider based on existing multi-country Peppol coverage and assume Slovakia is included will discover this gap during Slovak onboarding. This is separate from format and scheme 0245 configuration - both must be confirmed independently.
 
 Every group has a version of at least one of these. Finding which ones, and in which subsidiaries, is how a Readiness Sprint starts.

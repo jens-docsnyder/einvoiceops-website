@@ -1,2 +1,22 @@
 country_code: SK
-items: []
+items:
+  - priority: amber
+    type: source-verification
+    description: |
+      Open https://www.financnasprava.sk/_img/pfsedit/Dokumenty_PFS/Podnikatelia/Dan_z_pridanej_hodnoty/efaktura/2026/2026.03.30_Slov_Solution_Architect2.pdf (Slovak Financial Directorate Solution Architecture, March 30, 2026) -> Ctrl+F "5-corner" or "Digital Postman" or "Digitalny postal" or "accreditation". Confirm: (1) Slovakia uses a 5-corner Peppol model with the Financial Directorate as intermediary between sender and receiver; (2) Access Points must hold specific Slovak accreditation separate from standard Peppol AP certification; (3) Accreditation requirements published January 14, 2026. If yes: 5-corner model and Digital Postman content in Preparation Timeline, Data & Infrastructure, and Friction Map sections confirmed -> remove item + decrement amber. If no: try financnasprava.sk/en/businesses/taxes-businesses/value-added-tax/e-invoicing -> look for "accreditation" or "accredited service provider" section.
+    source_url: "https://www.financnasprava.sk/_img/pfsedit/Dokumenty_PFS/Podnikatelia/Dan_z_pridanej_hodnoty/efaktura/2026/2026.03.30_Slov_Solution_Architect2.pdf"
+    added: 2026-05-13
+
+  - priority: amber
+    type: source-verification
+    description: |
+      Open https://test-docs.peppol.eu/tdd/sk/tdd-sk/ -> Ctrl+F "Version 1.0.0" and "April 14, 2026" (or look at release date header). Confirm: TDD specification is version 1.0.0 released April 14, 2026 and is the official Slovak Tax Data Document specification. If yes: TDD v1.0.0 date in Data & Infrastructure section confirmed -> remove item + decrement amber. If no: search financnasprava.sk for "TDD specification" or "Tax Data Document schema" to find the correct primary source.
+    source_url: "https://test-docs.peppol.eu/tdd/sk/tdd-sk/"
+    added: 2026-05-13
+
+  - priority: amber
+    type: source-verification
+    description: |
+      Open https://docs.peppol.eu/edelivery/codelists/ -> Ctrl+F "0245" -> confirm scheme 0245 = SG:DIC (Slovak Tax Identification Number, DIc). Then Ctrl+F "0158" -> confirm scheme 0158 = Slovak ICO (company registration number). If both confirmed: master_data_id DIc vs ICO distinction in SK.md confirmed, no page change needed -> remove item + decrement amber. If 0245 not found: try Peppol Code Lists v9.5 directly at https://docs.peppol.eu/edelivery/codelists/old/v9.5/ or search "Peppol participant identifier scheme 0245 Slovakia".
+    source_url: "https://docs.peppol.eu/edelivery/codelists/"
+    added: 2026-05-13
