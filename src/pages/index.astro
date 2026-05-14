@@ -2536,7 +2536,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
 
           <div class="source-group">
             <h5>Verification note</h5>
-            <p style="font-size:0.82rem;color:#6b7280;line-height:1.6;margin:0;">The entries below are a selection from the primary legal sources and official authority publications used in verification. Complete source documentation is maintained internally and updated on each verification pass. Claims marked GREEN on country pages were confirmed by a specialist against a primary source on the stated date.</p>
+            <p style="font-size:0.82rem;color:#6b7280;line-height:1.6;margin:0;">The entries below are a selection from the primary legal sources and official authority publications used in verification. Complete source documentation is maintained internally and updated on each verification pass.</p>
           </div>
 
           <div class="source-group">
@@ -2828,12 +2828,6 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
       var platHtml = c.platform ? '<div class="mec-sec"><div class="mec-sec-label">Platform</div><div class="mec-tag-row"><span class="mec-tag mec-platform-tag">' + c.platform + '</span></div></div>' : '';
       var penaltyHtml = c.penalty ? '<div class="mec-penalty"><div class="label">Penalties</div><p>' + c.penalty + '</p></div>' : '';
       var futureHtml = c.future ? '<div class="mec-future"><div class="label">Direction</div><p>' + c.future + '</p></div>' : '';
-      var confLabel = c.confidence === 'green'
-        ? '<span class="mec-conf-dot green"></span><span class="mec-conf-text">GREEN &mdash; source-verified</span>'
-        : c.confidence === 'red'
-        ? '<span class="mec-conf-dot red"></span><span class="mec-conf-text">RED &mdash; review required</span>'
-        : '<span class="mec-conf-dot amber"></span><span class="mec-conf-text">AMBER &mdash; cross-referenced, primary click pending</span>';
-
       document.getElementById('map-embed-empty').style.display = 'none';
       var panel = document.getElementById('map-embed-panel');
       panel.style.display = 'block';
@@ -2857,8 +2851,7 @@ const mapSortedEntries = [...allCountries].sort((a, b) => a.data.country.localeC
           '<div class="mec-info-row"><div class="mec-info-label">Archiving</div><div class="mec-info-val">' + c.archiving + ' years</div></div>' +
           (c.cius ? '<div class="mec-info-row"><div class="mec-info-label">CIUS</div><div class="mec-info-val">' + c.cius + '</div></div>' : '') +
         '</div>' +
-        penaltyHtml + futureHtml +
-        '<div class="mec-conf-row">' + confLabel + '</div>';
+        penaltyHtml + futureHtml;
 
       document.querySelector('.map-embed-right').scrollTop = 0;
     }
