@@ -1,5 +1,23 @@
 country_code: PL
 entries:
+  - timestamp: 2026-05-19T07:30:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_amber + last_verified"
+    old_value: "amber, unresolved_amber: 2, last_verified: 2026-05-12"
+    new_value: "green, unresolved_amber: 0, last_verified: 2026-05-19"
+    description: "Jens click on both PL AMBER items closed simultaneously. (1) ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/ confirmed verbatim: 'Od 1 lutego 2026 r. możliwe jest więc korzystanie zarówno z certyfikatów KSeF jak i tokenów. Docelowo od 1 stycznia 2027 r. z tych dwóch rozwiązań pozostaną wyłącznie certyfikaty KSeF.' (From 1 February 2026 both certificates and tokens may be used; ultimately from 1 January 2027 only certificates will remain.) Plus MCU certificate generation Nov 2025-Jan 2026 confirmed, certificates serve solely as authentication (not permissions store like tokens) confirmed. Bonus content surfaced not on page: Type 1 (authentication) vs Type 2 (offline-mode invoice signing) certificate distinction; 2-year max validity; XAdES-BES signature mechanism. (2) VATupdate Tier 3 confirmed MoF March 2026 penalty discretion position (2026 zero penalties, 2027 case-by-case based on nature/scale/frequency/corrective actions, maximum is a ceiling not default). Tier 3 caveat noted - primary source ksef.podatki.gov.pl/wyjasnienia/ would be stronger but content verified by Jens click and consistent across multiple secondary sources (txb.pl, sovos.com, aidergroup.pl). Both research items closed. PL restored to GREEN."
+    source_url: "https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-18T23:00:00Z
+    type: content-update
+    field: "Preparation Timeline (Authentication transition added) + penalty_max (MoF discretion clarification added) + confidence_summary + unresolved_amber"
+    old_value: "No mention of token-to-certificate authentication transition. Penalty_max stated maximum amounts only (no MoF discretion note). confidence_summary: green, unresolved_amber: 0"
+    new_value: "Authentication transition paragraph added: OAuth2 tokens valid through 31 December 2026, KSeF certificates required from 1 January 2027, certificate functionality live in KSeF API 2.0 since February 2026. Penalty_max field extended with MoF March 2026 clarification that maximum penalties do not have to apply automatically (case-by-case assessment). confidence_summary: amber, unresolved_amber: 2"
+    description: "Mandate monitoring scan 2026-05-18 on PL KSeF Tax-cluster signals for Heikki demo KSeF anchor slide. Primary source ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/ confirmed token-to-certificate transition timeline (Nov 2025 testing, Feb 2026 cert functionality, Dec 31 2026 token retirement, Jan 1 2027 cert-only). VATupdate Tier 3 source confirmed Polish MoF March 2026 penalty discretion clarification. Both additive to PL.md. Per cascade rule: GREEN page + additive content → AMBER pending Jens click. Two AMBER research items written. Source content used inline in new Heikki demo KSeF anchor slide."
+    source_url: "https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/"
+    mandate_version_before: 2
+    mandate_version_after: 2
   - timestamp: 2026-05-12T09:30:00Z
     type: mandate-change
     field: "penalty_max + future_direction + key_deadlines + confidence_summary + last_verified + mandate_version"

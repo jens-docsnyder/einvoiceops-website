@@ -1,5 +1,68 @@
 country_code: FR
 entries:
+  - timestamp: 2026-05-18T22:30:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_amber"
+    old_value: "amber, unresolved_amber: 1"
+    new_value: "green, unresolved_amber: 0"
+    description: "Jens click on fnfe-mpe.org/factur-x/factur-x_en/ confirmed Factur-X 1.08 + ZUGFeRD 2.4 published 4 December 2025, applicable 15 January 2026. EXTENDED-CTC-FR profile confirmed as French national extension. Biannual EN 16931 update cadence confirmed. AMBER research item closed. FR restored to GREEN."
+    source_url: "https://fnfe-mpe.org/factur-x/factur-x_en/"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-18T22:00:00Z
+    type: content-update
+    field: "Data & Infrastructure - Format selection paragraph + confidence_summary + unresolved_amber"
+    old_value: "No Factur-X version or CIUS-FR detail. confidence_summary: green, unresolved_amber: 0"
+    new_value: "Factur-X 1.08 (published 4 December 2025, applicable 15 January 2026) referenced inline. CIUS-FR / EXTENDED-CTC-FR French national extension named. Biannual EN 16931 update cadence (May / November) noted. confidence_summary: amber, unresolved_amber: 1"
+    description: "Mandate monitoring scan 2026-05-18 on FR Tax-cluster signals surfaced Factur-X 1.08 + CIUS-FR primary-source content at fnfe-mpe.org. WebFetch confirmed: 'December 2025, 4th, FNFE-MPE and FERD published the latest release namely: Factur-X 1.08 and ZUGFeRD 24'; EXTENDED-CTC-FR profile referenced as French national extension; biannual update cadence aligned to EN 16931 validation artifact (May 15 / November). Additive to FR.md (format version + CIUS-FR detail not previously named). Per cascade rule: GREEN page + additive content → AMBER pending Jens click on fnfe-mpe.org. One AMBER research item written. Source used in Tax cluster deep dive content for Heikki demo 2026-05-19."
+    source_url: "https://fnfe-mpe.org/factur-x/factur-x_en/"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-18T09:00:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_amber + Preparation Timeline PA selection paragraph"
+    old_value: "amber, unresolved_amber: 1, text 'Approximately 220 platforms are registered ... plus ~15 in pre-registration'"
+    new_value: "green, unresolved_amber: 0, text 'Several hundred platforms are listed across the certified, registered, and pre-registration categories'"
+    description: "Jens click on impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees confirmed page headline 'Je consulte la liste des plateformes agréées' and modification date 'modifié le 13/05/2026'. Exact platform counts (~220 + 15) not directly visible without scrolling interactive tables - text softened to 'several hundred platforms' to keep claim within verified scope. AMBER item closed (modification date and list existence verified; count claim removed rather than verified). Demo Alham screen 2 + Heikki tile JS softened in parallel."
+    source_url: "https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-18T08:30:00Z
+    type: content-update
+    field: "Preparation Timeline PA selection paragraph + confidence_summary + unresolved_amber"
+    old_value: "Approximately 80-100 platforms are currently certified or pre-registered. confidence_summary: green, unresolved_amber: 0"
+    new_value: "Approximately 220 platforms registered (audit pending or completed) plus ~15 in pre-registration awaiting interoperability tests, per DGFiP list updated 13 May 2026. URL added inline. confidence_summary: amber, unresolved_amber: 1"
+    description: "WebFetch against impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees returned current list state: ~220 registered operators (with 'rapport d'audit de conformité attendu') plus 15 in pre-registration. List modification date 13/05/2026 confirmed in page header. Refreshes the older soft estimate (~80-100) which was not source-verified at the time. Per cascade rule: additive on GREEN → AMBER pending Jens click on the DGFiP list page. Demo Alham screen 2 PA-landscape line refreshed in parallel."
+    source_url: "https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-18T08:00:00Z
+    type: confidence-upgrade
+    field: "confidence_summary + unresolved_amber + last_verified"
+    old_value: "amber, unresolved_amber: 1, last_verified: 2026-05-04"
+    new_value: "green, unresolved_amber: 0, last_verified: 2026-05-18"
+    description: "Jens click on AFNOR Norm'Info portal confirmed FD Z42-029 published 06/05/2026, status 'Publiée', title 'Archivage électronique - Archivage des factures électroniques dans le cadre de la réforme de la facturation électronique 2026'. Document listed under 'Normes publiées' section. AMBER research item closed. FR restored to GREEN."
+    source_url: "https://norminfo.afnor.org/norme/fd-z42-029/archivage-electronique-archivage-des-factures-electroniques-dans-le-cadre-de-la-reforme-de-la-facturation-electronique-2026/318511"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-17T18:30:00Z
+    type: content-update
+    field: "Operational Ownership archiving paragraph + confidence_summary + unresolved_amber"
+    old_value: "Archiving paragraph cited L123-22 (10y commercial) and L102 B LPF (6y tax) only. confidence_summary: green, unresolved_amber: 0"
+    new_value: "Archiving paragraph extended with reference to AFNOR Fascicule de documentation FD Z42-029 (published 6 May 2026) as implementation reference for electronic invoice archiving under the 2026 reform. confidence_summary: amber, unresolved_amber: 1"
+    description: "Mandate monitoring scan 2026-05-17 (FR/SK/PL last 30 days) surfaced AFNOR FD Z42-029, an authoritative archiving guidance document for the 2026 e-invoicing reform. Primary source confirmed via WebFetch against AFNOR Norm'Info portal: title 'Archivage électronique - Archivage des factures électroniques dans le cadre de la réforme de la facturation électronique 2026', publication date 06/05/2026, status Publiée. Additive content (does not contradict existing 10y/6y archiving facts; adds the implementation reference standard). Per cascade rule: GREEN page + additive content → AMBER pending Jens click on AFNOR primary source. One AMBER research item written. Same scan also baked a 'real signal in the last 30 days' callout into Alham Monday demo screen 7 referencing Z42-029."
+    source_url: "https://norminfo.afnor.org/norme/fd-z42-029/archivage-electronique-archivage-des-factures-electroniques-dans-le-cadre-de-la-reforme-de-la-facturation-electronique-2026/318511"
+    mandate_version_before: 2
+    mandate_version_after: 2
+  - timestamp: 2026-05-17T17:00:00Z
+    type: error-correction
+    field: "Meta-correction across vault rule files and demo artifacts (no website repo content change)"
+    old_value: "Inverted PA/PPF terminology in CLAUDE.md ABSOLUTE TERMINOLOGY RULE (PA = government portal, PDP = certified providers) - propagated to memory file feedback_france_pa_not_pdp.md, demo files opentext-sp-alham.html and relex-enterprise-heikki.html, and annotated master E-invoice compliance ops/Website/FR.md"
+    new_value: "PA = Plateforme Agréée (certified private platforms). PPF = Portail Public de Facturation (government portal, Annuaire and DGFiP concentrator only since Oct 2024). PDP = deprecated old name for PAs."
+    description: "Meta-correction. CLAUDE.md ABSOLUTE TERMINOLOGY RULE (added 2026-05-09) had inverted PA/PPF definitions and was treated as the authority by all sessions for 8 days. Surfaced 2026-05-17 during Alham Monday demo verification when this changelog file was consulted directly for the first time since the bad rule landed. Discovered: the 2026-05-04T17:00:00Z rename event in this changelog was correct; CLAUDE.md had been written without consulting it. Files corrected in same operation: CLAUDE.md ABSOLUTE TERMINOLOGY RULE rewritten with vault citation; CLAUDE.md new DOMAIN-FACT RULES MUST CITE VAULT SOURCE section added (preventative); memory file feedback_france_pa_not_pdp.md rewritten with corrected definitions and vault citation; demo opentext-sp-alham.html PA/PDP references corrected (also: penalty amount EUR 15 → EUR 50 per Art. 1737 §III, verification date 20.04.2026 → 04.05.2026); demo relex-enterprise-heikki.html same correction; annotated master E-invoice compliance ops/Website/FR.md body PDP → PA refresh (schema enum values clearance-pdp / pdp-mandatory / transport_protocol: PDP retained pending vault-wide schema rename). No content change to src/content/countries/FR.md (already correct). No change to mandate_version (no mandate fact changed). No change to confidence_summary (remains GREEN)."
+    source_url: null
+    mandate_version_before: 2
+    mandate_version_after: 2
   - timestamp: 2026-05-04T17:00:00Z
     type: content-update
     field: "All page body + frontmatter transport_protocol"

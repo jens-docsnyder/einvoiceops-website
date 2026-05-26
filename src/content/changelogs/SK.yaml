@@ -1,5 +1,14 @@
 country_code: SK
 entries:
+  - timestamp: 2026-05-18T08:30:00Z
+    type: content-update
+    field: "Data & Infrastructure - Voluntary period paragraph + unresolved_amber"
+    old_value: "Generic reference to 'The Financial Directorate's registry of certified providers (financnasprava.sk)'. unresolved_amber: 3"
+    new_value: "Explicit reference to both registry PDFs (certified providers + accreditation-in-progress), with full financnasprava.sk URL and most-recent-update date 18 May 2026. unresolved_amber: 4"
+    description: "WebFetch against financnasprava.sk e-faktura page returned current registry state: two distinct PDFs maintained by the Financial Directorate, both updated 2026-05-18. Refreshes prior generic registry reference with specific Slovak titles and update date. Per cascade rule: additive on AMBER page → no further downgrade, new AMBER research item added. Demo Alham SK screen 10 'real signal today' callout cites this in parallel."
+    source_url: "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/e-faktura"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-06T05:30:52Z
     type: initial-publish
     field: null
