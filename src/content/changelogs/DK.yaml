@@ -1,5 +1,14 @@
 country_code: DK
 entries:
+  - timestamp: 2026-05-18T12:19:46Z
+    type: content-update
+    field: "unresolved_amber + research queue"
+    old_value: "unresolved_amber: 1"
+    new_value: "unresolved_amber: 2"
+    description: "theinvoicinghub.com (March 2026 article on Nemhandel BIS 4) reports that Denmark's actual long-term standard is Nemhandel BIS 4 (new EN 16931-1:2026 + Peppol BIS 4.0), not Peppol BIS 3.0 alone. Definition workgroup Jan 2026 - Dec 2027. Migration Jan 2028 - Jul 2029. OIOUBL 2.1 phase-out July 2029. Current future_direction says 'Peppol BIS 3.0 designated as the single future standard' — needs updating. AMBER research item written to DK.yaml for verification at nemhandel.dk. unresolved_amber incremented 1→2."
+    source_url: "https://www.theinvoicinghub.com/denmark-details-plans-for-a-new-nemhandel-bis-4-e-invoicing-standard/"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-06T05:30:52Z
     type: confidence-upgrade
     field: "unresolved_amber"

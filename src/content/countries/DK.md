@@ -59,7 +59,7 @@ mandate_phase: live-stable
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 0
-unresolved_amber: 1
+unresolved_amber: 2
 ---
 
 ## Preparation Timeline

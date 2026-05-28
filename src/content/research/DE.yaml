@@ -1,2 +1,12 @@
 country_code: DE
-items: []
+items:
+  - priority: amber
+    type: source-verification
+    description: "GEBA (German Electronic Business Address) published early 2026: ICD 0246, based on W-IdNr (Wirtschaftsidentifikationsnummer) issued by BZSt to all economic operators. Voluntary and parallel to existing identifiers (VAT ID, GLN). Enables Peppol routing for all German entities including small businesses and sole traders without VAT registration. Sub-addressing (up to 8 alphanumeric chars) for department/branch routing. Full integration into Peppol BIS Billing and XRechnung expected Summer 2026. Source: theinvoicinghub.com (secondary). Verify at nemhandel.dk or peppol.eu ICD list or the official GEBA specification. If confirmed: add GEBA paragraph to Data & Infrastructure section noting it as a voluntary Peppol address mechanism → remove item + decrement amber."
+    source_url: "https://www.peppol.eu/resources/code-lists/"
+    added: 2026-05-18
+  - priority: amber
+    type: source-verification
+    description: "XRechnung 4.0 expected H2 2026, NOT backward compatible with 3.x: UBL updated to 2.5, CII updated to D25A. New capabilities: multiple orders/delivery notes per document, enhanced bank account fields, multiple payment terms, Skonto (early payment discount). Fixes tax category combination ambiguities and rounding issues. Source: theinvoicinghub.com (secondary, March 2026 article). Verify at xrechnung.de or KoSIT (Koordinierungsstelle für IT-Standards) — search 'XRechnung 4.0 Spezifikation'. If confirmed: add a note to the Preparation Timeline / Format section warning that XRechnung 4.0 will require implementation updates (not backward compatible) → remove item + decrement amber."
+    source_url: "https://www.xrechnung.de"
+    added: 2026-05-18

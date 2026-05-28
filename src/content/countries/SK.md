@@ -56,7 +56,7 @@ mandate_phase: active-rollout
 mandate_version: 1
 confidence_summary: amber
 unresolved_high: 0
-unresolved_amber: 3
+unresolved_amber: 4
 ---
 
 ## Preparation Timeline
@@ -103,7 +103,7 @@ The configuration work items in each cluster vary by ERP system, entity structur
 
 **Tax Data Document (TDD).** The TDD is a structured report accompanying each B2B invoice submission. The specification (version 1.0.0, published April 14, 2026) defines the schema, semantic model, syntax binding, and Schematron validation rules. It is submitted to the Slovak tax authority in near real-time via the Digitalny postal platform. Standard ERP products have no TDD generation module - this is a custom integration requirement, not a configuration of existing functionality.
 
-**Voluntary period.** Law 385/2025 Z.z. permits voluntary B2B e-invoicing from May 2026. The Financial Directorate's registry of certified providers (financnasprava.sk) is the source for approved Digitalny postal operators.
+**Voluntary period.** Law 385/2025 Z.z. permits voluntary B2B e-invoicing from May 2026. The Financial Directorate maintains two registries at https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/e-faktura: "Zoznam certifikovaných poskytovateľov doručovacej služby" (certified Digital Postman providers) and "Zoznam poskytovateľov doručovacej služby v procese akreditácie" (providers in accreditation process). Both lists most recently updated 18 May 2026.
 
 **Archiving.** 10 years for standard records; 20 years for real estate transactions.
 

@@ -48,7 +48,7 @@ document_lifecycle_states:
   - PAID
 
 has_sandbox: true
-last_verified: 2026-05-04
+last_verified: 2026-05-18
 mandate_phase: active-rollout
 mandate_version: 2
 confidence_summary: green
@@ -68,7 +68,7 @@ Outbound obligations are phased by size:
 
 A clean implementation from standing start takes 4-6 months minimum. Four stages:
 
-**PA selection and contracting (4-8 weeks).** There is no free public option for B2B invoice exchange. The PPF (Portail Public de Facturation) does not support B2B invoice exchange - every French entity must contract a certified PA (Plateforme Agréée). Approximately 80-100 platforms are currently certified or pre-registered. The common procurement delay: InfoSec and legal review of a new critical cloud vendor takes 6-12 weeks in most corporate environments.
+**PA selection and contracting (4-8 weeks).** There is no free public option for B2B invoice exchange. The PPF (Portail Public de Facturation) does not support B2B invoice exchange - every French entity must contract a certified PA (Plateforme Agréée). Several hundred platforms are listed across the certified, registered, and pre-registration categories per the DGFiP list, most recently updated 13 May 2026 (https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees). The common procurement delay: InfoSec and legal review of a new critical cloud vendor takes 6-12 weeks in most corporate environments.
 
 **SIRET audit and Annuaire registration (2-4 weeks).** Every active French establishment (SIRET, 14 digits) must be registered in the central routing directory (the Annuaire) with an assigned PA by September 1, 2026. Groups with multiple French entities must audit their entity list and close inactive SIRETs before registering to prevent routing confusion.
 
@@ -82,7 +82,7 @@ A clean implementation from standing start takes 4-6 months minimum. Four stages
 
 **Finance Systems** owns two integration layers. First: ERP-to-PA output - the billing engine must produce a compliant format and all mandatory data fields. Second: the reverse integration of PA lifecycle statuses back into the ERP. This reverse flow is typically not part of standard PA contract scope and requires separate specification.
 
-**Tax/Compliance** owns two obligations the mandate created. First: archiving. E-invoices must be stored in their original electronic format for 10 years under commercial law (Art. L123-22 Code de commerce: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006279025) and 6 years under tax law (Art. L102 B LPF: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869400). Storing PDFs does not satisfy this. Second: e-reporting. B2C sales and international B2B transactions not subject to e-invoicing must be reported separately to the DGFiP on a defined schedule - a distinct pipeline from e-invoicing, owned by Tax.
+**Tax/Compliance** owns two obligations the mandate created. First: archiving. E-invoices must be stored in their original electronic format for 10 years under commercial law (Art. L123-22 Code de commerce: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006279025) and 6 years under tax law (Art. L102 B LPF: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869400). Storing PDFs does not satisfy this. AFNOR Fascicule de documentation FD Z42-029 (published 6 May 2026, https://norminfo.afnor.org/norme/fd-z42-029/archivage-electronique-archivage-des-factures-electroniques-dans-le-cadre-de-la-reforme-de-la-facturation-electronique-2026/318511) is the implementation reference for electronic invoice archiving under the reform. Second: e-reporting. B2C sales and international B2B transactions not subject to e-invoicing must be reported separately to the DGFiP on a defined schedule - a distinct pipeline from e-invoicing, owned by Tax.
 
 **AP/AR Operations** manages lifecycle status exceptions. A Rejet (technical failure at the PA) means the invoice was never legally issued. A Refus (buyer rejection for business reasons) means the invoice was legally issued. These require different responses and AR must have separate documented procedures for each.
 
@@ -103,6 +103,8 @@ Three ERP data gaps are consistently blocking French mandate readiness:
 **Pre-invoice Annuaire lookup.** Before transmitting an invoice, the system must confirm the buyer's SIRET is registered in the Annuaire and identify which PA they use. Standard ERP configurations do not include this as a default pre-validation step. Invoices sent to unregistered buyers are rejected at the sender's PA.
 
 Format selection: all three formats (Factur-X, UBL BIS 3.0, CII) are legally equivalent. Factur-X is often preferred for mixed supplier bases because of its embedded PDF layer. Pure UBL or CII is preferred for fully automated end-to-end processing. The Factur-X MINIMUM profile is insufficient - EN 16931 or Basic WL is the required baseline.
+
+The current Factur-X version is 1.08 (published 4 December 2025, applicable from 15 January 2026, https://fnfe-mpe.org/factur-x/factur-x_en/). The French national extension CIUS-FR (formally the EXTENDED-CTC-FR profile) adds French tax-specific fields to the EN 16931 core. Factur-X schema and Schematron updates align to the biannual EN 16931 validation artifact release cadence (May / November).
 
 ## Correction & Business Continuity
 

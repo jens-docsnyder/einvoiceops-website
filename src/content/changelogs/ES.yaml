@@ -1,5 +1,14 @@
 country_code: ES
 entries:
+  - timestamp: 2026-05-18T12:19:46Z
+    type: content-update
+    field: "unresolved_high + research queue"
+    old_value: "unresolved_high: 1"
+    new_value: "unresolved_high: 2"
+    description: "theinvoicinghub.com (two articles, April 2 + April 21 2026) reports Royal Decreto for B2B e-invoice mandate approved March 24, 2026 — not pending as current future_direction states. Concrete dates now available: large companies >EUR 8M October 1, 2027; SMEs October 1, 2028; self-employed status reporting October 1, 2029. Ministerial Order entry into force October 1, 2026. Format: UBL under EN16931. Public platform: FACeB2B (AEAT). Private platforms via Peppol or direct. HIGH research item written to ES.yaml for primary source verification against BOE. unresolved_high incremented 1→2."
+    source_url: "https://www.theinvoicinghub.com/spain-formalizes-a-b2b-e-invoicing-mandate-effective-next-year/"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T18:30:00Z
     type: confidence-upgrade
     field: "unresolved_high"

@@ -43,7 +43,7 @@ master_data_id: "NIP (Numer Identyfikacji Podatkowej) — 10-digit, no PL prefix
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 10
-penalty_max: "Up to 100% of VAT amount on invoice; or 18.7% of total if no VAT shown — VAT Act Art. 106ni ust. 1-3, 5-7. Suspended until December 31, 2026; enforcement begins January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203 Art. 23 pkt 4)."
+penalty_max: "Up to 100% of VAT amount on invoice; or 18.7% of total if no VAT shown — VAT Act Art. 106ni ust. 1-3, 5-7. Suspended until December 31, 2026; enforcement begins January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203 Art. 23 pkt 4). Ministry of Finance clarification (March 2026): maximum penalties do not have to apply automatically; assessment is case-by-case based on nature, scale, frequency, and corrective actions taken by the taxpayer."
 reporting_window: null
 correction_mechanism: correction_invoice
 
@@ -54,7 +54,7 @@ document_lifecycle_states:
   - REJECTED
 
 has_sandbox: true
-last_verified: 2026-05-12
+last_verified: 2026-05-19
 mandate_phase: active-rollout
 mandate_version: 2
 confidence_summary: green
@@ -71,6 +71,8 @@ KSeF was delayed from its original 2024 launch following a technical audit. The 
 Implementation from a standing start takes 4-8 months for a Polish entity embedded in a foreign group ERP.
 
 **KSeF API integration (6-10 weeks).** All invoices must reach the KSeF REST API (v2.0) directly. Unlike France's PA model, there is no certified intermediary requirement - companies may use service providers but the API endpoint is the same for all. Authentication uses OAuth2 tokens linked to the Polish entity's NIP, generated via the ZAW-FA authorization form that registers which systems or individuals may act on behalf of the entity in KSeF.
+
+**Authentication transition - tokens to certificates.** OAuth2 tokens are valid only through 31 December 2026. From 1 January 2027, only KSeF certificates may authenticate API calls. Certificate functionality has been available in KSeF API 2.0 since February 2026, in parallel with tokens during the transition window. Migration requires Tax + IT coordination: certificate requests and retrieval are handled in the Certificates and Permissions Module (MCU), with the certificate serving solely as authentication (not as a permissions store like the token). Source: ksef.podatki.gov.pl certificates documentation.
 
 **FA(3) schema mapping (6-8 weeks).** FA(3) is a pure Polish XML standard with no relation to EN 16931 or Peppol BIS 3.0. Every ERP billing scenario must map to the FA(3) structure. Fields that standard global ERP templates do not contain: GTU goods classification codes (01-13), Split Payment flag for transactions exceeding PLN 15,000 in specific goods categories, related-party indicator for intragroup transactions, and NIP routing for both sender and recipient without the "PL" country prefix.
 

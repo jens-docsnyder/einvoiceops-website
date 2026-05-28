@@ -2,6 +2,11 @@ country_code: DK
 items:
   - priority: amber
     type: source-verification
+    description: "NEMHANDEL BIS 4 is the actual long-term standard, not just Peppol BIS 3.0: theinvoicinghub.com (March 2026) reports that following OIOUBL 3.0 cancellation, Denmark is developing 'Nemhandel BIS 4' (also called Nemhandel 4.0) combining the new EN 16931-1:2026 with Peppol BIS 4.0. Definition workgroup Jan 2026 - Dec 2027. Migration to Nemhandel BIS 4: Jan 2028 - Jul 2029. OIOUBL 2.1 phase-out: July 2029. Current future_direction says 'Peppol BIS 3.0 designated as the single future standard' — this needs updating to reflect BIS 4 as the actual end state. Also: May 18, 2026 deadline for OIOUBL 2.1 schematron version 1.17.1. Verify at nemhandel.dk (Nemhandel Forum announcements Feb 24, 2026 + March 3, 2026). If confirmed: update future_direction to add Nemhandel BIS 4 timeline, add key_deadline for 2029-07-01 OIOUBL 2.1 phase-out → remove item + decrement amber."
+    source_url: "https://nemhandel.dk"
+    added: 2026-05-18
+  - priority: amber
+    type: source-verification
     description: "DK PENALTY - PARTIAL: §28 confirmed as compulsory dissolution section (Jens click 2026-05-12). §28 text: Erhvervsstyrelsen kan anmode skifteretten om at opløse en virksomhed for failure to submit records, submit declarations, or comply with orders under §26. Dissolution citation updated on DK page. DKK 1,500,000 fine: still NOT found in primary law - secondary sources (Dansk Erhverv, PwC DK) cite it but no section identified. Search retsinformation.dk/eli/lta/2022/700 → Ctrl+F 'bøde' or '1.500.000' to find the fine amount in the law text. If found: add section citation to penalty_max. If not found in Bogføringsloven: the fine may be under a different statute (e.g. straffelovens §299b or administrative fines law) - note this and remove item."
     source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
     added: 2026-05-01

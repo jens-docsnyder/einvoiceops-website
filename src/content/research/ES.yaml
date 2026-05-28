@@ -1,6 +1,11 @@
 country_code: ES
 items:
   - priority: high
+    type: conflict-resolution
+    description: "B2B MANDATE DATES NOW AVAILABLE: theinvoicinghub.com (two articles, April 2 + April 21 2026) reports Royal Decreto approved March 24, 2026 (NOT pending as current future_direction states). Ministerial Order draft published April 17, 2026, public consultation closed May 6, 2026, Ministerial Order entry into force October 1, 2026. Implementation clocks from that date: large companies (annual turnover >EUR 8M) = 12 months = October 1, 2027; SMEs and sole traders = 24 months = October 1, 2028; sole trader invoice status reporting = 36 months = October 1, 2029. Format: UBL syntax under EN16931. Public platform: FACeB2B (operated by AEAT). Private certified platforms interconnect via Peppol or direct links. 4-day correction window for rejected invoices. Verify against: BOE search for Real Decreto of March 24, 2026 and Ministerial Order of October 2026 (search boe.es/diario_boe/). If confirmed: update future_direction to remove 'pending as of May 2026' and add concrete dates; add key_deadline entries for 2027-10-01 and 2028-10-01; update format to UBL/EN16931; update platform_model → remove item + decrement high."
+    source_url: "https://www.boe.es/diario_boe/"
+    added: 2026-05-18
+  - priority: high
     type: source-verification
     description: "BOE TRUNCATION: automated fetch cuts off before Art. 201 bis (law has 200+ articles). Jens: open source link → once page loads, use browser Ctrl+F for '201 bis' — the browser can jump to it even if the page lazy-loads. Alternatively, open the ePub or PDF version linked on the BOE page and search there. Confirm: EUR 150,000 (manufacturing/distributing non-compliant SIF), EUR 50,000 (using non-compliant SIF), EUR 1,000 (lacking Declaración Responsable). If all three confirmed: no page change → remove + decrement high. If amounts differ: update penalty_max on ES page."
     source_url: "https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186"

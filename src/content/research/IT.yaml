@@ -1,2 +1,14 @@
 country_code: IT
-items: []
+items:
+  - priority: high
+    type: conflict-resolution
+    description: "theinvoicinghub.com (2026-05-18) states Italy's ViDA derogation end date is January 1, 2035 — 'latest deadline for Italy to achieve full ViDA compliance (end of EU derogation period).' Current future_direction text says 'Long-term ViDA alignment anticipated 2028-2030.' These conflict. Open EUR-Lex OJ:L_202500516 → search for Italy-specific derogation provision or Article referencing existing clearance-model countries. Confirm: does the ViDA text set 2035 as Italy's derogation end? If yes: update future_direction to replace '2028-2030' with '2035 (end of derogation period under ViDA 2025/516/EU)' → remove item + decrement high. If no Italy-specific date found: revise future_direction to remove the year estimate entirely."
+    source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
+  - priority: amber
+    type: source-verification
+    description: "theinvoicinghub.com (secondary source, 2026-05-18) lists three specific v1.9.1 changes not described on the country page: (1) new VAT group invoice validation (error code 00327), (2) SFTP/Web Service accreditation capacity increased to 300 recipient codes, (3) new ESENZSPORT code for sports workers tax-exempt regime. v1.9.1 date (May 15, 2026) already verified GREEN. Open AdE v1.9.1 spec page → search 'gruppi IVA' or '00327' or 'ESENZSPORT'. If confirmed: add a sentence to the Preparation Timeline FatturaPA schema section noting the three v1.9.1 changes → remove item + decrement amber. If not found there: try the AdE FatturaPA changelog."
+    source_url: "https://www.agenziaentrate.gov.it/portale/specifiche-tecniche-versione-1.9.1-%C2%A0-utilizzabili-dal-15-maggio-2026-"
+  - priority: amber
+    type: source-verification
+    description: "theinvoicinghub.com (secondary source, 2026-05-18) mentions 'FatturaEU' as an EN16931-compliant alternative invoice format for Italy, distinct from FatturaPA, with limited adoption. Not mentioned on the IT page. Open agenziaentrate.gov.it fatturazione elettronica section → search 'FatturaEU' or 'EN16931'. If confirmed: add a note in Data & Infrastructure that a FatturaEU (EN16931-compliant) path exists but sees limited practical use → remove item + decrement amber. If no AdE mention found: try Peppol Italy or B2Brouter IT documentation."
+    source_url: "https://www.agenziaentrate.gov.it/portale/web/guest/aree-tematiche/fatturazione-elettronica"

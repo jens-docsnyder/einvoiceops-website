@@ -50,9 +50,9 @@ has_sandbox: false
 last_verified: 2026-05-04
 mandate_phase: active-rollout
 mandate_version: 1
-confidence_summary: green
+confidence_summary: amber
 unresolved_high: 0
-unresolved_amber: 0
+unresolved_amber: 2
 ---
 
 ## Preparation Timeline

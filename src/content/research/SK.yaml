@@ -20,3 +20,10 @@ items:
       Open https://docs.peppol.eu/edelivery/codelists/ -> Ctrl+F "0245" -> confirm scheme 0245 = SG:DIC (Slovak Tax Identification Number, DIc). Then Ctrl+F "0158" -> confirm scheme 0158 = Slovak ICO (company registration number). If both confirmed: master_data_id DIc vs ICO distinction in SK.md confirmed, no page change needed -> remove item + decrement amber. If 0245 not found: try Peppol Code Lists v9.5 directly at https://docs.peppol.eu/edelivery/codelists/old/v9.5/ or search "Peppol participant identifier scheme 0245 Slovakia".
     source_url: "https://docs.peppol.eu/edelivery/codelists/"
     added: 2026-05-13
+
+  - priority: amber
+    type: source-verification
+    description: |
+      Open https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/e-faktura → scroll to find the two registry PDFs: "Zoznam certifikovaných poskytovateľov doručovacej služby" and "Zoznam poskytovateľov doručovacej služby v procese akreditácie". Confirm: both PDFs present, both dated 18 May 2026 (or later) in the filename or update note. If yes: no page change → remove item + decrement amber. If lists are dated earlier than 2026-05-18 or one/both missing: update SK.md "most recently updated 18 May 2026" line to actual date(s) + write changelog content-update entry. If page restructured: note and re-source.
+    source_url: "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/e-faktura"
+    added: 2026-05-18

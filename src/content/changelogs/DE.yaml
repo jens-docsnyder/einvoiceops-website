@@ -1,5 +1,14 @@
 country_code: DE
 entries:
+  - timestamp: 2026-05-18T12:19:46Z
+    type: content-update
+    field: "confidence_summary + unresolved_amber"
+    old_value: "confidence_summary: green / unresolved_amber: 0"
+    new_value: "confidence_summary: amber / unresolved_amber: 2"
+    description: "theinvoicinghub.com scan (2026-05-18) surfaced two additive findings: (1) GEBA (ICD 0246) - new German Peppol address scheme based on W-IdNr, voluntary, full integration into Peppol BIS/XRechnung expected Summer 2026; (2) XRechnung 4.0 expected H2 2026, NOT backward compatible with 3.x, UBL 2.5 + CII D25A bindings. Both written to DE.yaml as AMBER research items pending primary source verification. DE downgraded to amber."
+    source_url: "https://www.theinvoicinghub.com/geba-electronic-addresses-for-all-german-businesses/"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: content-update
     field: "correction_business_continuity.penalties"
