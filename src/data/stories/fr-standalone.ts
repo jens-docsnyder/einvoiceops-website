@@ -7,17 +7,20 @@
 // the person line. Polished the same day as one piece, read top to bottom, so each section hands on to the next. Facts only from Market Intelligence/Messaging/France - facts for messaging.md.
 
 // Check seat findings applied 2026-10-08: second seat 2026-10-08 (Opus), completeness only about our sources, voice fixes.
+// One page per country (Jens, 2026-10-08): this page is told to any company that runs its own invoicing in France,
+// independent or part of a group, drawn from both France frameworks. Review: Market Intelligence/Messaging/
+// France page - review for one page per country, 2026-10-08.md. The provider bets below are both frameworks' bets.
 export const frStandalone = {
   // Page flow C, country-first tree: Market Intelligence/Messaging/Website - page and site structure.md (Jens, 2026-10-05).
   flow: 'c',
 
   meta: {
-    title: `France, independent companies | einvoiceops`,
+    title: `France | einvoiceops`,
     description: `France's e-invoicing rules were still being rewritten weeks before go-live, and we expect them to change again. When we find a change, we tell the person who looks after the invoicing function it affects.`,
   },
 
   opening: {
-    kickerLinkText: `Independent company`,
+    kickerLinkText: ``,
     kickerRest: ` · France`,
     h1: `Hear about the next change to France's e-invoicing rules from us, not from a rejected invoice.`,
     subline: `When we find a change that affects one of your invoicing functions, we tell the person who looks after it what changed for them and where it says so.`,
@@ -292,11 +295,11 @@ export const frStandalone = {
 
   onboarding: {
     // The pilot's terms (Website - discovery and scope, 2026-10.md: free, one country and one entity, no minimum, price
-    // agreed later in writing). On the France page for an independent company, one country and one entity are the page
-    // itself, so neither is said (Jens, 2026-10-08).
+    // agreed later in writing). One country is the page itself; the entity is said, because a company in a group may have
+    // several French entities (one page per country, 2026-10-08).
     // Jens, 2026-10-08: the heading carries the value and gets past the cost worry; the pilot is named in the intro.
-    h2: `Try it free on your own invoicing, and hear from us when we find a change that affects your people`,
-    intro: `The pilot is free with no minimum commitment, and any price is agreed with you later, in writing.`,
+    h2: `Try it free on your own invoicing, and hear from us when we find a change that affects it`,
+    intro: `The pilot is free for one of your companies in France, with no minimum commitment, and any price is agreed with you later, in writing.`,
     // Version B of the three shown (Jens, 2026-10-08): three steps across under large numbers, the button, the limits as
     // one row. Plain sentences, no step titles.
     steps: [
@@ -304,7 +307,7 @@ export const frStandalone = {
       { label: ``, text: `We then have a short call with whoever signs off on your side, so they know what each person will hear from us and what we don't do.` },
       // In the page's chain (Jens, 2026-10-08): what the note carries is the work items, said as the closing box says them
       // ("work items to check or prepare"), with the source (facts file, "What we give the owner").
-      { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so.` },
+      { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of every change and who heard about it, so it never rests on one person remembering.` },
     ],
     cta: `Ask for a pilot`,
   },
@@ -332,7 +335,7 @@ export const frStandalone = {
     after: `This opens a draft in your email program.`,
     mailto: `jens@einvoiceops.eu`,
     // Jens, 2026-10-08: in place of the line on where the message goes, a short note on what to tell us.
-    hint: `Tell us who looks after your invoicing today, and whether that's one person or several.`,
+    hint: `Tell us who looks after your invoicing today, and whether that's one person, several, or a team for each function.`,
     // Flow C: the person beside the form, photo, name and address only (Jens, 2026-10-08: no career lines as proof).
     person: {
       name: `Jens Anttila`,
