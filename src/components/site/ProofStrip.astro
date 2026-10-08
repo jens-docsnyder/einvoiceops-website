@@ -11,6 +11,8 @@
 // top line and proof.sources goes under it.
 // proof.sourcesCount, where present, is a hard number that replaces sources_weekly in the lead shape (France, 2026-10-05:
 // two of the 29 polled sources have never been read once, so the page says fewer than the register lists).
+// An empty proof.checked drops the date column from the lead shape (France, improvement review 2026-10, item 3: no
+// code writes last_check, so the date went stale); the two remaining columns keep the same proportions.
 import { shortDate } from './format';
 
 interface Data { total: number; checked_on: string; last_check?: string; sources_named: number; sources_weekly: number }
@@ -23,15 +25,18 @@ const { data, proof, t } = Astro.props;
 const lead = proof.headline !== undefined && proof.headline !== null;
 const lastCheck = data.last_check ?? data.checked_on;
 const weekly = proof.sourcesCount ?? data.sources_weekly;
+const showDate = !!proof.checked;
 ---
 {lead ? (
   <div class="proof proof-lead band-ruled">
     <div class="wrap">
-      <dl class="proof-three">
-        <div class="proof-col">
-          <dt class="proof-top">{shortDate(lastCheck)}</dt>
-          <dd class="proof-l" set:html={t(proof.checked)}></dd>
-        </div>
+      <dl class={showDate ? 'proof-three' : 'proof-three proof-two'}>
+        {showDate && (
+          <div class="proof-col">
+            <dt class="proof-top">{shortDate(lastCheck)}</dt>
+            <dd class="proof-l" set:html={t(proof.checked)}></dd>
+          </div>
+        )}
         <div class="proof-col">
           <dt class="proof-top">{weekly}{proof.sourcesUnit ? ` ${proof.sourcesUnit}` : ''}</dt>
           <dd class="proof-l" set:html={t(proof.sources)}></dd>
@@ -80,7 +85,9 @@ const weekly = proof.sourcesCount ?? data.sources_weekly;
   .proof-top { align-self: end; margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(1.1rem, 1.95vw, 1.5rem); line-height: 1.2; color: var(--ink); }
   .proof-col-count .proof-top { color: var(--accent); }
   .proof-three .proof-l { align-self: start; max-width: 36ch; }
-  @media (min-width: 1000px) { .proof-top { white-space: nowrap; } }
+  .proof-three.proof-two { grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr); }
+  /* The count column wraps (improvement review 2026-10, item 4: it overran its column from 1000 to 1230 px wide). */
+  @media (min-width: 1000px) { .proof-top { white-space: nowrap; } .proof-col-count .proof-top { white-space: normal; } }
   @media (max-width: 999px) { .proof-col { padding: 0 20px; } }
 
   @media (max-width: 759px) {

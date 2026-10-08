@@ -13,7 +13,7 @@ export const frStandalone = {
 
   meta: {
     title: `France, independent companies | einvoiceops`,
-    description: `France's e-invoicing rules were still being rewritten weeks before go-live, and they'll change again. When we find a change, we tell the person who looks after the invoicing function it affects.`,
+    description: `France's e-invoicing rules were still being rewritten weeks before go-live, and we expect them to change again. When we find a change, we tell the person who looks after the invoicing function it affects.`,
   },
 
   opening: {
@@ -36,7 +36,9 @@ export const frStandalone = {
     sourcesCount: 27,
     sourcesUnit: `official sources`,
     sources: `we read every week`,
-    checked: `last time we checked for changes`,
+    // The date column is gone (improvement review 2026-10, item 3): nothing writes last_check, so a typed date went stale
+    // beside "every week". It comes back only with a writer that updates it on each weekly read.
+    checked: ``,
   },
 
   // The row of boxes under the proof strip (ChangeBoxes.astro, Jens 2026-10-07, approved mockup in Market Intelligence/
@@ -66,11 +68,14 @@ export const frStandalone = {
   // front says the job falls to the company, the back carries the mechanism; provider roles hedged as the standalone
   // row's bet. Cold read second seat 2026-10-06 (Opus), its findings applied in the steering seat.
   // Dates as distance from go-live (Jens, 2026-10-06): France's finance law of 20 February 2026 is six months before
-  // 1 September, the 28 July package 35 days (five weeks); Belgium's law of 10 February 2026 is 40 days after its
-  // 1 January start (six weeks), its FAQ addition of 20 May 2026 four months and 19 days (nearly five months).
+  // 1 September, the 28 July package 35 days (five weeks); Belgium's law of 10 February 2026 was published and in force on
+  // 20 February, 50 days after its 1 January start (seven weeks, counted from publication like France's finance law); its
+  // FAQ addition is dated 20 May 2026 by its first capture, so the page says "In May" (improvement review 2026-10, items 2, 11).
+  // Each dated point links its source (review item 1): Légifrance for the finance law and the decree, the Belgian gazette
+  // copy (BE-W33) and the FAQ (BE-W18) for Belgium.
   market: {
     h2: `What we see in French e-invoicing`,
-    intro: `For anyone who looks after invoicing in France, go-live on 1 September was only the first part of the work. Here are four things we've noticed while following the rules behind it.`,
+    intro: `For anyone who looks after invoicing in France, go-live on 1 September 2026 was only the first part of the work. Since then every company has to be able to receive e-invoices, and large companies and ETI (France's mid-size category) also have to issue them and e-report, while micro-enterprises and PME (small and medium companies) follow on 1 September 2027. Here are four things we've noticed while following the rules behind it.`,
     turn: `Learn more`,
     turnBack: `Turn back`,
     cards: [
@@ -80,19 +85,19 @@ export const frStandalone = {
         front: `France was still rewriting its e-invoicing rules a few weeks before go-live, so companies had to get ready against rules that hadn't settled.`,
         back: {
           points: [
-            `Six months before go-live, the finance law gave your platform the job of sending your invoice data to the administration`,
-            `Five weeks before go-live, a decree and an order wrote the required invoice formats into law`,
+            `Six months before go-live, the finance law gave your platform the job of sending your invoice data to the administration (<a href='https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053508155'>legifrance.gouv.fr</a>)`,
+            `Five weeks before go-live, a decree and an order wrote the required invoice formats into law (<a href='https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054499487'>the decree</a> and <a href='https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054499535'>the order</a>, legifrance.gouv.fr)`,
           ],
         },
       },
       {
         id: '1b',
-        title: `The rules will change again`,
+        title: `We expect the rules to change again`,
         front: `We haven't counted a change to France's rules since go-live yet, but Belgium, which went live in January, kept changing its rules well after go-live.`,
         back: {
           points: [
-            `Six weeks after go-live, Belgium amended its law`,
-            `Nearly five months after go-live, Belgium's tax administration added guidance`,
+            `Seven weeks after go-live, Belgium amended its law (<a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>ejustice.just.fgov.be</a>)`,
+            `In May, Belgium's tax administration added guidance (<a href='https://efactuur.belgium.be/nl/FAQ'>efactuur.belgium.be</a>)`,
           ],
           then: `We expect changes to France's rules to arrive within months.`,
         },
@@ -179,7 +184,7 @@ export const frStandalone = {
       text: ``,
       // Both texts appeared in the Journal officiel of 28 July 2026 (JORF_20260728 in FR-changes.csv); the order is dated the
       // day before, so the line names the gazette date only (Jens, 2026-10-07: 28 July above, 27 juillet here, read as a clash).
-      source: `Journal officiel of 28 July 2026, legifrance.gouv.fr`,
+      source: `Journal officiel of 28 July 2026: <a href='https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054499487'>the decree</a> and <a href='https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054499535'>the order</a>, legifrance.gouv.fr`,
     },
     // Beside the grid, the close of the argument (Jens, 2026-10-07: the four bullets looked out of place and were too
     // granular; this part wraps up the argument and says how badly this hurts a company, not exactly what the hurt is).
@@ -217,6 +222,8 @@ export const frStandalone = {
     gridPrompt: `11 rules`,
     gridAxisY: `Invoicing functions`,
     gridFor: `What in this rule affects your`,
+    // Review item 9, the grid half: the boxes above keep no caption (Jens, 2026-10-07), the grid says what a square is.
+    gridCaption: `Each filled square is a rule that affects that invoicing function. Select one to read it.`,
     countLabel: ``,
     countHead: ``,
     totalLabel: `Total work items`,
@@ -288,12 +295,12 @@ export const frStandalone = {
     // agreed later in writing). On the France page for an independent company, one country and one entity are the page
     // itself, so neither is said (Jens, 2026-10-08).
     // Jens, 2026-10-08: the heading carries the value and gets past the cost worry; the pilot is named in the intro.
-    h2: `Try it free on your own invoicing, and hear from us when we find a change that affects your team`,
+    h2: `Try it free on your own invoicing, and hear from us when we find a change that affects your people`,
     intro: `The pilot is free with no minimum commitment, and any price is agreed with you later, in writing.`,
     // Version B of the three shown (Jens, 2026-10-08): three steps across under large numbers, the button, the limits as
     // one row. Plain sentences, no step titles.
     steps: [
-      { label: ``, text: `You tell us who looks after each of your invoicing functions, in a form that takes about an hour.` },
+      { label: ``, text: `After your first message, we send you a form, about an hour's work, where you tell us who looks after each of your invoicing functions.` },
       { label: ``, text: `We then have a short call with whoever signs off on your side, so they know what each person will hear from us and what we don't do.` },
       // In the page's chain (Jens, 2026-10-08): what the note carries is the work items, said as the closing box says them
       // ("work items to check or prepare"), with the source (facts file, "What we give the owner").
@@ -321,6 +328,9 @@ export const frStandalone = {
     email: `Email`,
     message: `Your message`,
     send: `Send message`,
+    // Review item 5: the button opens a draft, it does not send; said under it, and the done line no longer assumes it opened.
+    after: `This opens a draft in your email program.`,
+    mailto: `jens@einvoiceops.eu`,
     // Jens, 2026-10-08: in place of the line on where the message goes, a short note on what to tell us.
     hint: `Tell us who looks after your invoicing today, and whether that's one person or several.`,
     // Flow C: the person beside the form, photo, name and address only (Jens, 2026-10-08: no career lines as proof).
@@ -329,6 +339,6 @@ export const frStandalone = {
       email: `jens@einvoiceops.eu`,
       photo: `/jens-anttila.jpg`,
     },
-    done: `Your message is ready in your email program, addressed to Jens. It is not sent until you send it there. If nothing opened, write to <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>.`,
+    done: `If your email program opened, your message is there, addressed to Jens, and nothing is sent until you send it. If nothing opened, copy your message above and send it to <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>.`,
   },
 };

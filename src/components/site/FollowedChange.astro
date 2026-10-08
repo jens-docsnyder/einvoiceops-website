@@ -49,6 +49,9 @@ const FNS = ['o', 'i', 'c', 't', 'm', 'a'];
 const live = !!copy.changes;
 const start = copy.gridStart ?? { col: 0, fn: '' };
 const total = copy.owners.reduce((n, o) => n + o.items, 0);
+// The function the grid opens on, in the static HTML, so the line over the change reads whole without script
+// (improvement review 2026-10, item 13); the script rewrites it on each pick.
+const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase();
 ---
 <section class={`band band-${tone} fc-section${framed ? ' fc-framed' : ''}`}>
   <div class="wrap"><div class={framed ? 'fc-frame' : 'fc-body'}>
@@ -58,7 +61,7 @@ const total = copy.owners.reduce((n, o) => n + o.items, 0);
 
     {copy.shows ? (
     <div class="fc-ex2">
-      <p class="fc-src fc-src-top">{copy.arrives.source}</p>
+      <p class="fc-src fc-src-top" set:html={t(copy.arrives.source)}></p>
       <div class="fc-two">
         <figure class={live ? 'fc-grid-wrap fc-live' : 'fc-grid-wrap'} data-col={start.col} data-fn={start.fn}>
           <table class="fc-grid">
@@ -115,7 +118,7 @@ const total = copy.owners.reduce((n, o) => n + o.items, 0);
               {copy.changes!.map((c, k) => (
                 <div class="fc-chgtext" data-col={k} hidden={k !== start.col}>
                   <p class="fc-chgtitle"><span class="fc-chgno">{k + 1}</span> <span set:html={t(c.title)}></span></p>
-                  <p class="fc-for">{t(copy.gridFor)} <strong class="fc-forname"></strong></p>
+                  <p class="fc-for">{t(copy.gridFor)} <strong class="fc-forname">{startName}</strong></p>
                   <p class="fc-parts">{c.parts.map((p) => <><span class="fc-part" data-f={p.f} set:html={t(p.text)}></span>{' '}</>)}</p>
                 </div>
               ))}
@@ -388,10 +391,15 @@ const total = copy.owners.reduce((n, o) => n + o.items, 0);
   @media (min-width: 1000px) { .fc-live .fc-dot, .fc-chg { width: 28px; height: 28px; line-height: 28px; font-size: 0.8rem; } .fc-chgno { width: 26px; height: 26px; } }
   @media (prefers-reduced-motion: reduce) { .fc-chg, button.fc-dot { transition: none; } .fc-chg:hover, button.fc-dot:hover { transform: none; } }
 
+  /* Touch areas (improvement review 2026-10, item 8): the squares keep their drawn size and a transparent area round each
+     takes the tap, 24 by 24 px up to 759 px wide; at 420 px and under, 20 wide by 24 tall, the most eleven columns fit
+     beside the function names without the page scrolling sideways. */
+  .fc-live .fc-chg, .fc-live button.fc-dot { position: relative; }
+  .fc-live .fc-chg::after, .fc-live button.fc-dot::after { content: ''; position: absolute; inset: -4px; }
   @media (max-width: 759px) {
     .fc-live .fc-dot, .fc-chg { width: 18px; height: 18px; line-height: 18px; font-size: 0.68rem; }
     .fc-live .fc-grid th[scope="row"] { white-space: normal; font-size: 0.8rem; line-height: 1.2; padding-right: 8px; min-width: 64px; }
-    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding-left: 2px; padding-right: 2px; }
+    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding-left: 3px; padding-right: 3px; }
     .fc-live .fc-grid th.fc-prompt { white-space: normal; font-size: 0.78rem; padding-right: 8px; }
     .fc-live .fc-grid th.fc-axis-y { white-space: normal; font-size: 0.7rem; padding-right: 8px; }
     .fc-live .fc-grid th.fc-axis-x { font-size: 0.7rem; }
@@ -404,9 +412,17 @@ const total = copy.owners.reduce((n, o) => n + o.items, 0);
   @media (max-width: 420px) {
     .fc-grid-wrap.fc-live { padding: 4px 3px 0; margin: -4px -3px 0; }
     .fc-live .fc-dot, .fc-chg { width: 16px; height: 16px; line-height: 16px; font-size: 0.62rem; }
-    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding: 3px 1px; }
+    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding: 4px 2px; }
+    .fc-live .fc-chg::after, .fc-live button.fc-dot::after { inset: -5px -3px; }
     .fc-live .fc-grid th[scope="row"], .fc-live .fc-grid th.fc-prompt { padding-right: 6px; min-width: 0; }
     .fc-live .fc-nhead span { max-width: 3.4em; margin-left: auto; font-size: 0.64rem; }
+  }
+  /* On the narrowest phones (320 px) the table has to fit a 294 px box, so the function names and the cell padding give. */
+  @media (max-width: 360px) {
+    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding: 4px 1px; }
+    .fc-live .fc-grid th[scope="row"], .fc-live .fc-grid th.fc-prompt { font-size: 0.68rem; padding-right: 3px; }
+    .fc-live .fc-chg::after, .fc-live button.fc-dot::after { inset: -5px -3px; }
+    .fc-live .fc-grid .fc-n { padding-left: 2px; }
   }
   @media (max-width: 759px) {
     .fc-two { display: block; }

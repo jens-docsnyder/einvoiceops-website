@@ -2,7 +2,7 @@
 // The contact section, id="contact". Nothing is sent from the page: the submit opens the reader's email program with a
 // message to jens@einvoiceops.eu already written (mailto), and the done line says only that it is ready to send there.
 interface Props {
-  copy: { h2: any; name: string; email: string; message: string; send: string; done: any; after?: any; hint?: any };
+  copy: { h2: any; name: string; email: string; message: string; send: string; done: any; after?: any; hint?: any; mailto?: string };
   page: string;
   segment: string;
   country: string;
@@ -27,7 +27,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
       </div>
     )}
     <div class={person ? 'cf-main' : undefined}>
-    <form class="cf-form" id="cf-form" onsubmit="return false" novalidate={false} data-page={page} data-segment={segment} data-country={country}>
+    <form class="cf-form" id="cf-form" onsubmit="return false" novalidate={false} data-mailto={copy.mailto} data-page={page} data-segment={segment} data-country={country}>
       <input type="hidden" name="page" value={page} />
       <input type="hidden" name="segment" value={segment} />
       <input type="hidden" name="country" value={country} />
@@ -110,5 +110,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
     .cf-hint { grid-column: 1 / -1; margin-top: 16px !important; }
     .cf-main { padding: 24px 20px; }
   }
+  /* At 420 px and under the address (173 px) is wider than the column beside the photo: it takes the row below instead. */
+  @media (max-width: 420px) { .cf-photo { grid-row: 1; } .cf-person .cf-mail { grid-column: 1 / -1; margin-top: 8px; } }
   @media (max-width: 639px) { .cf-pair { display: block; } .cf-pair > div + div .cf-label { margin-top: 18px !important; } }
 </style>
