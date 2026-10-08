@@ -1,0 +1,103 @@
+---
+// The function fan-out: a heading with the count and its window, one intro line, six function cards
+// in a 3 by 2 grid. A card opens in place to its example lines and "and N more"; the other five stay in view.
+// Reads src/data/fanout/<CC>.json (shape documented in the page that passes it).
+import { shortDate, fill } from './format';
+
+interface Line { date: string; text: string; domain: string }
+interface Fn { name: string; count: number; more: number; gap: boolean; lines: Line[] }
+interface Data {
+  country: string; total: number; since: string; checked_on: string;
+  sources_named: number; sources_weekly: number; functions: Fn[];
+}
+interface Props {
+  data: Data;
+  copy: {
+    heading?: any; intro?: any; topAfter: string; openLine: string; more: string; changesOne: string; changesMany: string;
+    // Optional, France first (Jens, 2026-10-05): a short sources note in aggregate under the boxes, and the copy
+    // disclosure in an expandable line directly under it, its label naming the changes read from copies.
+    sourcesNote?: any; about?: { summary: any; text: any };
+  };
+  disclosure?: any;
+  tone?: 'white' | 'tint';
+  t: (v: any) => string;
+}
+const { tone = 'tint', data, copy, disclosure, t } = Astro.props;
+const heading = copy.heading ?? `${data.total} ${fill(copy.topAfter, data)}`;
+const intro = copy.intro ?? copy.openLine;
+const countLabel = (n: number) => `${n} ${n === 1 ? copy.changesOne : copy.changesMany}`;
+---
+<section class={`band band-${tone} fo-section`} id="functions">
+  <div class="wrap">
+    <h2 class="band-h fo-h" set:html={t(heading)}></h2>
+    <p class="fo-intro measure quiet" set:html={t(intro)}></p>
+    <div class="fo-grid">
+      {data.functions.map((fn) => (
+        <details class="fo-card">
+          <summary>
+            <span class="fo-name">{fn.name}</span>
+            <span class="fo-count">{countLabel(fn.count)}</span>
+            <span class="fo-caret" aria-hidden="true"></span>
+          </summary>
+          <div class="fo-lines">
+            {fn.lines.map((l, i) => (
+              <>
+                <div class="fo-line">
+                  <span class="fo-date">{shortDate(l.date)}</span>
+                  <span class="fo-text">{l.text}</span>
+                  <span class="fo-domain">{l.domain}</span>
+                </div>
+                {fn.gap && i === 0 && <div class="fo-dots" aria-hidden="true">···</div>}
+              </>
+            ))}
+            {fn.more > 0 && <p class="fo-more">{copy.more.replace('{n}', String(fn.more))}</p>}
+          </div>
+        </details>
+      ))}
+    </div>
+    {copy.sourcesNote && <p class="fo-note measure" set:html={t(copy.sourcesNote)}></p>}
+    {copy.about && (
+      <details class="fo-about measure">
+        <summary set:html={t(copy.about.summary)}></summary>
+        <p set:html={t(copy.about.text)}></p>
+      </details>
+    )}
+    {disclosure && <p class="fo-disclosure measure" set:html={t(disclosure)}></p>}
+  </div>
+</section>
+
+<style is:global>
+  .fo-h { max-width: 40ch; }
+  .fo-intro { margin: 0 0 28px; }
+  .fo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .fo-card { background: var(--page); border: 1px solid var(--box-border); min-width: 0; }
+  .fo-card summary { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name caret" "count caret"; column-gap: 12px; row-gap: 2px; align-items: center; min-height: 64px; padding: 12px 16px; cursor: pointer; }
+  .fo-card summary::-webkit-details-marker { display: none; }
+  .fo-card summary:hover { background: #fbf9f3; }
+  .fo-name { grid-area: name; font-weight: 700; font-size: 1rem; line-height: 1.3; }
+  .fo-count { grid-area: count; font-family: var(--serif); font-size: 0.95rem; color: var(--quiet); }
+  .fo-caret { grid-area: caret; width: 8px; height: 8px; border-right: 1.5px solid var(--quiet); border-bottom: 1.5px solid var(--quiet); transform: rotate(45deg); margin-right: 4px; }
+  .fo-card[open] .fo-caret { transform: rotate(-135deg); }
+  .fo-card[open] summary { border-bottom: 1px solid var(--inner-rule); }
+  .fo-lines { padding: 12px 16px 14px; }
+  .fo-line { display: grid; grid-template-columns: 6.2em minmax(0, 1fr); column-gap: 8px; font-size: 0.88rem; line-height: 1.4; margin-bottom: 8px; }
+  .fo-date { color: var(--quiet); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .fo-domain { grid-column: 2; color: var(--faint); font-size: 0.8rem; }
+  .fo-dots { text-align: center; color: var(--faint); line-height: 1; letter-spacing: 0.4em; padding-left: 0.4em; margin: 2px 0 10px; }
+  .fo-more { margin: 4px 0 0; font-size: 0.86rem; color: var(--quiet); }
+  .fo-disclosure { margin: 28px 0 0; font-size: 0.86rem; color: var(--quiet); line-height: 1.5; }
+  .fo-note { margin: 28px 0 2px; font-size: 0.92rem; color: var(--quiet); line-height: 1.5; }
+  .fo-about summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-size: 0.9rem; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 0.2em; list-style: none; }
+  .fo-about summary::-webkit-details-marker { display: none; }
+  .fo-about summary::after { content: ""; flex: none; width: 6px; height: 6px; margin: -3px 0 0 10px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(45deg); }
+  .fo-about[open] summary::after { transform: rotate(-135deg); margin-top: 3px; }
+  .fo-about p { margin: 4px 0 0; font-size: 0.86rem; color: var(--quiet); line-height: 1.5; }
+  @media (max-width: 899px) { .fo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 519px) {
+    .fo-grid { gap: 10px; }
+    .fo-card summary { padding: 10px 12px; }
+    .fo-lines { padding: 10px 12px 12px; }
+    .fo-card[open] { grid-column: 1 / -1; }
+    .fo-line { display: block; }
+  }
+</style>

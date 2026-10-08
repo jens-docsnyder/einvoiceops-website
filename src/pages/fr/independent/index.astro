@@ -1,0 +1,8 @@
+---
+import StoryPage from '../../../components/site/StoryPage.astro';
+import { frStandalone as c } from '../../../data/stories/fr-standalone';
+import fanout from '../../../data/fanout/FR.json';
+
+// Published at an address nothing else on the site links to, with noindex. Fan-out data: src/data/fanout/FR.json.
+---
+<StoryPage c={c} fanout={fanout} page="/fr/independent/" segment="standalone" country="FR" fanoutDisclosure={c.disclosure} />

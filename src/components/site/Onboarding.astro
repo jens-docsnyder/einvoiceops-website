@@ -1,0 +1,41 @@
+---
+// Three numbered steps as one strip in a bordered panel, small numbered circles joined by arrows, the pilot line under it.
+interface Props {
+  copy: { h2: any; steps: { label: string; text: any }[]; pilot: any };
+  tone?: 'white' | 'tint';
+  t: (v: any) => string;
+}
+const { copy, tone = 'white', t } = Astro.props;
+---
+<section class={`band band-${tone} ob`}>
+  <div class="wrap">
+    <h2 class="band-h" set:html={t(copy.h2)}></h2>
+    <ol class="ob-steps">
+      {copy.steps.map((s, i) => (
+        <li class="ob-step">
+          <span class="ob-no" aria-hidden="true">{i + 1}</span>
+          <p><strong>{s.label}</strong> <span set:html={t(s.text)}></span></p>
+        </li>
+      ))}
+    </ol>
+    <p class="ob-pilot measure" set:html={t(copy.pilot)}></p>
+  </div>
+</section>
+
+<style is:global>
+  .ob-steps { list-style: none; margin: 24px 0 24px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: var(--tint); border: 1px solid var(--box-border); border-radius: 2px; }
+  .band-tint .ob-steps { background: var(--page); }
+  .ob-step { position: relative; padding: 22px 32px 22px 28px; }
+  .ob-step + .ob-step { border-left: 1px solid var(--inner-rule); }
+  .ob-no { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-bottom: 10px; border-radius: 50%; background: var(--ink); color: #ffffff; font-size: 0.95rem; font-weight: 700; line-height: 1; }
+  .ob-step p { margin: 0; max-width: 34ch; }
+  .ob-step:not(:last-child)::after { content: "\2192"; position: absolute; top: 24px; right: -14px; z-index: 1; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--page); border: 1px solid var(--box-border); color: var(--ink); font-size: 0.95rem; line-height: 1; }
+  .ob-pilot { margin: 0; font-weight: 600; }
+  @media (max-width: 759px) {
+    .ob-steps { display: block; }
+    .ob-step { padding: 18px 18px 22px; }
+    .ob-step + .ob-step { padding-top: 28px; }
+    .ob-step + .ob-step { border-left: 0; border-top: 1px solid var(--inner-rule); }
+    .ob-step:not(:last-child)::after { content: "\2193"; top: auto; bottom: -14px; right: auto; left: 18px; }
+  }
+</style>

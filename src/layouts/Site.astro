@@ -1,0 +1,230 @@
+---
+// The shared page frame: banner, top bar, content, footer on ink.
+// bar="story" shows the door and country as a breadcrumb and the "Get in touch" button anchored to #contact.
+// bar="home" shows the two door links anchored to #doors.
+// A story page built to the country-first tree (Website - page and site structure.md, part 3) passes countries and
+// types: the top bar then lists the countries instead of the breadcrumb. A country that carries its own types opens
+// them in a small menu under it on hover or keyboard focus, and on a first tap on a touch screen; the older two-way
+// type switch under the bar shows only for a page that passes types and no per-country types.
+interface NavLink { name: string; href: string; current?: boolean; types?: NavLink[] }
+interface Props {
+  title: string;
+  description: string;
+  bar?: 'home' | 'story';
+  door?: string;
+  country?: string;
+  countries?: NavLink[];
+  types?: NavLink[];
+}
+const { title, description, bar = 'story', door, country, countries, types } = Astro.props;
+const countryFirst = bar === 'story' && countries && countries.length > 0;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="only light" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="noindex" />
+</head>
+<body>
+  <p class="preview-banner">A page for independent companies with invoicing in France. The rest of einvoiceops.eu is being rebuilt to match.</p>
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <a class="wordmark" href="/">einvoiceops</a>
+      {countryFirst && (
+        <nav class="topnav topnav-cc" aria-label="Countries">
+          {countries!.map((l) => l.types && l.types.length > 0 ? (
+            <div class={`cc-item${l.current ? ' cc-here' : ''}`}>
+              <a class="cc-link" href={l.href} aria-current={l.current ? 'true' : undefined}>{l.name}</a>
+              <div class="cc-menu">
+                <ul>
+                  {l.types.map((ty) => <li><a href={ty.href} aria-current={ty.current ? 'page' : undefined}>{ty.name}</a></li>)}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <a href={l.href} aria-current={l.current ? 'page' : undefined}>{l.name}</a>
+          ))}
+        </nav>
+      )}
+      {bar === 'story' && door && !countryFirst && (
+        <p class="crumb">{door}{country ? ` · ${country}` : ''}</p>
+      )}
+      {bar === 'story' && <a class="btn btn-sm" href="#contact">Get in touch</a>}
+      {bar === 'home' && (
+        <nav class="topnav" aria-label="Find your page">
+          <a href="#doors">Independent company</a>
+          <a href="#doors">Part of an international group</a>
+        </nav>
+      )}
+    </div>
+  </header>
+  {countryFirst && types && !countries!.some((l) => l.types && l.types.length > 0) && (
+    <nav class="typeswitch" aria-label="Kind of company">
+      <div class="wrap typeswitch-in">
+        {types.map((l) => <a href={l.href} aria-current={l.current ? 'page' : undefined}>{l.name}</a>)}
+      </div>
+    </nav>
+  )}
+  <main>
+    <slot />
+  </main>
+  <footer class="site-foot">
+    <div class="wrap">
+      {countryFirst && (
+        <p class="foot-line foot-cc">{countries!.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.name}</a></>)}</p>
+      )}
+      <p class="foot-line">Nomos Digital Oy · Espoo, Finland · <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> · <a href="/legal/">Legal notice</a> · <a href="/privacy/">Privacy</a></p>
+      <p class="foot-note">We help companies prepare for changes to e-invoicing rules, and we don't give legal or tax advice. When we describe a change on this site, we show you where it was published.</p>
+    </div>
+  </footer>
+  {countryFirst && (
+    <script is:inline>
+      // The country menus. Hover and keyboard focus open them in CSS alone. On a touch screen the first tap on a
+      // country opens its menu instead of following the link; a tap outside, or Escape, closes it.
+      (function () {
+        var items = document.querySelectorAll('.cc-item');
+        if (!items.length) return;
+        var touch = window.matchMedia('(hover: none)');
+        function closeAll(except) {
+          Array.prototype.forEach.call(items, function (it) { if (it !== except) it.classList.remove('is-open'); });
+        }
+        Array.prototype.forEach.call(items, function (it) {
+          var link = it.querySelector('.cc-link');
+          it.addEventListener('mouseenter', function () { it.classList.remove('is-shut'); });
+          link.addEventListener('focus', function () { it.classList.remove('is-shut'); });
+          link.addEventListener('click', function (e) {
+            if (!touch.matches || it.classList.contains('is-open')) return;
+            e.preventDefault();
+            closeAll(it);
+            it.classList.add('is-open');
+          });
+        });
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest || !e.target.closest('.cc-item')) closeAll(null);
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape') return;
+          var it = document.activeElement && document.activeElement.closest && document.activeElement.closest('.cc-item');
+          closeAll(null);
+          if (it) { it.classList.add('is-shut'); it.querySelector('.cc-link').focus(); }
+        });
+      })();
+    </script>
+  )}
+</body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: only light;
+    --page: #ffffff;
+    --tint: #f6f1e6;
+    --ink: #1f1f1f;
+    --accent: #b45309;
+    --paper: #f4efe4;
+    --hairline: #cec6b5;
+    --box-border: #b8af9d;
+    --inner-rule: #dbd3c3;
+    --quiet: #5a564e;
+    --faint: #6f6a5f;
+    --serif: Charter, "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --measure: 680px;
+    --wide: 1120px;
+    --gutter: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; }
+  html, body { margin: 0; padding: 0; background: var(--page); color: var(--ink); }
+  body { font-family: var(--sans); font-size: 17px; line-height: 1.55; overflow-wrap: break-word; }
+  @media (min-width: 760px) { :root { --gutter: 28px; } }
+
+  .wrap { max-width: calc(var(--wide) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); }
+  .measure { max-width: var(--measure); }
+  p { margin: 0 0 1em; }
+  a { color: var(--ink); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--hairline); }
+  a:hover { text-decoration-color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  h1, h2, h3 { font-family: var(--serif); color: var(--ink); margin: 0; }
+  h1 { font-size: clamp(1.95rem, 4.6vw, 2.75rem); line-height: 1.14; font-weight: 400; letter-spacing: -0.012em; }
+  h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.22; font-weight: 700; letter-spacing: -0.005em; }
+  h3 { font-size: 1.15rem; line-height: 1.3; font-weight: 700; }
+  .accent { color: var(--accent); }
+  .quiet { color: var(--quiet); }
+  .faint { color: var(--faint); }
+
+  /* Full-bleed bands: white and a pale tint, alternating from the opening down. */
+  .band { padding: 56px 0; }
+  .band-white { background: var(--page); }
+  .band-tint { background: var(--tint); }
+  .band-ruled { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+  .band h2.band-h { margin-bottom: 12px; }
+  @media (max-width: 759px) { .band { padding: 40px 0; } }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 28px; font: inherit; font-weight: 600; color: #ffffff; background: var(--ink); border: 1px solid var(--ink); border-radius: 2px; text-decoration: none; cursor: pointer; }
+  .btn:hover { background: #000000; text-decoration: none; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn-sm { min-height: 44px; padding: 0 18px; font-size: 0.95rem; }
+
+  .preview-banner { margin: 0; padding: 5px var(--gutter); background: var(--paper); color: var(--quiet); font-size: 13px; line-height: 1.4; text-align: center; }
+  .topbar { background: var(--page); border-bottom: 1px solid var(--hairline); }
+  .topbar-in { display: flex; align-items: center; gap: 16px; min-height: 64px; padding-top: 6px; padding-bottom: 6px; }
+  .wordmark { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--serif); font-size: 22px; line-height: 1; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; margin-right: auto; }
+  .crumb { margin: 0; font-size: 0.95rem; color: var(--quiet); }
+  .crumb a { color: var(--quiet); display: inline-flex; align-items: center; min-height: 44px; }
+  .topnav { display: flex; gap: 28px; }
+  .topnav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.95rem; text-decoration: none; }
+  .topnav a:hover { text-decoration: underline; }
+  @media (max-width: 759px) {
+    .topbar-in { flex-wrap: wrap; row-gap: 0; padding-top: 8px; }
+    .crumb { order: 3; flex-basis: 100%; }
+    .topnav { order: 3; flex-basis: 100%; gap: 20px; flex-wrap: wrap; }
+  }
+
+  .topnav-cc { gap: 22px; margin-right: 8px; }
+  .topbar { position: relative; z-index: 30; }
+  .cc-item { position: relative; display: flex; }
+  .cc-here > .cc-link { font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.35em; }
+  /* The menu drops in under its country: a short fade and slide, with a moment's grace on the way out so a pointer
+     moving down from the country into the menu doesn't lose it. The padding at its top bridges that gap. */
+  .cc-menu { position: absolute; top: 100%; left: -16px; padding-top: 10px; opacity: 0; visibility: hidden; transform: translateY(-6px); pointer-events: none; transition: opacity 0.18s ease 0.12s, transform 0.18s ease 0.12s, visibility 0s linear 0.3s; }
+  .cc-item:last-child .cc-menu { left: auto; right: -16px; }
+  .cc-item:hover .cc-menu, .cc-item:focus-within .cc-menu, .cc-item.is-open .cc-menu { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s; }
+  .cc-item.is-shut .cc-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+  .cc-menu ul { list-style: none; margin: 0; padding: 6px 0; min-width: 270px; background: var(--page); border: 1px solid var(--box-border); border-top: 2px solid var(--ink); box-shadow: 0 10px 24px rgba(31, 31, 31, 0.08); }
+  .cc-menu li { margin: 0; }
+  .cc-menu a { display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-left: 3px solid transparent; font-size: 0.93rem; white-space: nowrap; text-decoration: none; color: var(--ink); }
+  .cc-menu a:hover { background: var(--tint); text-decoration: none; }
+  .cc-menu a[aria-current="page"] { font-weight: 600; border-left-color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) {
+    .cc-menu, .cc-item:hover .cc-menu, .cc-item:focus-within .cc-menu, .cc-item.is-open .cc-menu { transform: none; transition: none; }
+  }
+  @media (max-width: 759px) {
+    .topnav-cc { position: relative; }
+    .cc-item { position: static; }
+    .cc-menu, .cc-item:last-child .cc-menu { left: 0; right: 0; }
+    .cc-menu ul { min-width: 0; }
+  }
+  .topnav-cc > a[aria-current="page"] { font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.35em; }
+  .typeswitch { background: var(--page); border-bottom: 1px solid var(--hairline); }
+  .typeswitch-in { display: flex; flex-wrap: wrap; gap: 0; padding-top: 10px; padding-bottom: 10px; }
+  .typeswitch a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; font-size: 0.92rem; text-decoration: none; color: var(--ink); border: 1px solid var(--box-border); }
+  .typeswitch a + a { border-left: 0; }
+  .typeswitch a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: #ffffff; font-weight: 600; }
+  .typeswitch a:not([aria-current="page"]):hover { background: var(--tint); }
+  @media (max-width: 759px) {
+    .typeswitch-in { flex-wrap: nowrap; }
+    .typeswitch a { flex: 1 1 0; justify-content: center; text-align: center; padding: 6px 10px; font-size: 0.85rem; line-height: 1.25; }
+  }
+
+  main { display: block; }
+
+  .site-foot { background: var(--ink); color: #d6d0c3; padding: 36px 0 44px; font-size: 14px; line-height: 1.55; }
+  .site-foot p { margin: 0 0 8px; max-width: var(--wide); }
+  .site-foot a { color: #ffffff; text-decoration-color: #7a756a; display: inline-flex; align-items: center; min-height: 44px; }
+  .site-foot .foot-note { color: #aaa497; margin-bottom: 0; }
+</style>

@@ -1,0 +1,274 @@
+---
+// One story page, shared by all eight (four countries, two doors). The pages under
+// src/pages/<door>/<country>/index.astro are thin wrappers that pass their story file and, for the
+// live countries, the fan-out data. A country that is not live passes fanout={null}: then the proof strip,
+// the fan-out and the followed-through change are not rendered at all and nothing from them reaches the HTML.
+//
+// Every copy string goes through t(): it fills the fan-out placeholders and picks the right side of a
+// dated value (see switch.js). New copy fields are read with a fallback to the older field.
+import Site from '../../layouts/Site.astro';
+import ProofStrip from './ProofStrip.astro';
+import FanOut from './FanOut.astro';
+import FollowedChange from './FollowedChange.astro';
+import ChangeBoxes from './ChangeBoxes.astro';
+import Onboarding from './Onboarding.astro';
+import WhoBehind from './WhoBehind.astro';
+import ContactForm from './ContactForm.astro';
+import StartAndLimits from './StartAndLimits.astro';
+import MarketCards from './MarketCards.astro';
+import SwitchScript from './SwitchScript.astro';
+import { storyToday, renderText, isSrc, containsDated } from './switch.js';
+import { fill } from './format';
+
+interface Props {
+  c: any;
+  fanout?: any | null;
+  page: string;
+  segment: 'standalone' | 'local-company';
+  country: string;
+  live?: boolean;
+  fanoutDisclosure?: any;
+  followedDisclosure?: any;
+}
+const { c, fanout = null, page, segment, country, fanoutDisclosure, followedDisclosure } = Astro.props;
+const live = fanout !== null && fanout !== undefined;
+
+const DOORS: Record<string, string> = { standalone: 'Independent company', 'local-company': 'Part of an international group' };
+const door = DOORS[segment];
+const countryName = String(c.opening.kickerRest ?? '').replace(/^\s*·\s*/, '');
+
+const today = storyToday(process.env);
+const f = (s: string) => (live ? fill(s, fanout) : s);
+const t = (v: any) => renderText(v, f, today);
+
+const hasProof = live && c.proof;
+const subline = c.opening.subline ?? c.opening.p1;
+const contactTone = live ? 'tint' : 'white';
+
+// Flow C, opted into per story file with flow: 'c'. On the live site this is the only story page: the top bar carries no
+// country row, because the other country pages are not published.
+const flowC = c.flow === 'c';
+// The row of boxes under the strip (ChangeBoxes.astro), opted into per story file with boxes: true, live flow C pages
+// only. With it the July grid comes straight after the strip and the market cards after the grid (Jens, 2026-10-07);
+// the bands below keep alternating white and tint.
+const boxes = flowC && live && c.boxes === true && !!c.followed;
+const redId = boxes ? c.followed.changes?.[c.followed.gridStart?.col ?? 0]?.id : undefined;
+// The per-function count section (FanOut.astro) can be left out per story file with fanout.show: false (France standalone,
+// Jens 2026-10-07: with the row of boxes carrying the count and the July grid the per-function view, it repeated the count
+// and called function hits changes). Without it, the bands below the market cards swap tints to keep alternating.
+const showFanout = live && c.fanout?.show !== false;
+const startTint = flowC && live && (!boxes || !showFanout);
+---
+<Site title={c.meta.title} description={c.meta.description} bar="story" door={door} country={countryName}>
+  <section class="sp-top">
+    <div class="band band-white sp-open">
+      <div class="wrap">
+        <h1 class="sp-h1" set:html={t(c.opening.h1)}></h1>
+        <p class="sp-sub" set:html={t(subline)}></p>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    {hasProof && <ProofStrip data={fanout} proof={c.proof} t={t} />}
+  </section>
+
+  {boxes && <ChangeBoxes data={fanout} redId={redId} />}
+  {boxes && <FollowedChange copy={c.followed} disclosure={followedDisclosure} tone="tint" framed={redId !== undefined} t={t} />}
+
+  {c.market ? (
+    <MarketCards copy={c.market} tone={live ? 'white' : 'tint'} t={t} />
+  ) : (
+  <section class={`band ${live ? 'band-white' : 'band-tint'} sp-challenges`}>
+    <div class="wrap">
+      <div class="sp-cols" id="challenges">
+        {c.challenges.map((b: any) => {
+          const heading = b.title ?? b.h2;
+          const hasShort = b.short !== undefined && b.short !== null;
+          const hasWhatWeDo = b.whatWeDo !== undefined && b.whatWeDo !== null;
+          const shortText = hasShort ? b.short : b.p;
+          const whatWeDo = hasWhatWeDo ? b.whatWeDo : b.vp;
+          const sourceVisible = b.sourceVisible !== false;
+          return (
+            <div class="sp-col" data-challenge={b.id}>
+              <article class="sp-ch">
+                <span class="sp-no" aria-hidden="true">{b.id}</span>
+                <h2 class="sp-ch-h" set:html={t(heading)}></h2>
+                <p class="sp-short" set:html={t(shortText)}></p>
+                {whatWeDo && <p class="sp-wwd"><strong>What we do:</strong> <span set:html={t(whatWeDo)}></span></p>}
+                {b.source && sourceVisible && <p class="sp-src" set:html={t(b.source)}></p>}
+                <details class="sp-more">
+                  <summary>{c.readMore}</summary>
+                  <div class="sp-more-body">
+                    {b.title && <p class="sp-lead" set:html={t(b.h2)}></p>}
+                    {hasShort && <p set:html={t(b.p)}></p>}
+                    {b.source && !sourceVisible && <p class="sp-src" set:html={t(b.source)}></p>}
+                    {b.h3 && <h3 class="sp-h3" set:html={t(b.h3)}></h3>}
+                    {hasWhatWeDo && b.vp && <p set:html={t(b.vp)}></p>}
+                    {(b.more ?? []).map((m: any) => isSrc(m) ? <p class="sp-src" set:html={f(m.src)}></p> : <p set:html={t(m)}></p>)}
+                    <button type="button" class="sp-close">Close</button>
+                  </div>
+                </details>
+              </article>
+              {b.voice && (
+                <figure class="sp-voice">
+                  <figcaption class="sp-voice-label" set:html={t(heading)}></figcaption>
+                  <blockquote><p>{b.voice.quote}</p></blockquote>
+                  <p class="sp-voice-by">{b.voice.attribution}</p>
+                </figure>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div class="sp-panels" id="sp-panels"></div>
+    </div>
+  </section>
+  )}
+
+  {flowC ? (
+    <>
+      {live && !boxes && <FollowedChange copy={c.followed} disclosure={followedDisclosure} tone="tint" t={t} />}
+      {showFanout && <FanOut data={fanout} copy={c.fanout} disclosure={fanoutDisclosure} tone={boxes ? 'tint' : 'white'} t={t} />}
+      <StartAndLimits start={c.onboarding} limits={c.limits} tone={startTint ? 'tint' : 'white'} t={t} />
+      <ContactForm copy={c.contact} page={page} segment={segment} country={country} tone={startTint ? 'white' : 'tint'} person={c.contact.person} t={t} />
+    </>
+  ) : (
+    <>
+      {live && <FanOut data={fanout} copy={c.fanout} disclosure={fanoutDisclosure} t={t} />}
+      {live && <FollowedChange copy={c.followed} disclosure={followedDisclosure} t={t} />}
+      <WhoBehind copy={c.who} tone={live ? 'tint' : 'white'} t={t} />
+      <Onboarding copy={c.onboarding} tone={live ? 'white' : 'tint'} t={t} />
+      <ContactForm copy={c.contact} page={page} segment={segment} country={country} tone={contactTone} t={t} />
+    </>
+  )}
+</Site>
+
+{containsDated(c) && <SwitchScript />}
+
+<script is:inline>
+  // ?lead=2 or ?lead=3 moves that challenge to the first column. Nothing else, no network.
+  (function () {
+    var lead = new URLSearchParams(window.location.search).get('lead');
+    if (lead !== '2' && lead !== '3') return;
+    var box = document.getElementById('challenges');
+    var block = box && box.querySelector('[data-challenge="' + lead + '"]');
+    if (block) box.insertBefore(block, box.firstChild);
+  })();
+  // Read more on a computer: an open panel moves out of its third-width column into a full-width row under the three
+  // columns, text lines capped at 70ch; closing moves it back. On a phone, and without script, it opens in place.
+  // "Close" at the end of a panel closes it, puts focus back on its Read more and keeps the page where it is
+  // unless that Read more scrolled out of view.
+  (function () {
+    var wide = window.matchMedia('(min-width: 760px)');
+    var rowBox = document.getElementById('sp-panels');
+    if (!rowBox) return;
+    function place(d) {
+      var body = d.querySelector('.sp-more-body') || null;
+      var col = d.closest('.sp-col');
+      var key = col && col.getAttribute('data-challenge');
+      var wrap = rowBox.querySelector('[data-for="' + key + '"]');
+      if (d.open && wide.matches && body && !body.closest('.sp-panel')) {
+        wrap = document.createElement('div');
+        wrap.className = 'sp-panel';
+        wrap.setAttribute('data-for', key);
+        wrap.setAttribute('data-no', key);
+        wrap.setAttribute('role', 'region');
+        var h = col.querySelector('.sp-ch-h');
+        if (h) wrap.setAttribute('aria-label', h.textContent);
+        wrap.appendChild(body);
+        // keep the panels in the same order as the columns
+        var cols = Array.prototype.slice.call(document.querySelectorAll('#challenges .sp-col'));
+        var idx = cols.indexOf(col), before = null;
+        Array.prototype.forEach.call(rowBox.children, function (w) {
+          var i = cols.indexOf(document.querySelector('#challenges [data-challenge="' + w.getAttribute('data-for') + '"]'));
+          if (!before && i > idx) before = w;
+        });
+        rowBox.insertBefore(wrap, before);
+        var r = wrap.getBoundingClientRect();
+        if (r.top > window.innerHeight - 120) wrap.scrollIntoView({ block: 'nearest' });
+      } else if (wrap && (!d.open || !wide.matches)) {
+        var b = wrap.querySelector('.sp-more-body');
+        if (b) d.appendChild(b);
+        wrap.parentNode.removeChild(wrap);
+      }
+    }
+    document.addEventListener('toggle', function (e) {
+      var d = e.target;
+      if (d && d.classList && d.classList.contains('sp-more')) place(d);
+    }, true);
+    function reflow() {
+      Array.prototype.forEach.call(document.querySelectorAll('details.sp-more'), place);
+    }
+    if (wide.addEventListener) wide.addEventListener('change', reflow);
+    document.addEventListener('click', function (e) {
+      var el = e.target;
+      if (!el || !el.classList || !el.classList.contains('sp-close')) return;
+      var wrap = el.closest('.sp-panel');
+      var col = wrap ? document.querySelector('#challenges [data-challenge="' + wrap.getAttribute('data-for') + '"]') : el.closest('.sp-col');
+      var d = col && col.querySelector('details.sp-more');
+      if (!d) return;
+      d.removeAttribute('open');
+      var s = d.querySelector('summary');
+      if (s) s.focus({ preventScroll: true });
+      var r = d.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) d.scrollIntoView({ block: 'center' });
+    });
+  })();
+</script>
+
+<style is:global>
+  .sp-open { padding: 60px 0 44px; }
+  .sp-h1 { max-width: 30ch; }
+  /* The subline under the heading speaks for the page, so it is set in ink and a step heavier than the quieter
+     explaining text further down (Jens, 2026-10-06: "the subhero here we need to be bold and assertive"). */
+  .sp-sub { max-width: 62ch; margin: 18px 0 24px; font-size: 1.14rem; line-height: 1.5; font-weight: 500; color: var(--ink); }
+  .sp-sub strong { color: var(--ink); font-weight: 700; }
+
+  .sp-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; align-items: start; }
+  .sp-col { min-width: 0; }
+  .sp-ch { border-top: 2px solid var(--ink); padding-top: 14px; }
+  .sp-no { display: block; font-family: var(--serif); font-size: 3rem; line-height: 1; color: var(--accent); margin-bottom: 10px; }
+  .sp-ch-h { font-size: 1.28rem; line-height: 1.25; margin-bottom: 12px; }
+  .sp-short { margin: 0 0 14px; font-size: 1rem; line-height: 1.55; }
+  .sp-wwd { margin: 0 0 14px; padding: 2px 0 2px 14px; border-left: 3px solid var(--accent); font-size: 0.98rem; line-height: 1.5; }
+  .sp-src { margin: 0 0 14px; font-size: 0.84rem; line-height: 1.5; color: var(--quiet); }
+  .sp-short strong, .sp-more-body strong { font-weight: 600; }
+
+  .sp-more { margin-top: 4px; }
+  .sp-more summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--ink); font-weight: 600; font-size: 0.95rem; text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 0.2em; list-style: none; }
+  .sp-more summary::-webkit-details-marker { display: none; }
+  .sp-more summary::after { content: ""; width: 7px; height: 7px; margin: -3px 0 0 10px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(45deg); }
+  .sp-more[open] summary::after { transform: rotate(-135deg); margin-top: 3px; }
+  .sp-more-body { padding-top: 6px; font-size: 0.95rem; line-height: 1.55; }
+  .sp-more-body p { margin: 0 0 1em; }
+  .sp-lead { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; }
+  .sp-h3 { font-size: 1.05rem; margin: 6px 0 8px; }
+  .sp-more-body .sp-src { font-size: 0.84rem; }
+  .sp-close { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; padding: 0 18px; font: inherit; font-size: 0.92rem; color: var(--ink); background: transparent; border: 1px solid var(--box-border); border-radius: 2px; cursor: pointer; }
+  .sp-close:hover { border-color: var(--ink); }
+
+  .sp-panels:not(:empty) { margin-top: 20px; }
+  .sp-panel { position: relative; margin-top: 16px; padding: 28px 32px 22px; background: var(--tint); border: 1px solid var(--box-border); border-top: 2px solid var(--ink); }
+  .band-tint .sp-panel { background: var(--page); }
+  .sp-panel::before { content: attr(data-no); position: absolute; top: 14px; right: 24px; font-family: var(--serif); font-size: 2rem; line-height: 1; color: var(--accent); }
+  .sp-panel .sp-more-body { max-width: 70ch; padding-top: 0; }
+
+  .sp-voice { margin: 28px 0 0; padding: 18px 0 0; border-top: 1px solid var(--hairline); }
+  .sp-voice-label { font-size: 0.8rem; letter-spacing: 0.02em; color: var(--faint); margin-bottom: 8px; }
+  .sp-voice blockquote { margin: 0; }
+  .sp-voice blockquote p { font-family: var(--serif); font-size: 1.35rem; line-height: 1.35; margin: 0 0 10px; }
+  .sp-voice-by { margin: 0; font-size: 0.88rem; color: var(--quiet); }
+
+  @media (max-width: 899px) {
+    .sp-cols { column-gap: 24px; }
+    .sp-no { font-size: 2.4rem; }
+  }
+  @media (max-width: 759px) {
+    .sp-cols { display: block; }
+    .sp-col { margin-bottom: 36px; }
+    .sp-col:last-child { margin-bottom: 0; }
+    .sp-open { padding: 32px 0 28px; }
+    .sp-sub { font-size: 1.02rem; }
+    .btn { width: 100%; }
+    .topbar .btn { width: auto; }
+  }
+</style>

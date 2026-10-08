@@ -1,0 +1,183 @@
+---
+// The row of boxes under the proof strip (France standalone first, Jens 2026-10-07; approved mockup: Market Intelligence/
+// Messaging/Website structure pictures, 2026-10/France scroll mockup, 2026-10-07.png). A line drops from the count column
+// of the strip onto a line across the page, and one box per change hangs under it. The boxes fill in left to right
+// as the page scrolls down and empty again as it scrolls up; once all are in, the box of the change the July grid opens on
+// turns to the accent and a line drops from it into the July section.
+//
+// One box per change as the page counts them (Jens, 2026-10-08: "on top changes from sources, so the number and the amount
+// of boxes have to follow that logic"): a change is what a source published on one day, and it holds one or more rules,
+// the counted rows in data.changes (FR.json). publications() in format.ts groups the rows by day, the same count as
+// {published}. The red box is the day of the rule the July grid opens on, found from the data, never typed in. No
+// captions, markers or hover on a box (Jens, 2026-10-07).
+//
+// Rebuilt from Jens's word on the built row, 2026-10-07 ("make the urgency and complexity more visible", then "it doesn't
+// display well at all"): each box turns the accent as it fills and its date shows under it at the same moment, month and
+// year as M/YY in a small font, centred under the box and never past the row's edges. Once all are in, the box of the
+// change the July grid opens on grows by a third and the line into the July section grows out of it; its own date steps
+// aside for the line (the July section names the day). Fourteen to a row, seven under 600 px, since 2026-10-08.
+import { publications } from './format';
+
+interface Change { id: string; date: string }
+interface Props {
+  data: { total: number; changes?: Change[] };
+  redId?: string;
+}
+const { data, redId } = Astro.props;
+
+// The list has to agree with the released count; if it does not, there is no row at all, since the page could not say
+// how many changes there are.
+const days = publications(data);
+const count = days?.length ?? 0;
+const redDate = redId ? data.changes?.find((c) => c.id === redId)?.date : undefined;
+const red = days && redDate ? days.indexOf(redDate) : -1;
+const label = (date: string) => `${Number(date.slice(5, 7))}/${date.slice(2, 4)}`;
+// Outlined boxes for the changes still to come (Jens, 2026-10-08): they finish the last row and appear as the line starts
+// growing, with one line under them and no dates, since nobody can date a change not yet made. Fourteen to a row, seven
+// under 600 px, so the same number finishes the row at both widths.
+const future = (14 - (count % 14)) % 14;
+const futureNarrow = (7 - (count % 7)) % 7;
+---
+{count > 0 && <div class="cb band-white" data-cb aria-hidden="true">
+  <div class="wrap">
+    <div class="cb-in">
+      <span class="cb-drop"></span>
+      <ol class="cb-row">
+        {(days ?? []).map((d, k) => (
+          <li class={k === red ? 'cb-box cb-red' : 'cb-box'}><span class="cb-sq"></span><span class="cb-date">{label(d)}</span></li>
+        ))}
+        {Array.from({ length: future }, (_, k) => (
+          <li class={k < futureNarrow ? 'cb-box cb-fut' : 'cb-box cb-fut cb-fut-wide'} style={`--k: ${k}`}><span class="cb-sq"></span>{k === 0 && <span class="cb-next">Future changes</span>}</li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</div>}
+
+<script is:inline>
+  // Inline, so the start state is set before the first paint and the end state never flashes on load.
+  // Scroll position to state. p runs 0 to 1 while the row travels from where it first sits on screen (or near the bottom
+  // of the window, if lower) up to the top third of the window: the boxes fill over the first three quarters, then the red
+  // box turns and its line grows down to the July section.
+  (function () {
+    var cb = document.querySelector('[data-cb]');
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!cb || still.matches) return;
+    var row = cb.querySelector('.cb-row');
+    var boxes = Array.prototype.slice.call(cb.querySelectorAll('.cb-box:not(.cb-fut)'));
+    var red = cb.querySelector('.cb-red .cb-sq');
+    // The frame round the July section that the line runs into (FollowedChange.astro, framed): once the line is down it
+    // grows out of the line's end as the page scrolls on, and is closed when the section's bottom is near the window's.
+    // The section comes after this script, so the frame is picked up once the page is parsed; FollowedChange.astro hides
+    // its border before the first paint.
+    var frame = null, svg = null;
+    var from = 0, to = 0, raf = 0, last = -1, on = true, done = 0, end = 1;
+    function measure() {
+      var vh = window.innerHeight;
+      var top0 = row.getBoundingClientRect().top + window.scrollY;
+      from = Math.min(top0, vh * 0.95);
+      to = Math.min(vh * 0.32, from - 240);
+      if (red) {
+        var len = cb.getBoundingClientRect().bottom - red.getBoundingClientRect().bottom;
+        cb.style.setProperty('--cb-len', Math.max(0, Math.round(len)) + 'px');
+      }
+      if (svg) {
+        var f = frame.getBoundingClientRect();
+        var w = Math.round(f.width), h = Math.round(f.height);
+        var r = red ? red.getBoundingClientRect() : f;
+        var x = Math.round(r.left + r.width / 2 - f.left);
+        x = Math.max(2, Math.min(w - 2, x));
+        svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+        svg.querySelector('.fc-frame-l').setAttribute('d', 'M' + x + ' 1H1V' + (h - 1) + 'H' + x);
+        svg.querySelector('.fc-frame-r').setAttribute('d', 'M' + x + ' 1H' + (w - 1) + 'V' + (h - 1) + 'H' + x);
+        // Scroll positions: the line is down when the row's top reaches 'to'; the frame is closed when its bottom edge is
+        // nine tenths down the window, and never over less than 300 px of scrolling.
+        done = top0 - to;
+        end = Math.max(done + 300, f.bottom + window.scrollY - vh * 0.9);
+      }
+      last = -1;
+    }
+    function draw() {
+      raf = 0;
+      if (!on) return;
+      var top = row.getBoundingClientRect().top;
+      var p = Math.max(0, Math.min(1, (from - top) / (from - to)));
+      if (svg) {
+        var q = Math.max(0, Math.min(1, (window.scrollY - done) / (end - done)));
+        frame.style.setProperty('--fc-q', p < 1 ? '0' : String(q));
+      }
+      if (p === last) return;
+      last = p;
+      var n = Math.round(Math.min(1, p / 0.75) * boxes.length);
+      boxes.forEach(function (b, k) { b.classList.toggle('is-in', k < n); });
+      cb.classList.toggle('is-red', p >= 0.8);
+      cb.style.setProperty('--cb-red', String(Math.max(0, Math.min(1, (p - 0.8) / 0.2))));
+    }
+    function ask() { if (!raf) raf = requestAnimationFrame(draw); }
+    cb.classList.add('cb-anim');
+    function hook() {
+      frame = document.querySelector('.fc-frame');
+      svg = frame && frame.querySelector('.fc-frame-svg');
+      if (!svg) return;
+      frame.classList.add('fc-frame-anim');
+      if (window.ResizeObserver) new ResizeObserver(function () { measure(); ask(); }).observe(frame);
+      measure(); ask();
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook); else hook();
+    measure();
+    draw();
+    window.addEventListener('scroll', ask, { passive: true });
+    window.addEventListener('resize', function () { measure(); ask(); });
+    window.addEventListener('load', function () { measure(); ask(); });
+    if (still.addEventListener) still.addEventListener('change', function () {
+      if (still.matches) { on = false; cb.classList.remove('cb-anim'); if (svg) frame.classList.remove('fc-frame-anim'); }
+    });
+  })();
+</script>
+
+<style is:global>
+  /* overflow: hidden ends the red box's line at the bottom of this band, where the July section starts. */
+  .cb { position: relative; overflow: hidden; padding: 0 0 56px; }
+  .cb-in { position: relative; padding-top: 56px; }
+  /* The drop from the count column of the strip: its text starts after two of the strip's 1 : 1 : 1.65 columns and the
+     column's own padding (ProofStrip.astro). Under 760 px the strip stacks and the drop starts the row. */
+  .cb-drop { position: absolute; top: 0; left: calc(100% * 2 / 3.65 + 32px); width: 1px; height: 56px; background: var(--ink); }
+  /* Fourteen to a row, the first box on the left edge and the fourteenth on the right; the second row keeps the columns. */
+  .cb-row { --cb-size: 48px; list-style: none; margin: 0; padding: 12px 0 0; border-top: 1px solid var(--ink); display: grid; grid-template-columns: repeat(14, minmax(0, var(--cb-size))); justify-content: space-between; column-gap: 4px; row-gap: 18px; }
+  .cb-box { position: relative; margin: 0; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .cb-sq { display: block; width: 100%; aspect-ratio: 1; background: var(--accent); border: 1px solid var(--accent); transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.25s ease; }
+  .cb-date { margin-top: 5px; font: 400 10px/1 var(--sans); color: var(--quiet); white-space: nowrap; font-variant-numeric: tabular-nums; transition: opacity 0.15s ease; }
+  .cb-red { z-index: 1; }
+  .cb-red .cb-sq { position: relative; transform: scale(1.33); }
+  .cb-red .cb-date { opacity: 0; }
+  .cb-red .cb-sq::after { content: ""; position: absolute; left: 50%; top: 100%; width: 2px; margin-left: -1px; height: 100vh; background: var(--accent); transform: scaleX(0.75); transform-origin: top; }
+
+  .cb-anim .cb-box:not(.is-in) .cb-sq { background: transparent; border-color: var(--box-border); border-style: dashed; }
+  .cb-anim .cb-box:not(.is-in) .cb-date { opacity: 0; }
+  .cb-anim:not(.is-red) .cb-red .cb-sq { transform: none; }
+  .cb-anim:not(.is-red) .cb-red.is-in .cb-date { opacity: 1; }
+  .cb-anim .cb-red .cb-sq::after { height: calc(var(--cb-len, 0px) * var(--cb-red, 0) / 1.33); }
+
+  .cb-fut .cb-sq, .cb-anim .cb-box.cb-fut:not(.is-in) .cb-sq { background: transparent; border: 1px dashed var(--quiet); }
+  /* A flex child like the dates, so it sits on their line; zero width lets it run on under the next outlines. */
+  .cb-next { align-self: flex-start; width: 0; margin-top: 5px; font: 400 10px/1 var(--sans); color: var(--quiet); white-space: nowrap; }
+  .cb-fut { transition: opacity 0.3s ease calc(var(--k) * 60ms); }
+  .cb-anim:not(.is-red) .cb-fut { opacity: 0; transition-delay: 0s; }
+
+  @media (max-width: 999px) {
+    .cb-drop { left: calc(100% * 2 / 3.65 + 20px); }
+  }
+  @media (max-width: 759px) {
+    .cb { padding-bottom: 40px; }
+    .cb-in { padding-top: 32px; }
+    .cb-drop { left: 0; height: 32px; }
+    .cb-row { column-gap: 3px; }
+    .cb-date, .cb-next { font-size: 9px; }
+  }
+  /* Under 600 px fourteen boxes a row is too small for a date under each: seven to a row. */
+  @media (max-width: 599px) {
+    .cb-row { --cb-size: 36px; grid-template-columns: repeat(7, minmax(0, var(--cb-size))); }
+    .cb-fut-wide { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cb-sq, .cb-date, .cb-fut { transition: none; } }
+</style>

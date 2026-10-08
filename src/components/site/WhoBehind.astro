@@ -1,0 +1,38 @@
+---
+// A small card: a neutral placeholder box with initials (no photo file exists yet), name and text.
+interface Props {
+  copy: { h2: any; p1: any; short?: any; p2?: any };
+  tone?: 'white' | 'tint';
+  t: (v: any) => string;
+}
+const { copy, tone = 'white', t } = Astro.props;
+const rest = copy.short ?? copy.p2;
+---
+<section class={`band band-${tone} wb`}>
+  <div class="wrap">
+    <div class="wb-card">
+      <div class="wb-photo" aria-hidden="true"><span>JA</span></div>
+      <div class="wb-text">
+        <h2 class="wb-h" set:html={t(copy.h2)}></h2>
+        <p set:html={t(copy.p1)}></p>
+        {rest && <p set:html={t(rest)}></p>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .wb { padding: 44px 0; }
+  .wb-card { display: flex; gap: 24px; align-items: flex-start; max-width: 760px; background: var(--page); border: 1px solid var(--hairline); padding: 22px 24px; }
+  .band-white .wb-card { background: var(--tint); }
+  .wb-photo { flex: none; width: 96px; height: 96px; background: var(--paper); border: 1px solid var(--box-border); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.7rem; color: var(--faint); letter-spacing: 0.04em; }
+  .band-white .wb-photo { background: var(--page); }
+  .wb-text { min-width: 0; }
+  .wb-h { font-size: 1.2rem; margin-bottom: 8px; }
+  .wb-text p { margin: 0 0 0.7em; font-size: 0.98rem; }
+  .wb-text p:last-child { margin-bottom: 0; }
+  @media (max-width: 539px) {
+    .wb-card { display: block; padding: 18px 16px; }
+    .wb-photo { margin-bottom: 14px; width: 72px; height: 72px; font-size: 1.3rem; }
+  }
+</style>

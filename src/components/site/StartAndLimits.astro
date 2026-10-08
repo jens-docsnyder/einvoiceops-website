@@ -1,0 +1,57 @@
+---
+// Flow C (Website - page and site structure.md, part 2): starting and the limits as one section.
+// The heading and an optional line under it, the steps as a process row (numbered, joined by a line, a short bold label
+// and one line each; a column on a phone), the call to action under them, then the "What we don't do" bullets
+// (Jens, 2026-10-08: a process view, a CTA, the limits as short bullets).
+interface Props {
+  start: { h2: any; intro?: any; steps: { label?: string; text: any }[]; cta?: any; pilot?: any };
+  limits: { h2: any; lines: { lead: any; text: any }[] };
+  tone?: 'white' | 'tint';
+  t: (v: any) => string;
+}
+const { start, limits, tone = 'tint', t } = Astro.props;
+---
+<section class={`band band-${tone} sl`}>
+  <div class="wrap">
+    <h2 class="band-h" set:html={t(start.h2)}></h2>
+    {start.intro && <p class="sl-intro" set:html={t(start.intro)}></p>}
+    <ol class="sl-steps">
+      {start.steps.map((s, i) => (
+        <li class="sl-step">
+          <span class="sl-no" aria-hidden="true">{i + 1}</span>
+          <p>{s.label ? <><strong>{s.label}</strong> </> : null}<span set:html={t(s.text)}></span></p>
+        </li>
+      ))}
+    </ol>
+    {start.cta && <p class="sl-cta"><a class="btn" href="#contact" set:html={t(start.cta)}></a></p>}
+    {start.pilot && <p class="sl-pilot" set:html={t(start.pilot)}></p>}
+    <div class="sl-limits" role="region" aria-labelledby="sl-limits-h">
+      <h2 class="sl-limits-h" id="sl-limits-h" set:html={t(limits.h2)}></h2>
+      {limits.lines.map((l) => (
+        <p><strong set:html={t(l.lead)}></strong> <span set:html={t(l.text)}></span></p>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .sl-intro { margin: 0; font-size: 1.05rem; }
+  .sl .band-h { max-width: 30ch; }
+  /* Three steps across under large accent numbers (Jens chose version B, 2026-10-08); a column on a phone. */
+  .sl-steps { list-style: none; margin: 40px 0 36px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+  .sl-no { display: block; font-family: var(--serif); font-size: 3.2rem; line-height: 1; color: var(--accent); margin-bottom: 14px; }
+  .sl-step p { margin: 0; font-size: 1.02rem; border-top: 1px solid var(--box-border); padding-top: 14px; }
+  .sl-cta { margin: 0; }
+  .sl-pilot { margin: 16px 0 0; font-weight: 600; max-width: 52ch; }
+  /* The limits as one quiet row under a rule. */
+  .sl-limits { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--box-border); display: grid; grid-template-columns: 200px repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .sl-limits-h { font-size: 1.1rem; margin: 0; }
+  .sl-limits p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--quiet); }
+  .sl-limits strong { display: block; color: var(--ink); font-weight: 600; }
+  @media (max-width: 859px) {
+    .sl-steps { display: block; }
+    .sl-step { margin-bottom: 28px; }
+    .sl-limits { display: block; }
+    .sl-limits > * { margin-bottom: 16px; }
+  }
+</style>

@@ -1,0 +1,283 @@
+{
+  "country": "FR",
+  "total": 33,
+  "since": "2024-01-01",
+  "checked_on": "2026-09-14",
+  "last_check": "2026-10-05",
+  "sources_named": 35,
+  "sources_weekly": 29,
+  "functions": [
+    {
+      "name": "Outbound invoicing",
+      "count": 19,
+      "more": 16,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-10-15",
+          "text": "state refocuses the project on a directory of recipients",
+          "domain": "economie.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "binding invoice formats written into law",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "platforms must follow the API and use-case standards",
+          "domain": "legifrance.gouv.fr"
+        }
+      ]
+    },
+    {
+      "name": "Connectivity",
+      "count": 17,
+      "more": 14,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-10-15",
+          "text": "state refocuses the project on a directory of recipients",
+          "domain": "economie.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "platforms must follow the API and use-case standards",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
+          "domain": "legifrance.gouv.fr"
+        }
+      ]
+    },
+    {
+      "name": "Tax engine",
+      "count": 15,
+      "more": 12,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2025-07",
+          "text": "format standard tightens invoice identifier and address checks",
+          "domain": "afnor.org"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "new mandatory data item: price uplift for fees and charges",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
+          "domain": "legifrance.gouv.fr"
+        }
+      ]
+    },
+    {
+      "name": "Inbound invoicing",
+      "count": 11,
+      "more": 8,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-10-15",
+          "text": "state refocuses the project on a directory of recipients",
+          "domain": "economie.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "binding invoice formats written into law",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "platforms must follow the API and use-case standards",
+          "domain": "legifrance.gouv.fr"
+        }
+      ]
+    },
+    {
+      "name": "Master data",
+      "count": 5,
+      "more": 2,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2025-07",
+          "text": "format standard expands guidance on e-invoice addresses",
+          "domain": "afnor.org"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "duplicate invoice numbers must be caught by the platform",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "directory must list members of a VAT group",
+          "domain": "legifrance.gouv.fr"
+        }
+      ]
+    },
+    {
+      "name": "Archiving",
+      "count": 3,
+      "more": 0,
+      "gap": false,
+      "lines": [
+        {
+          "date": "2026-02-20",
+          "text": "right to change platform created; the old platform serves at least a year",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "format conversion must keep a readable copy",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "changing reception platform becomes a regulated procedure",
+          "domain": "legifrance.gouv.fr"
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "id": "FR-E01",
+      "date": "2024-10-15"
+    },
+    {
+      "id": "FR-E02",
+      "date": "2024-12-18"
+    },
+    {
+      "id": "FR-E05",
+      "date": "2025-05-13"
+    },
+    {
+      "id": "FR-E07",
+      "date": "2025-06-19"
+    },
+    {
+      "id": "FR-E10",
+      "date": "2025-07-31"
+    },
+    {
+      "id": "FR-E11",
+      "date": "2025-07-31"
+    },
+    {
+      "id": "FR-E15",
+      "date": "2025-10-31"
+    },
+    {
+      "id": "FR-E16",
+      "date": "2025-11-17"
+    },
+    {
+      "id": "FR-E24",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E25",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E26",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E27",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E28",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E29",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E30",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E31",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E32",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E33",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E34",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E35",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E36",
+      "date": "2026-02-20"
+    },
+    {
+      "id": "FR-E41",
+      "date": "2026-04-30"
+    },
+    {
+      "id": "FR-E48",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E49",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E50",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E51",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E52",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E53",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E54",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E55",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E56",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E57",
+      "date": "2026-07-28"
+    },
+    {
+      "id": "FR-E58",
+      "date": "2026-07-28"
+    }
+  ]
+}

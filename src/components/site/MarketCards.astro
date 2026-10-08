@@ -1,0 +1,187 @@
+---
+// What we see in the market: a heading with context, one intro line, then cards that turn over, in place of the three
+// numbered columns (Jens, 2026-10-05: "it doesn't have to be 3 pillars by default on a page", "flippable cards work").
+// Opted into per story file with a `market` field; the other story pages keep the numbered columns in StoryPage.astro.
+//
+// Each card is a front (a title and one sentence) and a back. The back is set apart from the front as points, not running
+// text (Jens, 2026-10-06): an optional lead line, bullets, and where the card ends on a consequence, that last line after
+// an arrow rather than a bullet. A card with no consequence is bullets only. A plain string back still renders as text. Each face carries its own
+// button at its foot, inside the card (Jens, 2026-10-06): "Learn more" on the front, "Turn back" on the back, level
+// across a row while the cards are unturned. With script each card is only as tall as the face showing (Jens,
+// 2026-10-06: "before clicking it they're not as high"): unturned, the cards in a row share the height of the row's
+// longest front, so the buttons stay level; turned, a card grows to its back's height in a smooth expanding animation
+// alongside the turn, and shrinks back the same way. Heights are measured, never fixed, and remeasured on resize. Without script both faces show, one under the other, and
+// the buttons stay hidden. With script a card turns on either button: real <button>s with aria-expanded and
+// aria-controls, the face turned away is aria-hidden and inert, and focus moves to the button on the face now showing.
+// prefers-reduced-motion swaps the faces with no turning. Nothing moves on its own.
+// The grid keeps id="challenges" and each card its data-challenge, so the ?lead= script in StoryPage.astro still moves
+// the lead card first.
+interface Back { lead?: any; points: any[]; then?: any }
+interface Card { id: number | string; title: any; front: any; back: any | Back }
+interface Props {
+  copy: { h2: any; intro?: any; turn: string; turnBack: string; cards: Card[] };
+  tone?: 'white' | 'tint';
+  t: (v: any) => string;
+}
+const { copy, tone = 'white', t } = Astro.props;
+---
+<section class={`band band-${tone} mk-section`} aria-labelledby="mk-h">
+  <div class="wrap">
+    <h2 class="band-h mk-h" id="mk-h" set:html={t(copy.h2)}></h2>
+    {copy.intro && <p class="mk-intro measure quiet" set:html={t(copy.intro)}></p>}
+    <div class="mk-grid" id="challenges">
+      {copy.cards.map((card) => (
+        <article class="mk-card" data-challenge={String(card.id)}>
+          <div class="mk-inner">
+            <div class="mk-face mk-front" id={`mk-front-${card.id}`}>
+              <div class="mk-body">
+                <h3 class="mk-title" id={`mk-title-${card.id}`} set:html={t(card.title)}></h3>
+                <p set:html={t(card.front)}></p>
+              </div>
+              <button type="button" class="mk-turn mk-turn-fwd" aria-controls={`mk-back-${card.id}`} aria-expanded="false" aria-describedby={`mk-title-${card.id}`} hidden>
+                <span>{copy.turn}</span>
+                <span class="mk-turn-i" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="mk-face mk-back" id={`mk-back-${card.id}`}>
+              <div class="mk-body">
+                <p class="mk-back-title" aria-hidden="true" set:html={t(card.title)}></p>
+                {typeof card.back === 'object' && card.back && Array.isArray(card.back.points) ? (
+                  <>
+                    {card.back.lead && <p class="mk-lead" set:html={t(card.back.lead)}></p>}
+                    <ul class="mk-points">
+                      {card.back.points.map((pt: any) => <li set:html={t(pt)}></li>)}
+                    </ul>
+                    {card.back.then && <p class="mk-then"><span class="mk-then-i" aria-hidden="true">→</span><span set:html={t(card.back.then)}></span></p>}
+                  </>
+                ) : (
+                  <p set:html={t(card.back)}></p>
+                )}
+              </div>
+              <button type="button" class="mk-turn mk-turn-bk" aria-controls={`mk-front-${card.id}`} aria-describedby={`mk-title-${card.id}`} hidden>
+                <span class="mk-turn-i" aria-hidden="true"></span>
+                <span>{copy.turnBack}</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var grid = document.getElementById('challenges');
+    if (!grid || !grid.classList.contains('mk-grid')) return;
+    var section = grid.closest('.mk-section');
+    if (section) section.classList.add('mk-js');
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.mk-card'));
+    // A face's own height: each face is absolutely placed in its card; let its bottom go free for a moment and read it.
+    function natural(face) {
+      face.style.bottom = 'auto';
+      var h = face.offsetHeight;
+      face.style.bottom = '';
+      return h;
+    }
+    // Unturned cards in one row share the row's tallest front; a turned card takes its back's height, never less than
+    // its row's fronts.
+    function size() {
+      var rows = {};
+      cards.forEach(function (card) {
+        card._f = natural(card.querySelector('.mk-front'));
+        card._b = natural(card.querySelector('.mk-back'));
+        var top = Math.round(card.offsetTop);
+        rows[top] = Math.max(rows[top] || 0, card._f);
+        card._row = top;
+      });
+      cards.forEach(function (card) {
+        var h = rows[card._row];
+        if (card.classList.contains('is-turned')) h = Math.max(h, card._b);
+        card.querySelector('.mk-inner').style.height = h + 'px';
+      });
+    }
+    cards.forEach(function (card) {
+      var fwd = card.querySelector('.mk-turn-fwd');
+      var bk = card.querySelector('.mk-turn-bk');
+      var front = card.querySelector('.mk-front');
+      var back = card.querySelector('.mk-back');
+      if (!fwd || !bk || !front || !back) return;
+      function show(turned) {
+        if (turned) card.classList.add('is-turned'); else card.classList.remove('is-turned');
+        fwd.setAttribute('aria-expanded', turned ? 'true' : 'false');
+        front.setAttribute('aria-hidden', turned ? 'true' : 'false');
+        back.setAttribute('aria-hidden', turned ? 'false' : 'true');
+        front.inert = turned;
+        back.inert = !turned;
+      }
+      show(false);
+      fwd.hidden = false;
+      bk.hidden = false;
+      fwd.addEventListener('click', function () { show(true); size(); bk.focus({ preventScroll: true }); });
+      bk.addEventListener('click', function () { show(false); size(); fwd.focus({ preventScroll: true }); });
+    });
+    // First sizing and every resize go in without animating; only a turn animates.
+    function quiet() {
+      grid.classList.add('mk-still');
+      size();
+      void grid.offsetHeight;
+      grid.classList.remove('mk-still');
+    }
+    quiet();
+    var pending = 0;
+    window.addEventListener('resize', function () {
+      cancelAnimationFrame(pending);
+      pending = requestAnimationFrame(quiet);
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(quiet);
+  })();
+</script>
+
+<style is:global>
+  .mk-h { max-width: 32ch; }
+  .mk-intro { margin: 0 0 28px; }
+  .mk-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .mk-card { display: flex; flex-direction: column; min-width: 0; perspective: 1400px; }
+  .mk-inner { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); }
+  .mk-face { display: flex; flex-direction: column; min-width: 0; background: var(--tint); border: 1px solid var(--box-border); border-top: 2px solid var(--ink); padding: 18px 18px 18px; }
+  .band-tint .mk-face { background: var(--page); }
+  .mk-body { flex: 1 0 auto; }
+  .mk-face p { margin: 0 0 0.75em; font-size: 0.97rem; line-height: 1.5; }
+  .mk-body p:last-child { margin-bottom: 0; }
+  .mk-title { font-size: 1.12rem; line-height: 1.3; margin: 0 0 10px; }
+  .mk-back { border-top: 1px solid var(--inner-rule); }
+  .mk-section:not(.mk-js) .mk-front { border-bottom: 0; }
+  .mk-back-title { display: none; }
+  .mk-lead { color: var(--quiet); }
+  .mk-points { list-style: none; margin: 0; padding: 0; }
+  .mk-points li { position: relative; padding-left: 18px; margin: 0 0 0.55em; font-size: 0.97rem; line-height: 1.45; }
+  .mk-points li::before { content: ''; position: absolute; left: 2px; top: 0.6em; width: 6px; height: 6px; background: var(--accent); }
+  .mk-body .mk-then { display: flex; gap: 8px; margin: 0.9em 0 0; padding-top: 0.8em; border-top: 1px solid var(--inner-rule); font-weight: 600; color: var(--ink); }
+  .mk-then-i { flex: none; color: var(--accent); font-weight: 700; }
+  .mk-turn { align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 18px; padding: 0 16px; font: inherit; font-size: 0.92rem; font-weight: 600; color: var(--ink); background: transparent; border: 1px solid var(--box-border); border-radius: 2px; cursor: pointer; }
+  .mk-turn:hover { border-color: var(--ink); }
+  .mk-turn[hidden] { display: none; }
+  .mk-turn-i { width: 7px; height: 7px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(-45deg); }
+  .mk-turn-bk .mk-turn-i { transform: rotate(135deg); }
+
+  .mk-js .mk-inner { position: relative; display: block; transform-style: preserve-3d; transition: transform 0.5s ease, height 0.45s cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .mk-js .mk-face { position: absolute; top: 0; left: 0; right: 0; bottom: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .mk-js .mk-still .mk-inner { transition: none; }
+  .mk-js .mk-back { transform: rotateY(180deg); border-top: 2px solid var(--accent); }
+  .mk-js .mk-back-title { display: block; font-family: var(--serif); font-weight: 700; font-size: 0.95rem; line-height: 1.3; color: var(--quiet); margin-bottom: 10px; }
+  .mk-js .mk-card.is-turned .mk-inner { transform: rotateY(180deg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mk-js .mk-inner { transition: none; transform: none; }
+    .mk-js .mk-card.is-turned .mk-inner { transform: none; }
+    .mk-js .mk-back { transform: none; visibility: hidden; }
+    .mk-js .mk-card.is-turned .mk-front { visibility: hidden; }
+    .mk-js .mk-card.is-turned .mk-back { visibility: visible; }
+  }
+  @media (max-width: 999px) { .mk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 599px) {
+    .mk-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .mk-face { padding: 16px; }
+  }
+</style>

@@ -1,0 +1,98 @@
+---
+// Released figures under the opening. Live countries only. Numbers come from the fan-out data; labels from the story's proof field.
+// Two shapes.
+// The older one (proof.changes, proof.sources, proof.checked): three equal columns, a number over each label.
+// The lead shape, opted into with proof.headline (Jens, 2026-10-05, France first; reordered 2026-10-06): three columns
+// read left to right as one story, the date of the last check for changes (last_check in the fan-out data, else
+// checked_on), then the sources read every week, then the count in the accent colour. Each column is a bold top line
+// over a quiet line, all top lines in one font and size; the columns share two grid rows (subgrid), so the quiet lines
+// start level even when a top line wraps. The line under the count names the released count's own date ({checked}),
+// so a later check date never reads as the count's date. proof.sourcesUnit, where present, follows the number on the
+// top line and proof.sources goes under it.
+// proof.sourcesCount, where present, is a hard number that replaces sources_weekly in the lead shape (France, 2026-10-05:
+// two of the 29 polled sources have never been read once, so the page says fewer than the register lists).
+import { shortDate } from './format';
+
+interface Data { total: number; checked_on: string; last_check?: string; sources_named: number; sources_weekly: number }
+interface Props {
+  data: Data;
+  proof: { changes?: any; sources: any; checked: any; headline?: any; headlineSub?: any; sourcesCount?: number; sourcesUnit?: string };
+  t: (v: any) => string;
+}
+const { data, proof, t } = Astro.props;
+const lead = proof.headline !== undefined && proof.headline !== null;
+const lastCheck = data.last_check ?? data.checked_on;
+const weekly = proof.sourcesCount ?? data.sources_weekly;
+---
+{lead ? (
+  <div class="proof proof-lead band-ruled">
+    <div class="wrap">
+      <dl class="proof-three">
+        <div class="proof-col">
+          <dt class="proof-top">{shortDate(lastCheck)}</dt>
+          <dd class="proof-l" set:html={t(proof.checked)}></dd>
+        </div>
+        <div class="proof-col">
+          <dt class="proof-top">{weekly}{proof.sourcesUnit ? ` ${proof.sourcesUnit}` : ''}</dt>
+          <dd class="proof-l" set:html={t(proof.sources)}></dd>
+        </div>
+        <div class="proof-col proof-col-count">
+          <dt class="proof-top" set:html={t(proof.headline)}></dt>
+          {proof.headlineSub && <dd class="proof-l" set:html={t(proof.headlineSub)}></dd>}
+        </div>
+      </dl>
+    </div>
+  </div>
+) : (
+  <div class="proof band-ruled">
+    <div class="wrap">
+      <dl class="proof-row">
+        <div class="proof-item">
+          <dt class="proof-n">{data.total}</dt>
+          <dd class="proof-l" set:html={t(proof.changes)}></dd>
+        </div>
+        <div class="proof-item">
+          <dt class="proof-n">{data.sources_named}</dt>
+          <dd class="proof-l" set:html={t(proof.sources)}></dd>
+        </div>
+        <div class="proof-item">
+          <dt class="proof-n proof-date">{shortDate(data.checked_on)}</dt>
+          <dd class="proof-l" set:html={t(proof.checked)}></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+)}
+
+<style is:global>
+  .proof { background: var(--tint); padding: 22px 0 20px; }
+  .proof-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 32px; margin: 0; }
+  .proof-item { margin: 0; min-width: 0; }
+  .proof-n { font-family: var(--serif); font-size: 2.5rem; line-height: 1.05; margin: 0 0 4px; }
+  .proof-date { font-size: 1.9rem; padding-top: 0.45rem; }
+  .proof-l { margin: 0; font-size: 0.92rem; line-height: 1.4; color: var(--quiet); max-width: 30ch; }
+
+  .proof-lead { padding: 26px 0 24px; }
+  .proof-three { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.65fr); grid-template-rows: auto auto; margin: 0; }
+  .proof-col { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 6px; min-width: 0; margin: 0; padding: 0 32px; border-left: 1px solid var(--hairline); }
+  .proof-col:first-child { padding-left: 0; border-left: 0; }
+  .proof-col:last-child { padding-right: 0; }
+  .proof-top { align-self: end; margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(1.1rem, 1.95vw, 1.5rem); line-height: 1.2; color: var(--ink); }
+  .proof-col-count .proof-top { color: var(--accent); }
+  .proof-three .proof-l { align-self: start; max-width: 36ch; }
+  @media (min-width: 1000px) { .proof-top { white-space: nowrap; } }
+  @media (max-width: 999px) { .proof-col { padding: 0 20px; } }
+
+  @media (max-width: 759px) {
+    .proof { padding: 18px 0 6px; }
+    .proof-row { display: block; }
+    .proof-item { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+    .proof-n, .proof-date { flex: none; min-width: 3.4rem; font-size: 1.9rem; padding-top: 0; margin: 0; }
+    .proof-date { min-width: 8.2rem; font-size: 1.4rem; }
+    .proof-lead { padding: 6px 0; }
+    .proof-three { display: block; }
+    .proof-col { display: block; padding: 14px 0; border-left: 0; border-top: 1px solid var(--hairline); }
+    .proof-col:first-child { border-top: 0; }
+    .proof-top { font-size: 1.25rem; margin-bottom: 4px; }
+  }
+</style>

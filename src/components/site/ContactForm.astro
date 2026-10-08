@@ -1,0 +1,114 @@
+---
+// The contact section, id="contact". Nothing is sent from the page: the submit opens the reader's email program with a
+// message to jens@einvoiceops.eu already written (mailto), and the done line says only that it is ready to send there.
+interface Props {
+  copy: { h2: any; name: string; email: string; message: string; send: string; done: any; after?: any; hint?: any };
+  page: string;
+  segment: string;
+  country: string;
+  tone?: 'white' | 'tint';
+  // Flow C: the person you write to, beside the form: photo, name and email address, no career lines (Jens, 2026-10-08).
+  // With a person, the section is one card (version B, Jens 2026-10-08): photo column left, form right, and copy.hint under the address.
+  person?: { name: string; email: string; photo: string };
+  t: (v: any) => string;
+}
+const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
+---
+<section class={`band band-${tone} cf-section${person ? ' cf-with-person' : ''}`} id="contact">
+  <div class="wrap">
+    <h2 class="band-h cf-h" set:html={t(copy.h2)}></h2>
+    <div class={person ? 'cf-grid' : undefined}>
+    {person && (
+      <div class="cf-person">
+        <img class="cf-photo" src={person.photo} alt={person.name} width="150" height="150" loading="lazy" />
+        <p class="cf-name">{person.name}</p>
+        <p class="cf-mail"><a href={`mailto:${person.email}`}>{person.email}</a></p>
+        {copy.hint && <p class="cf-hint" set:html={t(copy.hint)}></p>}
+      </div>
+    )}
+    <div class={person ? 'cf-main' : undefined}>
+    <form class="cf-form" id="cf-form" onsubmit="return false" novalidate={false} data-page={page} data-segment={segment} data-country={country}>
+      <input type="hidden" name="page" value={page} />
+      <input type="hidden" name="segment" value={segment} />
+      <input type="hidden" name="country" value={country} />
+      <input type="hidden" name="lead" value="" />
+      <input type="hidden" name="link" value="" />
+      <div class="cf-pair">
+        <div>
+          <label class="cf-label" for="cf-name">{copy.name}</label>
+          <input class="cf-input" id="cf-name" name="name_company" type="text" required autocomplete="organization" />
+        </div>
+        <div>
+          <label class="cf-label" for="cf-email">{copy.email}</label>
+          <input class="cf-input" id="cf-email" name="email" type="email" required autocomplete="email" />
+        </div>
+      </div>
+      <label class="cf-label" for="cf-message">{copy.message}</label>
+      <textarea class="cf-input cf-area" id="cf-message" name="message" rows="5" required></textarea>
+      <button class="btn cf-send" type="submit">{copy.send}</button>
+      {copy.after && <p class="cf-after quiet" set:html={t(copy.after)}></p>}
+    </form>
+    <p class="cf-done measure" id="cf-done" role="status" hidden set:html={t(copy.done)}></p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('cf-form');
+    var done = document.getElementById('cf-done');
+    if (!form || !done) return;
+    var params = new URLSearchParams(window.location.search);
+    var search = window.location.search.replace(/^\?/, '');
+    form.elements['lead'].value = params.get('lead') || '';
+    form.elements['link'].value = search;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      var f = form.elements;
+      var lines = [f['message'].value, '', 'Name and company: ' + f['name_company'].value, 'Email: ' + f['email'].value, 'Page: ' + window.location.pathname + window.location.search];
+      var href = 'mailto:jens@einvoiceops.eu?subject=' + encodeURIComponent('Message from einvoiceops.eu') + '&body=' + encodeURIComponent(lines.join('\r\n'));
+      done.hidden = false;
+      window.location.href = href;
+    });
+  })();
+</script>
+
+<style is:global>
+  .cf-form { margin-top: 24px; max-width: 760px; }
+  .cf-form[hidden] { display: none; }
+  .cf-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+  .cf-label { display: block; margin: 16px 0 4px; font-size: 0.95rem; font-weight: 600; }
+  .cf-input { display: block; width: 100%; min-height: 44px; font: inherit; color: var(--ink); background: #ffffff; border: 1px solid var(--box-border); border-radius: 0; padding: 9px 12px; }
+  .cf-input:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; border-color: var(--ink); }
+  .cf-area { resize: vertical; min-height: 120px; }
+  .cf-send { margin-top: 22px; }
+  .cf-after { margin: 12px 0 0; font-size: 0.9rem; max-width: 60ch; }
+  .cf-done { margin-top: 24px; }
+  /* Version B: one card with the page's orange top line, the photo column tinted (Jens, 2026-10-08). */
+  .cf-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); margin-top: 28px; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--accent); }
+  .cf-grid .cf-form { margin-top: 0; max-width: none; }
+  .cf-grid .cf-label { margin-top: 18px; }
+  .cf-grid .cf-pair .cf-label, .cf-grid .cf-form > .cf-label:first-of-type { margin-top: 0; }
+  .cf-grid .cf-pair { margin-bottom: 18px; }
+  .cf-grid .cf-area { min-height: 190px; }
+  .cf-person { background: var(--tint); padding: 36px 32px; border-right: 1px solid var(--inner-rule); }
+  .cf-person p { margin: 0; }
+  /* Smaller than the column: the full-width photo was too imposing (Jens, 2026-10-08). */
+  .cf-photo { display: block; width: 150px; height: 150px; object-fit: cover; border: 1px solid var(--box-border); }
+  .cf-person .cf-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin-top: 20px; }
+  .cf-mail a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+  .cf-hint { margin-top: 12px !important; padding-top: 16px; border-top: 1px solid var(--inner-rule); color: var(--quiet); font-size: 0.98rem; }
+  .cf-main { padding: 36px 40px; }
+  @media (max-width: 859px) {
+    .cf-grid { display: block; }
+    .cf-person { display: grid; grid-template-columns: 112px minmax(0, 1fr); column-gap: 18px; align-items: start; padding: 24px 20px; border-right: 0; border-bottom: 1px solid var(--inner-rule); }
+    .cf-photo { grid-row: 1 / span 2; width: 112px; height: 112px; }
+    .cf-person .cf-name { margin-top: 0; align-self: end; }
+    .cf-person .cf-mail { align-self: start; }
+    .cf-hint { grid-column: 1 / -1; margin-top: 16px !important; }
+    .cf-main { padding: 24px 20px; }
+  }
+  @media (max-width: 639px) { .cf-pair { display: block; } .cf-pair > div + div .cf-label { margin-top: 18px !important; } }
+</style>

@@ -1,0 +1,419 @@
+---
+// The followed-through change: a horizontal three-step strip with arrows (vertical on a phone).
+// Arrives (date, one line, source domain), Lands (six function chips), Reaches (each touched owner).
+interface Props {
+  copy: {
+    h2: any; intro: any; introShort?: any;
+    stepLabels: { arrives: string; lands: string; reaches: string };
+    arrives: { date: string; text: any; textShort?: any; source: string };
+    notTouched: string; touched: string[]; untouched: string[];
+    owners: { name: string; line: string; items: number }[];
+    withheld: string;
+    // Optional, France first (2026-10-05): an example note under the strip, written for the page from public facts,
+    // never a real note's text.
+    example?: { label: any; to?: any; rows: { k: any; v: any }[] };
+    // Optional, France standalone first (2026-10-07): when present, the section is two columns instead of the strip.
+    // Rebuilt 2026-10-07 from Jens's word: a grid of the changes against the six functions (dots, row totals) with the
+    // points as bullets beside it, and the example note under both.
+    shows?: { tag: any; text: any }[];
+    ofTotal?: number;
+    ownersNote?: any;
+    grid?: string[]; gridCaption?: any;
+    // Optional, France standalone first (2026-10-07): makes the grid clickable. A numbered box per change on top opens
+    // that change under the grid; a filled square opens it with the part for that function highlighted.
+    gridPrompt?: any; gridFor?: any;
+    // Optional (Jens, 2026-10-08): axis labels; with gridAxisY the prompt becomes the label over the numbered changes.
+    gridAxisY?: any;
+    // Optional (2026-10-07): words after each row's count, and the short head over the counts where those words don't fit.
+    countLabel?: any; countHead?: any;
+    // Optional (Jens, 2026-10-07): a total row under the counts, so the column reads as a bill per function.
+    totalLabel?: any;
+    // Optional (2026-10-07): a closing statement beside the grid in place of the bullets.
+    // Or, from 2026-10-08, the chain from a change to its work items as a list read down, each step after the first led by
+    // an arrow (the lead line has none), and the consequence under a rule in the accent (Jens: "explain how change, rule and work item interrelate").
+    closing?: { title: any; text?: any[]; lead?: any; chain?: any[]; then?: any };
+    changes?: { title: any; parts: { f: string; text: any }[] }[];
+    gridStart?: { col: number; fn: string };
+  };
+  disclosure?: any;
+  tone?: 'white' | 'tint';
+  // France standalone first (Jens, 2026-10-07): the line from the chosen box above runs on as a frame around this section,
+  // its top edge on the band's top edge where the line arrives (ChangeBoxes.astro draws it in once the line is down).
+  framed?: boolean;
+  t: (v: any) => string;
+}
+const { tone = 'white', copy, disclosure, t, framed = false } = Astro.props;
+const intro = copy.introShort ?? copy.intro;
+const arrivesText = copy.arrives.textShort ?? copy.arrives.text;
+const FNS = ['o', 'i', 'c', 't', 'm', 'a'];
+const live = !!copy.changes;
+const start = copy.gridStart ?? { col: 0, fn: '' };
+const total = copy.owners.reduce((n, o) => n + o.items, 0);
+---
+<section class={`band band-${tone} fc-section${framed ? ' fc-framed' : ''}`}>
+  <div class="wrap"><div class={framed ? 'fc-frame' : 'fc-body'}>
+    {framed && <svg class="fc-frame-svg" aria-hidden="true"><path class="fc-frame-l" pathLength="1"></path><path class="fc-frame-r" pathLength="1"></path></svg>}
+    <h2 class="band-h fc-h" set:html={t(copy.h2)}></h2>
+    <p class="fc-intro measure quiet" set:html={t(intro)}></p>
+
+    {copy.shows ? (
+    <div class="fc-ex2">
+      <p class="fc-src fc-src-top">{copy.arrives.source}</p>
+      <div class="fc-two">
+        <figure class={live ? 'fc-grid-wrap fc-live' : 'fc-grid-wrap'} data-col={start.col} data-fn={start.fn}>
+          <table class="fc-grid">
+            {live && (
+              <thead>
+                {copy.gridAxisY && (
+                  <tr class="fc-axes">
+                    <td></td>
+                    <th scope="colgroup" colspan={copy.changes!.length} class="fc-axis-x"><span set:html={t(copy.gridPrompt)}></span></th>
+                    <td></td>
+                  </tr>
+                )}
+                <tr>
+                  {copy.gridAxisY
+                    ? <th class="fc-axis-y" scope="col"><span set:html={t(copy.gridAxisY)}></span></th>
+                    : <th class="fc-prompt" scope="col">{copy.gridPrompt && <span set:html={t(copy.gridPrompt)}></span>}</th>}
+                  {copy.changes!.map((c, k) => (
+                    <th scope="col" class="fc-colhead">
+                      <button type="button" class="fc-chg" data-col={k} aria-label={`${k + 1}: ${t(c.title)}`}>{k + 1}</button>
+                    </th>
+                  ))}
+                  <th scope="col" class="fc-nhead">{copy.countHead && <span set:html={t(copy.countHead)}></span>}</th>
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {copy.owners.map((o, r) => (
+                <tr data-row={FNS[r]}>
+                  <th scope="row">{o.name}</th>
+                  {(copy.grid ?? []).map((g, k) => (
+                    <td data-col={k}>
+                      {live && g.includes(FNS[r])
+                        ? <button type="button" class="fc-dot fc-dot-on" data-col={k} data-fn={FNS[r]} aria-label={`${k + 1}: ${t(copy.changes![k].title)}, ${o.name}`}></button>
+                        : <span class={g.includes(FNS[r]) ? 'fc-dot fc-dot-on' : 'fc-dot'}></span>}
+                    </td>
+                  ))}
+                  <td class="fc-n"><strong>{o.items}</strong>{copy.countLabel && <span class="fc-nl" set:html={' ' + t(copy.countLabel)}></span>}</td>
+                </tr>
+              ))}
+            </tbody>
+            {copy.totalLabel && (
+              <tfoot>
+                <tr class="fc-total">
+                  <th scope="row" set:html={t(copy.totalLabel)}></th>
+                  <td colspan={(copy.grid ?? []).length}></td>
+                  <td class="fc-n"><strong>{total}</strong></td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+          {copy.gridCaption && <figcaption class="fc-grid-cap" set:html={t(copy.gridCaption)}></figcaption>}
+          {live && (
+            <div class="fc-panel" aria-live="polite">
+              {copy.changes!.map((c, k) => (
+                <div class="fc-chgtext" data-col={k} hidden={k !== start.col}>
+                  <p class="fc-chgtitle"><span class="fc-chgno">{k + 1}</span> <span set:html={t(c.title)}></span></p>
+                  <p class="fc-for">{t(copy.gridFor)} <strong class="fc-forname"></strong></p>
+                  <p class="fc-parts">{c.parts.map((p) => <><span class="fc-part" data-f={p.f} set:html={t(p.text)}></span>{' '}</>)}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </figure>
+        {copy.closing ? (
+          <div class="fc-col fc-close">
+            <h3 class="fc-close-h" set:html={t(copy.closing.title)}></h3>
+            {copy.closing.text?.map((x) => <p set:html={t(x)}></p>)}
+            {copy.closing.lead && <p class="fc-chain-lead" set:html={t(copy.closing.lead)}></p>}
+            {copy.closing.chain && (
+              <ol class="fc-chain">
+                {copy.closing.chain.map((x) => <li><span class="fc-chain-i" aria-hidden="true">→</span><span set:html={t(x)}></span></li>)}
+              </ol>
+            )}
+            {copy.closing.then && <p class="fc-then" set:html={t(copy.closing.then)}></p>}
+          </div>
+        ) : (
+          <div class="fc-col">
+            <h3 class="fc-sub">{copy.stepLabels.lands}</h3>
+            <ul class="fc-bullets">
+              {copy.shows.map((x) => <li set:html={t(x.text)}></li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+      {copy.example && (
+        <figure class="fc-example">
+          <figcaption class="fc-ex-label" set:html={t(copy.example.label)}></figcaption>
+          <div class="fc-ex-note">
+            {copy.example.to && <p class="fc-ex-to" set:html={t(copy.example.to)}></p>}
+            <dl class="fc-ex-rows">
+              {copy.example.rows.map((r) => (
+                <div class="fc-ex-row">
+                  <dt set:html={t(r.k)}></dt>
+                  <dd set:html={t(r.v)}></dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </figure>
+      )}
+    </div>
+    ) : (
+    <>
+    <div class="fc-strip">
+      <div class="fc-step">
+        <p class="fc-label"><span class="fc-no">1</span> {copy.stepLabels.arrives}</p>
+        <div class="fc-body">
+          <p class="fc-date">{copy.arrives.date}</p>
+          <p class="fc-what" set:html={t(arrivesText)}></p>
+          <p class="fc-src">{copy.arrives.source}</p>
+        </div>
+      </div>
+
+      <div class="fc-arrow" aria-hidden="true"></div>
+
+      <div class="fc-step">
+        <p class="fc-label"><span class="fc-no">2</span> {copy.stepLabels.lands}</p>
+        <ul class="fc-chips">
+          {copy.touched.map((n) => <li class="fc-chip fc-on">{n}</li>)}
+          {copy.untouched.map((n) => <li class="fc-chip fc-off">{n} <span>{copy.notTouched}</span></li>)}
+        </ul>
+      </div>
+
+      <div class="fc-arrow" aria-hidden="true"></div>
+
+      <div class="fc-step">
+        <p class="fc-label"><span class="fc-no">3</span> {copy.stepLabels.reaches}</p>
+        <ul class="fc-owners">
+          {copy.owners.map((o) => (
+            <li class="fc-owner">
+              <strong>{o.name}</strong>
+              <span class="fc-oline">{o.line}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="fc-withheld">{copy.withheld}</p>
+      </div>
+    </div>
+
+    {copy.example && (
+      <figure class="fc-example">
+        <figcaption class="fc-ex-label" set:html={t(copy.example.label)}></figcaption>
+        <div class="fc-ex-note">
+          {copy.example.to && <p class="fc-ex-to" set:html={t(copy.example.to)}></p>}
+          <dl class="fc-ex-rows">
+            {copy.example.rows.map((r) => (
+              <div class="fc-ex-row">
+                <dt set:html={t(r.k)}></dt>
+                <dd set:html={t(r.v)}></dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </figure>
+    )}
+    </>
+    )}
+
+    {disclosure && <p class="fc-disclosure measure" set:html={t(disclosure)}></p>}
+  </div></div>
+</section>
+{framed && (
+  <script is:inline>
+    // Before the first paint: with motion allowed the frame starts undrawn and ChangeBoxes.astro grows it from the line.
+    (function () {
+      var f = document.querySelector('.fc-frame');
+      if (f && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) f.classList.add('fc-frame-anim');
+    })();
+  </script>
+)}
+
+<script>
+  // The clickable grid: one selection per figure, a column and optionally a function, mirrored in classes.
+  document.querySelectorAll<HTMLElement>('.fc-live').forEach((fig) => {
+    const pick = (col: string, fn: string) => {
+      fig.dataset.col = col; fig.dataset.fn = fn;
+      fig.querySelectorAll('.is-col, .is-sel, .is-row').forEach((el) => el.classList.remove('is-col', 'is-sel', 'is-row'));
+      fig.querySelectorAll(`[data-col="${col}"]`).forEach((el) => {
+        if (el.matches('td, .fc-chg')) el.classList.add('is-col');
+      });
+      fig.querySelector(fn ? `.fc-dot[data-col="${col}"][data-fn="${fn}"]` : `.fc-chg[data-col="${col}"]`)?.classList.add('is-sel');
+      const row = fn ? fig.querySelector<HTMLElement>(`tr[data-row="${fn}"]`) : null;
+      row?.classList.add('is-row');
+      fig.querySelectorAll<HTMLElement>('.fc-chgtext').forEach((p) => {
+        p.hidden = p.dataset.col !== col;
+        const name = p.querySelector<HTMLElement>('.fc-forname');
+        if (name) name.textContent = row ? (row.querySelector('th')?.textContent ?? '').toLowerCase() : '';
+      });
+    };
+    fig.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('.fc-chg, .fc-dot[data-fn]');
+      if (b) pick(b.dataset.col ?? '0', b.dataset.fn ?? '');
+    });
+    pick(fig.dataset.col ?? '0', fig.dataset.fn ?? '');
+  });
+</script>
+
+<style is:global>
+  /* The frame the line from the boxes runs into, round the whole section (Jens, 2026-10-08): its top edge is the band's top
+     edge, so the line meets it there, and its bottom edge the band's bottom edge, with no tint below it. */
+  .fc-framed { padding-top: 0; padding-bottom: 0; }
+  /* It sits in the page gutter, 6 px in from its outer edge, so the content inside keeps its full width. */
+  .fc-frame { position: relative; border: 2px solid var(--accent); margin: 0 calc(6px - var(--gutter)); padding: 48px calc(var(--gutter) - 8px) 48px; }
+  /* Animated (ChangeBoxes.astro): the border gives way to two drawn halves that grow out of the point where the line
+     arrives, along the top edge both ways, down the sides and along the bottom until they meet under that point. */
+  .fc-frame-svg { display: none; }
+  .fc-frame-anim { border-color: transparent; }
+  .fc-frame-anim .fc-frame-svg { display: block; position: absolute; top: -2px; left: -2px; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none; }
+  .fc-frame-svg path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: miter; stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--fc-q, 0)); }
+  @media (max-width: 759px) { .fc-frame { padding-top: 32px; padding-bottom: 32px; } }
+  .fc-h { max-width: 28ch; }
+  .fc-intro { margin: 0 0 28px; }
+  .fc-strip { display: grid; grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr) 40px minmax(0, 1.25fr); align-items: start; }
+  .fc-step { min-width: 0; }
+  .fc-label { margin: 0 0 10px; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+  .fc-no { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #ffffff; font-size: 0.8rem; font-weight: 600; }
+  .fc-body { background: var(--tint); border: 1px solid var(--box-border); padding: 14px 16px; }
+  .fc-date { margin: 0 0 4px; font-size: 0.9rem; color: var(--quiet); font-variant-numeric: tabular-nums; }
+  .fc-what { margin: 0 0 8px; font-size: 0.98rem; line-height: 1.45; }
+  .fc-src { margin: 0; font-size: 0.82rem; color: var(--faint); }
+
+  .fc-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .fc-chip { padding: 7px 12px; font-size: 0.92rem; line-height: 1.3; border-radius: 2px; }
+  .fc-on { background: var(--ink); color: #ffffff; font-weight: 600; }
+  .fc-off { background: var(--tint); border: 1px dashed var(--box-border); color: var(--faint); }
+  .fc-off span { font-size: 0.78rem; margin-left: 4px; }
+
+  .fc-owners { list-style: none; margin: 0; padding: 0; border: 1px solid var(--box-border); background: var(--tint); }
+  .band-tint .fc-body, .band-tint .fc-owners, .band-tint .fc-off { background: var(--page); }
+  .fc-owner { display: block; padding: 8px 14px; font-size: 0.92rem; line-height: 1.35; border-top: 1px solid var(--inner-rule); }
+  .fc-owner:first-child { border-top: 0; }
+  .fc-oline { display: block; color: var(--quiet); font-variant-numeric: tabular-nums; font-size: 0.86rem; }
+  .fc-withheld { margin: 8px 0 0; font-size: 0.82rem; color: var(--faint); }
+
+  .fc-arrow { position: relative; height: 1px; margin: 52px 8px 0 6px; background: var(--ink); }
+  .fc-arrow::after { content: ""; position: absolute; right: -1px; top: -4px; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; border-left: 8px solid var(--ink); }
+
+  .fc-disclosure { margin: 28px 0 0; font-size: 0.86rem; color: var(--quiet); line-height: 1.5; }
+
+  .fc-example { margin: 32px 0 0; max-width: 620px; }
+  .fc-ex-label { margin: 0 0 8px; font-size: 0.84rem; color: var(--faint); letter-spacing: 0.02em; }
+  .fc-ex-note { background: var(--page); border: 1px solid var(--box-border); border-left: 3px solid var(--accent); padding: 16px 20px 4px; }
+  .band-white .fc-ex-note { background: var(--tint); }
+  .fc-ex-to { margin: 0 0 12px; font-size: 0.9rem; color: var(--quiet); }
+  .fc-ex-rows { margin: 0; }
+  .fc-ex-row { margin: 0 0 12px; }
+  .fc-ex-row dt { font-weight: 700; font-size: 0.92rem; margin: 0 0 2px; }
+  .fc-ex-row dd { margin: 0; font-size: 0.97rem; line-height: 1.5; }
+
+  .fc-src-top { margin: -16px 0 28px; }
+  .fc-two { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .fc-grid-wrap { margin: 0; min-width: 0; overflow-x: auto; }
+  .fc-grid { border-collapse: collapse; }
+  .fc-grid th { text-align: left; font-weight: 600; font-size: 0.92rem; padding: 6px 14px 6px 0; white-space: nowrap; }
+  .fc-grid td { padding: 6px 3px; }
+  .fc-dot { display: block; width: 18px; height: 18px; border: 1px solid var(--box-border); background: var(--page); }
+  .fc-dot-on { background: var(--ink); border-color: var(--ink); }
+  .fc-grid .fc-n { padding-left: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .fc-grid-cap { margin: 10px 0 0; font-size: 0.86rem; color: var(--quiet); }
+  .fc-sub { margin: 0 0 10px; font-size: 1.05rem; }
+  .fc-bullets { margin: 0; padding-left: 1.1em; }
+  .fc-bullets li { margin: 0 0 10px; font-size: 0.98rem; line-height: 1.45; }
+  /* Beside the grid in a box like the change panel under it (Jens, 2026-10-08: as a bare column it felt out of place). */
+  .fc-close { background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--accent); padding: 20px 22px; }
+  .band-white .fc-close { background: var(--tint); }
+  .fc-close-h { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.25; }
+  .fc-close p { margin: 0 0 12px; font-size: 1.02rem; line-height: 1.55; }
+  .fc-close p:last-child { margin-bottom: 0; }
+  .fc-close .fc-chain-lead { margin: 0 0 8px; font-weight: 600; }
+  .fc-chain { list-style: none; margin: 0; padding: 0; }
+  .fc-chain li { display: flex; gap: 10px; margin: 0 0 8px; font-size: 1.02rem; line-height: 1.45; }
+  .fc-chain-i { flex: none; width: 1em; text-align: center; color: var(--accent); font-weight: 700; }
+  .fc-close .fc-then { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--inner-rule); font-weight: 700; font-size: 1.08rem; line-height: 1.45; color: var(--accent); }
+  .fc-nl { font-weight: 400; color: var(--quiet); font-size: 0.86rem; white-space: nowrap; }
+  .fc-nhead span { display: none; }
+  /* The counts as a bill (Jens, 2026-10-07): the head beside the numbered changes, numbers right-aligned, a ruled total. */
+  .fc-live .fc-grid .fc-n { text-align: right; }
+  .fc-live .fc-grid th.fc-nhead { text-align: right; padding-left: 12px; }
+  .fc-live .fc-nhead span { display: block; font-size: 0.8rem; font-weight: 600; color: var(--quiet); line-height: 1.2; white-space: normal; }
+  .fc-total th, .fc-total td { border-top: 1px solid var(--ink); }
+  .fc-live .fc-grid .fc-total th { padding-top: 10px; }
+  .fc-live .fc-grid .fc-total td { padding-top: 10px; }
+  .fc-total .fc-n strong { font-size: 1.1rem; border-bottom: 3px double var(--ink); }
+  @media (min-width: 1000px) and (max-width: 1099px) { .fc-nl { white-space: normal; } }
+
+  /* The clickable grid (France standalone first, 2026-10-07). */
+  .fc-grid-wrap.fc-live { padding: 6px 6px 0; margin: -6px -6px 0; }
+  .fc-live .fc-grid { width: 100%; }
+  .fc-live .fc-grid td, .fc-live .fc-grid thead th.fc-colhead { text-align: center; }
+  .fc-live .fc-grid td > *, .fc-live .fc-grid thead .fc-chg { margin: 0 auto; }
+  .fc-live .fc-grid thead th { padding: 0 3px 8px; vertical-align: bottom; }
+  .fc-live .fc-grid th.fc-prompt { padding: 0 14px 10px 0; text-align: left; font-size: 0.86rem; font-weight: 600; color: var(--accent); white-space: normal; line-height: 1.3; }
+  .fc-prompt span::after { content: "\00a0\2192"; }
+  /* The axis labels (Jens, 2026-10-08): small and quiet, an arrow along each axis. */
+  .fc-live .fc-grid .fc-axes th, .fc-live .fc-grid .fc-axes td { padding: 0 0 6px; }
+  .fc-live .fc-grid th.fc-axis-x, .fc-live .fc-grid th.fc-axis-y { font-size: 0.78rem; font-weight: 600; color: var(--quiet); white-space: nowrap; line-height: 1.2; }
+  .fc-live .fc-grid th.fc-axis-x { text-align: left; padding-left: 3px; }
+  .fc-axis-x span::after { content: "\00a0\2192"; }
+  .fc-live .fc-grid th.fc-axis-y { padding: 0 14px 10px 0; text-align: left; }
+  .fc-axis-y span::after { content: "\00a0\2193"; }
+  .fc-chg { display: block; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 2px; background: var(--accent); color: #ffffff; font: 600 0.74rem/22px var(--sans); text-align: center; cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease; }
+  .fc-live .fc-dot { width: 22px; height: 22px; padding: 0; border-radius: 2px; }
+  button.fc-dot { cursor: pointer; transition: transform 0.12s ease, background-color 0.12s ease; }
+  .fc-chg:hover, button.fc-dot:hover { transform: scale(1.18); }
+  button.fc-dot:hover { background: var(--accent); border-color: var(--accent); }
+  .fc-chg:focus-visible, button.fc-dot:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .fc-live .fc-grid td { padding: 4px 3px; }
+  .fc-live .fc-grid td.is-col { background: rgba(180, 83, 9, 0.12); }
+  .fc-chg.is-col { box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--accent); }
+  button.fc-dot.is-sel { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--accent); }
+  .fc-grid tr.is-row th { color: var(--accent); }
+  .fc-panel { margin: 18px 0 0; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--accent); padding: 14px 18px 4px; }
+  .band-white .fc-panel { background: var(--tint); }
+  .fc-chgtitle { margin: 0 0 6px; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+  .fc-chgno { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 2px; background: var(--accent); color: #ffffff; font-size: 0.74rem; font-weight: 600; }
+  .fc-for { margin: 0 0 6px; font-size: 0.86rem; color: var(--quiet); }
+  .fc-forname { color: var(--accent); }
+  .fc-live[data-fn=""] .fc-for { display: none; }
+  .fc-parts { margin: 0 0 12px; font-size: 0.97rem; line-height: 1.55; }
+  .fc-live:not([data-fn=""]) .fc-part { color: var(--faint); }
+  .fc-live[data-fn="o"] .fc-part[data-f*="o"], .fc-live[data-fn="i"] .fc-part[data-f*="i"],
+  .fc-live[data-fn="c"] .fc-part[data-f*="c"], .fc-live[data-fn="t"] .fc-part[data-f*="t"],
+  .fc-live[data-fn="m"] .fc-part[data-f*="m"], .fc-live[data-fn="a"] .fc-part[data-f*="a"] {
+    color: var(--ink); background: rgba(180, 83, 9, 0.16); box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.16); -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  @media (max-width: 999px) { .fc-two { display: block; } .fc-two .fc-col { margin-top: 28px; } }
+  @media (min-width: 1000px) { .fc-live .fc-dot, .fc-chg { width: 28px; height: 28px; line-height: 28px; font-size: 0.8rem; } .fc-chgno { width: 26px; height: 26px; } }
+  @media (prefers-reduced-motion: reduce) { .fc-chg, button.fc-dot { transition: none; } .fc-chg:hover, button.fc-dot:hover { transform: none; } }
+
+  @media (max-width: 759px) {
+    .fc-live .fc-dot, .fc-chg { width: 18px; height: 18px; line-height: 18px; font-size: 0.68rem; }
+    .fc-live .fc-grid th[scope="row"] { white-space: normal; font-size: 0.8rem; line-height: 1.2; padding-right: 8px; min-width: 64px; }
+    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding-left: 2px; padding-right: 2px; }
+    .fc-live .fc-grid th.fc-prompt { white-space: normal; font-size: 0.78rem; padding-right: 8px; }
+    .fc-live .fc-grid th.fc-axis-y { white-space: normal; font-size: 0.7rem; padding-right: 8px; }
+    .fc-live .fc-grid th.fc-axis-x { font-size: 0.7rem; }
+    .fc-live .fc-grid .fc-n { padding-left: 6px; }
+    .fc-nl { display: none; }
+    .fc-live .fc-nhead span { font-size: 0.7rem; line-height: 1.15; }
+    .fc-live .fc-grid th.fc-nhead { padding-left: 4px; }
+    .fc-total .fc-n strong { font-size: 1rem; }
+  }
+  @media (max-width: 420px) {
+    .fc-grid-wrap.fc-live { padding: 4px 3px 0; margin: -4px -3px 0; }
+    .fc-live .fc-dot, .fc-chg { width: 16px; height: 16px; line-height: 16px; font-size: 0.62rem; }
+    .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding: 3px 1px; }
+    .fc-live .fc-grid th[scope="row"], .fc-live .fc-grid th.fc-prompt { padding-right: 6px; min-width: 0; }
+    .fc-live .fc-nhead span { max-width: 3.4em; margin-left: auto; font-size: 0.64rem; }
+  }
+  @media (max-width: 759px) {
+    .fc-two { display: block; }
+    .fc-two .fc-col { margin-top: 28px; }
+    .fc-dot { width: 14px; height: 14px; }
+    .fc-strip { display: block; }
+    .fc-arrow { width: 1px; height: 28px; margin: 12px 0 12px 12px; }
+    .fc-arrow::after { right: auto; top: auto; bottom: -1px; left: -4px; border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-top: 8px solid var(--ink); border-bottom: 0; }
+  }
+</style>
