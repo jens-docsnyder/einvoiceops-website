@@ -298,14 +298,16 @@ export const frStandalone = {
   },
 
   onboarding: {
+    // Jens, 2026-10-09, after the ship: the heading and the intro said the same thing, so the price stays in the heading only,
+    // in his words, and the intro goes; "Start with France" is gone from the button and the contact heading.
     // Copy check second seat 2026-10-09 (Opus): HOLD on "setting up is free" (the model frees onboarding for the first three
     // only, so "for now") and on a per-company price (the model is per country); also the subline, the go-live date in the July
     // intro and "who we sent it to". All five applied in the steering seat, not read again.
     // The terms (Jens, 2026-10-09: show the price, keep a free start; commercial model free onboarding then EUR 450 per country
     // per month, 3-month minimum). One country is the page itself; the entity is said, because a company in a group may have
     // several French entities (one page per country, 2026-10-08).
-    h2: `Start with France: setting up is free for now, then €450 a month`,
-    intro: `Setting up is free for now. After that it's €450 a month for France, for at least three months.`,
+    h2: `We keep your invoicing teams up to date. Free onboarding, then €450 a month.`,
+    intro: ``,
     // Version B of the three shown (Jens, 2026-10-08): three steps across under large numbers, the button, the limits as
     // one row. Plain sentences, no step titles.
     steps: [
@@ -315,7 +317,7 @@ export const frStandalone = {
       // ("work items to check or prepare"), with the source (facts file, "What we give the owner").
       { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of each change we find and who we sent it to, so it never rests on one person remembering.` },
     ],
-    cta: `Start with France`,
+    cta: `Get started`,
   },
 
   // The limits box, beside the onboarding steps. Lines from Tone of voice.md ("The hard rules, said in this voice"), France.
@@ -332,7 +334,7 @@ export const frStandalone = {
 
   contact: {
     // Jens, 2026-10-08: the start button lands here, so the heading names it (Jens, 2026-10-09, from Petteri's read).
-    h2: `Start with France, or tell us how you keep up today`,
+    h2: `Get started, or tell us how you keep up today`,
     name: `Name and company`,
     email: `Email`,
     message: `Your message`,

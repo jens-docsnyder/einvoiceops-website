@@ -21,9 +21,11 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
     {person && (
       <div class="cf-person">
         <img class="cf-photo" src={person.photo} alt={person.name} width="150" height="150" loading="lazy" />
-        <p class="cf-name">{person.linkedin
-          ? <a href={person.linkedin} target="_blank" rel="noopener" aria-label={`${person.name} on LinkedIn`}>{person.name}</a>
-          : person.name}</p>
+        <p class="cf-name">{person.name}{person.linkedin && (
+          <a class="cf-in" href={person.linkedin} target="_blank" rel="noopener" aria-label={`${person.name} on LinkedIn`}>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        )}</p>
         <p class="cf-mail"><a href={`mailto:${person.email}`}>{person.email}</a></p>
         {copy.hint && <p class="cf-hint" set:html={t(copy.hint)}></p>}
       </div>
@@ -100,8 +102,10 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   /* Smaller than the column: the full-width photo was too imposing (Jens, 2026-10-08). */
   .cf-photo { display: block; width: 150px; height: 150px; object-fit: cover; border: 1px solid var(--box-border); }
   .cf-person .cf-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin-top: 20px; }
-  /* The name links to the LinkedIn profile when the page gives one; the tap area is at least 24 px tall. */
-  .cf-person .cf-name a { display: inline-flex; align-items: center; min-height: 24px; color: inherit; }
+  /* A LinkedIn icon beside the name links to the profile when the page gives one (Jens, 2026-10-09); the name itself
+     stays plain text. The icon takes the text colour, the accent on hover, and a tap area of 32 px. */
+  .cf-person .cf-name .cf-in { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-left: 6px; vertical-align: middle; color: inherit; }
+  .cf-person .cf-name .cf-in:hover { color: var(--accent); }
   .cf-mail a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
   .cf-hint { margin-top: 12px !important; padding-top: 16px; border-top: 1px solid var(--inner-rule); color: var(--quiet); font-size: 0.98rem; }
   .cf-main { padding: 36px 40px; }
