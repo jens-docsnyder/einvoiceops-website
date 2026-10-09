@@ -9,7 +9,7 @@ interface Props {
   tone?: 'white' | 'tint';
   // Flow C: the person you write to, beside the form: photo, name and email address, no career lines (Jens, 2026-10-08).
   // With a person, the section is one card (version B, Jens 2026-10-08): photo column left, form right, and copy.hint under the address.
-  person?: { name: string; email: string; photo: string };
+  person?: { name: string; email: string; photo: string; linkedin?: string };
   t: (v: any) => string;
 }
 const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
@@ -21,7 +21,9 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
     {person && (
       <div class="cf-person">
         <img class="cf-photo" src={person.photo} alt={person.name} width="150" height="150" loading="lazy" />
-        <p class="cf-name">{person.name}</p>
+        <p class="cf-name">{person.linkedin
+          ? <a href={person.linkedin} target="_blank" rel="noopener" aria-label={`${person.name} on LinkedIn`}>{person.name}</a>
+          : person.name}</p>
         <p class="cf-mail"><a href={`mailto:${person.email}`}>{person.email}</a></p>
         {copy.hint && <p class="cf-hint" set:html={t(copy.hint)}></p>}
       </div>
@@ -98,6 +100,8 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   /* Smaller than the column: the full-width photo was too imposing (Jens, 2026-10-08). */
   .cf-photo { display: block; width: 150px; height: 150px; object-fit: cover; border: 1px solid var(--box-border); }
   .cf-person .cf-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin-top: 20px; }
+  /* The name links to the LinkedIn profile when the page gives one; the tap area is at least 24 px tall. */
+  .cf-person .cf-name a { display: inline-flex; align-items: center; min-height: 24px; color: inherit; }
   .cf-mail a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
   .cf-hint { margin-top: 12px !important; padding-top: 16px; border-top: 1px solid var(--inner-rule); color: var(--quiet); font-size: 0.98rem; }
   .cf-main { padding: 36px 40px; }

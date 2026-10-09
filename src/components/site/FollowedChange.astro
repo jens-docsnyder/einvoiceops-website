@@ -256,6 +256,19 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
       if (b) pick(b.dataset.col ?? '0', b.dataset.fn ?? '');
     });
     pick(fig.dataset.col ?? '0', fig.dataset.fn ?? '');
+    // Shows the squares can be clicked: when the grid first scrolls into view, one soft glow runs once across the filled
+    // squares, left to right, then nothing moves again. Not run at all with reduced motion.
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver((entries) => {
+        if (!entries.some((en) => en.isIntersecting)) return;
+        io.disconnect();
+        fig.querySelectorAll<HTMLElement>('button.fc-dot').forEach((b) => {
+          b.style.animationDelay = `${Number(b.dataset.col ?? 0) * 80}ms`;
+        });
+        fig.classList.add('fc-glow-run');
+      }, { threshold: 0.4 });
+      io.observe(fig);
+    }
   });
 </script>
 
@@ -389,6 +402,14 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   }
   @media (max-width: 999px) { .fc-two { display: block; } .fc-two .fc-col { margin-top: 28px; } }
   @media (min-width: 1000px) { .fc-live .fc-dot, .fc-chg { width: 28px; height: 28px; line-height: 28px; font-size: 0.8rem; } .fc-chgno { width: 26px; height: 26px; } }
+  /* The one-time glow that says the squares are clickable (script adds fc-glow-run once, on first scroll into view; 11 columns at
+     80 ms apart plus 600 ms is under 1.5 s). The selected square keeps its own ring. */
+  @keyframes fc-glow {
+    0%, 100% { box-shadow: 0 0 0 0 transparent; }
+    45% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 45%, transparent); }
+  }
+  .fc-glow-run button.fc-dot:not(.is-sel) { animation: fc-glow 600ms ease-in-out 1 both; }
+  @media (prefers-reduced-motion: reduce) { .fc-glow-run button.fc-dot { animation: none; } }
   @media (prefers-reduced-motion: reduce) { .fc-chg, button.fc-dot { transition: none; } .fc-chg:hover, button.fc-dot:hover { transform: none; } }
 
   /* Touch areas (improvement review 2026-10, item 8): the squares keep their drawn size and a transparent area round each
