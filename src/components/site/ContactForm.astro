@@ -120,5 +120,14 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   }
   /* At 420 px and under the address (173 px) is wider than the column beside the photo: it takes the row below instead. */
   @media (max-width: 420px) { .cf-photo { grid-row: 1; } .cf-person .cf-mail { grid-column: 1 / -1; margin-top: 8px; } }
+  /* At 420 px and under the name and the LinkedIn icon have to share the 144 px beside the photo (#1203): the photo is 96 px,
+     the name a little smaller and kept on one line, and the icon keeps its 32 px tap area with a smaller gap, so the icon
+     stays on the name's line at 320 px with no sideways scroll. */
+  @media (max-width: 420px) {
+    .cf-person { grid-template-columns: 96px minmax(0, 1fr); column-gap: 14px; }
+    .cf-photo { width: 96px; height: 96px; }
+    .cf-person .cf-name { font-size: 1.15rem; white-space: nowrap; }
+    .cf-person .cf-name .cf-in { margin-left: 2px; }
+  }
   @media (max-width: 639px) { .cf-pair { display: block; } .cf-pair > div + div .cf-label { margin-top: 18px !important; } }
 </style>

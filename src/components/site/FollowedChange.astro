@@ -413,8 +413,9 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   @media (prefers-reduced-motion: reduce) { .fc-chg, button.fc-dot { transition: none; } .fc-chg:hover, button.fc-dot:hover { transform: none; } }
 
   /* Touch areas (improvement review 2026-10, item 8): the squares keep their drawn size and a transparent area round each
-     takes the tap, 24 by 24 px up to 759 px wide; at 420 px and under, 20 wide by 24 tall, the most eleven columns fit
-     beside the function names without the page scrolling sideways. */
+     takes the tap, 24 by 24 px at every width (#1197: at 420 px and under the drawn square is 16 px, so the area is 4 px
+     out on every side). The columns there sit 18 px apart, so neighbouring areas overlap by 6 px and the later column
+     wins the overlap; the drawn square and the grid's width are unchanged. */
   .fc-live .fc-chg, .fc-live button.fc-dot { position: relative; }
   .fc-live .fc-chg::after, .fc-live button.fc-dot::after { content: ''; position: absolute; inset: -4px; }
   @media (max-width: 759px) {
@@ -434,7 +435,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
     .fc-grid-wrap.fc-live { padding: 4px 3px 0; margin: -4px -3px 0; }
     .fc-live .fc-dot, .fc-chg { width: 16px; height: 16px; line-height: 16px; font-size: 0.62rem; }
     .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding: 4px 2px; }
-    .fc-live .fc-chg::after, .fc-live button.fc-dot::after { inset: -5px -3px; }
+    .fc-live .fc-chg::after, .fc-live button.fc-dot::after { inset: -4px; }
     .fc-live .fc-grid th[scope="row"], .fc-live .fc-grid th.fc-prompt { padding-right: 6px; min-width: 0; }
     .fc-live .fc-nhead span { max-width: 3.4em; margin-left: auto; font-size: 0.64rem; }
   }
@@ -442,7 +443,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   @media (max-width: 360px) {
     .fc-live .fc-grid td, .fc-live .fc-grid thead th { padding: 4px 1px; }
     .fc-live .fc-grid th[scope="row"], .fc-live .fc-grid th.fc-prompt { font-size: 0.68rem; padding-right: 3px; }
-    .fc-live .fc-chg::after, .fc-live button.fc-dot::after { inset: -5px -3px; }
+    .fc-live .fc-chg::after, .fc-live button.fc-dot::after { inset: -4px; }
     .fc-live .fc-grid .fc-n { padding-left: 2px; }
   }
   @media (max-width: 759px) {

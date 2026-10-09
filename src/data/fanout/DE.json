@@ -1,0 +1,248 @@
+{
+  "country": "DE",
+  "total": 27,
+  "since": "2024-01-01",
+  "checked_on": "2026-10-05",
+  "sources_named": 41,
+  "sources_weekly": 24,
+  "functions": [
+    {
+      "name": "Outbound invoicing",
+      "count": 22,
+      "more": 19,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-03-27",
+          "text": "Parliament creates the duty to use e-invoices between businesses",
+          "domain": "recht.bund.de"
+        },
+        {
+          "date": "2026-08-04",
+          "text": "ZUGFeRD 2.5.2 released",
+          "domain": "ferd-net.de"
+        },
+        {
+          "date": "2026-09-02",
+          "text": "XRechnung summer 2026 bundle: a check becomes fatal",
+          "domain": "github.com"
+        }
+      ]
+    },
+    {
+      "name": "Inbound invoicing",
+      "count": 16,
+      "more": 13,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-03-27",
+          "text": "Parliament creates the duty to use e-invoices between businesses",
+          "domain": "recht.bund.de"
+        },
+        {
+          "date": "2026-08-04",
+          "text": "ZUGFeRD 2.5.2 released",
+          "domain": "ferd-net.de"
+        },
+        {
+          "date": "2026-09-02",
+          "text": "XRechnung summer 2026 bundle: a check becomes fatal",
+          "domain": "github.com"
+        }
+      ]
+    },
+    {
+      "name": "Connectivity",
+      "count": 6,
+      "more": 3,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-07-23",
+          "text": "law on online administration services changes invoice rules for public bodies",
+          "domain": "recht.bund.de"
+        },
+        {
+          "date": "2026-02-05",
+          "text": "XRechnung winter 2025/26 bundle released",
+          "domain": "xeinkauf.de"
+        },
+        {
+          "date": "2026-09-02",
+          "text": "XRechnung summer 2026 bundle: a check becomes fatal",
+          "domain": "github.com"
+        }
+      ]
+    },
+    {
+      "name": "Tax engine",
+      "count": 11,
+      "more": 8,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-02-27",
+          "text": "finance ministry letter on VAT stated on invoices",
+          "domain": "bundesfinanzministerium.de"
+        },
+        {
+          "date": "2026-03",
+          "text": "finance ministry updates its e-invoicing FAQ",
+          "domain": "bundesfinanzministerium.de"
+        },
+        {
+          "date": "2026-06-10",
+          "text": "ZUGFeRD 2.5 released",
+          "domain": "ferd-net.de"
+        }
+      ]
+    },
+    {
+      "name": "Master data",
+      "count": 1,
+      "more": 0,
+      "gap": false,
+      "lines": [
+        {
+          "date": "2024-03-27",
+          "text": "Parliament creates the duty to use e-invoices between businesses",
+          "domain": "recht.bund.de"
+        }
+      ]
+    },
+    {
+      "name": "Archiving",
+      "count": 4,
+      "more": 1,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-10-29",
+          "text": "law shortens invoice retention to eight years",
+          "domain": "recht.bund.de"
+        },
+        {
+          "date": "2025-10-15",
+          "text": "finance ministry letter on checks of incoming hybrid invoices",
+          "domain": "bundesfinanzministerium.de"
+        },
+        {
+          "date": "2025-12-04",
+          "text": "ZUGFeRD 2.4 released",
+          "domain": "fnfe-mpe.org"
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "id": "DE-E50",
+      "date": "2024-02-27"
+    },
+    {
+      "id": "DE-E27",
+      "date": "2024-03-27"
+    },
+    {
+      "id": "DE-E28",
+      "date": "2024-03-27"
+    },
+    {
+      "id": "DE-E29",
+      "date": "2024-06-20"
+    },
+    {
+      "id": "DE-E30",
+      "date": "2024-06-20"
+    },
+    {
+      "id": "DE-E51",
+      "date": "2024-07-23"
+    },
+    {
+      "id": "DE-E31",
+      "date": "2024-09-18"
+    },
+    {
+      "id": "DE-E32",
+      "date": "2024-10-15"
+    },
+    {
+      "id": "DE-E52",
+      "date": "2024-10-29"
+    },
+    {
+      "id": "DE-E33",
+      "date": "2024-11-13"
+    },
+    {
+      "id": "DE-E34",
+      "date": "2024-11-20"
+    },
+    {
+      "id": "DE-E35",
+      "date": "2024-12-05"
+    },
+    {
+      "id": "DE-E53",
+      "date": "2024-12-05"
+    },
+    {
+      "id": "DE-E54",
+      "date": "2024-12-05"
+    },
+    {
+      "id": "DE-E55",
+      "date": "2024-12-05"
+    },
+    {
+      "id": "DE-E38",
+      "date": "2025-03-21"
+    },
+    {
+      "id": "DE-E39",
+      "date": "2025-05-07"
+    },
+    {
+      "id": "DE-E40",
+      "date": "2025-07-10"
+    },
+    {
+      "id": "DE-E59",
+      "date": "2025-07-14"
+    },
+    {
+      "id": "DE-E41",
+      "date": "2025-10-15"
+    },
+    {
+      "id": "DE-E42",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "DE-E48",
+      "date": "2026-01-30"
+    },
+    {
+      "id": "DE-E44",
+      "date": "2026-02-05"
+    },
+    {
+      "id": "DE-E46",
+      "date": "2026-03"
+    },
+    {
+      "id": "DE-E47",
+      "date": "2026-06-10"
+    },
+    {
+      "id": "DE-E49",
+      "date": "2026-08-04"
+    },
+    {
+      "id": "DE-E67",
+      "date": "2026-09-02"
+    }
+  ]
+}
