@@ -139,8 +139,8 @@ export const de = {
         // stays true after 2028 as well.
         front: {
           from: '2027-01-01',
-          coming: `We've counted 12 changes to Germany's rules since receiving e-invoices became mandatory in January 2025, and the dates for issuing e-invoices are still ahead, by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
-          here: `We've counted 12 changes to Germany's rules since receiving e-invoices became mandatory in January 2025, and the duty to issue applies by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
+          coming: `We've counted 12 changes to Germany's rules since January 2025, and the dates for issuing e-invoices are still ahead, by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
+          here: `We've counted 12 changes to Germany's rules since January 2025, and the duty to issue applies by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
         },
         back: {
           points: [
@@ -229,7 +229,7 @@ export const de = {
       // waiting is the frameworks' bet, as on France.
       then: `Miss a change like it, and the first sign may be an invoice your customer rejects and a payment left waiting.`,
     },
-    // The grid: one column, DE-E67, letters for the functions it touched from the functions column of DE-changes.csv:
+    // The grid: one column, DE-E67, letters for the functions it touched, from the column of DE-changes.csv that lists them:
     // o outbound, i inbound, c connectivity, t tax engine, m master data, a archiving.
     grid: [`oic`],
     gridPrompt: `1 rule`,
