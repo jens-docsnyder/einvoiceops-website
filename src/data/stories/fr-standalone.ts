@@ -24,7 +24,7 @@ export const frStandalone = {
     kickerRest: ` · France`,
     h1: `Hear about the next change to France's e-invoicing rules from us, not from a rejected invoice.`,
     // Subline and meta description say "email" and "what changed for them" (Jens, 2026-10-09, from Petteri's read).
-    subline: `When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it what changed for them, and where it says so.`,
+    subline: `When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it, with what changed for them and where it says so.`,
   },
 
   // The proof strip in its lead shape (ProofStrip.astro, proof.headline): three columns read left to right as one story,
@@ -183,7 +183,7 @@ export const frStandalone = {
     // Jens, 2026-10-07: "five weeks before the mandate came into effect" (the first phase, 1 September 2026, facts file).
     // Jens, 2026-10-08: one change holds several rules; 28 July is one change with 11 rules. The start is go-live everywhere.
     // The decree and the order are named on card 1's back and the gazette in the source line, so the intro only counts.
-    intro: `On 28 July 2026, five weeks before go-live, France published a decree and an order that we count as one change, with 11 rules that affect invoicing.`,
+    intro: `On 28 July 2026, five weeks before go-live on 1 September, France published a decree and an order that we count as one change, with 11 rules that affect invoicing.`,
     stepLabels: { arrives: `What was published`, lands: `What it means for you`, reaches: `Who would have heard from us` },
     arrives: {
       date: `28 Jul 2026`,
@@ -298,11 +298,14 @@ export const frStandalone = {
   },
 
   onboarding: {
+    // Copy check second seat 2026-10-09 (Opus): HOLD on "setting up is free" (the model frees onboarding for the first three
+    // only, so "for now") and on a per-company price (the model is per country); also the subline, the go-live date in the July
+    // intro and "who we sent it to". All five applied in the steering seat, not read again.
     // The terms (Jens, 2026-10-09: show the price, keep a free start; commercial model free onboarding then EUR 450 per country
     // per month, 3-month minimum). One country is the page itself; the entity is said, because a company in a group may have
     // several French entities (one page per country, 2026-10-08).
-    h2: `Start with France: setting up is free, then €450 a month`,
-    intro: `Setting up costs nothing. After that, France costs €450 a month for one of your companies there, with a minimum of three months.`,
+    h2: `Start with France: setting up is free for now, then €450 a month`,
+    intro: `Setting up is free for now. After that it's €450 a month for France, for at least three months.`,
     // Version B of the three shown (Jens, 2026-10-08): three steps across under large numbers, the button, the limits as
     // one row. Plain sentences, no step titles.
     steps: [
@@ -310,7 +313,7 @@ export const frStandalone = {
       { label: ``, text: `We then have a short call with whoever signs off on your side, so they know what each person will hear from us and what we don't do.` },
       // In the page's chain (Jens, 2026-10-08): what the note carries is the work items, said as the closing box says them
       // ("work items to check or prepare"), with the source (facts file, "What we give the owner").
-      { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of each change we find and who heard about it, so it never rests on one person remembering.` },
+      { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of each change we find and who we sent it to, so it never rests on one person remembering.` },
     ],
     cta: `Start with France`,
   },
