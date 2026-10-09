@@ -16,14 +16,15 @@ export const frStandalone = {
 
   meta: {
     title: `France | einvoiceops`,
-    description: `France's e-invoicing rules were still being rewritten weeks before go-live, and we expect them to change again. When we find a change, we tell the person who looks after the invoicing function it affects.`,
+    description: `France's e-invoicing rules were still being rewritten weeks before go-live, and we expect them to change again. When we find a change, we email the person who looks after the invoicing function it affects.`,
   },
 
   opening: {
     kickerLinkText: ``,
     kickerRest: ` · France`,
     h1: `Hear about the next change to France's e-invoicing rules from us, not from a rejected invoice.`,
-    subline: `When we find a change that affects one of your invoicing functions, we tell the person who looks after it what changed for them and where it says so.`,
+    // Subline and meta description say "email" and "what changed for them" (Jens, 2026-10-09, from Petteri's read).
+    subline: `When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it what changed for them, and where it says so.`,
   },
 
   // The proof strip in its lead shape (ProofStrip.astro, proof.headline): three columns read left to right as one story,
@@ -78,8 +79,10 @@ export const frStandalone = {
   // copy (BE-W33) and the FAQ (BE-W18) for Belgium.
   market: {
     h2: `What we see in French e-invoicing`,
-    intro: `For anyone who looks after invoicing in France, go-live on 1 September 2026 was only the first part of the work. Since then every company has to be able to receive e-invoices, and large companies and ETI (France's mid-size category) also have to issue them and e-report, while micro-enterprises and PME (small and medium companies) follow on 1 September 2027. Here are four things we've noticed while following the rules behind it.`,
-    turn: `Learn more`,
+    // Intro paragraph cut (Jens, 2026-10-09, from Petteri's read); MarketCards.astro renders no intro when it is empty.
+    intro: ``,
+    // Card button now reads "Turn over" (Jens, 2026-10-09, from Petteri's read).
+    turn: `Turn over`,
     turnBack: `Turn back`,
     cards: [
       {
@@ -225,8 +228,9 @@ export const frStandalone = {
     gridPrompt: `11 rules`,
     gridAxisY: `Invoicing functions`,
     gridFor: `What in this rule affects your`,
+    // Caption ends after the first sentence; the squares now glow once to show they can be clicked (Jens, 2026-10-09, from Petteri's read).
     // Review item 9, the grid half: the boxes above keep no caption (Jens, 2026-10-07), the grid says what a square is.
-    gridCaption: `Each filled square is a rule that affects that invoicing function. Select one to read it.`,
+    gridCaption: `Each filled square is a rule that affects that invoicing function.`,
     countLabel: ``,
     countHead: ``,
     totalLabel: `Total work items`,
@@ -294,12 +298,11 @@ export const frStandalone = {
   },
 
   onboarding: {
-    // The pilot's terms (Website - discovery and scope, 2026-10.md: free, one country and one entity, no minimum, price
-    // agreed later in writing). One country is the page itself; the entity is said, because a company in a group may have
+    // The terms (Jens, 2026-10-09: show the price, keep a free start; commercial model free onboarding then EUR 450 per country
+    // per month, 3-month minimum). One country is the page itself; the entity is said, because a company in a group may have
     // several French entities (one page per country, 2026-10-08).
-    // Jens, 2026-10-08: the heading carries the value and gets past the cost worry; the pilot is named in the intro.
-    h2: `Try it free on your own invoicing, and hear from us when we find a change that affects it`,
-    intro: `The pilot is free for one of your companies in France, with no minimum commitment, and any price is agreed with you later, in writing.`,
+    h2: `Start with France: setting up is free, then €450 a month`,
+    intro: `Setting up costs nothing. After that, France costs €450 a month for one of your companies there, with a minimum of three months.`,
     // Version B of the three shown (Jens, 2026-10-08): three steps across under large numbers, the button, the limits as
     // one row. Plain sentences, no step titles.
     steps: [
@@ -307,9 +310,9 @@ export const frStandalone = {
       { label: ``, text: `We then have a short call with whoever signs off on your side, so they know what each person will hear from us and what we don't do.` },
       // In the page's chain (Jens, 2026-10-08): what the note carries is the work items, said as the closing box says them
       // ("work items to check or prepare"), with the source (facts file, "What we give the owner").
-      { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of every change and who heard about it, so it never rests on one person remembering.` },
+      { label: ``, text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of each change we find and who heard about it, so it never rests on one person remembering.` },
     ],
-    cta: `Ask for a pilot`,
+    cta: `Start with France`,
   },
 
   // The limits box, beside the onboarding steps. Lines from Tone of voice.md ("The hard rules, said in this voice"), France.
@@ -325,8 +328,8 @@ export const frStandalone = {
   },
 
   contact: {
-    // Jens, 2026-10-08: the pilot button lands here, so the heading names it.
-    h2: `Ask for a pilot, or tell us how you keep up today`,
+    // Jens, 2026-10-08: the start button lands here, so the heading names it (Jens, 2026-10-09, from Petteri's read).
+    h2: `Start with France, or tell us how you keep up today`,
     name: `Name and company`,
     email: `Email`,
     message: `Your message`,
@@ -341,6 +344,8 @@ export const frStandalone = {
       name: `Jens Anttila`,
       email: `jens@einvoiceops.eu`,
       photo: `/jens-anttila.jpg`,
+      // The name links to his profile (Jens, 2026-10-09, from Petteri's read); ContactForm.astro leaves the name plain without it.
+      linkedin: `https://www.linkedin.com/in/jens-anttila/`,
     },
     done: `If your email program opened, your message is there, addressed to Jens, and nothing is sent until you send it. If nothing opened, copy your message above and send it to <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>.`,
   },
