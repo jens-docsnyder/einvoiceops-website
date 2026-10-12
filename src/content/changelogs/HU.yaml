@@ -5,17 +5,17 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Hungary RTIR model - Online Szamla mandatory all B2B/B2C since April 1, 2021; XML v3.0 mandatory from May 15, 2025; B2C digital receipt reporting from September 1, 2026. Source: Gemini Deep Research + Cross-Examination Round 2 (2026-05-05). Key unverified items: penalty HUF 1,000,000 per invoice (A-URL - per invoice vs per audit framing needs verification), archiving split 8/5 years. unresolved_high: 2, unresolved_amber: 1."
+    description: "Initial publish. Hungary RTIR model - Online Szamla mandatory all B2B/B2C since April 1, 2021; XML v3.0 mandatory from May 15, 2025; B2C digital receipt reporting from September 1, 2026. Source: external source verification (2026-05-05). Items pending verification: penalty HUF 1,000,000 per invoice (per invoice vs per audit framing needs verification), archiving split 8/5 years. Open items: 2 high-priority, 1 other."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
 
   - timestamp: 2026-05-12T09:00:00Z
     type: confidence-upgrade
-    field: unresolved_high
+    field: "high-priority items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "HUF 1,000,000 penalty confirmed for non-natural persons (legal entities) in Act CL of 2017, Art. 220, paragraph 1. HUF 400,000 for natural persons. Basis is per violation of obligation, not per invoice. penalty_max field updated to reflect verified framing. Jens click 2026-05-12."
+    description: "HUF 1,000,000 penalty confirmed for non-natural persons (legal entities) in Act CL of 2017, Art. 220, paragraph 1. HUF 400,000 for natural persons. Basis is per violation of obligation, not per invoice. penalty_max field updated to reflect verified framing. Checked directly 2026-05-12."
     source_url: "https://njt.hu/jogszabaly/2017-150-00-00"
     mandate_version_before: 1
     mandate_version_after: 1

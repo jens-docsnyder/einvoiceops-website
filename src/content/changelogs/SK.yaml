@@ -2,10 +2,10 @@ country_code: SK
 entries:
   - timestamp: 2026-05-18T08:30:00Z
     type: content-update
-    field: "Data & Infrastructure - Voluntary period paragraph + unresolved_amber"
-    old_value: "Generic reference to 'The Financial Directorate's registry of certified providers (financnasprava.sk)'. unresolved_amber: 3"
-    new_value: "Explicit reference to both registry PDFs (certified providers + accreditation-in-progress), with full financnasprava.sk URL and most-recent-update date 18 May 2026. unresolved_amber: 4"
-    description: "WebFetch against financnasprava.sk e-faktura page returned current registry state: two distinct PDFs maintained by the Financial Directorate, both updated 2026-05-18. Refreshes prior generic registry reference with specific Slovak titles and update date. Per cascade rule: additive on AMBER page → no further downgrade, new AMBER research item added. Demo Alham SK screen 10 'real signal today' callout cites this in parallel."
+    field: "Data & Infrastructure - Voluntary period paragraph + items pending verification"
+    old_value: "Generic reference to 'The Financial Directorate's registry of certified providers (financnasprava.sk)'. Items pending verification: 3"
+    new_value: "Explicit reference to both registry PDFs (certified providers + accreditation-in-progress), with full financnasprava.sk URL and most-recent-update date 18 May 2026. Items pending verification: 4"
+    description: "Page check against financnasprava.sk e-faktura page returned current registry state: two distinct PDFs maintained by the Financial Directorate, both updated 2026-05-18. Refreshes prior generic registry reference with specific Slovak titles and update date. Additive on a page already pending verification: no further downgrade, new item pending verification added."
     source_url: "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/e-faktura"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -14,35 +14,35 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Slovakia Law 385/2025 Z.z. - B2B mandatory January 2027 (established entities), voluntary from May 2026; CTC/reporting model with Tax Data Document (TDD); Peppol scheme 0245. Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: penalties EUR 10,000 / EUR 100,000 (A-URL - slov-lex.sk verification needed), January 2027 mandate date confirmation. unresolved_high: 2, unresolved_amber: 1."
+    description: "Initial publish. Slovakia Law 385/2025 Z.z. - B2B mandatory January 2027 (established entities), voluntary from May 2026; CTC/reporting model with Tax Data Document (TDD); Peppol scheme 0245. Source: external source verification (2026-05-05). Items pending verification: penalties EUR 10,000 / EUR 100,000 (slov-lex.sk verification needed), January 2027 mandate date confirmation. Open items: 2 high-priority, 1 other."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
 
   - timestamp: 2026-05-12T09:00:00Z
     type: confidence-upgrade
-    field: unresolved_high
+    field: "high-priority items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "January 1, 2027 mandatory effective date confirmed in Law 385/2025 Z.z. Art. VIII (slov-lex.sk). Slovak text confirmed: specific articles take effect January 1, 2027. Jens click 2026-05-12. Note: May 2026 voluntary start date not explicitly found in the text reviewed."
+    description: "January 1, 2027 mandatory effective date confirmed in Law 385/2025 Z.z. Art. VIII (slov-lex.sk). Slovak text confirmed: specific articles take effect January 1, 2027. Checked directly 2026-05-12. Note: May 2026 voluntary start date not explicitly found in the text reviewed."
     source_url: "https://www.slov-lex.sk/ezbierky/pravne-predpisy/SK/ZZ/2025/385/20260101"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-12T08:21:39Z
     type: confidence-upgrade
-    field: "unresolved_high + penalty_max"
-    old_value: "unresolved_high: 1 / penalty_max: source-verification required"
-    new_value: "unresolved_high: 0 / penalty_max: confirmed EUR 10,000 per violation; EUR 100,000 for repeat violations"
-    description: "Penalty amounts confirmed in Law 385/2025 Z.z. Čl. I §85o (12)-(13) at slov-lex.sk. §85o (12): EUR 10,000 for failing to notify invoice data per paragraphs 9-10 (late, incomplete, or incorrect). §85o (13): EUR 100,000 for repeat violations. Penalties are specifically for CTC reporting failures under the B2B mandate. Amounts match page claim. Jens click 2026-05-12."
+    field: "high-priority items pending verification + penalty_max"
+    old_value: "high-priority items pending verification: 1 / penalty_max: source-verification required"
+    new_value: "high-priority items pending verification: 0 / penalty_max: confirmed EUR 10,000 per violation; EUR 100,000 for repeat violations"
+    description: "Penalty amounts confirmed in Law 385/2025 Z.z. Čl. I §85o (12)-(13) at slov-lex.sk. §85o (12): EUR 10,000 for failing to notify invoice data per paragraphs 9-10 (late, incomplete, or incorrect). §85o (13): EUR 100,000 for repeat violations. Penalties are specifically for CTC reporting failures under the B2B mandate. Amounts match page claim. Checked directly 2026-05-12."
     source_url: "https://static.slov-lex.sk/static/SK/ZZ/2025/385/20270101.html"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-12T08:24:48Z
     type: confidence-upgrade
-    field: "unresolved_amber + last_verified + confidence_summary"
-    old_value: "unresolved_amber: 1 / last_verified: null / confidence_summary: amber"
-    new_value: "unresolved_amber: 0 / last_verified: 2026-05-12 / confidence_summary: green"
-    description: "Archiving period confirmed in Law 385/2025 Z.z. Čl. I §85o (15) at slov-lex.sk. Slovak text: 'Platitel je povinny uchovavat elektronicku fakturu po dobu desiatich rokov od skoncenia kalendarneho roka, ktoreho sa elektronicka faktura tyka.' (10 years from end of the calendar year to which the invoice relates). archiving_years: 10 confirmed. All research items resolved. SK upgraded to GREEN. Jens click 2026-05-12."
+    field: "items pending verification + last_verified + verification status"
+    old_value: "items pending verification: 1 / last_verified: null / verification status: pending verification"
+    new_value: "items pending verification: 0 / last_verified: 2026-05-12 / verification status: verified"
+    description: "Archiving period confirmed in Law 385/2025 Z.z. Čl. I §85o (15) at slov-lex.sk. Slovak text: 'Platitel je povinny uchovavat elektronicku fakturu po dobu desiatich rokov od skoncenia kalendarneho roka, ktoreho sa elektronicka faktura tyka.' (10 years from end of the calendar year to which the invoice relates). archiving_years: 10 confirmed. All open items resolved. SK upgraded to verified status. Checked directly 2026-05-12."
     source_url: "https://static.slov-lex.sk/static/SK/ZZ/2025/385/20270101.html"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -87,7 +87,7 @@ entries:
     field: "5-corner model / Digital Postman / TDD spec / scheme 0245 DIc distinction"
     old_value: null
     new_value: null
-    description: "Additive research findings added from targeted research session 2026-05-13: (1) Slovakia uses a 5-corner Peppol model with the Financial Directorate as intermediary - confirmed from Banqup secondary source + financnasprava.sk Solution Architecture reference; (2) Access Points must hold specific Slovak Digital Postman accreditation separate from standard Peppol AP registration (requirements published 2026-01-14); (3) TDD specification version 1.0.0 published April 14, 2026 on Peppol documentation portal; (4) Scheme 0245 = DIC (Tax Identification Number), distinct from scheme 0158 = ICO (company registration). Content added to Preparation Timeline, Data & Infrastructure, and Friction Map sections. SK downgraded to AMBER pending Jens browser confirmation of 3 research items. unresolved_amber: 3."
+    description: "Additive research findings added from targeted research on 2026-05-13: (1) Slovakia uses a 5-corner Peppol model with the Financial Directorate as intermediary - confirmed from Banqup secondary source + financnasprava.sk Solution Architecture reference; (2) Access Points must hold specific Slovak Digital Postman accreditation separate from standard Peppol AP registration (requirements published 2026-01-14); (3) TDD specification version 1.0.0 published April 14, 2026 on Peppol documentation portal; (4) Scheme 0245 = DIC (Tax Identification Number), distinct from scheme 0158 = ICO (company registration). Content added to Preparation Timeline, Data & Infrastructure, and Friction Map sections. SK downgraded to pending verification until 3 items are confirmed directly. Items pending verification: 3."
     source_url: "https://test-docs.peppol.eu/tdd/sk/tdd-sk/"
     mandate_version_before: 1
     mandate_version_after: 1

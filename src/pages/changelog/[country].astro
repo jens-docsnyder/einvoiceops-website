@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+  // Internal verification log: not published. Builds only under `npm run dev`.
+  if (import.meta.env.PROD) return [];
   const logs = await getCollection('changelogs');
   return logs.map(log => ({
     params: { country: log.data.country_code },

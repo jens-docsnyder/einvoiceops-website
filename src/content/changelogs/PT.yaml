@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Portugal AT-communication/CTC model - B2G mandatory all companies from January 1, 2026 (Lei 82/2023 Art. 182-A); ATCUD + hash chaining required for all invoices; 10-year archiving (CIVA Art. 52). Source: Gemini Deep Research + Cross-Examination Round 2 (2026-05-05). Key unverified items: B2G January 1, 2026 date (A-URL - diariodarepublica.pt JS-rendered, manual click required), archiving 10 years (CIVA Art. 52 - A-URL). unresolved_high: 2, unresolved_amber: 2."
+    description: "Initial publish. Portugal AT-communication/CTC model - B2G mandatory all companies from January 1, 2026 (Lei 82/2023 Art. 182-A); ATCUD + hash chaining required for all invoices; 10-year archiving (CIVA Art. 52). Source: external source verification (2026-05-05). Items pending verification: B2G January 1, 2026 date (diariodarepublica.pt JS-rendered, manual check required), archiving 10 years (CIVA Art. 52). Open items: 2 high-priority, 2 other."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1

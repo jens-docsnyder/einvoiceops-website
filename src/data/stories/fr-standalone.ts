@@ -157,7 +157,7 @@ export const frStandalone = {
     changesMany: `changes`,
     // The sources in aggregate, always in view (Jens, 2026-10-05: "just a few lines on the sources on aggregate, very short").
     sourcesNote: `Most of these changes were published in French law and the tax code, which we read in the official publisher's own text, and the rest came in format standards or from the administration. Each line in a box shows the site it came from.`,
-    // The copy disclosure for the two July 2025 AFNOR editions, all four parts (CLAUDE.md, mandate text). Its wording is
+    // The copy disclosure for the two July 2025 AFNOR editions, all four parts (mandate text). Its wording is
     // Tone of voice.md's France disclosure; the words "not the authoritative wording of any sentence" are checker words
     // and stay exact.
     about: {

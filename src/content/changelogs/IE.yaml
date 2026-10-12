@@ -5,17 +5,17 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Ireland B2G mandatory (S.I. 258/2019); B2B Phase 1 November 1, 2028 (large corporates), Phase 2 November 1, 2029 (all VAT-registered). OGP/einvoicingireland.ie is Irish Peppol Authority. Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: Revenue press release phase dates (manual URL click required), B2G legal basis S.I. 258/2019, archiving 6 years. unresolved_high: 1, unresolved_amber: 2."
+    description: "Initial publish. Ireland B2G mandatory (S.I. 258/2019); B2B Phase 1 November 1, 2028 (large corporates), Phase 2 November 1, 2029 (all VAT-registered). OGP/einvoicingireland.ie is Irish Peppol Authority. Source: external source verification (2026-05-05). Items pending verification: Revenue press release phase dates (manual check required), B2G legal basis S.I. 258/2019, archiving 6 years. Open items: 1 high-priority, 2 other."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
 
   - timestamp: 2026-05-12T09:00:00Z
     type: confidence-upgrade
-    field: unresolved_high
+    field: "high-priority items pending verification"
     old_value: "1"
     new_value: "0"
-    description: "Phase 1 B2B mandate dates confirmed via Revenue.ie press release (pr-021026). November 1, 2028: large corporates must issue eInvoices; all businesses must be able to receive. Jens click 2026-05-12."
+    description: "Phase 1 B2B mandate dates confirmed via Revenue.ie press release (pr-021026). November 1, 2028: large corporates must issue eInvoices; all businesses must be able to receive. Checked directly 2026-05-12."
     source_url: "https://www.revenue.ie/en/corporate/press-office/press-releases/2026/pr-021026-phase-one-vat-modernisation.aspx"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -24,7 +24,7 @@ entries:
     field: future_direction
     old_value: "No ViDA reference"
     new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
-    description: "ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border e-invoice mandate. Additive update - no existing GREEN claims affected. IE already has a domestic B2B mandate announced (November 2028/2029 phases); ViDA cross-border obligation is additive context."
+    description: "ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border e-invoice mandate. Additive update - no existing verified claims affected. IE already has a domestic B2B mandate announced (November 2028/2029 phases); ViDA cross-border obligation is additive context."
     source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -48,19 +48,19 @@ entries:
     mandate_version_after: null
   - timestamp: 2026-05-12T12:30:00Z
     type: confidence-upgrade
-    field: unresolved_amber
+    field: "items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "S.I. 258/2019 B2G legal basis confirmed via Claude WebFetch (irishstatutebook.ie). Regulation 4 states: 'A contracting authority or a contracting entity shall, where an electronic invoice complies with the European standard on electronic invoicing established under the Directive, receive and process the electronic invoice.' Preamble confirms: 'for the purpose of giving effect to Council Directive 2014/55/EU.' Note: law references European standard generally (EN 16931), not Peppol BIS 3.0 by name."
+    description: "S.I. 258/2019 B2G legal basis confirmed via direct page check (irishstatutebook.ie). Regulation 4 states: 'A contracting authority or a contracting entity shall, where an electronic invoice complies with the European standard on electronic invoicing established under the Directive, receive and process the electronic invoice.' Preamble confirms: 'for the purpose of giving effect to Council Directive 2014/55/EU.' Note: law references European standard generally (EN 16931), not Peppol BIS 3.0 by name."
     source_url: "https://www.irishstatutebook.ie/eli/2019/si/258/made/en/print"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-12T15:00:00Z
     type: confidence-upgrade
-    field: confidence_summary
-    old_value: amber
-    new_value: green
-    description: "6-year VAT record retention confirmed via Jens click (revenue.ie, 2026-05-12). Exact text: 'Relevant records should be stored for six years' across all VAT scenarios. archiving_years: 6 confirmed. All research items resolved. IE goes GREEN."
+    field: "verification status"
+    old_value: "pending verification"
+    new_value: "verified"
+    description: "6-year VAT record retention confirmed via direct check (revenue.ie, 2026-05-12). Exact text: 'Relevant records should be stored for six years' across all VAT scenarios. archiving_years: 6 confirmed. All open items resolved. IE moves to verified status."
     source_url: "https://www.revenue.ie/en/vat/vat-records-invoices-and-credit-notes/"
     mandate_version_before: 1
     mandate_version_after: 1

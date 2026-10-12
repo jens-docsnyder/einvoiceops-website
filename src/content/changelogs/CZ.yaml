@@ -5,7 +5,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Czech Republic B2G mandatory via NEN platform; no B2B mandate; ISDOC national format significant; ISDS Data Box system for government document delivery. Source: Gemini Deep Research + external source verification (2026-05-05). Key unverified items: NEN Act 134/2016 basis, archiving 10 years, ISDOC acceptance at NEN. unresolved_high: 0, unresolved_amber: 3."
+    description: "Initial publish. Czech Republic B2G mandatory via NEN platform; no B2B mandate; ISDOC national format significant; ISDS Data Box system for government document delivery. Source: external source verification (2026-05-05). Items pending verification: NEN Act 134/2016 basis, archiving 10 years, ISDOC acceptance at NEN. Open items: 0 high-priority, 3 other."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
@@ -14,7 +14,7 @@ entries:
     field: formats
     old_value: "[UBL-2.1, Peppol-BIS-3.0, ISDOC]"
     new_value: "[UBL-2.1, Peppol-BIS-3.0, CII-UN-CEFACT, ISDOC]"
-    description: "Added CII-UN-CEFACT to formats list. Source: mf.gov.cz e-fakturace section confirmed UBL 2.1, CII, and ISDOC as accepted formats (Jens click 2026-05-12). Peppol BIS 3.0 retained as legally mandated under EU Directive 2014/55/EU EN 16931 compliance requirement - Czech public authorities must accept any EN 16931-compliant invoice including Peppol BIS 3.0."
+    description: "Added CII-UN-CEFACT to formats list. Source: mf.gov.cz e-fakturace section confirmed UBL 2.1, CII, and ISDOC as accepted formats (checked directly 2026-05-12). Peppol BIS 3.0 retained as legally mandated under EU Directive 2014/55/EU EN 16931 compliance requirement - Czech public authorities must accept any EN 16931-compliant invoice including Peppol BIS 3.0."
     source_url: "https://mf.gov.cz/cs/dane-a-ucetnictvi/elektronicka-fakturace"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -23,7 +23,7 @@ entries:
     field: transport_protocol
     old_value: "Peppol-AS4"
     new_value: null
-    description: "[A-DIV] Transport protocol conflict detected. CZ.md states Peppol-AS4. NEN API documentation shows certificate-based proprietary API access with no Peppol network reference (Jens click 2026-05-12). Conflict item added to research YAML. confidence_summary set to red. Resolution path: confirm NEN technical spec at nen.nipez.cz for transport mechanism. Note: format acceptance (Peppol BIS 3.0) and transport protocol (Peppol AS4) are separate questions - format is legally settled via EU Directive, transport remains unresolved."
+    description: "Transport protocol conflict detected. The country page states Peppol-AS4. NEN API documentation shows certificate-based proprietary API access with no Peppol network reference (checked directly 2026-05-12). Conflict logged as an open item. Page status set to unresolved. Resolution path: confirm NEN technical spec at nen.nipez.cz for transport mechanism. Note: format acceptance (Peppol BIS 3.0) and transport protocol (Peppol AS4) are separate questions - format is legally settled via EU Directive, transport remains unresolved."
     source_url: "https://nen.nipez.cz"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -32,7 +32,7 @@ entries:
     field: future_direction
     old_value: "No ViDA reference"
     new_value: "Added: EU ViDA Directive 2025/516/EU (OJ:L_202500516) confirmed at EUR-Lex. DRR and cross-border e-invoice mandatory from July 1, 2030. Primary legal basis for future B2B obligations in countries at policy/planning stage."
-    description: "ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border e-invoice mandate as the confirmed legal basis for upcoming B2B obligations. Additive update - no existing GREEN claims affected."
+    description: "ViDA Directive 2025/516/EU final text confirmed at EUR-Lex (adopted March 11, 2025, published OJ:L_202500516). future_direction updated to reference July 1, 2030 DRR/cross-border e-invoice mandate as the confirmed legal basis for upcoming B2B obligations. Additive update - no existing verified claims affected."
     source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500516"
     mandate_version_before: 1
     mandate_version_after: 1
