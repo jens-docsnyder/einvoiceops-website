@@ -9,8 +9,8 @@
 // start level even when a top line wraps. The line under the count names the released count's own date ({checked}),
 // so a later check date never reads as the count's date. proof.sourcesUnit, where present, follows the number on the
 // top line and proof.sources goes under it.
-// proof.sourcesCount, where present, is a hard number that replaces sources_weekly in the lead shape (France, 2026-10-05:
-// two of the 29 polled sources have never been read once, so the page says fewer than the register lists).
+// The sources number is always sources_weekly from the fan-out data (the proof.sourcesCount override of 2026-10-05 is gone,
+// Jens 2026-10-12: no number is typed; a typed one overrode the file and went stale).
 // An empty proof.checked drops the date column from the lead shape (France, improvement review 2026-10, item 3: no
 // code writes last_check, so the date went stale); the two remaining columns keep the same proportions.
 import { shortDate } from './format';
@@ -18,13 +18,13 @@ import { shortDate } from './format';
 interface Data { total: number; checked_on: string; last_check?: string; sources_named: number; sources_weekly: number }
 interface Props {
   data: Data;
-  proof: { changes?: any; sources: any; checked: any; headline?: any; headlineSub?: any; sourcesCount?: number; sourcesUnit?: string };
+  proof: { changes?: any; sources: any; checked: any; headline?: any; headlineSub?: any; sourcesUnit?: string };
   t: (v: any) => string;
 }
 const { data, proof, t } = Astro.props;
 const lead = proof.headline !== undefined && proof.headline !== null;
 const lastCheck = data.last_check ?? data.checked_on;
-const weekly = proof.sourcesCount ?? data.sources_weekly;
+const weekly = data.sources_weekly;
 const showDate = !!proof.checked;
 ---
 {lead ? (
