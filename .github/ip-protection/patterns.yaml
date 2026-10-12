@@ -347,10 +347,10 @@ rules:
 
   - id: IP-D08
     category: D
-    severity: medium
+    severity: high
     type: regex
     pattern: '\bJens click\b'
-    description: "Internal verification act and person name; raise to high once src/content/research/CZ.yaml and DK.yaml are cleaned. Write what was checked against which public source."
+    description: "Internal verification act and person name. Write what was checked against which public source."
 
   - id: IP-D09
     category: D
