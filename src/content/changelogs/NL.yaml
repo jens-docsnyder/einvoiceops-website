@@ -11,37 +11,37 @@ entries:
     mandate_version_after: 1
   - timestamp: 2026-05-04T15:20:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_high + unresolved_amber + last_verified"
-    old_value: "amber, high: 1, amber: 1, last_verified: 2026-04-30"
-    new_value: "green, high: 0, amber: 0, last_verified: 2026-05-04"
-    description: "Full NL verification pass complete. All research items resolved: SI-UBL 1.x confirmed via peppol.nl FAQ; UBL-OHNL conversion claim corrected and sourced to EC factsheet; B2G dates corrected from EC factsheet. NL promoted to GREEN."
+    field: "verification status + high-priority items pending verification + items pending verification + last_verified"
+    old_value: "pending verification, high-priority open: 1, other open: 1, last_verified: 2026-04-30"
+    new_value: "verified, high-priority open: 0, other open: 0, last_verified: 2026-05-04"
+    description: "Full NL verification pass complete. All open items resolved: SI-UBL 1.x confirmed via peppol.nl FAQ; UBL-OHNL conversion claim corrected and sourced to EC factsheet; B2G dates corrected from EC factsheet. NL promoted to verified status."
     source_url: "https://ec.europa.eu/digital-building-blocks/sites/spaces/DIGITAL/pages/467108874/eInvoicing+Country+Factsheets+for+each+Member+State+and+other+countries"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-04T14:45:00Z
     type: confidence-upgrade
-    field: unresolved_high
+    field: "high-priority items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "SI-UBL 1.x obsolete since January 2023 confirmed via peppol.nl FAQ: 'SI-UBL 1.2 is obsolete and has not been in use since January 2023.' Exact match to claim on NL page (line 98, Data & Infrastructure). Research item removed. High count decremented 2 → 1."
+    description: "SI-UBL 1.x obsolete since January 2023 confirmed via peppol.nl FAQ: 'SI-UBL 1.2 is obsolete and has not been in use since January 2023.' Exact match to claim on NL page (line 98, Data & Infrastructure). Open item removed. High count decremented 2 → 1."
     source_url: "https://www.peppol.nl/en/frequently-asked-questions-about-peppol"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-04T14:45:00Z
     type: error-correction
-    field: "research/NL.yaml item 2 source_url"
+    field: "source_url of open item 2"
     old_value: "https://www.logius.nl/diensten/digipoort"
     new_value: "https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eInvoicing+Country+Factsheets"
-    description: "logius.nl/diensten/digipoort is the Digipoort developer suite (Aansluit Suite) — does not contain UBL-OHNL conversion claim. NL page cites EU Commission eInvoicing Country Sheet NL as the actual source. Research item redirected to EC factsheet. HIGH item remains open."
+    description: "logius.nl/diensten/digipoort is the Digipoort developer suite (Aansluit Suite) — does not contain UBL-OHNL conversion claim. NL page cites EU Commission eInvoicing Country Sheet NL as the actual source. Open item redirected to EC factsheet. High-priority item remains open."
     source_url: "https://www.logius.nl/diensten/digipoort"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-04T14:45:00Z
     type: error-correction
-    field: "research/NL.yaml item 3 source_url"
+    field: "source_url of open item 3"
     old_value: "https://www.rijksoverheid.nl/onderwerpen/e-factureren"
     new_value: null
-    description: "rijksoverheid.nl/onderwerpen/e-factureren returns 404 — page removed. AMBER item (B2G mandate dates April 2017 / April 2019) redirected to forumstandaardisatie.nl or EC country factsheet. Item remains open."
+    description: "rijksoverheid.nl/onderwerpen/e-factureren returns 404 — page removed. Pending verification item (B2G mandate dates April 2017 / April 2019) redirected to forumstandaardisatie.nl or EC country factsheet. Item remains open."
     source_url: "https://www.rijksoverheid.nl/onderwerpen/e-factureren"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -56,10 +56,10 @@ entries:
     mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: error-correction
-    field: "unresolved_high + unresolved_amber"
-    old_value: "unresolved_high: 3, unresolved_amber: missing"
-    new_value: "unresolved_high: 2, unresolved_amber: 1"
-    description: "Frontmatter correction: unresolved_high was 3 but research YAML only contains 2 HIGH items — count was never decremented when original NL build ran. unresolved_amber field was missing entirely despite 1 AMBER item in research YAML. Both corrected to match actual research YAML state. No page content changed."
+    field: "high-priority items pending verification + items pending verification"
+    old_value: "high-priority items pending verification: 3, items pending verification: missing"
+    new_value: "Open items: 2 high-priority, 1 other"
+    description: "Frontmatter correction: the high-priority count was 3 but only 2 high-priority items were open — count was never decremented when original NL build ran. The pending-items count field was missing entirely despite 1 pending item. Both corrected to match actual state. No page content changed."
     source_url: null
     mandate_version_before: 1
     mandate_version_after: 1
@@ -68,7 +68,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Netherlands Peppol/Digipoort compliance map rebuilt from Gemini Deep Research after earlier version was written without research pass."
+    description: "Initial publish. Netherlands Peppol/Digipoort compliance map rebuilt."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
@@ -77,7 +77,7 @@ entries:
     field: status
     old_value: "announced"
     new_value: "proposed"
-    description: "Status corrected from 'announced' to 'proposed'. No enacted B2B legislation exists — the 2030 B2B mandate is government intent, not law. Confirmed via peppol.nl cross-examination."
+    description: "Status corrected from 'announced' to 'proposed'. No enacted B2B legislation exists — the 2030 B2B mandate is government intent, not law. Confirmed via peppol.nl check."
     source_url: "https://www.peppol.nl"
     mandate_version_before: null
     mandate_version_after: null

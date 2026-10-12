@@ -2,64 +2,64 @@ country_code: FR
 entries:
   - timestamp: 2026-05-18T22:30:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_amber"
-    old_value: "amber, unresolved_amber: 1"
-    new_value: "green, unresolved_amber: 0"
-    description: "Jens click on fnfe-mpe.org/factur-x/factur-x_en/ confirmed Factur-X 1.08 + ZUGFeRD 2.4 published 4 December 2025, applicable 15 January 2026. EXTENDED-CTC-FR profile confirmed as French national extension. Biannual EN 16931 update cadence confirmed. AMBER research item closed. FR restored to GREEN."
+    field: "verification status + items pending verification"
+    old_value: "pending verification, items pending verification: 1"
+    new_value: "verified, items pending verification: 0"
+    description: "Direct check of fnfe-mpe.org/factur-x/factur-x_en/ confirmed Factur-X 1.08 + ZUGFeRD 2.4 published 4 December 2025, applicable 15 January 2026. EXTENDED-CTC-FR profile confirmed as French national extension. Biannual EN 16931 update cadence confirmed. Pending item closed. FR restored to verified status."
     source_url: "https://fnfe-mpe.org/factur-x/factur-x_en/"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-18T22:00:00Z
     type: content-update
-    field: "Data & Infrastructure - Format selection paragraph + confidence_summary + unresolved_amber"
-    old_value: "No Factur-X version or CIUS-FR detail. confidence_summary: green, unresolved_amber: 0"
-    new_value: "Factur-X 1.08 (published 4 December 2025, applicable 15 January 2026) referenced inline. CIUS-FR / EXTENDED-CTC-FR French national extension named. Biannual EN 16931 update cadence (May / November) noted. confidence_summary: amber, unresolved_amber: 1"
-    description: "Mandate monitoring scan 2026-05-18 on FR Tax-cluster signals surfaced Factur-X 1.08 + CIUS-FR primary-source content at fnfe-mpe.org. WebFetch confirmed: 'December 2025, 4th, FNFE-MPE and FERD published the latest release namely: Factur-X 1.08 and ZUGFeRD 24'; EXTENDED-CTC-FR profile referenced as French national extension; biannual update cadence aligned to EN 16931 validation artifact (May 15 / November). Additive to FR.md (format version + CIUS-FR detail not previously named). Per cascade rule: GREEN page + additive content → AMBER pending Jens click on fnfe-mpe.org. One AMBER research item written. Source used in Tax cluster deep dive content for Heikki demo 2026-05-19."
+    field: "Data & Infrastructure - Format selection paragraph + verification status + items pending verification"
+    old_value: "No Factur-X version or CIUS-FR detail. verification status: verified, items pending verification: 0"
+    new_value: "Factur-X 1.08 (published 4 December 2025, applicable 15 January 2026) referenced inline. CIUS-FR / EXTENDED-CTC-FR French national extension named. Biannual EN 16931 update cadence (May / November) noted. verification status: pending verification, items pending verification: 1"
+    description: "Source check 2026-05-18 surfaced Factur-X 1.08 + CIUS-FR content at fnfe-mpe.org. Page text confirmed: 'December 2025, 4th, FNFE-MPE and FERD published the latest release namely: Factur-X 1.08 and ZUGFeRD 24'; EXTENDED-CTC-FR profile referenced as French national extension; biannual update cadence aligned to EN 16931 validation artifact (May 15 / November). Additive to the FR page (format version + CIUS-FR detail not previously named). Verified page plus additive content: status set to pending verification until the fnfe-mpe.org content is checked directly. One item pending verification."
     source_url: "https://fnfe-mpe.org/factur-x/factur-x_en/"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-18T09:00:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_amber + Preparation Timeline PA selection paragraph"
-    old_value: "amber, unresolved_amber: 1, text 'Approximately 220 platforms are registered ... plus ~15 in pre-registration'"
-    new_value: "green, unresolved_amber: 0, text 'Several hundred platforms are listed across the certified, registered, and pre-registration categories'"
-    description: "Jens click on impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees confirmed page headline 'Je consulte la liste des plateformes agréées' and modification date 'modifié le 13/05/2026'. Exact platform counts (~220 + 15) not directly visible without scrolling interactive tables - text softened to 'several hundred platforms' to keep claim within verified scope. AMBER item closed (modification date and list existence verified; count claim removed rather than verified). Demo Alham screen 2 + Heikki tile JS softened in parallel."
+    field: "verification status + items pending verification + Preparation Timeline PA selection paragraph"
+    old_value: "pending verification, items pending verification: 1, text 'Approximately 220 platforms are registered ... plus ~15 in pre-registration'"
+    new_value: "verified, items pending verification: 0, text 'Several hundred platforms are listed across the certified, registered, and pre-registration categories'"
+    description: "Direct check of impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees confirmed page headline 'Je consulte la liste des plateformes agréées' and modification date 'modifié le 13/05/2026'. Exact platform counts (~220 + 15) not directly visible without scrolling interactive tables - text softened to 'several hundred platforms' to keep claim within verified scope. Pending item closed (modification date and list existence verified; count claim removed rather than verified)."
     source_url: "https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-18T08:30:00Z
     type: content-update
-    field: "Preparation Timeline PA selection paragraph + confidence_summary + unresolved_amber"
-    old_value: "Approximately 80-100 platforms are currently certified or pre-registered. confidence_summary: green, unresolved_amber: 0"
-    new_value: "Approximately 220 platforms registered (audit pending or completed) plus ~15 in pre-registration awaiting interoperability tests, per DGFiP list updated 13 May 2026. URL added inline. confidence_summary: amber, unresolved_amber: 1"
-    description: "WebFetch against impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees returned current list state: ~220 registered operators (with 'rapport d'audit de conformité attendu') plus 15 in pre-registration. List modification date 13/05/2026 confirmed in page header. Refreshes the older soft estimate (~80-100) which was not source-verified at the time. Per cascade rule: additive on GREEN → AMBER pending Jens click on the DGFiP list page. Demo Alham screen 2 PA-landscape line refreshed in parallel."
+    field: "Preparation Timeline PA selection paragraph + verification status + items pending verification"
+    old_value: "Approximately 80-100 platforms are currently certified or pre-registered. verification status: verified, items pending verification: 0"
+    new_value: "Approximately 220 platforms registered (audit pending or completed) plus ~15 in pre-registration awaiting interoperability tests, per DGFiP list updated 13 May 2026. URL added inline. verification status: pending verification, items pending verification: 1"
+    description: "Page check against impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees returned current list state: ~220 registered operators (with 'rapport d'audit de conformité attendu') plus 15 in pre-registration. List modification date 13/05/2026 confirmed in page header. Refreshes the older soft estimate (~80-100) which was not source-verified at the time. Verified page plus additive content: status set to pending verification until the DGFiP list page is checked directly."
     source_url: "https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-18T08:00:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_amber + last_verified"
-    old_value: "amber, unresolved_amber: 1, last_verified: 2026-05-04"
-    new_value: "green, unresolved_amber: 0, last_verified: 2026-05-18"
-    description: "Jens click on AFNOR Norm'Info portal confirmed FD Z42-029 published 06/05/2026, status 'Publiée', title 'Archivage électronique - Archivage des factures électroniques dans le cadre de la réforme de la facturation électronique 2026'. Document listed under 'Normes publiées' section. AMBER research item closed. FR restored to GREEN."
+    field: "verification status + items pending verification + last_verified"
+    old_value: "pending verification, items pending verification: 1, last_verified: 2026-05-04"
+    new_value: "verified, items pending verification: 0, last_verified: 2026-05-18"
+    description: "Direct check of AFNOR Norm'Info portal confirmed FD Z42-029 published 06/05/2026, status 'Publiée', title 'Archivage électronique - Archivage des factures électroniques dans le cadre de la réforme de la facturation électronique 2026'. Document listed under 'Normes publiées' section. Pending item closed. FR restored to verified status."
     source_url: "https://norminfo.afnor.org/norme/fd-z42-029/archivage-electronique-archivage-des-factures-electroniques-dans-le-cadre-de-la-reforme-de-la-facturation-electronique-2026/318511"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-17T18:30:00Z
     type: content-update
-    field: "Operational Ownership archiving paragraph + confidence_summary + unresolved_amber"
-    old_value: "Archiving paragraph cited L123-22 (10y commercial) and L102 B LPF (6y tax) only. confidence_summary: green, unresolved_amber: 0"
-    new_value: "Archiving paragraph extended with reference to AFNOR Fascicule de documentation FD Z42-029 (published 6 May 2026) as implementation reference for electronic invoice archiving under the 2026 reform. confidence_summary: amber, unresolved_amber: 1"
-    description: "Mandate monitoring scan 2026-05-17 (FR/SK/PL last 30 days) surfaced AFNOR FD Z42-029, an authoritative archiving guidance document for the 2026 e-invoicing reform. Primary source confirmed via WebFetch against AFNOR Norm'Info portal: title 'Archivage électronique - Archivage des factures électroniques dans le cadre de la réforme de la facturation électronique 2026', publication date 06/05/2026, status Publiée. Additive content (does not contradict existing 10y/6y archiving facts; adds the implementation reference standard). Per cascade rule: GREEN page + additive content → AMBER pending Jens click on AFNOR primary source. One AMBER research item written. Same scan also baked a 'real signal in the last 30 days' callout into Alham Monday demo screen 7 referencing Z42-029."
+    field: "Operational Ownership archiving paragraph + verification status + items pending verification"
+    old_value: "Archiving paragraph cited L123-22 (10y commercial) and L102 B LPF (6y tax) only. verification status: verified, items pending verification: 0"
+    new_value: "Archiving paragraph extended with reference to AFNOR Fascicule de documentation FD Z42-029 (published 6 May 2026) as implementation reference for electronic invoice archiving under the 2026 reform. verification status: pending verification, items pending verification: 1"
+    description: "Source check 2026-05-17 (FR/SK/PL, last 30 days) surfaced AFNOR FD Z42-029, an authoritative archiving guidance document for the 2026 e-invoicing reform. Primary source confirmed against the AFNOR Norm'Info portal: title 'Archivage électronique - Archivage des factures électroniques dans le cadre de la réforme de la facturation électronique 2026', publication date 06/05/2026, status Publiée. Additive content (does not contradict existing 10y/6y archiving facts; adds the implementation reference standard). Verified page plus additive content: status set to pending verification until the AFNOR primary source is checked directly. One item pending verification."
     source_url: "https://norminfo.afnor.org/norme/fd-z42-029/archivage-electronique-archivage-des-factures-electroniques-dans-le-cadre-de-la-reforme-de-la-facturation-electronique-2026/318511"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-17T17:00:00Z
     type: error-correction
-    field: "Meta-correction across vault rule files and demo artifacts (no website repo content change)"
-    old_value: "Inverted PA/PPF terminology in CLAUDE.md ABSOLUTE TERMINOLOGY RULE (PA = government portal, PDP = certified providers) - propagated to memory file feedback_france_pa_not_pdp.md, demo files opentext-sp-alham.html and relex-enterprise-heikki.html, and annotated master E-invoice compliance ops/Website/FR.md"
+    field: "Terminology correction (no website content change)"
+    old_value: "Inverted PA/PPF terminology in an earlier terminology note (PA = government portal, PDP = certified providers), carried into related working materials"
     new_value: "PA = Plateforme Agréée (certified private platforms). PPF = Portail Public de Facturation (government portal, Annuaire and DGFiP concentrator only since Oct 2024). PDP = deprecated old name for PAs."
-    description: "Meta-correction. CLAUDE.md ABSOLUTE TERMINOLOGY RULE (added 2026-05-09) had inverted PA/PPF definitions and was treated as the authority by all sessions for 8 days. Surfaced 2026-05-17 during Alham Monday demo verification when this changelog file was consulted directly for the first time since the bad rule landed. Discovered: the 2026-05-04T17:00:00Z rename event in this changelog was correct; CLAUDE.md had been written without consulting it. Files corrected in same operation: CLAUDE.md ABSOLUTE TERMINOLOGY RULE rewritten with vault citation; CLAUDE.md new DOMAIN-FACT RULES MUST CITE VAULT SOURCE section added (preventative); memory file feedback_france_pa_not_pdp.md rewritten with corrected definitions and vault citation; demo opentext-sp-alham.html PA/PDP references corrected (also: penalty amount EUR 15 → EUR 50 per Art. 1737 §III, verification date 20.04.2026 → 04.05.2026); demo relex-enterprise-heikki.html same correction; annotated master E-invoice compliance ops/Website/FR.md body PDP → PA refresh (schema enum values clearance-pdp / pdp-mandatory / transport_protocol: PDP retained pending vault-wide schema rename). No content change to src/content/countries/FR.md (already correct). No change to mandate_version (no mandate fact changed). No change to confidence_summary (remains GREEN)."
+    description: "Terminology correction. An earlier terminology note had inverted the PA and PPF definitions. The 2026-05-04T17:00:00Z rename entry in this changelog was correct. Related working materials were corrected in the same pass, including the penalty amount (EUR 15 → EUR 50 per Art. 1737 §III) and a verification date (20.04.2026 → 04.05.2026). No content change to the FR country page (already correct). No change to mandate_version (no mandate fact changed). No change to verification status (remains verified)."
     source_url: null
     mandate_version_before: 2
     mandate_version_after: 2
@@ -68,16 +68,16 @@ entries:
     field: "All page body + frontmatter transport_protocol"
     old_value: "PDP (Plateforme de Dématérialisation Partenaire)"
     new_value: "PA (Plateforme Agréée)"
-    description: "Terminology update: French authorities renamed the certified private platforms from PDP (Plateforme de Dématérialisation Partenaire) to PA (Plateforme Agréée). All 20+ body references updated across FR.md, index.astro, services.astro, GlossaryPanel.astro, [country].astro, PL.md, RO.md. Glossary entry updated: PDP entry renamed to PA, definition notes the former PDP name. Historical changelog entries not changed."
+    description: "Terminology update: French authorities renamed the certified private platforms from PDP (Plateforme de Dématérialisation Partenaire) to PA (Plateforme Agréée). All 20+ body references updated across the site. Glossary entry updated: PDP entry renamed to PA, definition notes the former PDP name. Historical changelog entries not changed."
     source_url: null
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_amber + last_verified"
-    old_value: "amber, unresolved_amber: 1, last_verified: 2026-04-29"
-    new_value: "green, unresolved_amber: 0, last_verified: 2026-05-04"
-    description: "France reaches GREEN. Final AMBER item closed: pilot phase specific dates (Feb-Aug 2026) had no findable primary source after impots.gouv.fr sources confirmed dead and annuaire-pdp.fr confirmed as non-official independent guide. Page updated to remove specific month dates; operational substance retained ('pilot phase in progress ahead of September 2026 go-live'). All HIGH and AMBER items cleared across two sessions."
+    field: "verification status + items pending verification + last_verified"
+    old_value: "pending verification, items pending verification: 1, last_verified: 2026-04-29"
+    new_value: "verified, items pending verification: 0, last_verified: 2026-05-04"
+    description: "France reaches verified status. Final pending item closed: pilot phase specific dates (Feb-Aug 2026) had no findable primary source after impots.gouv.fr sources confirmed dead and annuaire-pdp.fr confirmed as non-official independent guide. Page updated to remove specific month dates; operational substance retained ('pilot phase in progress ahead of September 2026 go-live'). All high-priority and pending verification items cleared across two verification passes."
     source_url: null
     mandate_version_before: 2
     mandate_version_after: 2
@@ -101,10 +101,10 @@ entries:
     mandate_version_after: 2
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_high"
+    field: "high-priority items pending verification"
     old_value: "1"
     new_value: "0"
-    description: "FR HIGH item closed by softening the unsourced claim. All HIGHs now cleared. One AMBER remains open: pilot phase dates Feb-Aug 2026 (impots.gouv.fr sources dead, annuaire-pdp.fr FAQ not yet checked). Confidence stays AMBER."
+    description: "FR high-priority item closed by softening the unsourced claim. All high-priority items now cleared. One item remains open: pilot phase dates Feb-Aug 2026 (impots.gouv.fr sources dead, annuaire-pdp.fr FAQ not yet checked). Status stays pending verification."
     source_url: null
     mandate_version_before: 2
     mandate_version_after: 2
@@ -119,28 +119,28 @@ entries:
     mandate_version_after: 2
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_amber"
+    field: "items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "Penalty amounts confirmed from Article 1737 CGI (with corrections — see error-correction entry). Penalty AMBER item resolved and removed. Two items remain open: HIGH (PPF B2B discontinuation — two dead source URLs on impots.gouv.fr, next search pending); AMBER (pilot phase dates Feb-Aug 2026 — same dead sources, annuaire-pdp.fr search pending). Confidence stays AMBER."
+    description: "Penalty amounts confirmed from Article 1737 CGI (with corrections — see error-correction entry). Penalty item resolved and removed. Two items remain open: high-priority (PPF B2B discontinuation — two dead source URLs on impots.gouv.fr, next search pending); pending (pilot phase dates Feb-Aug 2026 — same dead sources, annuaire-pdp.fr search pending). Status stays pending verification."
     source_url: "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006069577/"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-04T00:00:00Z
     type: error-correction
-    field: "research.FR-1.source_url + research.FR-2.source_url"
+    field: "source_url of two open items"
     old_value: "impots.gouv.fr/facturation-electronique (suggested as next source after initial FAQ failed)"
     new_value: "source_url: null — impots.gouv.fr/facturation-electronique also returns 404"
-    description: "Second impots.gouv.fr URL confirmed dead. PPF B2B discontinuation claim (FR HIGH) and pilot phase dates claim (FR AMBER) both now have two confirmed dead sources on the DGFiP domain. Next search: Google 'site:impots.gouv.fr PPF B2B' or annuaire-pdp.fr. If no source found after one more search: soften PPF B2B claim to [A-CONF] on page. Pilot dates: try annuaire-pdp.fr or Google. Claims on page remain unchanged pending next search."
+    description: "Second impots.gouv.fr URL confirmed dead. PPF B2B discontinuation claim (high-priority) and pilot phase dates claim (pending) both now have two confirmed dead sources on the DGFiP domain. Next search: impots.gouv.fr or annuaire-pdp.fr. If no source is found after one more search, the PPF B2B claim will be softened on the page. Claims on page remain unchanged pending next search."
     source_url: null
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-03T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_amber"
+    field: "items pending verification"
     old_value: "3"
     new_value: "2"
-    description: "First source verification pass (partial). One AMBER item resolved: Article 91 of Loi 2023-1322 (Legifrance JORFARTI000048727444) confirmed: Sep 1, 2026 for large companies / ETI, Sep 1, 2027 for SMEs / micro, with postponement decree option up to Dec 1 / Dec 1 respectively. Two items still open: (1) HIGH - PPF B2B discontinuation October 2024: DGFiP FAQ does not contain the claim, main impots.gouv.fr page search pending; (2) AMBER - pilot phase dates Feb-Aug 2026: original source URL 404, new source search pending. Penalty amounts (AMBER) also still pending - no source URL found yet. Confidence stays AMBER."
+    description: "First source verification pass (partial). One pending item resolved: Article 91 of Loi 2023-1322 (Legifrance JORFARTI000048727444) confirmed: Sep 1, 2026 for large companies / ETI, Sep 1, 2027 for SMEs / micro, with postponement decree option up to Dec 1 / Dec 1 respectively. Two items still open: (1) high-priority - PPF B2B discontinuation October 2024: DGFiP FAQ does not contain the claim, main impots.gouv.fr page search pending; (2) pending - pilot phase dates Feb-Aug 2026: original source URL 404, new source search pending. Penalty amounts also still pending - no source URL found yet. Status stays pending verification."
     source_url: "https://www.legifrance.gouv.fr/jorf/id/JORFARTI000048727444"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -149,7 +149,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. France PDP/PPF compliance map built from Gemini Deep Research with Claude WebFetch cross-examination. Three legifrance.gouv.fr URLs return 403 (bot protection) — AMBER status on archiving, correction mechanism, and PPF liability citations pending Jens URL verification (backlog #41)."
+    description: "Initial publish. France PDP/PPF compliance map built. Three legifrance.gouv.fr URLs return 403 (bot protection) — archiving, correction mechanism, and PPF liability citations pending verification."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1

@@ -2,28 +2,28 @@ country_code: PL
 entries:
   - timestamp: 2026-05-19T07:30:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_amber + last_verified"
-    old_value: "amber, unresolved_amber: 2, last_verified: 2026-05-12"
-    new_value: "green, unresolved_amber: 0, last_verified: 2026-05-19"
-    description: "Jens click on both PL AMBER items closed simultaneously. (1) ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/ confirmed verbatim: 'Od 1 lutego 2026 r. możliwe jest więc korzystanie zarówno z certyfikatów KSeF jak i tokenów. Docelowo od 1 stycznia 2027 r. z tych dwóch rozwiązań pozostaną wyłącznie certyfikaty KSeF.' (From 1 February 2026 both certificates and tokens may be used; ultimately from 1 January 2027 only certificates will remain.) Plus MCU certificate generation Nov 2025-Jan 2026 confirmed, certificates serve solely as authentication (not permissions store like tokens) confirmed. Bonus content surfaced not on page: Type 1 (authentication) vs Type 2 (offline-mode invoice signing) certificate distinction; 2-year max validity; XAdES-BES signature mechanism. (2) VATupdate Tier 3 confirmed MoF March 2026 penalty discretion position (2026 zero penalties, 2027 case-by-case based on nature/scale/frequency/corrective actions, maximum is a ceiling not default). Tier 3 caveat noted - primary source ksef.podatki.gov.pl/wyjasnienia/ would be stronger but content verified by Jens click and consistent across multiple secondary sources (txb.pl, sovos.com, aidergroup.pl). Both research items closed. PL restored to GREEN."
+    field: "verification status + items pending verification + last_verified"
+    old_value: "pending verification, items pending verification: 2, last_verified: 2026-05-12"
+    new_value: "verified, items pending verification: 0, last_verified: 2026-05-19"
+    description: "Direct checks closed both PL pending items simultaneously. (1) ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/ confirmed verbatim: 'Od 1 lutego 2026 r. możliwe jest więc korzystanie zarówno z certyfikatów KSeF jak i tokenów. Docelowo od 1 stycznia 2027 r. z tych dwóch rozwiązań pozostaną wyłącznie certyfikaty KSeF.' (From 1 February 2026 both certificates and tokens may be used; ultimately from 1 January 2027 only certificates will remain.) Plus MCU certificate generation Nov 2025-Jan 2026 confirmed, certificates serve solely as authentication (not permissions store like tokens) confirmed. Bonus content surfaced not on page: Type 1 (authentication) vs Type 2 (offline-mode invoice signing) certificate distinction; 2-year max validity; XAdES-BES signature mechanism. (2) VATupdate (a trade publication) confirmed MoF March 2026 penalty discretion position (2026 zero penalties, 2027 case-by-case based on nature/scale/frequency/corrective actions, maximum is a ceiling not default). Caveat: the primary source ksef.podatki.gov.pl/wyjasnienia/ would be stronger, but the content was checked directly and is consistent across multiple secondary sources (txb.pl, sovos.com, aidergroup.pl). Both open items closed. PL restored to verified status."
     source_url: "https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-18T23:00:00Z
     type: content-update
-    field: "Preparation Timeline (Authentication transition added) + penalty_max (MoF discretion clarification added) + confidence_summary + unresolved_amber"
-    old_value: "No mention of token-to-certificate authentication transition. Penalty_max stated maximum amounts only (no MoF discretion note). confidence_summary: green, unresolved_amber: 0"
-    new_value: "Authentication transition paragraph added: OAuth2 tokens valid through 31 December 2026, KSeF certificates required from 1 January 2027, certificate functionality live in KSeF API 2.0 since February 2026. Penalty_max field extended with MoF March 2026 clarification that maximum penalties do not have to apply automatically (case-by-case assessment). confidence_summary: amber, unresolved_amber: 2"
-    description: "Mandate monitoring scan 2026-05-18 on PL KSeF Tax-cluster signals for Heikki demo KSeF anchor slide. Primary source ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/ confirmed token-to-certificate transition timeline (Nov 2025 testing, Feb 2026 cert functionality, Dec 31 2026 token retirement, Jan 1 2027 cert-only). VATupdate Tier 3 source confirmed Polish MoF March 2026 penalty discretion clarification. Both additive to PL.md. Per cascade rule: GREEN page + additive content → AMBER pending Jens click. Two AMBER research items written. Source content used inline in new Heikki demo KSeF anchor slide."
+    field: "Preparation Timeline (Authentication transition added) + penalty_max (MoF discretion clarification added) + verification status + items pending verification"
+    old_value: "No mention of token-to-certificate authentication transition. Penalty_max stated maximum amounts only (no MoF discretion note). verification status: verified, items pending verification: 0"
+    new_value: "Authentication transition paragraph added: OAuth2 tokens valid through 31 December 2026, KSeF certificates required from 1 January 2027, certificate functionality live in KSeF API 2.0 since February 2026. Penalty_max field extended with MoF March 2026 clarification that maximum penalties do not have to apply automatically (case-by-case assessment). verification status: pending verification, items pending verification: 2"
+    description: "Source check 2026-05-18 on PL KSeF content. Primary source ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/ confirmed token-to-certificate transition timeline (Nov 2025 testing, Feb 2026 cert functionality, Dec 31 2026 token retirement, Jan 1 2027 cert-only). VATupdate (a trade publication) confirmed Polish MoF March 2026 penalty discretion clarification. Both additive to the PL page. Verified page plus additive content: status set to pending verification until checked directly. Two items pending verification."
     source_url: "https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/"
     mandate_version_before: 2
     mandate_version_after: 2
   - timestamp: 2026-05-12T09:30:00Z
     type: mandate-change
-    field: "penalty_max + future_direction + key_deadlines + confidence_summary + last_verified + mandate_version"
+    field: "penalty_max + future_direction + key_deadlines + verification status + last_verified + mandate_version"
     old_value: "Penalties suspended until August 1, 2026 (from Dz.U. 2024 poz. 852)"
     new_value: "Penalties suspended until December 31, 2026; enforcement begins January 1, 2027 per Act of August 5, 2025 (Dz.U. 2025 poz. 1203 Art. 23 pkt 4)"
-    description: "[SIG-003 VERIFIED] Jens verified Act of August 5, 2025 (Dz.U. 2025 poz. 1203). Art. 23 pkt 4 confirms: Art. 106ni ust. 1-3 and 5-7 (penalty provisions) enter into force January 1, 2027 - not August 1, 2026 as previously stated. Key_deadlines 2026-08-01 entry removed. New 2027-01-01 penalty enforcement entry added. penalty_max and future_direction updated. Body text in Preparation Timeline updated. All research items cleared. confidence_summary: amber → green. mandate_version: 1 → 2."
+    description: "Act of August 5, 2025 verified (Dz.U. 2025 poz. 1203). Art. 23 pkt 4 confirms: Art. 106ni ust. 1-3 and 5-7 (penalty provisions) enter into force January 1, 2027 - not August 1, 2026 as previously stated. Key_deadlines 2026-08-01 entry removed. New 2027-01-01 penalty enforcement entry added. penalty_max and future_direction updated. Body text in Preparation Timeline updated. All open items cleared. verification status: pending verification → verified. mandate_version: 1 → 2."
     source_url: "https://dziennikustaw.gov.pl/DU/2025/1203"
     mandate_version_before: 1
     mandate_version_after: 2
@@ -31,41 +31,41 @@ entries:
     type: error-correction
     field: "penalty_max + key_deadlines (2026-08-01)"
     old_value: "Penalties suspended until August 1, 2026"
-    new_value: "PENDING VERIFICATION - Signal detected: suspension ends December 31, 2026 (enforcement from January 1, 2027) per Dz.U. 2025/1203"
-    description: "Penalty suspension end date flagged as potentially wrong. PL page states August 1, 2026 as penalty enforcement start. Mandate signal search against ksef.podatki.gov.pl confirms penalties suspended Feb 1, 2026 to Dec 31, 2026, enforcement from January 1, 2027. Dz.U. 2025/1203 (Act of August 5, 2025) identified as primary source. Research YAML item added. Page not updated until Jens verifies via primary source click."
+    new_value: "PENDING VERIFICATION - Suspension ends December 31, 2026 (enforcement from January 1, 2027) per Dz.U. 2025/1203"
+    description: "Penalty suspension end date flagged as potentially wrong. PL page states August 1, 2026 as penalty enforcement start. Source search on ksef.podatki.gov.pl confirms penalties suspended Feb 1, 2026 to Dec 31, 2026, enforcement from January 1, 2027. Dz.U. 2025/1203 (Act of August 5, 2025) identified as primary source. Page not updated until verified against the primary source."
     source_url: "https://dziennikustaw.gov.pl/DU/2025/1203"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-05T18:33:02Z
     type: confidence-upgrade
-    field: "unresolved_amber + confidence_summary"
-    old_value: "unresolved_amber: 1 / confidence_summary: amber"
-    new_value: "unresolved_amber: 0 / confidence_summary: green"
-    description: "FA(2) schema invalidity date confirmed: FA(2) structure valid until January 31, 2026; FA(3) required from February 1, 2026. Confirmed from ksef.podatki.gov.pl (official Ministry of Finance KSeF portal) — multiple pages confirm KSeF 1.0 shutdown January 26-31, 2026 and KSeF 2.0 (FA(3) only) live February 1, 2026. Page claim confirmed correct. Last remaining amber item removed. confidence_summary upgraded to green."
+    field: "items pending verification + verification status"
+    old_value: "items pending verification: 1 / verification status: pending verification"
+    new_value: "items pending verification: 0 / verification status: verified"
+    description: "FA(2) schema invalidity date confirmed: FA(2) structure valid until January 31, 2026; FA(3) required from February 1, 2026. Confirmed from ksef.podatki.gov.pl (official Ministry of Finance KSeF portal) — multiple pages confirm KSeF 1.0 shutdown January 26-31, 2026 and KSeF 2.0 (FA(3) only) live February 1, 2026. Page claim confirmed correct. Last remaining pending item removed. Status upgraded to verified."
     source_url: "https://ksef.podatki.gov.pl/pliki-do-pobrania-ksef-20/"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_amber"
+    field: "items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "KSeF number 35-character claim confirmed from KSeF API v2 production spec (api.ksef.mf.gov.pl/docs/v2): schema defines KsefNumber as minLength 35, maxLength 36 (36 accepted for KSeF 1.0 backward compat only). Spec states: 'W KSeF 2.0 numery są generowane wyłącznie w formacie 35-znakowym.' One AMBER remains: FA(2) schema January 31, 2026 invalidation date — API spec confirms FA(3) as current standard but specific date not found. Research item updated with this finding and next search direction (github.com/CIRFMF/ksef-docs changelog). Confidence stays AMBER."
+    description: "KSeF number 35-character claim confirmed from KSeF API v2 production spec (api.ksef.mf.gov.pl/docs/v2): schema defines KsefNumber as minLength 35, maxLength 36 (36 accepted for KSeF 1.0 backward compat only). Spec states: 'W KSeF 2.0 numery są generowane wyłącznie w formacie 35-znakowym.' One item remains pending: FA(2) schema January 31, 2026 invalidation date — API spec confirms FA(3) as current standard but specific date not found. Open item updated with this finding and next search direction (github.com/CIRFMF/ksef-docs changelog). Status stays pending verification."
     source_url: "https://api.ksef.mf.gov.pl/docs/v2/index.html"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_high"
+    field: "high-priority items pending verification"
     old_value: "1"
     new_value: "0"
-    description: "PLN 200M Phase 1 threshold and 2024 reference year confirmed from consolidated KSeF act text (Dz.U. 2023 poz. 1598, Article 145l): 'did not exceed PLN 200,000,000 in 2024' — companies below threshold received grace extension to March 31, 2026; companies above were mandatory from February 1, 2026. Page claim confirmed correct. Two AMBER items remain open (FA(2) schema date, KSeF number 35 chars). Confidence stays AMBER."
+    description: "PLN 200M Phase 1 threshold and 2024 reference year confirmed from consolidated KSeF act text (Dz.U. 2023 poz. 1598, Article 145l): 'did not exceed PLN 200,000,000 in 2024' — companies below threshold received grace extension to March 31, 2026; companies above were mandatory from February 1, 2026. Page claim confirmed correct. Two pending verification items remain open (FA(2) schema date, KSeF number 35 chars). Status stays pending verification."
     source_url: "https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20230001598/U/D20231598Lj.pdf"
     mandate_version_before: 1
     mandate_version_after: 1
   - timestamp: 2026-05-03T00:00:00Z
     type: error-correction
-    field: "research.PL-1.source_url + research.PL-2.source_url"
+    field: "source_url of two open items"
     old_value: "PL-1: isap.sejm.gov.pl poz.852 (Act of May 9, 2024). PL-2: podatki.gov.pl/ksef/ main page"
     new_value: "PL-1: source_url null — wrong document (amending act only changes dates, does not contain PLN 200M threshold or reference year). PL-2: source_url null — wrong document (main page navigates to example invoice PDFs, not API specification)"
     description: "Verification pass found two cited sources to be wrong documents. PL-1: the May 2024 amending act (poz. 852) only amends transition dates — the PLN 200M threshold and 2024 reference year are in the original June 2023 KSeF mandate act (poz. 1598). New source to check: isap.sejm.gov.pl poz.1598. PL-2: the podatki.gov.pl/ksef main page leads to example FA(3) invoice PDFs, not the API specification needed to confirm the 35-character KSeF number identifier. New source to check: API documentation at podatki.gov.pl or ksef.mf.gov.pl. Both items remain open — claims on page unverified, counts unchanged."
@@ -77,7 +77,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Poland KSeF compliance map built from Gemini Deep Research (full 3-prompt protocol). Clearance model, FA(3) schema, NIP routing, February/April 2026 mandatory phases, penalty enforcement from August 2026."
+    description: "Initial publish. Poland KSeF compliance map built. Clearance model, FA(3) schema, NIP routing, February/April 2026 mandatory phases, penalty enforcement from August 2026."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1

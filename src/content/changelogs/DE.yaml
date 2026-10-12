@@ -11,10 +11,10 @@ entries:
     mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "confidence_summary + unresolved_high + last_verified"
-    old_value: "amber, unresolved_high: 1, last_verified: 2026-04-29"
-    new_value: "green, unresolved_high: 0, last_verified: 2026-05-04"
-    description: "Germany reaches GREEN. All research items resolved across two sessions. Rn 35a HIGH item closed: searched BMF Schreiben Oct 2025 for 'maßgeblich' — word only appears as section heading ('Maßgebliche Vorschriften für die Rechnungsausstellung'), not in XML-vs-PDF binding context. Rn 35a citation removed from two locations on page (Tax/Compliance section and Friction Map hybrid illusion paragraph). The innerer Kontrollpfad concept retained as it IS confirmed from the document. GREEN means all current claims verified — not that the law will not change."
+    field: "verification status + high-priority items pending verification + last_verified"
+    old_value: "pending verification, high-priority items pending verification: 1, last_verified: 2026-04-29"
+    new_value: "verified, high-priority items pending verification: 0, last_verified: 2026-05-04"
+    description: "Germany reaches verified status. All open items resolved across two verification passes. Rn 35a high-priority item closed: searched BMF Schreiben Oct 2025 for 'maßgeblich' — word only appears as section heading ('Maßgebliche Vorschriften für die Rechnungsausstellung'), not in XML-vs-PDF binding context. Rn 35a citation removed from two locations on page (Tax/Compliance section and Friction Map hybrid illusion paragraph). The innerer Kontrollpfad concept retained as it IS confirmed from the document. Verified status means all current claims are verified, not that the law will not change."
     source_url: "https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -29,10 +29,10 @@ entries:
     mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_high"
+    field: "high-priority items pending verification"
     old_value: "2"
     new_value: "1"
-    description: "Penalty HIGH item resolved: BMF FAQ confirmed no dedicated penalty provisions for e-invoice non-compliance; penalty_max: null confirmed correct. One HIGH item remains open: Rn 35a XML-binding-over-PDF claim in BMF Schreiben Oct 2025 — text at searched location does not match claim, correct PDF being re-examined. Confidence stays AMBER."
+    description: "Penalty high-priority item resolved: BMF FAQ confirmed no dedicated penalty provisions for e-invoice non-compliance; penalty_max: null confirmed correct. One high-priority item remains open: Rn 35a XML-binding-over-PDF claim in BMF Schreiben Oct 2025 — text at searched location does not match claim, correct PDF being re-examined. Status stays pending verification."
     source_url: "https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -47,10 +47,10 @@ entries:
     mandate_version_after: 1
   - timestamp: 2026-05-03T00:00:00Z
     type: confidence-upgrade
-    field: "unresolved_amber"
+    field: "items pending verification"
     old_value: "2"
     new_value: "0"
-    description: "First source verification pass (partial). Both AMBER items resolved: (1) EUR 800,000 threshold + §27 Abs. 38 UStG confirmed from Wachstumschancengesetz enacted text (BGBl. 2024 I Nr. 108); (2) correction must be EN 16931 e-invoice confirmed from BMF FAQ 2026. Two HIGH items remain open: (a) financial penalty provisions under §26a UStG / GoBD - no source yet; (b) Rn 35a XML-binding-over-PDF claim in BMF Schreiben Oct 2025 - text found at Rn 35a does not match claim, further search needed. Confidence stays AMBER."
+    description: "First source verification pass (partial). Both pending verification items resolved: (1) EUR 800,000 threshold + §27 Abs. 38 UStG confirmed from Wachstumschancengesetz enacted text (BGBl. 2024 I Nr. 108); (2) correction must be EN 16931 e-invoice confirmed from BMF FAQ 2026. Two high-priority items remain open: (a) financial penalty provisions under §26a UStG / GoBD - no source yet; (b) Rn 35a XML-binding-over-PDF claim in BMF Schreiben Oct 2025 - text found at Rn 35a does not match claim, further search needed. Status stays pending verification."
     source_url: "https://www.recht.bund.de/bgbl/1/2024/108/VO.html"
     mandate_version_before: 1
     mandate_version_after: 1
@@ -59,7 +59,7 @@ entries:
     field: null
     old_value: null
     new_value: null
-    description: "Initial publish. Germany e-invoicing compliance map built from Gemini Deep Research (3-prompt protocol) with Claude WebFetch cross-examination. Wachstumschancengesetz mandate facts, EN 16931 format, KoSIT validator, 8-year archiving under GoBD."
+    description: "Initial publish. Germany e-invoicing compliance map. Wachstumschancengesetz mandate facts, EN 16931 format, KoSIT validator, 8-year archiving under GoBD."
     source_url: null
     mandate_version_before: null
     mandate_version_after: 1
