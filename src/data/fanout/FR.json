@@ -2,9 +2,9 @@
   "country": "FR",
   "total": 33,
   "since": "2024-01-01",
-  "checked_on": "2026-09-14",
+  "checked_on": "2026-10-12",
   "sources_named": 35,
-  "sources_weekly": 29,
+  "sources_weekly": 26,
   "functions": [
     {
       "name": "Outbound invoicing",
@@ -19,20 +19,20 @@
         },
         {
           "date": "2026-07-28",
-          "text": "binding invoice formats written into law",
+          "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "platforms must follow the API and use-case standards",
+          "text": "transaction and payment data sets change content",
           "domain": "legifrance.gouv.fr"
         }
       ]
     },
     {
       "name": "Connectivity",
-      "count": 17,
-      "more": 14,
+      "count": 16,
+      "more": 13,
       "gap": true,
       "lines": [
         {
@@ -42,35 +42,35 @@
         },
         {
           "date": "2026-07-28",
-          "text": "platforms must follow the API and use-case standards",
+          "text": "changing reception platform becomes a regulated procedure",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
+          "text": "platform registration, audit and certification are tightened",
           "domain": "legifrance.gouv.fr"
         }
       ]
     },
     {
       "name": "Tax engine",
-      "count": 15,
-      "more": 12,
+      "count": 14,
+      "more": 11,
       "gap": true,
       "lines": [
         {
-          "date": "2025-07",
-          "text": "format standard tightens invoice identifier and address checks",
-          "domain": "afnor.org"
-        },
-        {
-          "date": "2026-07-28",
-          "text": "new mandatory data item: price uplift for fees and charges",
+          "date": "2026-02-20",
+          "text": "the platform itself sends invoice, transaction and payment data to the tax administration",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
+          "text": "transaction and payment data sets change content",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
           "domain": "legifrance.gouv.fr"
         }
       ]
@@ -88,35 +88,35 @@
         },
         {
           "date": "2026-07-28",
-          "text": "binding invoice formats written into law",
+          "text": "platforms must follow the API and use-case standards",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "platforms must follow the API and use-case standards",
+          "text": "format conversion must keep a readable copy",
           "domain": "legifrance.gouv.fr"
         }
       ]
     },
     {
       "name": "Master data",
-      "count": 5,
-      "more": 2,
+      "count": 6,
+      "more": 3,
       "gap": true,
       "lines": [
         {
           "date": "2025-07",
-          "text": "format standard expands guidance on e-invoice addresses",
+          "text": "format standard tightens invoice identifier and address checks",
           "domain": "afnor.org"
         },
         {
           "date": "2026-07-28",
-          "text": "duplicate invoice numbers must be caught by the platform",
+          "text": "directory must list members of a VAT group",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "directory must list members of a VAT group",
+          "text": "changing reception platform becomes a regulated procedure",
           "domain": "legifrance.gouv.fr"
         }
       ]
@@ -148,135 +148,168 @@
   "changes": [
     {
       "id": "FR-E01",
-      "date": "2024-10-15"
+      "date": "2024-10-15",
+      "body": "Rehearsal fixture text for FR-E01."
     },
     {
       "id": "FR-E02",
-      "date": "2024-12-18"
+      "date": "2024-12-18",
+      "body": "Rehearsal fixture text for FR-E02."
     },
     {
       "id": "FR-E05",
-      "date": "2025-05-13"
+      "date": "2025-05-13",
+      "body": "Rehearsal fixture text for FR-E05."
     },
     {
       "id": "FR-E07",
-      "date": "2025-06-19"
+      "date": "2025-06-19",
+      "body": "Rehearsal fixture text for FR-E07."
     },
     {
       "id": "FR-E10",
-      "date": "2025-07-31"
+      "date": "2025-07-31",
+      "body": "Rehearsal fixture text for FR-E10."
     },
     {
       "id": "FR-E11",
-      "date": "2025-07-31"
+      "date": "2025-07-31",
+      "body": "Rehearsal fixture text for FR-E11."
     },
     {
       "id": "FR-E15",
-      "date": "2025-10-31"
+      "date": "2025-10-31",
+      "body": "Rehearsal fixture text for FR-E15."
     },
     {
       "id": "FR-E16",
-      "date": "2025-11-17"
+      "date": "2025-11-17",
+      "body": "Rehearsal fixture text for FR-E16."
     },
     {
       "id": "FR-E24",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E24."
     },
     {
       "id": "FR-E25",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E25."
     },
     {
       "id": "FR-E26",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E26."
     },
     {
       "id": "FR-E27",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E27."
     },
     {
       "id": "FR-E28",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E28."
     },
     {
       "id": "FR-E29",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E29."
     },
     {
       "id": "FR-E30",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E30."
     },
     {
       "id": "FR-E31",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E31."
     },
     {
       "id": "FR-E32",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E32."
     },
     {
       "id": "FR-E33",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E33."
     },
     {
       "id": "FR-E34",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E34."
     },
     {
       "id": "FR-E35",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E35."
     },
     {
       "id": "FR-E36",
-      "date": "2026-02-20"
+      "date": "2026-02-20",
+      "body": "Rehearsal fixture text for FR-E36."
     },
     {
       "id": "FR-E41",
-      "date": "2026-04-30"
+      "date": "2026-04-30",
+      "body": "Rehearsal fixture text for FR-E41."
     },
     {
       "id": "FR-E48",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E48."
     },
     {
       "id": "FR-E49",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E49."
     },
     {
       "id": "FR-E50",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E50."
     },
     {
       "id": "FR-E51",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E51."
     },
     {
       "id": "FR-E52",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E52."
     },
     {
       "id": "FR-E53",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E53."
     },
     {
       "id": "FR-E54",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E54."
     },
     {
       "id": "FR-E55",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E55."
     },
     {
       "id": "FR-E56",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E56."
     },
     {
       "id": "FR-E57",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E57."
     },
     {
       "id": "FR-E58",
-      "date": "2026-07-28"
+      "date": "2026-07-28",
+      "body": "Rehearsal fixture text for FR-E58."
     }
   ]
 }
