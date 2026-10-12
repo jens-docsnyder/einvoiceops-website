@@ -60,7 +60,7 @@
       "lines": [
         {
           "date": "2026-02-20",
-          "text": "the platform itself sends invoice and payment data to the tax administration",
+          "text": "the platform itself sends invoice, transaction and payment data to the tax administration",
           "domain": "legifrance.gouv.fr"
         },
         {
