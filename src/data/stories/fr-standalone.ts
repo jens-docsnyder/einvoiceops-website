@@ -42,7 +42,7 @@ export const frStandalone = {
   // here (the older proof.sourcesCount override is gone, so the strip and the limits line below cannot drift).
   proof: {
     // A change is what a source published; it holds one or more rules, each a counted row (Jens, 2026-10-08). {published}
-    // is the number of publication days of the counted rows (publications() in format.ts).
+    // is the number of publications of the counted rows, one per issuing body per day (publications() in format.ts).
     headline: `{published} changes we've counted since {since}`,
     headlineSub: `to France's e-invoicing rules`,
     sourcesUnit: `official sources`,

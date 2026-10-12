@@ -7,8 +7,8 @@ import { withBodies, warnBodies } from '../../../components/site/format';
 // Published at an address nothing else on the site links to, with noindex. Fan-out data: src/data/fanout/FR.json, written
 // from the product data after each weekly run; no count on the page is typed (the July example's own are the exception).
 // Every change in the file carries its issuing body (key "body", keys in frBodyKeys); one without stops the build and is named.
-// The split by body and the count since go-live are computed from the file (format.ts); a body the copy does not list, or a
-// day with two bodies, only warns in the build log.
+// The split by body and the count since go-live are computed from the file (format.ts); a body the copy does not list only
+// warns in the build log. A box is one publication per issuing body per day, so a day with two bodies is two boxes.
 const fanout = withBodies(fanoutFile, {}, 'France page: FR.json');
 warnBodies('France page', fanout, frBodyKeys);
 ---

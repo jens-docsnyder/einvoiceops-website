@@ -9,8 +9,9 @@ import { publications, withBodies, warnBodies } from '../../components/site/form
 //
 // Every change in the file carries its issuing body (key "body": law, ministry, kosit, ferd). deBodies in de.ts is only a
 // fallback for a change the file gives none; a change with neither stops the build and is named. The split by body, the
-// count since January 2025 and the box count are computed from the file (format.ts). A body the copy does not list, or a day
-// on which two bodies both published (so the split would add up to more than the boxes), only warns in the build log.
+// count since January 2025 and the box count are computed from the file (format.ts). A body the copy does not list only warns
+// in the build log. A box is one publication per issuing body per day, so a day on which two bodies both published is two
+// boxes and the split by body always adds up to the boxes.
 // What stops the build: the list of changes and the released total disagree (publications() has no answer then), or a
 // change has no body.
 if ((fanoutFile.changes ?? []).length !== fanoutFile.total) {

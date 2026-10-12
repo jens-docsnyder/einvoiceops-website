@@ -79,10 +79,10 @@ export const de = {
   },
 
   // The proof strip in its lead shape (ProofStrip.astro): the sources read, then the count. The sources number is
-  // sources_weekly in DE.json and the count {published} is the number of publication days of the counted rows
-  // (publications() in format.ts); no number is typed here, both move with the file.
-  // The count is publications by body and day, as France's (one per source per publication day); the box-count check in the
-  // page file proves the two readings agree today.
+  // sources_weekly in DE.json and the count {published} is the number of publications of the counted rows, one per
+  // issuing body per day (publications() in format.ts); no number is typed here, both move with the file.
+  // The count is publications by body and day, as France's (one per source per publication day); a day with two bodies is two boxes, so the
+  // split and the boxes always agree.
   // The unit is "sources", not "official sources". Ruled by the check seat 2026-10-09: "official" does not hold, because the
   // sources include a private mirror of the statute, the gazette index on a publisher's database and the format bodies' associations.
   proof: {

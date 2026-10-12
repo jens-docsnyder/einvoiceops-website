@@ -20,29 +20,33 @@ export function longDate(iso: string): string {
   return `${d} ${LONG[m - 1]} ${y}`;
 }
 
-// The changes as the page counts them (Jens, 2026-10-08): a change is what a source published, and one change holds one or
-// more rules, each of which is one counted row (one entry in data.changes). So the changes are the publication days of
-// the counted rows, one per day: in France's data every day has a single issuing body. Undefined when the list does not
-// agree with the released count.
-export function publications(data: { total: number; changes?: { id: string; date: string }[] }): string[] | undefined {
+// The changes as the page counts them (Jens, 2026-10-08; box rule ruled 2026-10-12): a change is what ONE issuing body published
+// on ONE day, and it holds one or more rules, each of which is one counted row (one entry in data.changes). So a box is one
+// distinct (day, issuing body) pair of the counted rows: a day on which two bodies both published is two boxes, and a body's
+// split counts that body's distinct days, so the splits add up to the boxes. Sorted by day, then body. A change without a
+// body counts under the empty body. Undefined when the list does not agree with the released count.
+export interface Publication { date: string; body: string }
+export function publications(data: { total: number; changes?: { id: string; date: string; body?: string }[] }): Publication[] | undefined {
   const list = data.changes ?? [];
   if (list.length !== data.total) return undefined;
-  return [...new Set(list.map((c) => c.date))].sort();
+  const seen = new Map<string, Publication>();
+  for (const c of list) seen.set(`${c.date}\u0000${c.body ?? ''}`, { date: c.date, body: c.body ?? '' });
+  return [...seen.values()].sort((x, y) => (x.date < y.date ? -1 : x.date > y.date ? 1 : x.body < y.body ? -1 : x.body > y.body ? 1 : 0));
 }
 
 // Every count and split the story copy states is computed here from the fan-out file, never typed (Jens, 2026-10-12: the
-// numbers update by themselves after each weekly run). A change in a count is one publication day, optionally narrowed to
-// one issuing body (the `body` key of each entry in changes[]) and to the days from a date on. A month-only date
+// numbers update by themselves after each weekly run). A change in a count is one publication, that is one (day, issuing
+// body) pair, optionally narrowed to one issuing body (the `body` key of each entry in changes[]) and to the days from a date on. A month-only date
 // (YYYY-MM) counts as the first of its month.
 export interface Change { id: string; date: string; body?: string }
 type CountData = { total: number; changes?: Change[] };
 const norm = (d: string) => (d.length === 7 ? `${d}-01` : d);
 
-// Distinct publication days of the changes, optionally of one body and from a date on (>=). Body counts are distinct
-// (body, day) pairs, which is the same thing: one body's days.
+// Distinct publications of the changes (one per issuing body per day), optionally of one body (then that body's distinct
+// days) and from a date on (>=). Without a body filter this is the number of boxes, and the per-body counts add up to it.
 export function countDays(data: CountData, opts: { body?: string; from?: string } = {}): number {
   const rows = (data.changes ?? []).filter((c) => (!opts.body || c.body === opts.body) && (!opts.from || norm(c.date) >= opts.from));
-  return new Set(rows.map((c) => c.date)).size;
+  return new Set(rows.map((c) => `${c.date}\u0000${c.body ?? ''}`)).size;
 }
 
 // Returns the data with a body on every change. The file's own `body` wins; `fallback` (id to body, optional) fills only
@@ -61,15 +65,13 @@ export function withBodies<T extends CountData>(data: T, fallback: Record<string
   return { ...data, changes };
 }
 
-// Soft checks on the split by body. These warn in the build log and never stop the build: a body the story copy does not
-// list, or a day on which two bodies both published (so the per-body counts add up to more than the boxes), still builds.
+// Soft check on the split by body. It warns in the build log and never stops the build: a body the story copy does not list
+// still builds. A day on which two bodies both published is two boxes (one per body and day), so the splits always add up
+// to the boxes and there is nothing to warn about there.
 export function warnBodies(label: string, data: CountData, listed: string[]): void {
   const rows = data.changes ?? [];
   const unknown = [...new Set(rows.map((c) => c.body).filter((b): b is string => !!b && !listed.includes(b)))];
   if (unknown.length > 0) console.warn(`${label}: the file names body ${unknown.join(', ')} that the story copy does not list; its changes are in the boxes and the total but on no line of the split.`);
-  const sum = listed.reduce((n, b) => n + countDays(data, { body: b }), 0);
-  const days = countDays(data);
-  if (unknown.length === 0 && sum !== days) console.warn(`${label}: the split by body adds up to ${sum} but the boxes count ${days}; a day holds two bodies.`);
 }
 
 // A conditional passage: { ifNone: { body?, from? }, then, otherwise }. "then" is used when no change matches (of that body,
@@ -84,7 +86,7 @@ export function pickCond(v: any, data: CountData): any {
 
 
 // Fills {named}, {weekly}, {checked}, {since}, {total}, {published} in a copy string from the fan-out data, plus the counts
-// computed from changes[]: {published@DATE} (publication days from DATE on), {changes@DATE} ("1 change" or "3 changes"),
+// computed from changes[]: {published@DATE} (publications, one per issuing body per day, from DATE on), {changes@DATE} ("1 change" or "3 changes"),
 // {body:KEY} and {body:KEY@DATE} (one body's publication days), {missed:KEY} and {missed:KEY@DATE} (the days that did not
 // come from that body).
 export function fill(template: string, data: { total: number; since: string; checked_on: string; sources_named: number; sources_weekly: number; changes?: Change[] }): string {
@@ -93,7 +95,7 @@ export function fill(template: string, data: { total: number; since: string; che
     // No fallback: the released total counts rules, so printing it here would call rules changes.
     const days = publications(data);
     if (!days) throw new Error('{published}: the changes list does not agree with the released total');
-    out = out.replaceAll('{published}', String(days.length));
+    out = out.replaceAll('{published}', String(days.length));   // publications: one per issuing body per day, the number of boxes
   }
   out = out.replace(/\{(published|changes|body|missed)(?::([a-z0-9-]+))?(?:@(\d{4}-\d{2}-\d{2}))?\}/g, (m, kind: string, body: string | undefined, from: string | undefined) => {
     const n = (o: { body?: string; from?: string }) => countDays(data, o);
