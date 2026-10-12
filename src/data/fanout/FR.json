@@ -2,9 +2,9 @@
   "country": "FR",
   "total": 33,
   "since": "2024-01-01",
-  "checked_on": "2026-09-14",
+  "checked_on": "2026-10-12",
   "sources_named": 35,
-  "sources_weekly": 29,
+  "sources_weekly": 26,
   "functions": [
     {
       "name": "Outbound invoicing",
@@ -19,20 +19,20 @@
         },
         {
           "date": "2026-07-28",
-          "text": "binding invoice formats written into law",
+          "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "platforms must follow the API and use-case standards",
+          "text": "transaction and payment data sets change content",
           "domain": "legifrance.gouv.fr"
         }
       ]
     },
     {
       "name": "Connectivity",
-      "count": 17,
-      "more": 14,
+      "count": 16,
+      "more": 13,
       "gap": true,
       "lines": [
         {
@@ -42,35 +42,35 @@
         },
         {
           "date": "2026-07-28",
-          "text": "platforms must follow the API and use-case standards",
+          "text": "changing reception platform becomes a regulated procedure",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
+          "text": "platform registration, audit and certification are tightened",
           "domain": "legifrance.gouv.fr"
         }
       ]
     },
     {
       "name": "Tax engine",
-      "count": 15,
-      "more": 12,
+      "count": 14,
+      "more": 11,
       "gap": true,
       "lines": [
         {
-          "date": "2025-07",
-          "text": "format standard tightens invoice identifier and address checks",
-          "domain": "afnor.org"
-        },
-        {
-          "date": "2026-07-28",
-          "text": "new mandatory data item: price uplift for fees and charges",
+          "date": "2026-02-20",
+          "text": "the platform itself sends invoice and payment data to the tax administration",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
+          "text": "transaction and payment data sets change content",
+          "domain": "legifrance.gouv.fr"
+        },
+        {
+          "date": "2026-07-28",
+          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
           "domain": "legifrance.gouv.fr"
         }
       ]
@@ -88,35 +88,35 @@
         },
         {
           "date": "2026-07-28",
-          "text": "binding invoice formats written into law",
+          "text": "platforms must follow the API and use-case standards",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "platforms must follow the API and use-case standards",
+          "text": "format conversion must keep a readable copy",
           "domain": "legifrance.gouv.fr"
         }
       ]
     },
     {
       "name": "Master data",
-      "count": 5,
-      "more": 2,
+      "count": 6,
+      "more": 3,
       "gap": true,
       "lines": [
         {
           "date": "2025-07",
-          "text": "format standard expands guidance on e-invoice addresses",
+          "text": "format standard tightens invoice identifier and address checks",
           "domain": "afnor.org"
         },
         {
           "date": "2026-07-28",
-          "text": "duplicate invoice numbers must be caught by the platform",
+          "text": "directory must list members of a VAT group",
           "domain": "legifrance.gouv.fr"
         },
         {
           "date": "2026-07-28",
-          "text": "directory must list members of a VAT group",
+          "text": "changing reception platform becomes a regulated procedure",
           "domain": "legifrance.gouv.fr"
         }
       ]

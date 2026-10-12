@@ -4,20 +4,35 @@ import { de as c, deBodies } from '../../data/stories/de';
 import fanout from '../../data/fanout/DE.json';
 import { publications } from '../../components/site/format';
 
-// Published at /germany/ with noindex, linked from nowhere. Fan-out data: src/data/fanout/DE.json (27 rows, 22 publications).
+// Published at /germany/ with noindex, linked from nowhere. Fan-out data: src/data/fanout/DE.json, written from the product
+// data after each weekly run; no count on the page is typed.
 //
 // Box-count check (plan section 2): a change is one publication by one body on one day, and publications() dedupes on the
-// date alone. The two readings agree today (22), but only because no day yet holds two bodies. So the build counts the
-// distinct (body, date) pairs from the body map in de.ts as well, and stops if the number differs from publications(), or
-// if a counted row has no body in the map. Without it a future day with two publishers would be counted as one box.
-const days = publications(fanout) ?? [];
-const unmapped = (fanout.changes ?? []).filter((r: { id: string }) => !(r.id in deBodies)).map((r: { id: string }) => r.id);
-if (unmapped.length > 0) {
-  throw new Error(`Germany page: no publishing body in deBodies (src/data/stories/de.ts) for ${unmapped.join(', ')}; the box count cannot be checked.`);
+// date alone. The two readings agree as long as no day holds two bodies. So the build counts the distinct (body, date)
+// pairs from the body map in de.ts as well, and stops if the number differs from publications() over the same rows.
+// Without it a future day with two publishers would be counted as one box.
+//
+// A normal new change must not stop the build. The feed adds ids the body map does not know yet; such a row is counted by
+// its date alone (it is a box, a count and a card number like any other) and the build log names it with a warning, so
+// the map in de.ts can be completed. The check on the pairs then runs over the rows the map knows. What still stops the
+// build: the list of changes and the released total disagree (publications() has no answer then).
+if ((fanout.changes ?? []).length !== fanout.total) {
+  throw new Error(`Germany page: DE.json holds ${(fanout.changes ?? []).length} changes but a total of ${fanout.total}; the boxes and the counts would disagree.`);
 }
-const pairs = new Set((fanout.changes ?? []).map((r: { id: string; date: string }) => `${deBodies[r.id]}|${r.date}`));
-if (pairs.size !== days.length) {
-  throw new Error(`Germany page: ${pairs.size} publications by body and day but ${days.length} boxes by day alone. A day holds two bodies, so the boxes, the strip count and the card counts would disagree; fix publications() in format.ts or the body map in de.ts before building.`);
+const days = publications(fanout);
+if (!days) {
+  throw new Error('Germany page: the changes list does not agree with the released total; the box count cannot be checked.');
+}
+const rows = (fanout.changes ?? []) as { id: string; date: string }[];
+const known = rows.filter((r) => r.id in deBodies);
+const unmapped = rows.filter((r) => !(r.id in deBodies));
+if (unmapped.length > 0) {
+  console.warn(`Germany page: no publishing body in deBodies (src/data/stories/de.ts) for ${unmapped.map((r) => r.id).join(', ')}; counted by date alone.`);
+}
+const pairs = new Set(known.map((r) => `${deBodies[r.id]}|${r.date}`));
+const knownDays = new Set(known.map((r) => r.date));
+if (pairs.size !== knownDays.size) {
+  throw new Error(`Germany page: ${pairs.size} publications by body and day but ${knownDays.size} boxes by day alone among the mapped rows. A day holds two bodies, so the boxes, the strip count and the card counts would disagree; fix publications() in format.ts or the body map in de.ts before building.`);
 }
 ---
 <StoryPage c={c} fanout={fanout} page="/germany/" segment="standalone" country="DE" fanoutDisclosure={c.disclosure} />

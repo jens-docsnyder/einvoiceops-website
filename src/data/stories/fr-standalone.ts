@@ -30,14 +30,13 @@ export const frStandalone = {
   // The proof strip in its lead shape (ProofStrip.astro, proof.headline): three columns read left to right as one story,
   // the last check, the sources read, then the count (Jens, 2026-10-06). {checked} is the date of the released count;
   // the date over "last time we checked for changes" is last_check in FR.json.
-  // sourcesCount is a hard number, 27, in place of sources_weekly (29): two of the 29 polled sources (FR-W35, FR-W36)
-  // are switched on and have never been read once (the stuck-items plan, item 6), so the page says 27 until they are read.
+  // The sources number is sources_weekly in FR.json, written from the product data after each weekly run; nothing is typed
+  // here (the older proof.sourcesCount override is gone, so the strip and the limits line below cannot drift).
   proof: {
     // A change is what a source published; it holds one or more rules, each a counted row (Jens, 2026-10-08). {published}
     // is the number of publication days of the counted rows (publications() in format.ts), 10 for France since 2024.
     headline: `{published} changes we've counted since {since}`,
     headlineSub: `to France's e-invoicing rules`,
-    sourcesCount: 27,
     sourcesUnit: `official sources`,
     sources: `we read every week`,
     // The date column is gone (improvement review 2026-10, item 3): nothing writes last_check, so a typed date went stale
@@ -117,7 +116,7 @@ export const frStandalone = {
           // 20 February 2026, the decree and order of 28 July 2026), 4 AFNOR days (13 May, 19 June, 31 July, 17 November 2025),
           // 4 from the tax administration (the ministry release of 15 October 2024, DGFiP specifications v3.0, v3.1, v3.2),
           // from the date, channel and source_ref columns of FR-changes.csv, counted rows from 2024-01-01.
-          lead: `We've counted 10 changes since 1 January 2024, and this is where each of them came from.`,
+          lead: `We've counted {published} changes since {since}, and this is where each of them came from.`,
           points: [
             `2 through Parliament and the government`,
             `4 from AFNOR`,
@@ -323,11 +322,11 @@ export const frStandalone = {
   // The limits box, beside the onboarding steps. Lines from Tone of voice.md ("The hard rules, said in this voice"), France.
   limits: {
     h2: `What we don't do`,
-    // Plainer than the lines in Tone of voice.md (Jens, 2026-10-08: "way too technical"). The 27 is proof.sourcesCount
-    // above, so the two change together.
+    // Plainer than the lines in Tone of voice.md (Jens, 2026-10-08: "way too technical"). The number is {weekly},
+    // sources_weekly in FR.json, the same one the strip shows, so the two change together.
     lines: [
       { lead: `Give legal or tax advice.`, text: `What we send is our reading of what a change means for your invoicing, with the source beside it so you can check it.` },
-      { lead: `Look beyond our sources.`, text: `We read 27 of France's official sources every week, and we tell you about the changes we find there and nowhere else.` },
+      { lead: `Look beyond our sources.`, text: `We read {weekly} of France's official sources every week, and we tell you about the changes we find there and nowhere else.` },
       { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
     ],
   },

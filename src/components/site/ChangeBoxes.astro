@@ -25,11 +25,18 @@ interface Props {
 }
 const { data, redId } = Astro.props;
 
-// The list has to agree with the released count; if it does not, there is no row at all, since the page could not say
-// how many changes there are.
+// The list has to agree with the released count. If it does not, the build stops: a page with a row of boxes that does not
+// match the number beside it is wrong, and a missing row would hide that.
 const days = publications(data);
-const count = days?.length ?? 0;
+if (!days) {
+  throw new Error(`ChangeBoxes: ${data.changes?.length ?? 0} changes in the data but a released total of ${data.total}; the boxes and the counts would disagree.`);
+}
+const count = days.length;
 const redDate = redId ? data.changes?.find((c) => c.id === redId)?.date : undefined;
+// The example change is typed in the story file and must still be in the data, or the accent box would silently vanish.
+if (redId && !redDate) {
+  throw new Error(`ChangeBoxes: the example change ${redId} is not in the changes list of the data.`);
+}
 const red = days && redDate ? days.indexOf(redDate) : -1;
 const label = (date: string) => `${Number(date.slice(5, 7))}/${date.slice(2, 4)}`;
 // Outlined boxes for the changes still to come (Jens, 2026-10-08): they finish the last row and appear as the line starts
@@ -43,7 +50,7 @@ const futureNarrow = (7 - (count % 7)) % 7;
     <div class="cb-in">
       <span class="cb-drop"></span>
       <ol class="cb-row">
-        {(days ?? []).map((d, k) => (
+        {days.map((d, k) => (
           <li class={k === red ? 'cb-box cb-red' : 'cb-box'}><span class="cb-sq"></span><span class="cb-date">{label(d)}</span></li>
         ))}
         {Array.from({ length: future }, (_, k) => (

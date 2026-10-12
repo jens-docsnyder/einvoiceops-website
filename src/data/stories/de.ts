@@ -3,16 +3,11 @@
 // website main de5cfc2 (France as of Jens, 2026-10-09: price in the onboarding heading, no intro under it, contact block
 // with the profile link).
 // Strings may hold <strong> and <span class='accent'>; they are rendered with set:html.
-// Placeholders {published} {since} are filled from src/data/fanout/DE.json (27 rows, 22 publications).
+// Placeholders {published} {since} are filled from src/data/fanout/DE.json.
 // Voice: Market Intelligence/Messaging/Tone of voice.md. Plan: the Germany page project plan of 2026-10 (Market Intelligence/Messaging). Facts only from
 // the Germany facts file for messaging (same folder; cited below as "facts" with its line number) and Product Research/Change Velocity/DE-changes.csv (cited by event id).
 // Vocabulary: a change is one publication by one body on one day; a rule is one counted row inside it. The Jahressteuergesetz
 // 2024 is one change with four rules (DE-E35, E53, E54, E55); DE-E67 is one change with one rule.
-
-// The sources we read every week: 24, confirmed by the weekly reads of 2026-10-09 (data seat, seat 1). It rises as the doors of
-// pending action #1066 read on a Monday. The strip (proof.sourcesCount) and the limits line below both take this one
-// constant, so the two cannot drift. Facts line 40 says the same number.
-const SOURCES = 24;
 
 // Which body published each counted row, for the box-count check in src/pages/germany/index.astro: the number of distinct
 // (body, date) pairs over the rows has to equal publications() over the same rows, so a future day on which two bodies
@@ -79,16 +74,16 @@ export const de = {
     subline: `The rules have kept changing since receiving e-invoices became mandatory in January 2025. When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it, with what changed for them and where it says so.`,
   },
 
-  // The proof strip in its lead shape (ProofStrip.astro): the sources read, then the count. {published} is the number of
-  // publication days of the counted rows (publications() in format.ts): 22 for Germany since 1 January 2024, from 27 rows.
+  // The proof strip in its lead shape (ProofStrip.astro): the sources read, then the count. The sources number is
+  // sources_weekly in DE.json and the count {published} is the number of publication days of the counted rows
+  // (publications() in format.ts); no number is typed here, both move with the file.
   // The count is publications by body and day, as France's (one per source per publication day); the box-count check in the
   // page file proves the two readings agree today.
   // The unit is "sources", not "official sources". Ruled by the check seat 2026-10-09: "official" does not hold, because the
-  // 24 include a private mirror of the statute, the gazette index on a publisher's database and the format bodies' associations.
+  // sources include a private mirror of the statute, the gazette index on a publisher's database and the format bodies' associations.
   proof: {
     headline: `{published} changes we've counted since {since}`,
     headlineSub: `to Germany's e-invoicing rules`,
-    sourcesCount: SOURCES,
     sourcesUnit: `sources`,
     sources: `we read every week`,
     // The date column stays empty, as on France: nothing writes last_check.
@@ -164,7 +159,7 @@ export const de = {
           // 30 Jan 2026 DE-E48, 2 Sep 2026 DE-E67); FeRD 6 (18 Sep 2024 DE-E31, 13 Nov 2024 DE-E33, 7 May 2025 DE-E39,
           // 4 Dec 2025 DE-E42, 10 Jun 2026 DE-E47, 4 Aug 2026 DE-E49). 4 + 5 + 7 + 6 = 22.
           // None of the 12 since receiving became mandatory came through the law (facts 26, 107).
-          lead: `We've counted 22 changes since 1 January 2024, and this is where each of them came from.`,
+          lead: `We've counted {published} changes since {since}, and this is where each of them came from.`,
           points: [
             `4 through the law`,
             `5 from the finance ministry`,
@@ -204,7 +199,7 @@ export const de = {
   // became mandatory (card 1b), from the format body and not the law (card 2), and it reaches the software that builds the
   // invoice, the checks on incoming invoices and the Peppol version at the same time (card 3). One rule, grid letters oic,
   // 3 work items: outbound 1, inbound 1, connectivity 1 (DE-changes.csv). So the grid is one column and the closing box reads
-  // 1 rule, 3 work items: Germany's truth is 22 publications, most of them a single rule, and the row of boxes carries the breadth.
+  // 1 rule, 3 work items: Germany's truth is its publications, most of them a single rule, and the row of boxes carries the breadth.
   followed: {
     h2: `A real example from September 2026`,
     intro: `On 2 September 2026, KoSIT released new checks for XRechnung, one of Germany's two accepted e-invoice formats, so an invoice that passed validation in spring can fail now. We count it as one change, and it affects three of your invoicing functions at once.`,
@@ -278,12 +273,12 @@ export const de = {
   },
 
   // The limits box, beside the onboarding steps: France's three lines with Germany for France. The number in the second line
-  // is SOURCES, the strip's constant, so the two cannot drift. "Official" is left out of it, as in the strip's unit (check seat 2026-10-09).
+  // is {weekly}, sources_weekly from src/data/fanout/DE.json, the same number the strip shows, so the two cannot drift. "Official" is left out of it, as in the strip's unit (check seat 2026-10-09).
   limits: {
     h2: `What we don't do`,
     lines: [
       { lead: `Give legal or tax advice.`, text: `What we send is our reading of what a change means for your invoicing, with the source beside it so you can check it.` },
-      { lead: `Look beyond our sources.`, text: `We read ${SOURCES} of Germany's sources every week, and we tell you about the changes we find there and nowhere else.` },
+      { lead: `Look beyond our sources.`, text: `We read {weekly} of Germany's sources every week, and we tell you about the changes we find there and nowhere else.` },
       { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
     ],
   },
