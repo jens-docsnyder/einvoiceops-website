@@ -1,10 +1,10 @@
 ---
-import StoryPage from '../../../components/site/StoryPage.astro';
-import { frStandalone as c, frBodyKeys } from '../../../data/stories/fr-standalone';
-import fanoutFile from '../../../data/fanout/FR.json';
-import { withBodies, warnBodies } from '../../../components/site/format';
+import StoryPage from '../../components/site/StoryPage.astro';
+import { frStandalone as c, frBodyKeys } from '../../data/stories/fr-standalone';
+import fanoutFile from '../../data/fanout/FR.json';
+import { withBodies, warnBodies } from '../../components/site/format';
 
-// Published at an address nothing else on the site links to, with noindex. Fan-out data: src/data/fanout/FR.json, written
+// Published at /france/, with noindex, linked from nowhere. Fan-out data: src/data/fanout/FR.json, written
 // from the product data after each weekly run; no count on the page is typed (the July example's own are the exception).
 // Every change in the file carries its issuing body (key "body", keys in frBodyKeys); one without stops the build and is named.
 // The split by body and the count since go-live are computed from the file (format.ts); a body the copy does not list only
@@ -12,4 +12,4 @@ import { withBodies, warnBodies } from '../../../components/site/format';
 const fanout = withBodies(fanoutFile, {}, 'France page: FR.json');
 warnBodies('France page', fanout, frBodyKeys);
 ---
-<StoryPage c={c} fanout={fanout} page="/fr/independent/" segment="standalone" country="FR" fanoutDisclosure={c.disclosure} />
+<StoryPage c={c} fanout={fanout} page="/france/" segment="standalone" country="FR" fanoutDisclosure={c.disclosure} />
