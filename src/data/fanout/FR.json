@@ -1,6 +1,6 @@
 {
   "country": "FR",
-  "total": 33,
+  "total": 34,
   "since": "2024-01-01",
   "checked_on": "2026-10-12",
   "sources_named": 35,
@@ -8,8 +8,8 @@
   "functions": [
     {
       "name": "Outbound invoicing",
-      "count": 19,
-      "more": 16,
+      "count": 20,
+      "more": 17,
       "gap": true,
       "lines": [
         {
@@ -19,13 +19,13 @@
         },
         {
           "date": "2026-07-28",
-          "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
+          "text": "transaction and payment data sets change content",
           "domain": "legifrance.gouv.fr"
         },
         {
-          "date": "2026-07-28",
-          "text": "transaction and payment data sets change content",
-          "domain": "legifrance.gouv.fr"
+          "date": "2026-10-14",
+          "text": "tax administration publishes a new version of its specifications",
+          "domain": "impots.gouv.fr"
         }
       ]
     },
@@ -54,8 +54,8 @@
     },
     {
       "name": "Tax engine",
-      "count": 14,
-      "more": 11,
+      "count": 15,
+      "more": 12,
       "gap": true,
       "lines": [
         {
@@ -65,13 +65,13 @@
         },
         {
           "date": "2026-07-28",
-          "text": "transaction and payment data sets change content",
+          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
           "domain": "legifrance.gouv.fr"
         },
         {
-          "date": "2026-07-28",
-          "text": "transaction reporting moves to fixed intervals, no longer a minimum",
-          "domain": "legifrance.gouv.fr"
+          "date": "2026-10-14",
+          "text": "tax administration publishes a new version of its specifications",
+          "domain": "impots.gouv.fr"
         }
       ]
     },
@@ -310,6 +310,11 @@
       "id": "FR-E58",
       "date": "2026-07-28",
       "body": "law"
+    },
+    {
+      "id": "FR-E59",
+      "date": "2026-10-14",
+      "body": "tax"
     }
   ]
 }
