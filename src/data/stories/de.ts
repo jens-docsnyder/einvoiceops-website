@@ -250,6 +250,7 @@ export const de = {
       ] },
     ],
     gridStart: { col: 0, fn: `o` },
+    panelBeside: true,
     notTouched: `not affected`,
     touched: [],
     untouched: [],

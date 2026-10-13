@@ -34,6 +34,9 @@ interface Props {
     closing?: { title: any; text?: any[]; lead?: any; chain?: any[]; then?: any };
     changes?: { title: any; parts: { f: string; text: any }[] }[];
     gridStart?: { col: number; fn: string };
+    // Optional (Jens, 2026-10-13, Germany): the change text sits to the right of the grid instead of under it, and the closing
+    // box runs full width below both. Wanted where the grid is one column wide and the space beside it would stand empty.
+    panelBeside?: boolean;
   };
   disclosure?: any;
   tone?: 'white' | 'tint';
@@ -62,8 +65,8 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
     {copy.shows ? (
     <div class="fc-ex2">
       <p class="fc-src fc-src-top" set:html={t(copy.arrives.source)}></p>
-      <div class="fc-two">
-        <figure class={live ? 'fc-grid-wrap fc-live' : 'fc-grid-wrap'} data-col={start.col} data-fn={start.fn}>
+      <div class={copy.panelBeside ? 'fc-two fc-beside' : 'fc-two'}>
+        <figure class={live ? (copy.panelBeside ? 'fc-grid-wrap fc-live fc-live-beside' : 'fc-grid-wrap fc-live') : 'fc-grid-wrap'} data-col={start.col} data-fn={start.fn}>
           <table class="fc-grid">
             {live && (
               <thead>
@@ -399,6 +402,16 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   .fc-live[data-fn="c"] .fc-part[data-f*="c"], .fc-live[data-fn="t"] .fc-part[data-f*="t"],
   .fc-live[data-fn="m"] .fc-part[data-f*="m"], .fc-live[data-fn="a"] .fc-part[data-f*="a"] {
     color: var(--ink); background: rgba(180, 83, 9, 0.16); box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.16); -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  /* Germany (Jens, 2026-10-13): the change text to the right of the clickable grid, the closing box full width below. On a
+     phone everything stacks as before. */
+  @media (min-width: 760px) {
+    .fc-two.fc-beside { display: block; }
+    .fc-two.fc-beside .fc-col { margin-top: 28px; }
+    .fc-grid-wrap.fc-live-beside { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 32px; align-items: start; overflow-x: visible; }
+    .fc-live-beside .fc-grid { grid-column: 1; grid-row: 1; }
+    .fc-live-beside .fc-panel { grid-column: 2; grid-row: 1; margin: 0; }
+    .fc-live-beside .fc-grid-cap { grid-column: 1 / -1; }
   }
   @media (max-width: 999px) { .fc-two { display: block; } .fc-two .fc-col { margin-top: 28px; } }
   @media (min-width: 1000px) { .fc-live .fc-dot, .fc-chg { width: 28px; height: 28px; line-height: 28px; font-size: 0.8rem; } .fc-chgno { width: 26px; height: 26px; } }
