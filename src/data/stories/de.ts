@@ -3,26 +3,22 @@
 // website main de5cfc2 (France as of Jens, 2026-10-09: price in the onboarding heading, no intro under it, contact block
 // with the profile link).
 // Strings may hold <strong> and <span class='accent'>; they are rendered with set:html.
-// Placeholders {published} {since} are filled from src/data/fanout/DE.json (27 rows, 22 publications).
+// Placeholders are filled from src/data/fanout/DE.json (format.ts fill()): {published} {since} {weekly}, and the counts computed
+// from its changes list, {published@DATE} {body:KEY@DATE} {missed:KEY@DATE}; a passage that depends on a count is a conditional
+// ({ ifNone, then, otherwise }, format.ts). No count on the page is typed.
 // Voice: Market Intelligence/Messaging/Tone of voice.md. Plan: the Germany page project plan of 2026-10 (Market Intelligence/Messaging). Facts only from
 // the Germany facts file for messaging (same folder; cited below as "facts" with its line number) and Product Research/Change Velocity/DE-changes.csv (cited by event id).
 // Vocabulary: a change is one publication by one body on one day; a rule is one counted row inside it. The Jahressteuergesetz
 // 2024 is one change with four rules (DE-E35, E53, E54, E55); DE-E67 is one change with one rule.
 
-// The sources we read every week: 24, confirmed by the weekly reads of 2026-10-09 (data seat, seat 1). It rises as the doors of
-// pending action #1066 read on a Monday. The strip (proof.sourcesCount) and the limits line below both take this one
-// constant, so the two cannot drift. Facts line 40 says the same number.
-const SOURCES = 24;
-
-// Which body published each counted row, for the box-count check in src/pages/germany/index.astro: the number of distinct
-// (body, date) pairs over the rows has to equal publications() over the same rows, so a future day on which two bodies
-// publish cannot quietly be counted as one. Bodies read from the channel and source columns of DE-changes.csv, counted
-// rows from 2024-01-01 (plan appendix). law = Parliament through the Bundesgesetzblatt, ministry = the finance ministry's
-// letters and FAQ, kosit = KoSIT's XRechnung bundle releases, ferd = FeRD's ZUGFeRD releases.
-// The two KoSIT rows of 2024-06-20 (DE-E29 Schematron, DE-E30 XRechnung 3.0.2) are one KoSIT publication, as France counts
-// one per source per publication day. If xeinkauf.de ever shows DE-E44 (5 February 2026) and DE-E48 (30 January 2026) on one
-// day, the strip, card 1b and card 2's KoSIT count all move together (plan appendix, near collision).
-export const deBodies: Record<string, 'law' | 'ministry' | 'kosit' | 'ferd'> = {
+// Which body published each counted row. The fan-out file DE.json now carries it on every change (key "body"), written by the
+// weekly job, and the file wins. This map is only the fallback for a change the file gives no body (src/pages/germany/index.astro
+// calls withBodies()), so a gap in the file does not stop the build for the ids listed here; a change in neither stops it and
+// names its id. Keys: law = Parliament through the Bundesgesetzblatt, ministry = the finance ministry's letters and FAQ,
+// kosit = KoSIT's XRechnung bundle releases, ferd = FeRD's ZUGFeRD releases (read from the channel and source columns of
+// DE-changes.csv, counted rows from 2024-01-01). The two KoSIT rows of 2024-06-20 (DE-E29 Schematron, DE-E30 XRechnung 3.0.2)
+// are one KoSIT publication, as France counts one per source per publication day.
+export const deBodies: Record<string, string> = {
   'DE-E50': 'ministry',
   'DE-E27': 'law',
   'DE-E28': 'law',
@@ -52,6 +48,9 @@ export const deBodies: Record<string, 'law' | 'ministry' | 'kosit' | 'ferd'> = {
   'DE-E67': 'kosit',
 };
 
+// The bodies card 2 lists, in its order (the page file warns in the build log if the file names another).
+export const deBodyKeys = ['law', 'ministry', 'kosit', 'ferd'];
+
 export const de = {
   // Page flow C, country-first tree: the site structure file in Market Intelligence/Messaging.
   flow: 'c',
@@ -74,28 +73,28 @@ export const de = {
       coming: `Hear about changes to Germany's e-invoicing rules from us before you have to send e-invoices, not from a rejected invoice.`,
       here: `Hear about the next change to Germany's e-invoicing rules from us, not from a rejected invoice.`,
     },
-    // One version, no date switch: it names no date that stops being true. The first half rests on facts 24 (12 changes after
-    // 1 January 2025); the second half is France's current subline, the same service in every country.
+    // One version, no date switch: it names no date that stops being true and no count. The first half rests on facts 24 (changes
+    // after 1 January 2025); the second half is France's current subline, the same service in every country.
     subline: `The rules have kept changing since receiving e-invoices became mandatory in January 2025. When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it, with what changed for them and where it says so.`,
   },
 
-  // The proof strip in its lead shape (ProofStrip.astro): the sources read, then the count. {published} is the number of
-  // publication days of the counted rows (publications() in format.ts): 22 for Germany since 1 January 2024, from 27 rows.
-  // The count is publications by body and day, as France's (one per source per publication day); the box-count check in the
-  // page file proves the two readings agree today.
+  // The proof strip in its lead shape (ProofStrip.astro): the sources read, then the count. The sources number is
+  // sources_weekly in DE.json and the count {published} is the number of publications of the counted rows, one per
+  // issuing body per day (publications() in format.ts); no number is typed here, both move with the file.
+  // The count is publications by body and day, as France's (one per source per publication day); a day with two bodies is two boxes, so the
+  // split and the boxes always agree.
   // The unit is "sources", not "official sources". Ruled by the check seat 2026-10-09: "official" does not hold, because the
-  // 24 include a private mirror of the statute, the gazette index on a publisher's database and the format bodies' associations.
+  // sources include a private mirror of the statute, the gazette index on a publisher's database and the format bodies' associations.
   proof: {
     headline: `{published} changes we've counted since {since}`,
     headlineSub: `to Germany's e-invoicing rules`,
-    sourcesCount: SOURCES,
     sourcesUnit: `sources`,
     sources: `we read every week`,
     // The date column stays empty, as on France: nothing writes last_check.
     checked: ``,
   },
 
-  // The row of boxes under the strip (ChangeBoxes.astro): one box per publication in DE.json, 22, the real example's box
+  // The row of boxes under the strip (ChangeBoxes.astro): one box per publication in DE.json, the real example's box
   // (DE-E67) in the accent. Box dates are publication dates: DE-E48 carries 30 January 2026 (its CSV date, 1 August 2026,
   // is the day the cut-off took effect, facts 24), DE-E44 carries 5 February 2026 (GitHub tag), DE-E46 is a month only.
   // DE-E34, E38 and E40 carry their GitHub release days (19 November 2024, 24 March 2025, 9 July 2025), not the bundle
@@ -133,14 +132,14 @@ export const de = {
       {
         id: '1b',
         title: `The rules kept changing after January 2025`,
-        // Germany has this as fact, so the card is not a prediction as France's is. 12 changes after receiving became mandatory:
-        // DE-E38, E39, E40, E59, E41, E42, E44, E46, E47, E48, E49, E67, each on its own day, so 12 is both a rule count and a
-        // change count (facts 24). The date-bound clause uses the switch; the "here" form is the frameworks' neutral form and
+        // Germany has this as fact, so the card is not a prediction as France's is. The count is {published@2025-01-01}, the
+        // publication days from 1 January 2025 on, computed from DE.json (12 on 2026-10-05: DE-E38, E39, E40, E59, E41, E42,
+        // E44, E46, E47, E48, E49, E67; facts 24). The date-bound clause uses the switch; the "here" form is the frameworks' neutral form and
         // stays true after 2028 as well.
         front: {
           from: '2027-01-01',
-          coming: `We've counted 12 changes to Germany's rules since January 2025, and the dates for issuing e-invoices are still ahead, by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
-          here: `We've counted 12 changes to Germany's rules since January 2025, and the duty to issue applies by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
+          coming: `We've counted {published@2025-01-01} changes to Germany's rules since January 2025, and the dates for issuing e-invoices are still ahead, by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
+          here: `We've counted {published@2025-01-01} changes to Germany's rules since January 2025, and the duty to issue applies by turnover, from 1 January 2027 above €800,000 of prior-year total turnover and from 1 January 2028 for the rest.`,
         },
         back: {
           points: [
@@ -157,21 +156,23 @@ export const de = {
         title: `Changes come from more than one place`,
         front: `Germany's rules come from Parliament through the law, from the finance ministry's letters and its FAQ, and from KoSIT and FeRD, the bodies behind XRechnung and ZUGFeRD, Germany's two accepted formats, each on its own calendar.`,
         back: {
-          // Counted as changes, one per body per publication day, 22 since 1 January 2024 (deBodies above). Days per body:
-          // law 4 (27 Mar 2024 DE-E27 and E28, 23 Jul 2024 DE-E51, 29 Oct 2024 DE-E52, 5 Dec 2024 DE-E35, E53, E54, E55);
-          // finance ministry 5 (27 Feb 2024 DE-E50, 15 Oct 2024 DE-E32, 14 Jul 2025 DE-E59, 15 Oct 2025 DE-E41, Mar 2026 DE-E46);
-          // KoSIT 7 (20 Jun 2024 DE-E29 and E30, 19 Nov 2024 DE-E34, 24 Mar 2025 DE-E38, 9 Jul 2025 DE-E40, 5 Feb 2026 DE-E44,
-          // 30 Jan 2026 DE-E48, 2 Sep 2026 DE-E67); FeRD 6 (18 Sep 2024 DE-E31, 13 Nov 2024 DE-E33, 7 May 2025 DE-E39,
-          // 4 Dec 2025 DE-E42, 10 Jun 2026 DE-E47, 4 Aug 2026 DE-E49). 4 + 5 + 7 + 6 = 22.
-          // None of the 12 since receiving became mandatory came through the law (facts 26, 107).
-          lead: `We've counted 22 changes since 1 January 2024, and this is where each of them came from.`,
+          // Counted as changes, one per body per publication day, from DE.json: each change carries its issuing body (key "body")
+          // and the placeholders count the distinct days per body, so the split moves with the file. On 2026-10-05 it read law 4
+          // (27 Mar 2024 DE-E27 and E28, 23 Jul 2024 DE-E51, 29 Oct 2024 DE-E52, 5 Dec 2024 DE-E35, E53, E54, E55), finance
+          // ministry 5, KoSIT 7, FeRD 6, 22 in all. The closing line is a conditional: when no change since 1 January 2025
+          // came through the law it says so (facts 26, 107), and when one does it gives the count instead.
+          lead: `We've counted {published} changes since {since}, and this is where each of them came from.`,
           points: [
-            `4 through the law`,
-            `5 from the finance ministry`,
-            `7 from KoSIT, for XRechnung`,
-            `6 from FeRD, for ZUGFeRD`,
+            `{body:law} through the law`,
+            `{body:ministry} from the finance ministry`,
+            `{body:kosit} from KoSIT, for XRechnung`,
+            `{body:ferd} from FeRD, for ZUGFeRD`,
           ],
-          then: `None of the 12 changes since January 2025 came through the law, so anyone watching only the law would have missed all of them.`,
+          then: {
+            ifNone: { body: 'law', from: '2025-01-01' },
+            then: `None of the {published@2025-01-01} changes since January 2025 came through the law, so anyone watching only the law would have missed all of them.`,
+            otherwise: `{body:law@2025-01-01} of the {published@2025-01-01} changes since January 2025 came through the law, so anyone watching only the law would have missed {missed:law@2025-01-01} of them.`,
+          },
         },
       },
       {
@@ -195,7 +196,7 @@ export const de = {
   },
 
   fanout: {
-    // Left out of the page, as France's: the row of boxes carries the 22 and the September grid the per-function view.
+    // Left out of the page, as France's: the row of boxes carries the count and the September grid the per-function view.
     show: false,
   },
 
@@ -204,7 +205,7 @@ export const de = {
   // became mandatory (card 1b), from the format body and not the law (card 2), and it reaches the software that builds the
   // invoice, the checks on incoming invoices and the Peppol version at the same time (card 3). One rule, grid letters oic,
   // 3 work items: outbound 1, inbound 1, connectivity 1 (DE-changes.csv). So the grid is one column and the closing box reads
-  // 1 rule, 3 work items: Germany's truth is 22 publications, most of them a single rule, and the row of boxes carries the breadth.
+  // 1 rule, 3 work items: Germany's truth is its publications, most of them a single rule, and the row of boxes carries the breadth.
   followed: {
     h2: `A real example from September 2026`,
     intro: `On 2 September 2026, KoSIT released new checks for XRechnung, one of Germany's two accepted e-invoice formats, so an invoice that passed validation in spring can fail now. We count it as one change, and it affects three of your invoicing functions at once.`,
@@ -278,12 +279,12 @@ export const de = {
   },
 
   // The limits box, beside the onboarding steps: France's three lines with Germany for France. The number in the second line
-  // is SOURCES, the strip's constant, so the two cannot drift. "Official" is left out of it, as in the strip's unit (check seat 2026-10-09).
+  // is {weekly}, sources_weekly from src/data/fanout/DE.json, the same number the strip shows, so the two cannot drift. "Official" is left out of it, as in the strip's unit (check seat 2026-10-09).
   limits: {
     h2: `What we don't do`,
     lines: [
       { lead: `Give legal or tax advice.`, text: `What we send is our reading of what a change means for your invoicing, with the source beside it so you can check it.` },
-      { lead: `Look beyond our sources.`, text: `We read ${SOURCES} of Germany's sources every week, and we tell you about the changes we find there and nowhere else.` },
+      { lead: `Look beyond our sources.`, text: `We read {weekly} of Germany's sources every week, and we tell you about the changes we find there and nowhere else.` },
       { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
     ],
   },

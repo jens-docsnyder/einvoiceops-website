@@ -1,7 +1,12 @@
 // All copy of the France standalone company story page (framework: France, standalone).
 // One file per framework: a framework change is one edit here.
 // Strings may hold <strong> and <span class='accent'>; they are rendered with set:html.
-// Placeholders {named} {weekly} {checked} {since} {total} are filled from src/data/fanout/FR.json.
+// Placeholders {named} {weekly} {checked} {since} {total} are filled from src/data/fanout/FR.json, and so are the counts
+// computed from its changes list ({published}, {body:KEY}, {missed:KEY}, {changes@DATE}, format.ts fill()); a passage that
+// depends on a count is a conditional ({ ifNone, then, otherwise }). No count on the page is typed except the July example's own.
+// Issuing bodies, key "body" on each change in FR.json: law = Parliament and the government through the law (the finance law
+// of 20 Feb 2026, the decree and order of 28 Jul 2026), afnor = AFNOR, France's standards body, tax = the tax administration
+// (the ministry release of 15 Oct 2024 and the DGFiP specifications v3.0, v3.1, v3.2).
 // Voice: Market Intelligence/Messaging/Tone of voice.md. Rewritten 2026-10-05 from Jens's word on the built page: the banner,
 // the market cards in place of the three numbered columns, the July change with an example note, starting, contact and
 // the person line. Polished the same day as one piece, read top to bottom, so each section hands on to the next. Facts only from Market Intelligence/Messaging/France - facts for messaging.md.
@@ -10,6 +15,9 @@
 // One page per country (Jens, 2026-10-08): this page is told to any company that runs its own invoicing in France,
 // independent or part of a group, drawn from both France frameworks. Review: Market Intelligence/Messaging/
 // France page - review for one page per country, 2026-10-08.md. The provider bets below are both frameworks' bets.
+// The bodies card 2 lists, in its order (the page file warns in the build log if the file names another).
+export const frBodyKeys = ['law', 'afnor', 'tax'];
+
 export const frStandalone = {
   // Page flow C, country-first tree: Market Intelligence/Messaging/Website - page and site structure.md (Jens, 2026-10-05).
   flow: 'c',
@@ -30,14 +38,13 @@ export const frStandalone = {
   // The proof strip in its lead shape (ProofStrip.astro, proof.headline): three columns read left to right as one story,
   // the last check, the sources read, then the count (Jens, 2026-10-06). {checked} is the date of the released count;
   // the date over "last time we checked for changes" is last_check in FR.json.
-  // sourcesCount is a hard number, 27, in place of sources_weekly (29): two of the 29 polled sources (FR-W35, FR-W36)
-  // are switched on and have never been read once (the stuck-items plan, item 6), so the page says 27 until they are read.
+  // The sources number is sources_weekly in FR.json, written from the product data after each weekly run; nothing is typed
+  // here (the older proof.sourcesCount override is gone, so the strip and the limits line below cannot drift).
   proof: {
     // A change is what a source published; it holds one or more rules, each a counted row (Jens, 2026-10-08). {published}
-    // is the number of publication days of the counted rows (publications() in format.ts), 10 for France since 2024.
+    // is the number of publications of the counted rows, one per issuing body per day (publications() in format.ts).
     headline: `{published} changes we've counted since {since}`,
     headlineSub: `to France's e-invoicing rules`,
-    sourcesCount: 27,
     sourcesUnit: `official sources`,
     sources: `we read every week`,
     // The date column is gone (improvement review 2026-10, item 3): nothing writes last_check, so a typed date went stale
@@ -99,7 +106,12 @@ export const frStandalone = {
       {
         id: '1b',
         title: `We expect the rules to change again`,
-        front: `We haven't counted a change to France's rules since go-live yet, but Belgium, which went live in January, kept changing its rules well after go-live.`,
+        // Computed: "yet" while no counted change falls on or after 1 September 2026 (go-live), the count once one does.
+        front: {
+          ifNone: { from: '2026-09-01' },
+          then: `We haven't counted a change to France's rules since go-live yet, but Belgium, which went live in January, kept changing its rules well after go-live.`,
+          otherwise: `We've counted {changes@2026-09-01} to France's rules since go-live, and Belgium, which went live in January, kept changing its rules well after go-live too.`,
+        },
         back: {
           points: [
             `Seven weeks after go-live, Belgium amended its law (<a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>ejustice.just.fgov.be</a>)`,
@@ -113,17 +125,18 @@ export const frStandalone = {
         title: `Changes come from more than one place`,
         front: `France's rules come from Parliament and the government through the law, from AFNOR, France's standards body, and from the tax administration, each on its own calendar.`,
         back: {
-          // Counted as changes, one per source per publication day (Jens, 2026-10-08): 2 through the law (the finance law of
-          // 20 February 2026, the decree and order of 28 July 2026), 4 AFNOR days (13 May, 19 June, 31 July, 17 November 2025),
-          // 4 from the tax administration (the ministry release of 15 October 2024, DGFiP specifications v3.0, v3.1, v3.2),
-          // from the date, channel and source_ref columns of FR-changes.csv, counted rows from 2024-01-01.
-          lead: `We've counted 10 changes since 1 January 2024, and this is where each of them came from.`,
+          // Counted as changes, one per source per publication day (Jens, 2026-10-08), computed from FR.json: each change carries
+          // its issuing body (key "body") and the placeholders count the distinct days per body. On 2026-10-12 it read 2 through
+          // the law (the finance law of 20 February 2026, the decree and order of 28 July 2026), 4 AFNOR days (13 May, 19 June,
+          // 31 July, 17 November 2025), 4 from the tax administration (the ministry release of 15 October 2024, DGFiP
+          // specifications v3.0, v3.1, v3.2), from the date, channel and source_ref columns of FR-changes.csv.
+          lead: `We've counted {published} changes since {since}, and this is where each of them came from.`,
           points: [
-            `2 through Parliament and the government`,
-            `4 from AFNOR`,
-            `4 from the tax administration`,
+            `{body:law} through Parliament and the government`,
+            `{body:afnor} from AFNOR`,
+            `{body:tax} from the tax administration`,
           ],
-          then: `Anyone watching only the law would have missed 8 of them.`,
+          then: `Anyone watching only the law would have missed {missed:law} of them.`,
         },
       },
       {
@@ -150,7 +163,7 @@ export const frStandalone = {
     show: false,
     topAfter: `changes to France's own e-invoicing rules since {since}`,
     heading: `We've counted {total} changes to France's own e-invoicing rules since {since}`,
-    intro: `The July package accounts for eleven of them, and if you open the box for the invoicing function you look after, you'll see how many of them touched it.`,
+    intro: `The July package is among them, and if you open the box for the invoicing function you look after, you'll see how many of them touched it.`,
     openLine: `Open the box for the invoicing function you look after to see which of these changes touched it.`,
     more: `and {n} more`,
     changesOne: `change`,
@@ -323,11 +336,11 @@ export const frStandalone = {
   // The limits box, beside the onboarding steps. Lines from Tone of voice.md ("The hard rules, said in this voice"), France.
   limits: {
     h2: `What we don't do`,
-    // Plainer than the lines in Tone of voice.md (Jens, 2026-10-08: "way too technical"). The 27 is proof.sourcesCount
-    // above, so the two change together.
+    // Plainer than the lines in Tone of voice.md (Jens, 2026-10-08: "way too technical"). The number is {weekly},
+    // sources_weekly in FR.json, the same one the strip shows, so the two change together.
     lines: [
       { lead: `Give legal or tax advice.`, text: `What we send is our reading of what a change means for your invoicing, with the source beside it so you can check it.` },
-      { lead: `Look beyond our sources.`, text: `We read 27 of France's official sources every week, and we tell you about the changes we find there and nowhere else.` },
+      { lead: `Look beyond our sources.`, text: `We read {weekly} of France's official sources every week, and we tell you about the changes we find there and nowhere else.` },
       { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
     ],
   },

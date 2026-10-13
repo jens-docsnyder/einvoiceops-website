@@ -1,23 +1,26 @@
 ---
 import StoryPage from '../../components/site/StoryPage.astro';
-import { de as c, deBodies } from '../../data/stories/de';
-import fanout from '../../data/fanout/DE.json';
-import { publications } from '../../components/site/format';
+import { de as c, deBodies, deBodyKeys } from '../../data/stories/de';
+import fanoutFile from '../../data/fanout/DE.json';
+import { publications, withBodies, warnBodies } from '../../components/site/format';
 
-// Published at /germany/ with noindex, linked from nowhere. Fan-out data: src/data/fanout/DE.json (27 rows, 22 publications).
+// Published at /germany/ with noindex, linked from nowhere. Fan-out data: src/data/fanout/DE.json, written from the product
+// data after each weekly run; no count on the page is typed.
 //
-// Box-count check (plan section 2): a change is one publication by one body on one day, and publications() dedupes on the
-// date alone. The two readings agree today (22), but only because no day yet holds two bodies. So the build counts the
-// distinct (body, date) pairs from the body map in de.ts as well, and stops if the number differs from publications(), or
-// if a counted row has no body in the map. Without it a future day with two publishers would be counted as one box.
-const days = publications(fanout) ?? [];
-const unmapped = (fanout.changes ?? []).filter((r: { id: string }) => !(r.id in deBodies)).map((r: { id: string }) => r.id);
-if (unmapped.length > 0) {
-  throw new Error(`Germany page: no publishing body in deBodies (src/data/stories/de.ts) for ${unmapped.join(', ')}; the box count cannot be checked.`);
+// Every change in the file carries its issuing body (key "body": law, ministry, kosit, ferd). deBodies in de.ts is only a
+// fallback for a change the file gives none; a change with neither stops the build and is named. The split by body, the
+// count since January 2025 and the box count are computed from the file (format.ts). A body the copy does not list only warns
+// in the build log. A box is one publication per issuing body per day, so a day on which two bodies both published is two
+// boxes and the split by body always adds up to the boxes.
+// What stops the build: the list of changes and the released total disagree (publications() has no answer then), or a
+// change has no body.
+if ((fanoutFile.changes ?? []).length !== fanoutFile.total) {
+  throw new Error(`Germany page: DE.json holds ${(fanoutFile.changes ?? []).length} changes but a total of ${fanoutFile.total}; the boxes and the counts would disagree.`);
 }
-const pairs = new Set((fanout.changes ?? []).map((r: { id: string; date: string }) => `${deBodies[r.id]}|${r.date}`));
-if (pairs.size !== days.length) {
-  throw new Error(`Germany page: ${pairs.size} publications by body and day but ${days.length} boxes by day alone. A day holds two bodies, so the boxes, the strip count and the card counts would disagree; fix publications() in format.ts or the body map in de.ts before building.`);
+if (!publications(fanoutFile)) {
+  throw new Error('Germany page: the changes list does not agree with the released total; the box count cannot be checked.');
 }
+const fanout = withBodies(fanoutFile, deBodies, 'Germany page: DE.json');
+warnBodies('Germany page', fanout, deBodyKeys);
 ---
 <StoryPage c={c} fanout={fanout} page="/germany/" segment="standalone" country="DE" fanoutDisclosure={c.disclosure} />

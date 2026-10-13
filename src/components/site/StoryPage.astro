@@ -18,7 +18,7 @@ import StartAndLimits from './StartAndLimits.astro';
 import MarketCards from './MarketCards.astro';
 import SwitchScript from './SwitchScript.astro';
 import { storyToday, renderText, isSrc, containsDated } from './switch.js';
-import { fill } from './format';
+import { fill, isCond, pickCond } from './format';
 
 interface Props {
   c: any;
@@ -39,7 +39,8 @@ const countryName = String(c.opening.kickerRest ?? '').replace(/^\s*·\s*/, '');
 
 const today = storyToday(process.env);
 const f = (s: string) => (live ? fill(s, fanout) : s);
-const t = (v: any) => renderText(v, f, today);
+// A conditional passage ({ ifNone, then, otherwise }, format.ts) is resolved from the fan-out data before the date switch.
+const t = (v: any) => renderText(live && isCond(v) ? pickCond(v, fanout) : v, f, today);
 
 const hasProof = live && c.proof;
 const subline = c.opening.subline ?? c.opening.p1;
