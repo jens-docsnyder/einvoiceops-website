@@ -413,6 +413,11 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
     .fc-live-beside .fc-panel { grid-column: 2; grid-row: 1; margin: 0; }
     .fc-live-beside .fc-grid-cap { grid-column: 1 / -1; }
   }
+  /* With room (1000 px and up) the closing box goes beside the text box, so grid, text and closing sit in one row (Jens, 2026-10-13). */
+  @media (min-width: 1000px) {
+    .fc-two.fc-beside { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 32px; align-items: start; }
+    .fc-two.fc-beside .fc-col { margin-top: 0; }
+  }
   @media (max-width: 999px) { .fc-two { display: block; } .fc-two .fc-col { margin-top: 28px; } }
   @media (min-width: 1000px) { .fc-live .fc-dot, .fc-chg { width: 28px; height: 28px; line-height: 28px; font-size: 0.8rem; } .fc-chgno { width: 26px; height: 26px; } }
   /* The one-time glow that says the squares are clickable (script adds fc-glow-run once, on first scroll into view; 11 columns at
