@@ -253,7 +253,7 @@ export const be = {
         { f: `m`, text: `Whether a customer can technically receive an e-invoice now matters to how you invoice them, so it belongs in what you know about that customer.` },
       ] },
       { id: `BE-E08c`, title: `The format reference follows the European standard`, parts: [
-        { f: `o`, text: `The law no longer names the two European standards it used to cite and refers to the European e-invoicing standard under Directive 2014/55/EU instead, so the format your invoices follow can move with that standard.` },
+        { f: `o`, text: `The law no longer names the two European standards it used to cite and refers to the European e-invoicing standard under Directive 2014/55/EU instead, so the standard that an agreed alternative invoice format has to meet can move with it.` },
       ] },
     ],
     gridStart: { col: 0, fn: `o` },
