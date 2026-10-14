@@ -17,10 +17,11 @@
 // tax administration's FAQ of May 2026. Nothing on the page is bound to a mandate date: issuing and receiving both became
 // mandatory on 1 January 2026, in one step (facts, "The mandate"), so there is no date switch in the headline.
 //
-// Law detail: the page states no law detail read from the tax administration's consolidated copy, so it carries no copy
-// disclosure. The February law is read from the gazette's own text (the act as published, BE-W33), and the December
-// publications are named by date and kind of act only. The fines and the obligation staying with the company (both read from
-// the copy) are left out.
+// Law detail: the example's first rule (BE-E08a) names who is taken out of the obligation, and that group is defined in a
+// VAT code article that is read in the tax administration's consolidated copy, not in the gazette text of the law. So the page
+// carries the signed copy disclosure under the example (key "disclosure", passed as followedDisclosure by the page file). The
+// other two rules and the dates are read from the gazette's own text of the law, and the December publications are named by
+// date and kind of act only. The fines and the obligation staying with the company (both read from the copy) are left out.
 // Wording point from the data seat: the February law is dated 10 February 2026 and was published, and took effect, on
 // 20 February 2026. The page says "published on 20 February", never "law of 20 February", and never that the Chamber passed it
 // that day.
@@ -104,17 +105,18 @@ export const be = {
         id: 1,
         title: `The rules kept moving until days before go-live`,
         // Rests on facts ("The changes since go-live", "Before go-live"): three publications fell between 24 and 31 December
-        // 2025, days before the obligation began. The card names them by date and kind of act only, never for what they say:
-        // BE-E21 in particular is told only as "published days before the obligation began".
+        // 2025, days before the obligation began. The card names each by date, kind of act and the instrument it amends (the first
+        // by the title the gazette database gives it), never for what the amendment says: BE-E21 in particular is told only as
+        // "published days before the obligation began".
         front: `Belgium was still changing its e-invoicing rules in the last days of 2025, just before the mandate began on 1 January 2026, so companies had to get ready against rules that hadn't settled.`,
         back: {
           points: [
-            // BE-E25, royal decree of 12 December 2025, published 24 December 2025 (BE-W42, the decree's own page on the gazette database).
-            `Eight days before go-live, on 24 December 2025, a royal decree was published in the gazette (<a href='https://www.ejustice.just.fgov.be/eli/besluit/2025/12/12/2025009711/justel'>ejustice.just.fgov.be</a>)`,
-            // BE-E21, law of 18 December 2025, published 30 December 2025 (BE-W02, the VAT code's amendment register).
-            `Two days before, on 30 December, a law followed (<a href='https://www.ejustice.just.fgov.be/eli/wet/1969/07/03/1969070305/justel'>ejustice.just.fgov.be</a>)`,
-            // BE-E24, royal decree of 17 December 2025, published 31 December 2025 (BE-W28, the register of royal decree no. 1).
-            `And on 31 December, the day before, another royal decree (<a href='https://www.ejustice.just.fgov.be/eli/besluit/1992/12/29/1992003823/justel'>ejustice.just.fgov.be</a>)`,
+            // BE-E25, royal decree of 12 December 2025, published 24 December 2025 (the decree's own page on the gazette database).
+            `Eight days before go-live, on 24 December 2025, a royal decree on issuing the farmers' purchase note in structured electronic form was published in the gazette (<a href='https://www.ejustice.just.fgov.be/eli/besluit/2025/12/12/2025009711/justel'>ejustice.just.fgov.be</a>)`,
+            // BE-E21, law of 18 December 2025, published 30 December 2025 (the VAT code's amendment register).
+            `Two days before, on 30 December, a law amending the VAT code was published (<a href='https://www.ejustice.just.fgov.be/eli/wet/1969/07/03/1969070305/justel'>ejustice.just.fgov.be</a>)`,
+            // BE-E24, royal decree of 17 December 2025, published 31 December 2025 (the register of royal decree no. 1).
+            `And on 31 December, the day before, another royal decree was published, amending royal decree no. 1 on VAT (<a href='https://www.ejustice.just.fgov.be/eli/besluit/1992/12/29/1992003823/justel'>ejustice.just.fgov.be</a>)`,
           ],
         },
       },
@@ -127,19 +129,20 @@ export const be = {
         front: {
           ifNone: { from: '2026-01-01' },
           then: `We haven't counted a change to Belgium's rules since go-live yet, but they were still changing in the last days before it.`,
-          otherwise: `We've counted {changes@2026-01-01} to Belgium's rules since go-live on 1 January 2026, so we expect the rules to keep changing.`,
+          otherwise: `We've counted {changes@2026-01-01} to Belgium's rules since go-live on 1 January 2026, so we expect more, though we can't tell you when.`,
         },
         back: {
           points: [
-            // BE-E08a to c, the law dated 10 February 2026, published and in force 20 February 2026 (BE-W33, the gazette's own text).
+            // BE-E08a to c, the law dated 10 February 2026, published and in force 20 February 2026 (the gazette's own text).
             // 20 February is 50 days after 1 January, seven weeks.
             `Seven weeks after go-live, on 20 February 2026, the gazette published a law that changed the e-invoicing rules (<a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>ejustice.just.fgov.be</a>)`,
-            // BE-E11, the tax administration's e-invoicing FAQ, dated by its first capture to 20 May 2026 (BE-W18), so "In May".
-            `In May, Belgium's tax administration added new answers to its e-invoicing FAQ (<a href='https://efactuur.belgium.be/nl/FAQ'>efactuur.belgium.be</a>)`,
-            // PEPPOL SENTENCE (BE-E09, BE-E13; PEPPOL-changes.csv). Format releases that became mandatory in Belgium, named as
+            // BE-E11, the tax administration's e-invoicing FAQ, dated by its first capture to 20 May 2026, so "In May".
+            `In May, Belgium's tax administration added to its e-invoicing FAQ that an invoice sent to the wrong address is rejected over the network and not booked (<a href='https://efactuur.belgium.be/nl/FAQ'>efactuur.belgium.be</a>)`,
+            // PEPPOL SENTENCE (BE-E09, BE-E13; PEPPOL-changes.csv). Format versions that became mandatory in Belgium (the dates are
+            // mandatory-from dates, not release dates), named as
             // outside the count and never as one of the counted changes. It is the only place the page mentions them: delete this
             // one line and nothing else on the page refers to it.
-            `Outside our count, Peppol released two new versions of its invoice format that became mandatory in Belgium in 2026, 3.0.20 on 23 February and 3.0.21 on 17 August (<a href='https://docs.peppol.eu/poacc/billing/3.0/release-notes/'>docs.peppol.eu</a>)`,
+            `Outside our count, two new versions of Peppol's invoice format became mandatory in Belgium in 2026, 3.0.20 on 23 February and 3.0.21 on 17 August, and a new format version is one way an invoice that went through before could stop validating (<a href='https://docs.peppol.eu/poacc/billing/3.0/release-notes/'>docs.peppol.eu</a>)`,
           ],
           then: `We expect further changes to Belgium's rules to arrive.`,
         },
@@ -176,10 +179,10 @@ export const be = {
         // providers line: the platform provider keeps its connection current, software vendors update their products; the ERP
         // partner and the accountant are the standalone row's bet. It says nothing about where the obligation stays, which
         // would rest on law detail read from the tax administration's copy and need its disclosure, and it names no call.
-        front: `In Belgium your invoices move through the software and providers you chose, and each of them looks after its own part.`,
+        front: `In Belgium your invoices move through the software and providers you chose, and each of them is likely to look after only its own part.`,
         back: {
           points: [
-            `Your platform provider is likely to keep its connection current, your software vendor to update its software, your ERP partner to look after its part and your accountant to know the tax, and it may be nobody's job to check that it all still fits`,
+            `Your platform provider, the one that connects you to the Peppol network, is likely to keep that connection current, your software vendor to update its software, your ERP partner or group IT to look after its part and your accountant to know the tax, and it may be nobody's job to check that it all still fits`,
           ],
           then: `So checking that a change has reached all of it is likely left to you.`,
         },
@@ -193,36 +196,37 @@ export const be = {
   },
 
   // The February 2026 law told as the one publication that shows the cards at once. Picked and confirmed against the gazette's own
-  // text (BE-W33, the Belgisch Staatsblad act page of 20 February 2026, numac 2026001291): the law dated 10 February 2026,
+  // text (the Belgisch Staatsblad act page of 20 February 2026, numac 2026001291): the law dated 10 February 2026,
   // published and in force on 20 February 2026, seven weeks after go-live (card 1b), from the law and not the administration
   // (card 2), reaching more than one function at once (card 3). Three rules, BE-E08a, b and c, one publication; grid letters
   // oim, om, o (functions column of BE-changes.csv: E08a master data, outbound, inbound; E08b outbound, master data; E08c
-  // outbound). Work items: outbound 3, inbound 1, master data 2, six in all (BE-figures.md), the other three rows empty.
+  // outbound). Work items: outbound 3, inbound 1, master data 2, six in all (the Belgium figures file), the other three rows empty.
   // The box that turns red is BE-E08a's publication, found from the file by the id of the first grid column.
   followed: {
     h2: `A real example from February 2026`,
-    intro: `On 20 February 2026, seven weeks after go-live, Belgium published a law whose e-invoicing changes took effect that same day. We count it as one change, with three rules, and it affects three of your invoicing functions at once.`,
+    intro: `On 20 February 2026, seven weeks after go-live, Belgium published a law, and the three rules we count in it took effect that same day. We count it as one change, and it touches three of your invoicing functions at once.`,
     stepLabels: { arrives: `What was published`, lands: `What it means for you`, reaches: `Who would have heard from us` },
     arrives: {
       date: `20 Feb 2026`,
       text: ``,
-      // The act as published in the Belgisch Staatsblad (BE-W33), in Dutch. The law is dated 10 February 2026; the line names the
+      // The act as published in the Belgisch Staatsblad, in Dutch and French. The law is dated 10 February 2026; the line names the
       // publication day, as the box does.
-      source: `Belgian Official Gazette of 20 February 2026, in Dutch: <a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>the law</a>, ejustice.just.fgov.be`,
+      source: `Belgian Official Gazette of 20 February 2026: the law in <a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>Dutch</a> and <a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>French</a>, ejustice.just.fgov.be`,
     },
     shows: [],
     closing: {
-      title: `Three invoicing functions had work to do`,
+      title: `Three invoicing functions had something to check`,
       // 3 rules BE-E08a, b, c; 6 work items = row totals 3 + 1 + 2, the other three rows empty (BE-changes.csv, functions column).
       lead: `One change, published on 20 February`,
       chain: [
         `3 rules in it`,
         `Together they affect 3 invoicing functions`,
-        `6 work items to check or prepare`,
+        `6 work items to check or prepare, one for each rule and function it touches`,
       ],
-      // The rejected invoice rests on the carve-out and the unpinned format reference; the payment left waiting is the
-      // frameworks' bet, as on France and Germany. Nothing here tells a missed change as an event that stopped anyone invoicing.
-      then: `Miss a change like it, and the first sign may be an invoice your customer rejects and a payment left waiting.`,
+      // Belgian-true, not Germany's rejected-invoice line: two of the three rules loosen the obligation, so the honest frame is
+      // that a change moves who owes what, and that you only know your own position changed if you know the change exists.
+      // Nothing here tells a missed change as an event that stopped anyone invoicing.
+      then: `A change like this moves who owes what, and you only know your own position has changed if you know the change exists.`,
     },
     // The grid: one column per rule of the law published on 20 February 2026 (BE-E08a, b, c, in order), letters for the functions
     // each touched, from the functions column of BE-changes.csv: o outbound, i inbound, c connectivity, t tax engine, m master
@@ -240,16 +244,16 @@ export const be = {
     // E08b o + m = om, E08c o. Nothing says how to fix, and nothing is added that the rows do not carry.
     changes: [
       { id: `BE-E08a`, title: `Foreign VAT-registered companies leave the obligation`, parts: [
-        { f: `o`, text: `Foreign companies that are VAT-registered in Belgium but have no establishment there are taken out of the obligation, so a customer of that kind no longer has to be able to receive your e-invoices.` },
-        { f: `i`, text: `A supplier of that kind no longer has to send you an e-invoice either, so what reaches you from them may come in other formats.` },
-        { f: `m`, text: `Which of your customers and suppliers are in that group now decides who the obligation covers, so your records of them matter.` },
+        { f: `o`, text: `Foreign companies that are VAT-registered in Belgium but have no establishment there are taken out of the obligation, so the law no longer requires you to send an e-invoice to a customer of that kind.` },
+        { f: `i`, text: `If you are a foreign company that is VAT-registered in Belgium but has no establishment there, the law no longer requires you to be able to receive e-invoices from your Belgian suppliers.` },
+        { f: `m`, text: `Which of your customers are in that group now decides who the obligation covers, so your records of them matter.` },
       ] },
       { id: `BE-E08b`, title: `A carve-out when the recipient can't receive`, parts: [
-        { f: `o`, text: `If your customer is technically unable to receive an e-invoice, you no longer have to send one, but you still owe them an ordinary invoice.` },
+        { f: `o`, text: `When your customer is technically unable to receive an e-invoice, the law no longer requires you to send one, but an ordinary invoice is still owed. The condition is worded in the law, linked above.` },
         { f: `m`, text: `Whether a customer can technically receive an e-invoice now matters to how you invoice them, so it belongs in what you know about that customer.` },
       ] },
       { id: `BE-E08c`, title: `The format reference follows the European standard`, parts: [
-        { f: `o`, text: `The law no longer names fixed versions of the European e-invoicing standard and follows whichever version the European Commission references in the Official Journal, so the format your invoices follow can move with it.` },
+        { f: `o`, text: `The law no longer names the two European standards it used to cite and refers to the European e-invoicing standard under Directive 2014/55/EU instead, so the format your invoices follow can move with that standard.` },
       ] },
     ],
     gridStart: { col: 0, fn: `o` },
@@ -268,6 +272,11 @@ export const be = {
     ],
     withheld: ``,
   },
+
+  // The signed general copy disclosure (facts file, "Whose copy of the law, written out"), shown under the example because its
+  // first rule defines who is taken out of the obligation from a VAT code article read in the tax administration's copy.
+  // StoryPage prints it through followedDisclosure (the page file passes c.disclosure).
+  disclosure: `We read the Belgian law in the tax administration's published copy, not the official gazette, and check it against the gazette's record of which acts amended which articles. That confirms what changed and when, not that every sentence matches the gazette word for word; closing that gap is work, not money.`,
 
   onboarding: {
     // France's, word for word (Jens, 2026-10-09): the price is said once, in the heading, and no intro repeats it.

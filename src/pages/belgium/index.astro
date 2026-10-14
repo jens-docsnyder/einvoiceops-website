@@ -23,4 +23,4 @@ if (!publications(fanoutFile)) {
 const fanout = withBodies(fanoutFile, beBodies, 'Belgium page: BE.json');
 warnBodies('Belgium page', fanout, beBodyKeys);
 ---
-<StoryPage c={c} fanout={fanout} page="/belgium/" segment="standalone" country="BE" />
+<StoryPage c={c} fanout={fanout} page="/belgium/" segment="standalone" country="BE" followedDisclosure={c.disclosure} />
