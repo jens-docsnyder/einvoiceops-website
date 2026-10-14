@@ -1,0 +1,190 @@
+{
+  "country": "BE",
+  "total": 12,
+  "since": "2024-01-01",
+  "checked_on": "2026-10-13",
+  "sources_named": 41,
+  "sources_weekly": 33,
+  "functions": [
+    {
+      "name": "Outbound invoicing",
+      "count": 9,
+      "more": 6,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-02-20",
+          "text": "law creates the duty to use e-invoices between businesses, starting 1 January 2026",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2026-02-20",
+          "text": "law now cites the European standard under Directive 2014/55/EU instead of naming EN 16931-1 and CEN/TS 16931-2",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2026-05",
+          "text": "federal e-invoicing site adds answers on rejecting misaddressed incoming invoices and on reverse-charge information",
+          "domain": "efactuur.belgium.be"
+        }
+      ]
+    },
+    {
+      "name": "Inbound invoicing",
+      "count": 4,
+      "more": 1,
+      "gap": true,
+      "lines": [
+        {
+          "date": "2024-02-20",
+          "text": "law creates the duty to use e-invoices between businesses, starting 1 January 2026",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2026-02-20",
+          "text": "law takes foreign VAT-registered businesses without a Belgian establishment out of the e-invoice duty",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2026-05",
+          "text": "federal e-invoicing site adds answers on rejecting misaddressed incoming invoices and on reverse-charge information",
+          "domain": "efactuur.belgium.be"
+        }
+      ]
+    },
+    {
+      "name": "Connectivity",
+      "count": 3,
+      "more": 0,
+      "gap": false,
+      "lines": [
+        {
+          "date": "2025-07-14",
+          "text": "royal decree names Peppol BIS (UBL) over the Peppol network as the e-invoice format, from 1 January 2026",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2025-07-14",
+          "text": "royal decree adds an article on holding the technical means to send and receive e-invoices",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2026-05",
+          "text": "federal e-invoicing site adds answers on rejecting misaddressed incoming invoices and on reverse-charge information",
+          "domain": "efactuur.belgium.be"
+        }
+      ]
+    },
+    {
+      "name": "Tax engine",
+      "count": 2,
+      "more": 0,
+      "gap": false,
+      "lines": [
+        {
+          "date": "2024-02-20",
+          "text": "law creates the duty to use e-invoices between businesses, starting 1 January 2026",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2025-07-14",
+          "text": "royal decree adds fines of 1,500 to 5,000 euro for lacking the means to send and receive e-invoices",
+          "domain": "ejustice.just.fgov.be"
+        }
+      ]
+    },
+    {
+      "name": "Master data",
+      "count": 2,
+      "more": 0,
+      "gap": false,
+      "lines": [
+        {
+          "date": "2026-02-20",
+          "text": "law takes foreign VAT-registered businesses without a Belgian establishment out of the e-invoice duty",
+          "domain": "ejustice.just.fgov.be"
+        },
+        {
+          "date": "2026-02-20",
+          "text": "law excuses the supplier from the e-invoice, but not from invoicing, when the recipient cannot technically receive one",
+          "domain": "ejustice.just.fgov.be"
+        }
+      ]
+    },
+    {
+      "name": "Archiving",
+      "count": 1,
+      "more": 0,
+      "gap": false,
+      "lines": [
+        {
+          "date": "2025-12-30",
+          "text": "law restores seven-year invoice retention, back-dated to 1 January 2023",
+          "domain": "ejustice.just.fgov.be"
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "id": "BE-E02",
+      "date": "2024-02-20",
+      "body": "law"
+    },
+    {
+      "id": "BE-E16",
+      "date": "2024-12-24",
+      "body": "law"
+    },
+    {
+      "id": "BE-E17",
+      "date": "2025-07-14",
+      "body": "law"
+    },
+    {
+      "id": "BE-E18",
+      "date": "2025-07-14",
+      "body": "law"
+    },
+    {
+      "id": "BE-E19",
+      "date": "2025-07-14",
+      "body": "law"
+    },
+    {
+      "id": "BE-E25",
+      "date": "2025-12-24",
+      "body": "law"
+    },
+    {
+      "id": "BE-E21",
+      "date": "2025-12-30",
+      "body": "law"
+    },
+    {
+      "id": "BE-E24",
+      "date": "2025-12-31",
+      "body": "law"
+    },
+    {
+      "id": "BE-E08a",
+      "date": "2026-02-20",
+      "body": "law"
+    },
+    {
+      "id": "BE-E08b",
+      "date": "2026-02-20",
+      "body": "law"
+    },
+    {
+      "id": "BE-E08c",
+      "date": "2026-02-20",
+      "body": "law"
+    },
+    {
+      "id": "BE-E11",
+      "date": "2026-05",
+      "body": "administration"
+    }
+  ]
+}
