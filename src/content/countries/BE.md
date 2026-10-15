@@ -41,7 +41,7 @@ master_data_id: "Peppol ID scheme 0208 (KBO/BCE enterprise number)"
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 7
-penalty_max: "Administrative fines under Art. 70 Belgian VAT Code; amounts depend on circumstances of each case"
+penalty_max: "EUR 1,500 (first infringement), EUR 3,000 (second), EUR 5,000 (subsequent) for not having the technical means to issue and receive a structured electronic invoice; administrative fines under Art. 70 Belgian VAT Code, scale in the royal decree of 8 July 2025 amending royal decree no. 44 of 9 July 2012"
 reporting_window: null
 correction_mechanism: credit_note
 
@@ -62,7 +62,7 @@ unresolved_amber: 0
 
 ## Preparation Timeline
 
-Belgium's mandate went live January 1, 2026 (Law of 6 February 2024, Art. 3 §2bis: https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635). The tolerance period ended March 31, 2026 (https://einvoice.belgium.be/en/news/period-tolerance-during-first-three-months-2026). Companies that have not completed implementation are in the full penalty window. Administrative fines apply under Art. 70 of the Belgian VAT Code from April 1, 2026.
+Belgium's mandate went live January 1, 2026 (Law of 6 February 2024, Art. 3 §2bis: https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&pub_date=2024-02-20&numac=2024001635). The tolerance period ended March 31, 2026 (https://einvoice.belgium.be/en/news/period-tolerance-during-first-three-months-2026). Companies that have not completed implementation are in the full penalty window. Administrative fines apply under Art. 70 of the Belgian VAT Code from April 1, 2026. For not having the technical means to issue and receive a structured electronic invoice, the scale set by the royal decree of 8 July 2025 (in force 1 January 2026, https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&caller=summary&pub_date=2025-07-14&numac=2025005169) is EUR 1,500 for a first infringement, EUR 3,000 for a second and EUR 5,000 for later ones. An infringement counts as a second or later one only if the administration found it at least three months after it found the previous one that led to a fine.
 
 The work from a standing start runs in four stages:
 

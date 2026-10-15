@@ -18,9 +18,9 @@ key_deadlines:
   - date: 2025-01-01
     description: Mandatory receiving of EN 16931 e-invoices for all domestic B2B
   - date: 2027-01-01
-    description: Mandatory issuing for entities with prior-year turnover >EUR 800,000
+    description: Mandatory issuing for entities with prior-year total turnover (Gesamtumsatz) above EUR 800,000; invoices sent by EDI have a separate exception for 2027 supplies
   - date: 2028-01-01
-    description: Mandatory issuing for all remaining B2B entities
+    description: Mandatory issuing for the remaining B2B entities; invoices up to EUR 250, passenger transport tickets (Fahrausweise) and small-business (Kleinunternehmer) invoices may always go as a sonstige Rechnung
 
 formats: [XRechnung, ZUGFeRD, Peppol-BIS-3.0, EN16931]
 cius: XRechnung
@@ -38,7 +38,7 @@ mandate_hardness: hard-inbound-soft-outbound
 master_data_id: "VAT-ID (USt-IdNr) / Leitweg-ID for B2G"
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
-archiving_years: 10
+archiving_years: 8
 penalty_max: null
 reporting_window: null
 correction_mechanism: correction_invoice
@@ -59,7 +59,9 @@ unresolved_amber: 0
 
 The receiving obligation has been live since January 2025. If your German entity has not confirmed it can receive EN 16931-compliant invoices (XRechnung or ZUGFeRD format), that gap is already open.
 
-For the issuing side, your deadline depends on one number: prior-year turnover from domestic B2B transactions. The EUR 800,000 threshold was set by the Growth Opportunities Act (Wachstumschancengesetz, March 2024, BGBl. 2024 I Nr. 108 [https://www.recht.bund.de/bgbl/1/2024/108/VO.html]), which amends §14 UStG. The transition rule (§27 Abs. 38 UStG) determines your deadline based on prior-year total turnover. Above it, the issuing mandate applies from January 2027. Below it, January 2028. Most finance teams have not confirmed this per entity.
+For the issuing side, your deadline depends on one number: prior-year total turnover (Gesamtumsatz, § 19 Abs. 2 UStG as cited in § 27 Abs. 38 UStG), not turnover from domestic B2B transactions. The EUR 800,000 threshold was set by the Growth Opportunities Act (Wachstumschancengesetz, March 2024, BGBl. 2024 I Nr. 108 [https://www.recht.bund.de/bgbl/1/2024/108/VO.html]), which amends §14 UStG. The transition rule (§27 Abs. 38 Nr. 2 UStG) lets an issuer whose total turnover in the previous calendar year was not more than EUR 800,000 keep sending paper or, with the recipient's consent, a non-e-invoice electronic format for supplies made in 2027. Above it, the issuing mandate applies from January 2027. At or below it, January 2028. A second exception sets no turnover limit: for supplies made in 2027, an invoice transmitted by EDI under Article 2 of Commission Recommendation 94/820/EC may be issued until 31 December 2027 in a non-e-invoice electronic format, with the recipient's consent (§27 Abs. 38 Nr. 3 UStG).
+
+Three kinds of invoice may always be sent as a sonstige Rechnung instead of an e-invoice: invoices up to EUR 250 (§ 33 UStDV), passenger transport tickets that count as invoices (Fahrausweise, § 34 UStDV) and invoices of small businesses exempt under § 19 Abs. 1 UStG (Kleinunternehmer, § 34a UStDV). The EUR 250 rule does not apply to invoices for supplies under §§ 3c, 6a and 13b UStG (§ 33 Satz 3 UStDV). Most finance teams have not confirmed the issuing position per entity.
 
 A clean implementation from a standing start takes 6-9 months. The work runs in four stages: entity scoping and format selection, ERP data audit and tax code mapping, transport setup (Peppol access point or email gateway), and validation testing with trading partners.
 
@@ -73,7 +75,7 @@ The most common delay: discovering mid-project that the entity list is incomplet
 
 **Finance Systems** owns the billing engine reconfiguration. The mandate requires EN 16931-compliant XML output - producing it means systematic work across the entire billing configuration, not a single settings change.
 
-**Tax/Compliance** owns two obligations the mandate created. First: GoBD archiving now requires the XML to be stored unmodified for 10 years - a PDF export does not satisfy this requirement. Second: if an incoming invoice contains a format error in the XML, it is classified as a "sonstige Rechnung" rather than a valid e-invoice under the mandate - putting the input VAT deduction at risk until corrected via Rechnungsberichtigung. [BMF Schreiben 15.10.2024, III C 2 - S 7287-a/23/10001 :007 (DOK 2024/0883282), Rn 7; BMF Schreiben 15.10.2025: https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3] Tax must define and operationalise validation rules for incoming invoices, not only outgoing.
+**Tax/Compliance** owns two obligations the mandate created. First: § 14b UStG requires invoices to be kept for 8 years from the end of the calendar year of issue (10 years before the 2025 change), and for the whole period they must keep their authenticity of origin, integrity of content and legibility (§ 14 Abs. 3 Satz 1 UStG). An e-invoice is the structured file (§ 14 Abs. 1 Satz 3 UStG), so a PDF export does not satisfy this requirement. Second: if an incoming invoice contains a format error in the XML, it is classified as a "sonstige Rechnung" rather than a valid e-invoice under the mandate - putting the input VAT deduction at risk until corrected via Rechnungsberichtigung. [BMF Schreiben 15.10.2024, III C 2 - S 7287-a/23/10001 :007 (DOK 2024/0883282), Rn 7; BMF Schreiben 15.10.2025: https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Umsatzsteuer/Umsatzsteuer-Anwendungserlass/2025-10-15-einfuehrung-obligatorische-e-rechnung.pdf?__blob=publicationFile&v=3] Tax must define and operationalise validation rules for incoming invoices, not only outgoing.
 
 **AP Operations** has a new processing requirement since January 2025: German business partners may now send invoices as structured XML files (XRechnung or ZUGFeRD). In practice, many AP teams continue to process the readable PDF layer of ZUGFeRD invoices rather than ingesting the XML - which leaves the input VAT validation gap open (see Tax/Compliance above).
 
@@ -95,11 +97,13 @@ Transport options for B2B direct exchange: **Email** is legally sufficient under
 
 Format choice (XRechnung vs ZUGFeRD): XRechnung is machine-readable only - buyers without XML processing capability cannot read it visually. ZUGFeRD bundles a readable PDF alongside the XML. For mixed supplier bases, ZUGFeRD is the safer default, but requires the billing engine to generate both layers simultaneously.
 
+XRechnung version (KoSIT page read 19 September 2026, https://xeinkauf.de/xrechnung/versionen-und-bundles/): version 3.0 has been in force since 1 February 2024 and stays in force until at least 31 July 2027, because no normative release was made in summer 2026. A pre-release of XRechnung 4.0 was published in September 2026; the final version 4.0 is expected in spring 2027, bundled with the technical components.
+
 ## Correction & Business Continuity
 
 **Correction:** Germany uses correction invoices (Rechnungsberichtigung) rather than credit notes. Once the mandatory e-invoice obligation applies to your entity, the correction document must itself be a fully compliant EN 16931 electronic invoice - the same invoice type code for a correction (BMF FAQ 2026: https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html, section on Rechnungsberichtigungen). During the transition periods where your entity is still permitted to issue paper or non-compliant electronic formats, corrections may also use those formats. Once the transition period ends, a PDF correction to an XRechnung is not valid. The correction must reference the original invoice number specifically and unambiguously and be transmitted through the same channel as the original.
 
-**Penalties:** Germany has no dedicated financial penalty schedule for e-invoice non-compliance. The BMF FAQ is silent on penalties because consequences operate through existing tax law rather than a new e-invoice-specific fine regime. The primary financial risk is input VAT denial: an invoice that does not meet EN 16931 requirements may be reclassified as a "sonstige Rechnung," putting the recipient's input VAT deduction at risk. GoBD archiving failures (not storing the XML unmodified for 10 years) expose the company to heightened audit risk and potential tax base estimation by the tax authority. There is no per-invoice administrative fine comparable to those in clearance-model mandates. The `penalty_max` field is null — confirmed correct.
+**Penalties:** Germany has no dedicated financial penalty schedule for e-invoice non-compliance. The BMF FAQ is silent on penalties because consequences operate through existing tax law rather than a new e-invoice-specific fine regime. The primary financial risk is input VAT denial: an invoice that does not meet EN 16931 requirements may be reclassified as a "sonstige Rechnung," putting the recipient's input VAT deduction at risk. Archiving failures (not keeping the e-invoice unmodified for the 8 years § 14b UStG requires) expose the company to heightened audit risk and potential tax base estimation by the tax authority. There is no per-invoice administrative fine comparable to those in clearance-model mandates. The `penalty_max` field is null - confirmed correct.
 
 **Business continuity:** Germany has no central government B2B platform, so there is no government downtime risk for B2B exchange. Exposure is bilateral - either your Peppol access point or your trading partner's. The Peppol AS4 protocol includes store-and-forward retry logic that handles transient outages without manual intervention. For email-based exchange, the fallback is manual queue management.
 
@@ -120,6 +124,6 @@ A German mandate operation is ready when four conditions hold:
 - Every incoming domestic B2B invoice is processed via its XML data, not its PDF layer
 - The XML of every invoice is archived unmodified, meeting GoBD immutability requirements
 - Tax has defined and operationalised validation rules for incoming invoice XML
-- The billing system produces EN 16931-compliant outbound XML and can transmit it through the required channel (applicable for large entities from January 2027)
+- The billing system produces EN 16931-compliant outbound XML and can transmit it through the required channel (applicable from January 2027 where prior-year total turnover exceeded EUR 800,000, from January 2028 for the rest; invoices sent by EDI have the separate exception for 2027 supplies described above)
 
-The auditor test: if a VAT inspector asks for the original invoice for any transaction in the past ten years, can you produce the unmodified XML? If not, archiving is not done.
+The auditor test: if a VAT inspector asks for the original invoice for any transaction in the past eight years, can you produce the unmodified XML? If not, archiving is not done.
