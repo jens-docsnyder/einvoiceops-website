@@ -1,7 +1,0 @@
-country_code: DK
-items:
-  - priority: amber
-    type: source-verification
-    description: "DK PENALTY - PARTIAL: §28 confirmed as compulsory dissolution section (checked directly 2026-05-12). §28 text: Erhvervsstyrelsen kan anmode skifteretten om at opløse en virksomhed for failure to submit records, submit declarations, or comply with orders under §26. Dissolution citation updated on DK page. DKK 1,500,000 fine: still NOT found in primary law - secondary sources (Dansk Erhverv, PwC DK) cite it but no section identified. Search retsinformation.dk/eli/lta/2022/700 → Ctrl+F 'bøde' or '1.500.000' to find the fine amount in the law text. If found: add section citation to penalty_max. If not found in Bogføringsloven: the fine may be under a different statute (e.g. straffelovens §299b or administrative fines law) - note this and remove item."
-    source_url: "https://www.retsinformation.dk/eli/lta/2022/700"
-    added: 2026-05-01

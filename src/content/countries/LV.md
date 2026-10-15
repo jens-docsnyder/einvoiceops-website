@@ -92,7 +92,7 @@ The configuration work items in each cluster vary by ERP system, entity structur
 
 **Peppol schemes.** Latvian entities are identified in Peppol using scheme 0218 (company registration number, 11-digit format for legal persons) or scheme 9939 (VAT number without LV prefix). The registration number is the primary identifier. Buyer-side Peppol IDs for Latvian government entities are available via the Peppol Directory.
 
-**5-working-day window.** The reporting window is 5 working days from invoice issuance date (Cabinet Regulation 749 Point 14 - confirmed via WebFetch). This is a reporting obligation to VID, separate from the transmission to the buyer. Both must occur: the invoice is sent to the buyer via Peppol, and the invoice data is reported to VID via EDS submission portal.
+**5-working-day window.** The reporting window is 5 working days from invoice issuance date (Cabinet Regulation 749 Point 14, checked against the regulation text). This is a reporting obligation to VID, separate from the transmission to the buyer. Both must occur: the invoice is sent to the buyer via Peppol, and the invoice data is reported to VID via EDS submission portal.
 
 **Accounting Law archiving.** 10-year archiving is required under Accounting Law Section 28. This covers invoice records including structured XML - not PDF exports.
 

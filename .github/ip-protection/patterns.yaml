@@ -1,7 +1,11 @@
 # einvoiceops IP gate pattern library
-# Version: 1.0 | Last updated: 2026-05-12
+# Version: 1.1 | Last updated: 2026-10-15
 #
 # This file is public. The patterns list what we are protecting.
+# No person or prospect name is written in it. A rule that has to match a name is written
+# with a character class (so the name is not spelled here), and names of customers and
+# prospects are matched from a private list kept outside this repository (see the scanner's
+# --private option and IP_GATE_PRIVATE_PATTERNS).
 # That is an accepted trade-off: the gate's primary value is blocking
 # accidental commits, not stopping a determined adversary who already
 # has repo access. Review this trade-off if the repo becomes private.
@@ -328,7 +332,7 @@ rules:
     category: D
     severity: high
     type: regex
-    pattern: '\bTier [1-3]\b'
+    pattern: '\bTier[\s-]?[1-3]\b'
     description: "Internal source grading label. Say what the source is (official journal, tax authority page, trade publication) instead."
 
   - id: IP-D06
@@ -349,8 +353,8 @@ rules:
     category: D
     severity: high
     type: regex
-    pattern: '\bJens click\b'
-    description: "Internal verification act and person name. Write what was checked against which public source."
+    pattern: '\bJ[e]ns\s+(?:click|verif|check|confirm|open|test)\w*'
+    description: "Internal verification act attributed to a person. Write what was checked against which public source."
 
   - id: IP-D09
     category: D
@@ -358,6 +362,101 @@ rules:
     type: regex
     pattern: '-cluster\b|\bcluster\b'
     description: "Internal term. Externally say 'invoicing function'. Medium because the approved Operational Ownership closing sentence still uses it on country pages."
+
+
+  # ── CATEGORY F: Internal working notes, attributions and process words ─────
+  # Added 2026-10-15 after the changelog and verification-queue leak (row 1229).
+  # The class: how the work was done and who said what, as opposed to what is true.
+
+  - id: IP-F01
+    category: F
+    severity: high
+    type: regex
+    pattern: '\bJ[e]ns\b(?!\s+Anttila)'
+    description: "The site owner's first name outside the full legal name: an internal attribution, instruction or verification act. Remove it; the full name appears only where the law requires it."
+
+  - id: IP-F02
+    category: F
+    severity: high
+    type: regex
+    case_sensitive: true
+    pattern: '\b[A-Z][a-z]{2,}\s+demo\s+(?:screens?|decks?|slides?)\b|\b(?:for|from)\s+[A-Z][a-z]{2,}\s+demo\b'
+    description: "A demo prepared for a named person or account. Customer and prospect material never appears in this repository."
+
+  - id: IP-F03
+    category: F
+    severity: critical
+    type: regex
+    pattern: '\bSIG-\d{1,4}\b'
+    description: "Internal signal registry id. Strip it."
+
+  - id: IP-F04
+    category: F
+    severity: high
+    type: regex
+    case_sensitive: true
+    pattern: '\b(?:WebFetch(?:ed)?|Gemini|Deep Research|Anthropic|Claude|Opus|Sonnet)\b'
+    description: "Names the tool or model used in the research method. Say what the source is, not how it was read."
+
+  - id: IP-F05
+    category: F
+    severity: high
+    type: regex
+    pattern: '\b(?:second|check|steering|fix|test|data|cold[- ]read|copy[- ]check) seat\b'
+    description: "Internal review process wording. Describe the fact, not who checked it."
+
+  - id: IP-F06
+    category: F
+    severity: high
+    type: regex
+    case_sensitive: true
+    pattern: '\b(?:Market Intelligence|Product Design|Product Research|Country Data|Work Items|Accounts)/|\b[vV]ault\b'
+    description: "Names an internal folder or the private notes store. Reveals how the work is organised."
+
+  - id: IP-F07
+    category: F
+    severity: critical
+    type: regex
+    pattern: '/Users/[A-Za-z]'
+    description: "Absolute path on a working machine."
+
+  - id: IP-F08
+    category: F
+    severity: high
+    type: regex
+    case_sensitive: true
+    pattern: '\bAMBER\b|\bRED\b(?=\s+(?:item|label|state|status|claim))'
+    description: "Internal confidence state word. A public claim is either stated with its source or left out."
+
+  - id: IP-F09
+    category: F
+    severity: high
+    type: regex
+    pattern: '\b(?:research (?:YAML|queue|items?|files?)|verification queue)\b'
+    description: "Names the internal verification queue."
+
+  - id: IP-F10
+    category: F
+    severity: critical
+    type: regex
+    case_sensitive: true
+    pattern: '\[?A-(?:DIV|URL|CONF|BEH)\b'
+    description: "Internal claim marker."
+
+  - id: IP-F11
+    category: F
+    severity: high
+    type: regex
+    pattern: '\bruled\s+(?:by\s+[A-Za-z ]{1,30}?\s+)?\d{4}-\d{2}-\d{2}\b'
+    description: "Internal ruling and its date. State the rule, not its history."
+
+  - id: IP-F12
+    category: F
+    severity: medium
+    type: regex
+    case_sensitive: true
+    pattern: '\b[A-Z]{2}-E\d{2}[a-z]?\b|\b[A-Z]{2}-changes\.csv\b'
+    description: "Internal change-record id or data file name. Medium: the ids are data keys in the build inputs and do not reach the built pages; keep them out of prose and comments."
 
 
 exceptions:
@@ -401,3 +500,20 @@ exceptions:
   - pattern: "*"
     file: "src/pages/status.astro"
     reason: "Internal dashboard — gitignored, not deployed"
+
+  # ── Narrow exceptions for the owner's first name (IP-F01) ───────────────────
+  # The contact address is public (it is on the legal page and in every footer).
+  - regex: 'j[e]ns@einvoiceops\.eu'
+    rule: IP-F01
+    reason: "Public contact address"
+
+  # A mailto line in the contact block is addressed to the person who reads it.
+  - regex: 'addressed to J[e]ns,'
+    rule: IP-F01
+    file_suffix: ".ts"
+    reason: "Public contact-block wording on the story pages"
+
+  # The public profile photo and professional profile link of the person named on the legal page.
+  - regex: 'j[e]ns-anttila'
+    rule: IP-F01
+    reason: "Public photo path and professional profile link in the contact block"

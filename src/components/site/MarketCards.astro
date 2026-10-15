@@ -1,14 +1,13 @@
 ---
 // What we see in the market: a heading with context, one intro line, then cards that turn over, in place of the three
-// numbered columns (Jens, 2026-10-05: "it doesn't have to be 3 pillars by default on a page", "flippable cards work").
+// numbered columns.
 // Opted into per story file with a `market` field; the other story pages keep the numbered columns in StoryPage.astro.
 //
 // Each card is a front (a title and one sentence) and a back. The back is set apart from the front as points, not running
-// text (Jens, 2026-10-06): an optional lead line, bullets, and where the card ends on a consequence, that last line after
+// text: an optional lead line, bullets, and where the card ends on a consequence, that last line after
 // an arrow rather than a bullet. A card with no consequence is bullets only. A plain string back still renders as text. Each face carries its own
-// button at its foot, inside the card (Jens, 2026-10-06): "Learn more" on the front, "Turn back" on the back, level
-// across a row while the cards are unturned. With script each card is only as tall as the face showing (Jens,
-// 2026-10-06: "before clicking it they're not as high"): unturned, the cards in a row share the height of the row's
+// button at its foot, inside the card: "Learn more" on the front, "Turn back" on the back, level
+// across a row while the cards are unturned. With script each card is only as tall as the face showing: unturned, the cards in a row share the height of the row's
 // longest front, so the buttons stay level; turned, a card grows to its back's height in a smooth expanding animation
 // alongside the turn, and shrinks back the same way. Heights are measured, never fixed, and remeasured on resize. Without script both faces show, one under the other, and
 // the buttons stay hidden. With script a card turns on either button: real <button>s with aria-expanded and

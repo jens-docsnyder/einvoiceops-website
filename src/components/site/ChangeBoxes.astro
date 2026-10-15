@@ -1,22 +1,19 @@
 ---
-// The row of boxes under the proof strip (France standalone first, Jens 2026-10-07; approved mockup: Market Intelligence/
-// Messaging/Website structure pictures, 2026-10/France scroll mockup, 2026-10-07.png). A line drops from the count column
+// The row of boxes under the proof strip. A line drops from the count column
 // of the strip onto a line across the page, and one box per change hangs under it. The boxes fill in left to right
 // as the page scrolls down and empty again as it scrolls up; once all are in, the box of the change the July grid opens on
 // turns to the accent and a line drops from it into the July section.
 //
-// One box per change as the page counts them (Jens, 2026-10-08: "on top changes from sources, so the number and the amount
-// of boxes have to follow that logic"): a change is what a source published on one day, and it holds one or more rules,
-// the counted rows in data.changes (FR.json). publications() in format.ts groups the rows by issuing body and day (a box is
-// one publication of one body on one day, ruled 2026-10-12: a day on which two bodies published is two boxes), the same count as
+// One box per change as the page counts them, so the number of boxes follows the change count: a change is what a source published on one day, and it holds one or more rules,
+// the counted rows in data.changes (the page's data file). publications() in format.ts groups the rows by issuing body and day (a box is
+// one publication of one body on one day: a day on which two bodies published is two boxes), the same count as
 // {published}. The red box is the day of the rule the July grid opens on, found from the data, never typed in. No
-// captions, markers or hover on a box (Jens, 2026-10-07).
+// captions, markers or hover on a box.
 //
-// Rebuilt from Jens's word on the built row, 2026-10-07 ("make the urgency and complexity more visible", then "it doesn't
-// display well at all"): each box turns the accent as it fills and its date shows under it at the same moment, month and
+// Each box turns the accent as it fills and its date shows under it at the same moment, month and
 // year as M/YY in a small font, centred under the box and never past the row's edges. Once all are in, the box of the
 // change the July grid opens on grows by a third and the line into the July section grows out of it; its own date steps
-// aside for the line (the July section names the day). Fourteen to a row, seven under 600 px, since 2026-10-08.
+// aside for the line (the July section names the day). Fourteen to a row, seven under 600 px.
 import { publications } from './format';
 
 interface Change { id: string; date: string; body?: string }
@@ -41,7 +38,7 @@ if (redId && !redDate) {
 }
 const red = days && redChange ? days.findIndex((p) => p.date === redChange.date && p.body === (redChange.body ?? '')) : -1;
 const label = (date: string) => `${Number(date.slice(5, 7))}/${date.slice(2, 4)}`;
-// Outlined boxes for the changes still to come (Jens, 2026-10-08): they finish the last row and appear as the line starts
+// Outlined boxes for the changes still to come: they finish the last row and appear as the line starts
 // growing, with one line under them and no dates, since nobody can date a change not yet made. Fourteen to a row, seven
 // under 600 px, so the same number finishes the row at both widths.
 const future = (14 - (count % 14)) % 14;

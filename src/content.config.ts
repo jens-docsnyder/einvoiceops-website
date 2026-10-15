@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { existsSync } from 'node:fs';
 
 const changelogs = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/changelogs' }),
@@ -19,7 +20,10 @@ const changelogs = defineCollection({
   }),
 });
 
-const research = defineCollection({
+// The open-items list behind the local status page is not part of this repository. On a
+// working machine it is linked in at src/content/research (gitignored); the public build
+// finds no such folder and defines no collection.
+const research = !existsSync('./src/content/research') ? undefined : defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/research' }),
   schema: z.object({
     country_code: z.string().length(2),
@@ -89,4 +93,4 @@ const countries = defineCollection({
   }),
 });
 
-export const collections = { countries, research, changelogs };
+export const collections = { countries, changelogs, ...(research ? { research } : {}) };

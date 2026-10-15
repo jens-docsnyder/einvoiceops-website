@@ -20,7 +20,7 @@ export function longDate(iso: string): string {
   return `${d} ${LONG[m - 1]} ${y}`;
 }
 
-// The changes as the page counts them (Jens, 2026-10-08; box rule ruled 2026-10-12): a change is what ONE issuing body published
+// The changes as the page counts them (box rule): a change is what ONE issuing body published
 // on ONE day, and it holds one or more rules, each of which is one counted row (one entry in data.changes). So a box is one
 // distinct (day, issuing body) pair of the counted rows: a day on which two bodies both published is two boxes, and a body's
 // split counts that body's distinct days, so the splits add up to the boxes. Sorted by day, then body. A change without a
@@ -34,8 +34,8 @@ export function publications(data: { total: number; changes?: { id: string; date
   return [...seen.values()].sort((x, y) => (x.date < y.date ? -1 : x.date > y.date ? 1 : x.body < y.body ? -1 : x.body > y.body ? 1 : 0));
 }
 
-// Every count and split the story copy states is computed here from the fan-out file, never typed (Jens, 2026-10-12: the
-// numbers update by themselves after each weekly run). A change in a count is one publication, that is one (day, issuing
+// Every count and split the story copy states is computed here from the fan-out file, never typed, so the
+// numbers update by themselves after each weekly run. A change in a count is one publication, that is one (day, issuing
 // body) pair, optionally narrowed to one issuing body (the `body` key of each entry in changes[]) and to the days from a date on. A month-only date
 // (YYYY-MM) counts as the first of its month.
 export interface Change { id: string; date: string; body?: string }

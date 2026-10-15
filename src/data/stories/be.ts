@@ -1,28 +1,26 @@
 // All copy of the Belgium page (one page per country, told to any company that runs its own invoicing in Belgium,
-// independent or part of a group, drawn from both Belgian frameworks). Flow C, modelled on de.ts and fr-standalone.ts as they
-// stand on website main (price in the onboarding heading, no intro under it, contact block with the profile link).
+// independent or part of a group, drawn from both Belgian frameworks). Flow C, modelled on de.ts and fr-standalone.ts
+// (price in the onboarding heading, no intro under it, contact block with the profile link).
 // Strings may hold <strong> and <span class='accent'>; they are rendered with set:html.
 // Placeholders are filled from src/data/fanout/BE.json (format.ts fill()): {published} {since} {weekly}, and the counts
 // computed from its changes list, {published@DATE} {changes@DATE} {body:KEY@DATE} {missed:KEY@DATE}; a passage that depends on a
 // count is a conditional ({ ifNone, then, otherwise }, format.ts). No count on the page is typed except the example's own
 // (one change, three rules, three functions, six work items), as on France and Germany.
-// Voice: Market Intelligence/Messaging/Tone of voice.md. Plan: the Belgium page project plan of 2026-10 (same folder). Facts only
-// from the Belgium facts file for messaging (same folder; cited below as "facts", by section) and
-// Product Research/Change Velocity/BE-changes.csv (cited by event id).
+// Facts come only from the Belgian sources named in the notes below, cited by section.
 // Vocabulary: a change is one publication by one body on one day; a rule is one counted row inside it. The law published on
-// 20 February 2026 is one change with three rules (BE-E08a, b, c); BE-E11 is one change with one rule.
+// 20 February 2026 is one change with three rules; the tax administration's FAQ of May 2026 is one change with one rule.
 //
-// Belgium is France-shaped, not Germany-shaped (plan, finding 4): of the 8 publications since 1 January 2024, 6 came before go-live
+// Belgium is France-shaped, not Germany-shaped: of the 8 publications since 1 January 2024, 6 came before go-live
 // on 1 January 2026 (three of them between 24 and 31 December 2025) and 2 after: the law published on 20 February 2026 and the
 // tax administration's FAQ of May 2026. Nothing on the page is bound to a mandate date: issuing and receiving both became
-// mandatory on 1 January 2026, in one step (facts, "The mandate"), so there is no date switch in the headline.
+// mandatory on 1 January 2026, in one step, so there is no date switch in the headline.
 //
-// Law detail: the example's first rule (BE-E08a) names who is taken out of the obligation, and that group is defined in a
+// Law detail: the example's first rule names who is taken out of the obligation, and that group is defined in a
 // VAT code article that is read in the tax administration's consolidated copy, not in the gazette text of the law. So the page
 // carries the signed copy disclosure under the example (key "disclosure", passed as followedDisclosure by the page file). The
 // other two rules and the dates are read from the gazette's own text of the law, and the December publications are named by
 // date and kind of act only. The fines and the obligation staying with the company (both read from the copy) are left out.
-// Wording point from the data seat: the February law is dated 10 February 2026 and was published, and took effect, on
+// Wording point: the February law is dated 10 February 2026 and was published, and took effect, on
 // 20 February 2026. The page says "published on 20 February", never "law of 20 February", and never that the Chamber passed it
 // that day.
 
@@ -49,7 +47,7 @@ export const beBodies: Record<string, string> = {
 export const beBodyKeys = ['law', 'administration'];
 
 export const be = {
-  // Page flow C, country-first tree: the site structure file in Market Intelligence/Messaging.
+  // Page flow C, country-first tree.
   flow: 'c',
 
   meta: {
@@ -64,7 +62,7 @@ export const be = {
     // One version, no date switch: issuing and receiving both became mandatory on 1 January 2026, so nothing here is ahead.
     h1: `Hear about the next change to Belgium's e-invoicing rules from us, not from a rejected invoice.`,
     // No count in the headline or the subline, because a number there goes stale the day Belgium's count moves. The first sentence
-    // rests on facts ("The mandate": 1 January 2026, issuing and receiving in one step; "The changes since go-live": three
+    // rests on the mandate (1 January 2026, issuing and receiving in one step) and the changes since go-live (three
     // publications between 24 and 31 December 2025, and changes after go-live). The second is the same service in every country.
     subline: `Belgium's rules were still changing in the last days before e-invoicing became mandatory on 1 January 2026, and they've changed since. When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it, with what changed for them and where it says so.`,
   },
@@ -83,9 +81,9 @@ export const be = {
   },
 
   // The row of boxes under the strip (ChangeBoxes.astro): one box per publication in BE.json, the real example's box
-  // (BE-E08a, the law published on 20 February 2026) in the accent. Box dates are publication dates, not signing dates:
-  // BE-E02 20 February 2024, BE-E16 24 December 2024, BE-E17 to E19 14 July 2025, BE-E25 24 December 2025, BE-E21 30 December
-  // 2025, BE-E24 31 December 2025, BE-E08a to c 20 February 2026; BE-E11 is a month only (May 2026).
+  // (the law published on 20 February 2026) in the accent. Box dates are publication dates, not signing dates:
+  // 20 February 2024, 24 December 2024, 14 July 2025 (three rules), 24 December 2025, 30 December 2025, 31 December 2025,
+  // 20 February 2026 (three rules); the tax administration's FAQ is a month only (May 2026).
   boxes: true,
 
   // What we see in the market: four cards that turn over (MarketCards.astro). Ids 1, 2 and 3 keep the framework challenge
@@ -104,18 +102,18 @@ export const be = {
       {
         id: 1,
         title: `The rules kept moving until days before go-live`,
-        // Rests on facts ("The changes since go-live", "Before go-live"): three publications fell between 24 and 31 December
+        // Rests on the changes since go-live and the ones before it: three publications fell between 24 and 31 December
         // 2025, days before the obligation began. The card names each by date, kind of act and the instrument it amends (the first
-        // by the title the gazette database gives it), never for what the amendment says: BE-E21 in particular is told only as
+        // by the title the gazette database gives it), never for what the amendment says: the 30 December law in particular is told only as
         // "published days before the obligation began".
         front: `Belgium was still changing its e-invoicing rules in the last days of 2025, just before the mandate began on 1 January 2026, so companies had to get ready against rules that hadn't settled.`,
         back: {
           points: [
-            // BE-E25, royal decree of 12 December 2025, published 24 December 2025 (the decree's own page on the gazette database).
+            // Royal decree of 12 December 2025, published 24 December 2025 (the decree's own page on the gazette database).
             `Eight days before go-live, on 24 December 2025, a royal decree on issuing the farmers' purchase note in structured electronic form was published in the gazette (<a href='https://www.ejustice.just.fgov.be/eli/besluit/2025/12/12/2025009711/justel'>ejustice.just.fgov.be</a>)`,
-            // BE-E21, law of 18 December 2025, published 30 December 2025 (the VAT code's amendment register).
+            // Law of 18 December 2025, published 30 December 2025 (the VAT code's amendment register).
             `Two days before, on 30 December, a law amending the VAT code was published (<a href='https://www.ejustice.just.fgov.be/eli/wet/1969/07/03/1969070305/justel'>ejustice.just.fgov.be</a>)`,
-            // BE-E24, royal decree of 17 December 2025, published 31 December 2025 (the register of royal decree no. 1).
+            // Royal decree of 17 December 2025, published 31 December 2025 (the register of royal decree no. 1).
             `And on 31 December, the day before, another royal decree was published, amending royal decree no. 1 on VAT (<a href='https://www.ejustice.just.fgov.be/eli/besluit/1992/12/29/1992003823/justel'>ejustice.just.fgov.be</a>)`,
           ],
         },
@@ -133,12 +131,12 @@ export const be = {
         },
         back: {
           points: [
-            // BE-E08a to c, the law dated 10 February 2026, published and in force 20 February 2026 (the gazette's own text).
+            // The law dated 10 February 2026, published and in force 20 February 2026 (the gazette's own text).
             // 20 February is 50 days after 1 January, seven weeks.
             `Seven weeks after go-live, on 20 February 2026, the gazette published a law that changed the e-invoicing rules (<a href='https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=nl&amp;caller=summary&amp;pub_date=2026-02-20&amp;numac=2026001291'>ejustice.just.fgov.be</a>)`,
-            // BE-E11, the tax administration's e-invoicing FAQ, dated by its first capture to 20 May 2026, so "In May".
+            // The tax administration's e-invoicing FAQ, dated by its first capture to 20 May 2026, so "In May".
             `In May, Belgium's tax administration added to its e-invoicing FAQ that an invoice sent to the wrong address is rejected over the network and not booked (<a href='https://efactuur.belgium.be/nl/FAQ'>efactuur.belgium.be</a>)`,
-            // PEPPOL SENTENCE (BE-E09, BE-E13; PEPPOL-changes.csv). Format versions that became mandatory in Belgium (the dates are
+            // PEPPOL sentence. Format versions that became mandatory in Belgium (the dates are
             // mandatory-from dates, not release dates), named as
             // outside the count and never as one of the counted changes. It is the only place the page mentions them: delete this
             // one line and nothing else on the page refers to it.
@@ -150,14 +148,14 @@ export const be = {
       {
         id: 2,
         title: `Changes come from more than one place`,
-        // Names the two bodies the count lists. Rests on facts ("Where the rules are published"): laws and decrees in the gazette,
+        // Names the two bodies the count lists. Rests on where the rules are published: laws and decrees in the gazette,
         // in Dutch and French, and guidance and answers on the tax administration's own site.
         front: `Belgium's rules come from Parliament and the government through the law, published in the gazette in Dutch and French, and from the tax administration, which answers questions on its own site, each on its own calendar.`,
         back: {
           // Counted as changes, one per body per publication day, from BE.json: each change carries its issuing body (key "body")
           // and the placeholders count the distinct days per body, so the split moves with the file. On 2026-10-14 it read law 7
-          // (20 Feb 2024 BE-E02, 24 Dec 2024 BE-E16, 14 Jul 2025 BE-E17, E18 and E19, 24, 30 and 31 Dec 2025 BE-E25, E21 and E24,
-          // 20 Feb 2026 BE-E08a to c), administration 1 (May 2026 BE-E11), 8 in all. The closing line counts from go-live: 2
+          // (20 Feb 2024, 24 Dec 2024, 14 Jul 2025 three rules, 24, 30 and 31 Dec 2025,
+          // 20 Feb 2026 three rules), administration 1 (May 2026), 8 in all. The closing line counts from go-live: 2
           // changes, 1 through the law, so anyone watching only the law would have missed 1 of them. When no change since go-live
           // came from the administration it says all came through the law instead of "missed 0".
           lead: `We've counted {published} changes since {since}, and this is where each of them came from.`,
@@ -175,7 +173,7 @@ export const be = {
       {
         id: 3,
         title: `A change can fall between the people you rely on`,
-        // The whole card is the frameworks' bet and is hedged as one ("likely", "may"). The outside parties are the facts file's
+        // The whole card is the frameworks' bet and is hedged as one ("likely", "may"). The outside parties are the
         // providers line: the platform provider keeps its connection current, software vendors update their products; the ERP
         // partner and the accountant are the standalone row's bet. It says nothing about where the obligation stays, which
         // would rest on law detail read from the tax administration's copy and need its disclosure, and it names no call.
@@ -198,10 +196,10 @@ export const be = {
   // The February 2026 law told as the one publication that shows the cards at once. Picked and confirmed against the gazette's own
   // text (the Belgisch Staatsblad act page of 20 February 2026, numac 2026001291): the law dated 10 February 2026,
   // published and in force on 20 February 2026, seven weeks after go-live (card 1b), from the law and not the administration
-  // (card 2), reaching more than one function at once (card 3). Three rules, BE-E08a, b and c, one publication; grid letters
-  // oim, om, o (functions column of BE-changes.csv: E08a master data, outbound, inbound; E08b outbound, master data; E08c
-  // outbound). Work items: outbound 3, inbound 1, master data 2, six in all (the Belgium figures file), the other three rows empty.
-  // The box that turns red is BE-E08a's publication, found from the file by the id of the first grid column.
+  // (card 2), reaching more than one function at once (card 3). Three rules, one publication; grid letters
+  // oim, om, o (first rule: master data, outbound, inbound; second: outbound, master data; third:
+  // outbound). Work items: outbound 3, inbound 1, master data 2, six in all (from the page's data), the other three rows empty.
+  // The box that turns red is the first rule's publication, found from the file by the id of the first grid column.
   followed: {
     h2: `A real example from February 2026`,
     intro: `On 20 February 2026, seven weeks after go-live, Belgium published a law, and the three rules we count in it took effect that same day. We count it as one change, and it touches three of your invoicing functions at once.`,
@@ -216,7 +214,7 @@ export const be = {
     shows: [],
     closing: {
       title: `Three invoicing functions had something to check`,
-      // 3 rules BE-E08a, b, c; 6 work items = row totals 3 + 1 + 2, the other three rows empty (BE-changes.csv, functions column).
+      // 3 rules; 6 work items = row totals 3 + 1 + 2, the other three rows empty.
       lead: `One change, published on 20 February`,
       chain: [
         `3 rules in it`,
@@ -228,8 +226,8 @@ export const be = {
       // Nothing here tells a missed change as an event that stopped anyone invoicing.
       then: `A change like this moves who owes what, and you only know your own position has changed if you know the change exists.`,
     },
-    // The grid: one column per rule of the law published on 20 February 2026 (BE-E08a, b, c, in order), letters for the functions
-    // each touched, from the functions column of BE-changes.csv: o outbound, i inbound, c connectivity, t tax engine, m master
+    // The grid: one column per rule of the law published on 20 February 2026 (in order), letters for the functions
+    // each touched: o outbound, i inbound, c connectivity, t tax engine, m master
     // data, a archiving. Row totals 3, 1, 0, 0, 2, 0.
     grid: [`oim`, `om`, `o`],
     gridPrompt: `3 rules`,
@@ -240,8 +238,8 @@ export const be = {
     countHead: ``,
     totalLabel: `Total work items`,
     // The part for each function, written for the page from the what_changed column of each row and read against the gazette's own
-    // text (data seat, session 1). The union of each rule's parts' letters equals its grid entry: E08a o + i + m = oim,
-    // E08b o + m = om, E08c o. Nothing says how to fix, and nothing is added that the rows do not carry.
+    // text. The union of each rule's parts' letters equals its grid entry: first rule o + i + m = oim,
+    // second o + m = om, third o. Nothing says how to fix, and nothing is added that the rows do not carry.
     changes: [
       { id: `BE-E08a`, title: `Foreign VAT-registered companies leave the obligation`, parts: [
         { f: `o`, text: `Foreign companies that are VAT-registered in Belgium but have no establishment there are taken out of the obligation, so the law no longer requires you to send an e-invoice to a customer of that kind.` },
@@ -273,13 +271,13 @@ export const be = {
     withheld: ``,
   },
 
-  // The signed general copy disclosure (facts file, "Whose copy of the law, written out"), shown under the example because its
+  // The general copy disclosure, shown under the example because its
   // first rule defines who is taken out of the obligation from a VAT code article read in the tax administration's copy.
   // StoryPage prints it through followedDisclosure (the page file passes c.disclosure).
   disclosure: `We read the Belgian law in the tax administration's published copy, not the official gazette, and check it against the gazette's record of which acts amended which articles. That confirms what changed and when, not that every sentence matches the gazette word for word; closing that gap is work, not money.`,
 
   onboarding: {
-    // France's, word for word (Jens, 2026-10-09): the price is said once, in the heading, and no intro repeats it.
+    // As on the France page, word for word: the price is said once, in the heading, and no intro repeats it.
     h2: `We keep your invoicing teams up to date. Free onboarding, then €450 a month.`,
     intro: ``,
     steps: [

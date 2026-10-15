@@ -50,13 +50,12 @@ const contactTone = live ? 'tint' : 'white';
 // country row, because the other country pages are not published.
 const flowC = c.flow === 'c';
 // The row of boxes under the strip (ChangeBoxes.astro), opted into per story file with boxes: true, live flow C pages
-// only. With it the July grid comes straight after the strip and the market cards after the grid (Jens, 2026-10-07);
+// only. With it the July grid comes straight after the strip and the market cards after the grid;
 // the bands below keep alternating white and tint.
 const boxes = flowC && live && c.boxes === true && !!c.followed;
 const redId = boxes ? c.followed.changes?.[c.followed.gridStart?.col ?? 0]?.id : undefined;
-// The per-function count section (FanOut.astro) can be left out per story file with fanout.show: false (France standalone,
-// Jens 2026-10-07: with the row of boxes carrying the count and the July grid the per-function view, it repeated the count
-// and called function hits changes). Without it, the bands below the market cards swap tints to keep alternating.
+// The per-function count section (FanOut.astro) can be left out per story file with fanout.show: false (for example when the row of boxes carries the count and the
+// July grid the per-function view, it repeated the count and called function hits changes). Without it, the bands below the market cards swap tints to keep alternating.
 const showFanout = live && c.fanout?.show !== false;
 const startTint = flowC && live && (!boxes || !showFanout);
 ---
@@ -220,7 +219,7 @@ const startTint = flowC && live && (!boxes || !showFanout);
   .sp-open { padding: 60px 0 44px; }
   .sp-h1 { max-width: 30ch; }
   /* The subline under the heading speaks for the page, so it is set in ink and a step heavier than the quieter
-     explaining text further down (Jens, 2026-10-06: "the subhero here we need to be bold and assertive"). */
+     explaining text further down so it reads bold and assertive. */
   .sp-sub { max-width: 62ch; margin: 18px 0 24px; font-size: 1.14rem; line-height: 1.5; font-weight: 500; color: var(--ink); }
   .sp-sub strong { color: var(--ink); font-weight: 700; }
 

@@ -1,5 +1,14 @@
 country_code: LV
 entries:
+  - timestamp: 2026-10-15T19:25:54Z
+    type: content-update
+    field: "5-working-day window paragraph"
+    old_value: "Check described as made by fetching the regulation"
+    new_value: "Check described as made against the regulation text"
+    description: "Wording of the reporting-window paragraph corrected to name what was checked, not the tool. No figure or date changed."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-06T05:30:52Z
     type: initial-publish
     field: null

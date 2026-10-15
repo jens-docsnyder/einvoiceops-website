@@ -1,4 +1,4 @@
-# CLAUDE.md — einvoiceops website repo
+# Instructions: einvoiceops website repo
 
 Read at the start of every website code session.
 
@@ -7,12 +7,11 @@ Read at the start of every website code session.
 ## Design north star
 
 **Always read the Design System before building or editing any page:**
-`E-invoice compliance ops/Website/Design System.md` in the vault.
+The Design System document kept with the project notes (outside this repository).
 
 North star references:
 - Homepage (`src/pages/index.astro`) — all design decisions flow from this
 - SP page (`src/pages/for_Service_Providers/index.astro`) — template for SP and enterprise pages
-- Heikki presentation (`/Users/jensanttila/Documents/E-invoice ops/heikki-call.html`) — template for all presentations
 
 ---
 
@@ -23,7 +22,7 @@ npm run dev     # start dev server (localhost:4321 or next available port)
 npm run build   # production build to dist/
 ```
 
-**Deploy rule:** Never `git push` without Jens explicitly saying to deploy. Commit freely; push only on direct instruction.
+**Deploy rule:** Never `git push` without an explicit instruction to deploy. Commit freely; push only on direct instruction.
 
 **Staging:** `http://localhost:4321/` — verify all changes here before reporting done.
 
@@ -72,7 +71,7 @@ src/
     legal/, privacy/          # Legal pages
   content/
     countries/[CC].md         # Country data (Schema → Zod validation)
-    research/[CC].yaml        # Open verification items
+    research/                 # Local only, gitignored: open items for the status page, linked in from outside this repo
     changelogs/[CC].yaml      # Audit log (append-only)
   components/
     Nav.astro                 # Shared nav component
@@ -99,13 +98,13 @@ Map colour logic:
 
 ## Changelog rule
 
-Every change to `src/content/countries/[CC].md` or `src/content/research/[CC].yaml` requires a changelog entry in `src/content/changelogs/[CC].yaml` written in the same operation. See vault `Website/AGENTS.md` for full format and trigger rules.
+Every change to `src/content/countries/[CC].md` requires a changelog entry in `src/content/changelogs/[CC].yaml` written in the same operation. The full format and trigger rules are kept with the project notes (outside this repository).
 
 ---
 
 ## Two-repo workflow
 
-1. Author and annotate in vault `Website/[CC].md` (RAG markers, source citations)
-2. Verify sources (Jens clicks URLs)
-3. Write a **clean version** to `src/content/countries/[CC].md` — never copy vault files directly
-4. Vault files contain `[A-URL:]`, `[A-CONF]`, YAML fences that break the Astro build
+1. Author and annotate in the project notes, outside this repository (markers, source citations)
+2. Verify each source against the primary document
+3. Write a **clean version** to `src/content/countries/[CC].md` - never copy annotated drafts directly
+4. Annotated drafts contain markers and YAML fences that break the Astro build

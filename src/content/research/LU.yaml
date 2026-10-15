@@ -1,7 +1,0 @@
-country_code: LU
-items:
-  - priority: amber
-    type: source-verification
-    description: "ARCHIVING 10 YEARS - WRONG SOURCE: Law of 25 July 2015 is the framework law for electronic archiving service providers (PSDC status, certification) - it does not state the invoice retention period. The 10-year period is in the Luxembourg commercial code or VAT law. Open legilux.public.lu → search 'Code de commerce' → Art. 16 (as amended). Alternatively search 'conservation' and '10 ans' or 'dix ans'. Confirm: 10-year retention stated for commercial records including invoices. If yes: archiving_years: 10 confirmed → remove item + decrement amber. Note: Art. 12 of Law of 25 July 2015 amends Code de commerce Art. 16 to add electronic copy provisions - the retention period is in Art. 16 itself."
-    source_url: "https://legilux.public.lu"
-    added: 2026-05-06

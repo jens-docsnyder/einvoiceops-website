@@ -9,38 +9,38 @@ interface Props {
     notTouched: string; touched: string[]; untouched: string[];
     owners: { name: string; line: string; items: number }[];
     withheld: string;
-    // Optional, France first (2026-10-05): an example note under the strip, written for the page from public facts,
+    // Optional: an example note under the strip, written for the page from public facts,
     // never a real note's text.
     example?: { label: any; to?: any; rows: { k: any; v: any }[] };
-    // Optional, France standalone first (2026-10-07): when present, the section is two columns instead of the strip.
-    // Rebuilt 2026-10-07 from Jens's word: a grid of the changes against the six functions (dots, row totals) with the
+    // Optional: when present, the section is two columns instead of the strip.
+    // A grid of the changes against the six functions (dots, row totals) with the
     // points as bullets beside it, and the example note under both.
     shows?: { tag: any; text: any }[];
     ofTotal?: number;
     ownersNote?: any;
     grid?: string[]; gridCaption?: any;
-    // Optional, France standalone first (2026-10-07): makes the grid clickable. A numbered box per change on top opens
+    // Optional: makes the grid clickable. A numbered box per change on top opens
     // that change under the grid; a filled square opens it with the part for that function highlighted.
     gridPrompt?: any; gridFor?: any;
-    // Optional (Jens, 2026-10-08): axis labels; with gridAxisY the prompt becomes the label over the numbered changes.
+    // Optional: axis labels; with gridAxisY the prompt becomes the label over the numbered changes.
     gridAxisY?: any;
-    // Optional (2026-10-07): words after each row's count, and the short head over the counts where those words don't fit.
+    // Optional: words after each row's count, and the short head over the counts where those words don't fit.
     countLabel?: any; countHead?: any;
-    // Optional (Jens, 2026-10-07): a total row under the counts, so the column reads as a bill per function.
+    // Optional: a total row under the counts, so the column reads as a bill per function.
     totalLabel?: any;
-    // Optional (2026-10-07): a closing statement beside the grid in place of the bullets.
-    // Or, from 2026-10-08, the chain from a change to its work items as a list read down, each step after the first led by
-    // an arrow (the lead line has none), and the consequence under a rule in the accent (Jens: "explain how change, rule and work item interrelate").
+    // Optional: a closing statement beside the grid in place of the bullets.
+    // Or the chain from a change to its work items as a list read down, each step after the first led by
+    // an arrow (the lead line has none), and the consequence under a rule in the accent.
     closing?: { title: any; text?: any[]; lead?: any; chain?: any[]; then?: any };
     changes?: { title: any; parts: { f: string; text: any }[] }[];
     gridStart?: { col: number; fn: string };
-    // Optional (Jens, 2026-10-13, Germany): the change text sits to the right of the grid instead of under it, and the closing
+    // Optional: the change text sits to the right of the grid instead of under it, and the closing
     // box runs full width below both. Wanted where the grid is one column wide and the space beside it would stand empty.
     panelBeside?: boolean;
   };
   disclosure?: any;
   tone?: 'white' | 'tint';
-  // France standalone first (Jens, 2026-10-07): the line from the chosen box above runs on as a frame around this section,
+  // The line from the chosen box above runs on as a frame around this section,
   // its top edge on the band's top edge where the line arrives (ChangeBoxes.astro draws it in once the line is down).
   framed?: boolean;
   t: (v: any) => string;
@@ -276,7 +276,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
 </script>
 
 <style is:global>
-  /* The frame the line from the boxes runs into, round the whole section (Jens, 2026-10-08): its top edge is the band's top
+  /* The frame the line from the boxes runs into, round the whole section: its top edge is the band's top
      edge, so the line meets it there, and its bottom edge the band's bottom edge, with no tint below it. */
   .fc-framed { padding-top: 0; padding-bottom: 0; }
   /* It sits in the page gutter, 6 px in from its outer edge, so the content inside keeps its full width. */
@@ -340,7 +340,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   .fc-sub { margin: 0 0 10px; font-size: 1.05rem; }
   .fc-bullets { margin: 0; padding-left: 1.1em; }
   .fc-bullets li { margin: 0 0 10px; font-size: 0.98rem; line-height: 1.45; }
-  /* Beside the grid in a box like the change panel under it (Jens, 2026-10-08: as a bare column it felt out of place). */
+  /* Beside the grid in a box like the change panel under it, since as a bare column it felt out of place. */
   .fc-close { background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--accent); padding: 20px 22px; }
   .band-white .fc-close { background: var(--tint); }
   .fc-close-h { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.25; }
@@ -353,7 +353,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   .fc-close .fc-then { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--inner-rule); font-weight: 700; font-size: 1.08rem; line-height: 1.45; color: var(--accent); }
   .fc-nl { font-weight: 400; color: var(--quiet); font-size: 0.86rem; white-space: nowrap; }
   .fc-nhead span { display: none; }
-  /* The counts as a bill (Jens, 2026-10-07): the head beside the numbered changes, numbers right-aligned, a ruled total. */
+  /* The counts as a bill: the head beside the numbered changes, numbers right-aligned, a ruled total. */
   .fc-live .fc-grid .fc-n { text-align: right; }
   .fc-live .fc-grid th.fc-nhead { text-align: right; padding-left: 12px; }
   .fc-live .fc-nhead span { display: block; font-size: 0.8rem; font-weight: 600; color: var(--quiet); line-height: 1.2; white-space: normal; }
@@ -371,7 +371,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   .fc-live .fc-grid thead th { padding: 0 3px 8px; vertical-align: bottom; }
   .fc-live .fc-grid th.fc-prompt { padding: 0 14px 10px 0; text-align: left; font-size: 0.86rem; font-weight: 600; color: var(--accent); white-space: normal; line-height: 1.3; }
   .fc-prompt span::after { content: "\00a0\2192"; }
-  /* The axis labels (Jens, 2026-10-08): small and quiet, an arrow along each axis. */
+  /* The axis labels: small and quiet, an arrow along each axis. */
   .fc-live .fc-grid .fc-axes th, .fc-live .fc-grid .fc-axes td { padding: 0 0 6px; }
   .fc-live .fc-grid th.fc-axis-x, .fc-live .fc-grid th.fc-axis-y { font-size: 0.78rem; font-weight: 600; color: var(--quiet); white-space: nowrap; line-height: 1.2; }
   .fc-live .fc-grid th.fc-axis-x { text-align: left; padding-left: 3px; }
@@ -403,7 +403,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
   .fc-live[data-fn="m"] .fc-part[data-f*="m"], .fc-live[data-fn="a"] .fc-part[data-f*="a"] {
     color: var(--ink); background: rgba(180, 83, 9, 0.16); box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.16); -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
-  /* Germany (Jens, 2026-10-13): the change text to the right of the clickable grid, the closing box full width below. On a
+  /* The change text to the right of the clickable grid, the closing box full width below. On a
      phone everything stacks as before. */
   @media (min-width: 760px) {
     .fc-two.fc-beside { display: block; }
@@ -413,7 +413,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
     .fc-live-beside .fc-panel { grid-column: 2; grid-row: 1; margin: 0; }
     .fc-live-beside .fc-grid-cap { grid-column: 1 / -1; }
   }
-  /* With room (1000 px and up) the closing box goes beside the text box, so grid, text and closing sit in one row (Jens, 2026-10-13). */
+  /* With room (1000 px and up) the closing box goes beside the text box, so grid, text and closing sit in one row. */
   @media (min-width: 1000px) {
     .fc-two.fc-beside { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 32px; align-items: start; }
     .fc-two.fc-beside .fc-col { margin-top: 0; }

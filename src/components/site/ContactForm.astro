@@ -7,8 +7,8 @@ interface Props {
   segment: string;
   country: string;
   tone?: 'white' | 'tint';
-  // Flow C: the person you write to, beside the form: photo, name and email address, no career lines (Jens, 2026-10-08).
-  // With a person, the section is one card (version B, Jens 2026-10-08): photo column left, form right, and copy.hint under the address.
+  // Flow C: the person you write to, beside the form: photo, name and email address, no career lines.
+  // With a person, the section is one card: photo column left, form right, and copy.hint under the address.
   person?: { name: string; email: string; photo: string; linkedin?: string };
   t: (v: any) => string;
 }
@@ -90,7 +90,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   .cf-send { margin-top: 22px; }
   .cf-after { margin: 12px 0 0; font-size: 0.9rem; max-width: 60ch; }
   .cf-done { margin-top: 24px; }
-  /* Version B: one card with the page's orange top line, the photo column tinted (Jens, 2026-10-08). */
+  /* One card with the page's orange top line, the photo column tinted. */
   .cf-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); margin-top: 28px; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--accent); }
   .cf-grid .cf-form { margin-top: 0; max-width: none; }
   .cf-grid .cf-label { margin-top: 18px; }
@@ -99,10 +99,10 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   .cf-grid .cf-area { min-height: 190px; }
   .cf-person { background: var(--tint); padding: 36px 32px; border-right: 1px solid var(--inner-rule); }
   .cf-person p { margin: 0; }
-  /* Smaller than the column: the full-width photo was too imposing (Jens, 2026-10-08). */
+  /* Smaller than the column: the full-width photo was too imposing. */
   .cf-photo { display: block; width: 150px; height: 150px; object-fit: cover; border: 1px solid var(--box-border); }
   .cf-person .cf-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin-top: 20px; }
-  /* A LinkedIn icon beside the name links to the profile when the page gives one (Jens, 2026-10-09); the name itself
+  /* A LinkedIn icon beside the name links to the profile when the page gives one; the name itself
      stays plain text. The icon takes the text colour, the accent on hover, and a tap area of 32 px. */
   .cf-person .cf-name .cf-in { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-left: 6px; vertical-align: middle; color: inherit; }
   .cf-person .cf-name .cf-in:hover { color: var(--accent); }

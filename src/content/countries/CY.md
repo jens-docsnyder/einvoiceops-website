@@ -94,7 +94,7 @@ The configuration work items in each cluster vary by ERP system, entity structur
 
 **Treasury of the Republic.** treasury.gov.cy is the Peppol implementation body for Cyprus. The Cyprus Government Gateway (gov.cy / Ariadni portal) provides the buyer-side infrastructure. Suppliers connect via Peppol BIS 3.0.
 
-**Phase-in by tender value.** The threshold figures (EUR 215k, EUR 30k, EUR 3k) are sourced from Marosa VAT (AMBER confidence) - they require verification against Gazette No. 4717 (gazettes.gov.cy). The structure is consistent with the EC factsheet but the exact threshold amounts need source verification.
+**Phase-in by tender value.** The threshold figures (EUR 215k, EUR 30k, EUR 3k) come from a secondary source (Marosa VAT) and have not yet been checked against Gazette No. 4717 (gazettes.gov.cy). The structure is consistent with the EC factsheet, but the exact threshold amounts are unconfirmed.
 
 **Archiving.** 7 years under standard Cypriot VAT law.
 

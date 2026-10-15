@@ -1,8 +1,0 @@
-country_code: LV
-items:
-  - priority: high
-    type: source-verification
-    description: "PENALTY EUR 20,000 - WRONG SOURCE URL: Cabinet Regulation 749 (likumi.lv/ta/id/365040) does not contain penalty provisions - it covers e-invoice exchange procedures only. EUR 20,000 penalty is in the general accounting/tax penalty framework. Search likumi.lv for 'Grāmatvedības likums' (Accounting Law) or VID administrative penalty provisions. Confirm: EUR 20,000 stated as maximum for systemic non-compliance in the correct law. If yes: penalty_max field confirmed → remove item + decrement high. If different amount: update penalty_max in LV.md."
-    source_url: "https://likumi.lv"
-    added: 2026-05-06
-

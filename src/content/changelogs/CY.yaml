@@ -1,5 +1,14 @@
 country_code: CY
 entries:
+  - timestamp: 2026-10-15T19:25:54Z
+    type: content-update
+    field: "Phase-in by tender value paragraph"
+    old_value: "Threshold source described as needing verification"
+    new_value: "Threshold source described as secondary, not yet checked against the gazette"
+    description: "Wording of the phase-in paragraph corrected: the threshold figures come from a secondary source and are not yet checked against the gazette. No figure or date changed."
+    source_url: null
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-12T09:25:00Z
     type: error-correction
     field: archiving_years

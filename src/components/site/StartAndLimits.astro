@@ -1,8 +1,8 @@
 ---
-// Flow C (Website - page and site structure.md, part 2): starting and the limits as one section.
+// Starting and the limits as one section.
 // The heading and an optional line under it, the steps as a process row (numbered, joined by a line, a short bold label
 // and one line each; a column on a phone), the call to action under them, then the "What we don't do" bullets
-// (Jens, 2026-10-08: a process view, a CTA, the limits as short bullets).
+// (the limits as short bullets).
 interface Props {
   start: { h2: any; intro?: any; steps: { label?: string; text: any }[]; cta?: any; pilot?: any };
   limits: { h2: any; lines: { lead: any; text: any }[] };
@@ -37,7 +37,7 @@ const { start, limits, tone = 'tint', t } = Astro.props;
 <style is:global>
   .sl-intro { margin: 0; font-size: 1.05rem; }
   .sl .band-h { max-width: 30ch; }
-  /* Three steps across under large accent numbers (Jens chose version B, 2026-10-08); a column on a phone. */
+  /* Three steps across under large accent numbers; a column on a phone. */
   .sl-steps { list-style: none; margin: 40px 0 36px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
   .sl-no { display: block; font-family: var(--serif); font-size: 3.2rem; line-height: 1; color: var(--accent); margin-bottom: 14px; }
   .sl-step p { margin: 0; font-size: 1.02rem; border-top: 1px solid var(--box-border); padding-top: 14px; }

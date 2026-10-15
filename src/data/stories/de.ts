@@ -1,22 +1,19 @@
 // All copy of the Germany page (one page per country, told to any company that runs its own invoicing in Germany,
-// independent or part of a group, drawn from both German frameworks). Flow C, modelled on fr-standalone.ts as it stands on
-// website main de5cfc2 (France as of Jens, 2026-10-09: price in the onboarding heading, no intro under it, contact block
-// with the profile link).
+// independent or part of a group, drawn from both German frameworks). Flow C, modelled on fr-standalone.ts
+// (price in the onboarding heading, no intro under it, contact block with the profile link).
 // Strings may hold <strong> and <span class='accent'>; they are rendered with set:html.
 // Placeholders are filled from src/data/fanout/DE.json (format.ts fill()): {published} {since} {weekly}, and the counts computed
 // from its changes list, {published@DATE} {body:KEY@DATE} {missed:KEY@DATE}; a passage that depends on a count is a conditional
 // ({ ifNone, then, otherwise }, format.ts). No count on the page is typed.
-// Voice: Market Intelligence/Messaging/Tone of voice.md. Plan: the Germany page project plan of 2026-10 (Market Intelligence/Messaging). Facts only from
-// the Germany facts file for messaging (same folder; cited below as "facts" with its line number) and Product Research/Change Velocity/DE-changes.csv (cited by event id).
+// Facts come only from the German sources named in the notes below.
 // Vocabulary: a change is one publication by one body on one day; a rule is one counted row inside it. The Jahressteuergesetz
-// 2024 is one change with four rules (DE-E35, E53, E54, E55); DE-E67 is one change with one rule.
+// 2024 is one change with four rules; the XRechnung bugfix bundle of 2 September 2026 is one change with one rule.
 
 // Which body published each counted row. The fan-out file DE.json now carries it on every change (key "body"), written by the
 // weekly job, and the file wins. This map is only the fallback for a change the file gives no body (src/pages/germany/index.astro
 // calls withBodies()), so a gap in the file does not stop the build for the ids listed here; a change in neither stops it and
 // names its id. Keys: law = Parliament through the Bundesgesetzblatt, ministry = the finance ministry's letters and FAQ,
-// kosit = KoSIT's XRechnung bundle releases, ferd = FeRD's ZUGFeRD releases (read from the channel and source columns of
-// DE-changes.csv, counted rows from 2024-01-01). The two KoSIT rows of 2024-06-20 (DE-E29 Schematron, DE-E30 XRechnung 3.0.2)
+// kosit = KoSIT's XRechnung bundle releases, ferd = FeRD's ZUGFeRD releases (counted rows from 2024-01-01). The two KoSIT rows of 2024-06-20 (Schematron and XRechnung 3.0.2)
 // are one KoSIT publication, as France counts one per source per publication day.
 export const deBodies: Record<string, string> = {
   'DE-E50': 'ministry',
@@ -52,7 +49,7 @@ export const deBodies: Record<string, string> = {
 export const deBodyKeys = ['law', 'ministry', 'kosit', 'ferd'];
 
 export const de = {
-  // Page flow C, country-first tree: the site structure file in Market Intelligence/Messaging.
+  // Page flow C, country-first tree.
   flow: 'c',
 
   meta: {
@@ -65,16 +62,16 @@ export const de = {
     kickerLinkText: ``,
     kickerRest: ` · Germany`,
     // Date-bound (switch.js): the first version names the issuing duty as still ahead, the second names no issuing date and
-    // stays true for both turnover groups after 1 January 2027 (plan section 1). No count in the headline or the subline, because
-    // a number there goes stale the day Germany's count moves. Rests on facts 14 (issuing ahead) and DE-E67 (an invoice that
-    // validated in spring can fail now, facts 25).
+    // stays true for both turnover groups after 1 January 2027. No count in the headline or the subline, because
+    // a number there goes stale the day Germany's count moves. Rests on the issuing duty still being ahead and on the September 2026 bundle (an invoice that
+    // validated in spring can fail now).
     h1: {
       from: '2027-01-01',
       coming: `Hear about changes to Germany's e-invoicing rules from us before you have to send e-invoices, not from a rejected invoice.`,
       here: `Hear about the next change to Germany's e-invoicing rules from us, not from a rejected invoice.`,
     },
-    // One version, no date switch: it names no date that stops being true and no count. The first half rests on facts 24 (changes
-    // after 1 January 2025); the second half is France's current subline, the same service in every country.
+    // One version, no date switch: it names no date that stops being true and no count. The first half rests on the changes
+    // after 1 January 2025; the second half is France's current subline, the same service in every country.
     subline: `The rules have kept changing since receiving e-invoices became mandatory in January 2025. When we find a change that affects one of your invoicing functions, we email the person on your team who looks after it, with what changed for them and where it says so.`,
   },
 
@@ -83,7 +80,7 @@ export const de = {
   // issuing body per day (publications() in format.ts); no number is typed here, both move with the file.
   // The count is publications by body and day, as France's (one per source per publication day); a day with two bodies is two boxes, so the
   // split and the boxes always agree.
-  // The unit is "sources", not "official sources". Ruled by the check seat 2026-10-09: "official" does not hold, because the
+  // The unit is "sources", not "official sources". "Official" does not hold, because the
   // sources include a private mirror of the statute, the gazette index on a publisher's database and the format bodies' associations.
   proof: {
     headline: `{published} changes we've counted since {since}`,
@@ -95,10 +92,10 @@ export const de = {
   },
 
   // The row of boxes under the strip (ChangeBoxes.astro): one box per publication in DE.json, the real example's box
-  // (DE-E67) in the accent. Box dates are publication dates: DE-E48 carries 30 January 2026 (its CSV date, 1 August 2026,
-  // is the day the cut-off took effect, facts 24), DE-E44 carries 5 February 2026 (GitHub tag), DE-E46 is a month only.
-  // DE-E34, E38 and E40 carry their GitHub release days (19 November 2024, 24 March 2025, 9 July 2025), not the bundle
-  // version dates in the CSV (check seat 2026-10-09).
+  // (the September 2026 bundle) in the accent. Box dates are publication dates: one box carries 30 January 2026 (the day
+  // the cut-off took effect, 1 August 2026, is not its publication date), one carries 5 February 2026 (GitHub tag), one is a
+  // month only. Three boxes carry their GitHub release days (19 November 2024, 24 March 2025, 9 July 2025), not the bundle
+  // version dates.
   boxes: true,
 
   // What we see in the market: four cards that turn over (MarketCards.astro). Ids 1, 2 and 3 keep the framework challenge
@@ -117,14 +114,14 @@ export const de = {
       {
         id: 1,
         title: `The rules kept moving until weeks before January 2025`,
-        // Germany's go-live for this beat is receiving becoming mandatory on 1 January 2025, not the full mandate (facts 118).
+        // Germany's go-live for this beat is receiving becoming mandatory on 1 January 2025, not the full mandate.
         front: `Germany was still changing its e-invoicing rules in late 2024, weeks before receiving e-invoices became mandatory on 1 January 2025, so companies had to get ready against rules that hadn't settled.`,
         back: {
           points: [
-            // DE-E32, the finance ministry's letter of 15 October 2024. Named by its date and subject only, never for what it says,
-            // so it needs no copy disclosure; the link is the Bundessteuerblatt's own index (DE-W41), not a copy of the letter.
+            // The finance ministry's letter of 15 October 2024. Named by its date and subject only, never for what it says,
+            // so it needs no copy disclosure; the link is the Bundessteuerblatt's own index, not a copy of the letter.
             `Eleven weeks before, on 15 October 2024, the finance ministry issued its letter on e-invoicing (<a href='https://www.bstbl.de/inhalt/ivz-nr-I_2024_018.htm'>bstbl.de</a>)`,
-            // The Jahressteuergesetz 2024, BGBl 2024 I Nr. 387, published 5 December 2024: DE-E35, E53, E54, E55 (facts 25, 110).
+            // The Jahressteuergesetz 2024, BGBl 2024 I Nr. 387, published 5 December 2024, four rules.
             `27 days before, on 5 December 2024, the Jahressteuergesetz 2024 changed four rules for e-invoicing (<a href='https://www.recht.bund.de/bgbl/1/2024/387/VO.html'>recht.bund.de</a>)`,
           ],
         },
@@ -133,8 +130,7 @@ export const de = {
         id: '1b',
         title: `The rules kept changing after January 2025`,
         // Germany has this as fact, so the card is not a prediction as France's is. The count is {published@2025-01-01}, the
-        // publication days from 1 January 2025 on, computed from DE.json (12 on 2026-10-05: DE-E38, E39, E40, E59, E41, E42,
-        // E44, E46, E47, E48, E49, E67; facts 24). The date-bound clause uses the switch; the "here" form is the frameworks' neutral form and
+        // publication days from 1 January 2025 on, computed from DE.json (12 on 2026-10-05). The date-bound clause uses the switch; the "here" form is the frameworks' neutral form and
         // stays true after 2028 as well.
         front: {
           from: '2027-01-01',
@@ -143,9 +139,9 @@ export const de = {
         },
         back: {
           points: [
-            // ZUGFeRD 2.4 / Factur-X 1.08, 4 December 2025 (DE-E42).
+            // ZUGFeRD 2.4 / Factur-X 1.08, 4 December 2025.
             `Eleven months after, on 4 December 2025, FeRD released ZUGFeRD 2.4, a new version of the format (<a href='https://fnfe-mpe.org/wp-content/uploads/2025/12/2025-12-04_ZUGFeRD_2.4_Factur-X_1.08_Meldung_DE.pdf'>fnfe-mpe.org</a>)`,
-            // XRechnung summer 2026 bugfix bundle, released 2 September 2026 (DE-E67), which announces its own next change.
+            // XRechnung summer 2026 bugfix bundle, released 2 September 2026, which announces its own next change.
             `Twenty months after, on 2 September 2026, KoSIT released new XRechnung checks, with four more that start as warnings and are to be raised later (<a href='https://github.com/itplr-kosit/xrechnung-schematron/releases/tag/v2.6.0'>github.com</a>)`,
           ],
           // No prediction line: Germany's own changes after go-live are the evidence.
@@ -158,9 +154,9 @@ export const de = {
         back: {
           // Counted as changes, one per body per publication day, from DE.json: each change carries its issuing body (key "body")
           // and the placeholders count the distinct days per body, so the split moves with the file. On 2026-10-05 it read law 4
-          // (27 Mar 2024 DE-E27 and E28, 23 Jul 2024 DE-E51, 29 Oct 2024 DE-E52, 5 Dec 2024 DE-E35, E53, E54, E55), finance
+          // (27 Mar 2024 two rules, 23 Jul 2024, 29 Oct 2024, 5 Dec 2024 four rules), finance
           // ministry 5, KoSIT 7, FeRD 6, 22 in all. The closing line is a conditional: when no change since 1 January 2025
-          // came through the law it says so (facts 26, 107), and when one does it gives the count instead.
+          // came through the law it says so, and when one does it gives the count instead.
           lead: `We've counted {published} changes since {since}, and this is where each of them came from.`,
           points: [
             `{body:law} through the law`,
@@ -179,14 +175,13 @@ export const de = {
         id: 3,
         title: `A change can fall between the people you rely on`,
         // Germany has no central platform and no clearance model, so no mandated platform sits between a company and its
-        // customers (facts 16, 32, 99). The whole card is both frameworks' bet and is hedged as one ("likely", "may").
+        // customers. The whole card is both frameworks' bet and is hedged as one ("likely", "may").
         // It says nothing about where the obligation stays, which would rest on a ministry letter and need its disclosure.
         front: `In Germany your invoices move through the software and partners you chose, on whatever route you agree with each customer and supplier, and each of them looks after its own part.`,
         back: {
           points: [
-            // The three outside parties of a standalone company are a bet (facts 35). The provider point (facts 74, 94) was cut by
-            // the cold read of 2026-10-09: a group naming dependence on a change-watching provider as its weak spot argues against
-            // buying one, and the facts file allows both halves or neither.
+            // The three outside parties of a standalone company are a bet. The provider point is left out: a group naming
+            // dependence on a change-watching provider as its weak spot argues against buying one, and the sources allow both halves or neither.
             `Your software vendor is likely to update its software, your ERP partner to look after its part and your tax advisor to know the tax, and it may be nobody's job to check that it all still fits`,
           ],
           then: `So checking that a change has reached all of it is likely left to you.`,
@@ -201,10 +196,10 @@ export const de = {
   },
 
   // The September 2026 release told as the one publication that shows the cards at once. Picked: KoSIT's XRechnung summer
-  // 2026 bugfix bundle, released 2 September 2026 (DE-E67, bundle dated 31 August 2026). It came twenty months after receiving
+  // 2026 bugfix bundle, released 2 September 2026 (bundle dated 31 August 2026). It came twenty months after receiving
   // became mandatory (card 1b), from the format body and not the law (card 2), and it reaches the software that builds the
   // invoice, the checks on incoming invoices and the Peppol version at the same time (card 3). One rule, grid letters oic,
-  // 3 work items: outbound 1, inbound 1, connectivity 1 (DE-changes.csv). So the grid is one column and the closing box reads
+  // 3 work items: outbound 1, inbound 1, connectivity 1. So the grid is one column and the closing box reads
   // 1 rule, 3 work items: Germany's truth is its publications, most of them a single rule, and the row of boxes carries the breadth.
   followed: {
     h2: `A real example from September 2026`,
@@ -219,18 +214,18 @@ export const de = {
     shows: [],
     closing: {
       title: `Three invoicing functions had work to do`,
-      // 1 rule DE-E67; 3 work items = row totals 1 + 1 + 1, the other three rows empty (DE-changes.csv, functions oic).
+      // 1 rule; 3 work items = row totals 1 + 1 + 1, the other three rows empty (functions oic).
       lead: `One change, released on 2 September`,
       chain: [
         `1 rule in it`,
         `It affects 3 invoicing functions`,
         `3 work items to check or prepare`,
       ],
-      // The rejected invoice rests on DE-E67 ("an invoice that validated in spring can fail now", facts 25); the payment left
+      // The rejected invoice rests on the September 2026 bundle ("an invoice that validated in spring can fail now"); the payment left
       // waiting is the frameworks' bet, as on France.
       then: `Miss a change like it, and the first sign may be an invoice your customer rejects and a payment left waiting.`,
     },
-    // The grid: one column, DE-E67, letters for the functions it touched, from the column of DE-changes.csv that lists them:
+    // The grid: one column, letters for the functions the rule touched:
     // o outbound, i inbound, c connectivity, t tax engine, m master data, a archiving.
     grid: [`oic`],
     gridPrompt: `1 rule`,
@@ -240,7 +235,7 @@ export const de = {
     countLabel: ``,
     countHead: ``,
     totalLabel: `Total work items`,
-    // The part for each function, written for the page from the what_changed column of DE-E67. The union of the parts'
+    // The part for each function, written for the page from the change's description. The union of the parts'
     // letters equals the grid entry: o + i + c = oic.
     changes: [
       { id: `DE-E67`, title: `New XRechnung checks`, parts: [
@@ -268,7 +263,7 @@ export const de = {
   },
 
   onboarding: {
-    // France's, word for word (Jens, 2026-10-09): the price is said once, in the heading, and no intro repeats it.
+    // As on the France page, word for word: the price is said once, in the heading, and no intro repeats it.
     h2: `We keep your invoicing teams up to date. Free onboarding, then €450 a month.`,
     intro: ``,
     steps: [
@@ -280,7 +275,7 @@ export const de = {
   },
 
   // The limits box, beside the onboarding steps: France's three lines with Germany for France. The number in the second line
-  // is {weekly}, sources_weekly from src/data/fanout/DE.json, the same number the strip shows, so the two cannot drift. "Official" is left out of it, as in the strip's unit (check seat 2026-10-09).
+  // is {weekly}, sources_weekly from src/data/fanout/DE.json, the same number the strip shows, so the two cannot drift. "Official" is left out of it, as in the strip's unit.
   limits: {
     h2: `What we don't do`,
     lines: [

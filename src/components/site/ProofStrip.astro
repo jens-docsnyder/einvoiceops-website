@@ -2,17 +2,15 @@
 // Released figures under the opening. Live countries only. Numbers come from the fan-out data; labels from the story's proof field.
 // Two shapes.
 // The older one (proof.changes, proof.sources, proof.checked): three equal columns, a number over each label.
-// The lead shape, opted into with proof.headline (Jens, 2026-10-05, France first; reordered 2026-10-06): three columns
+// The lead shape, opted into with proof.headline: three columns
 // read left to right as one story, the date of the last check for changes (last_check in the fan-out data, else
 // checked_on), then the sources read every week, then the count in the accent colour. Each column is a bold top line
 // over a quiet line, all top lines in one font and size; the columns share two grid rows (subgrid), so the quiet lines
 // start level even when a top line wraps. The line under the count names the released count's own date ({checked}),
 // so a later check date never reads as the count's date. proof.sourcesUnit, where present, follows the number on the
 // top line and proof.sources goes under it.
-// The sources number is always sources_weekly from the fan-out data (the proof.sourcesCount override of 2026-10-05 is gone,
-// Jens 2026-10-12: no number is typed; a typed one overrode the file and went stale).
-// An empty proof.checked drops the date column from the lead shape (France, improvement review 2026-10, item 3: no
-// code writes last_check, so the date went stale); the two remaining columns keep the same proportions.
+// The sources number is always sources_weekly from the fan-out data: no number is typed, since a typed one overrode the file and went stale.
+// An empty proof.checked drops the date column from the lead shape (no code writes last_check, so the date went stale); the two remaining columns keep the same proportions.
 import { shortDate } from './format';
 
 interface Data { total: number; checked_on: string; last_check?: string; sources_named: number; sources_weekly: number }

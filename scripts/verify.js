@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * verify.js — source verification helper for einvoiceops research items
+ * verify.js - source verification helper for einvoiceops open items
  *
  * Usage:  node scripts/verify.js <CC>
  *   e.g.  node scripts/verify.js BE
  *   or    npm run verify BE
  *
- * For each open research item:
+ * For each open item:
  *   - prints the description and opens the source URL in your browser
  *   - prompts: (y) confirmed / (n) not found / (s) skip / (q) quit
  *
@@ -40,13 +40,13 @@ if (!code) {
 const researchPath = join(ROOT, 'src', 'content', 'research', `${code}.yaml`);
 const countryPath  = join(ROOT, 'src', 'content', 'countries', `${code}.md`);
 
-// ── Load research YAML ────────────────────────────────────────────────────────
+// ── Load open items ───────────────────────────────────────────────────────────
 
 let research;
 try {
   research = yamlLoad(readFileSync(researchPath, 'utf8'));
 } catch {
-  console.error(`\nNo research file found for ${code}.\nExpected: ${researchPath}\n`);
+  console.error(`\nNo open-items file found for ${code}.\nExpected: ${researchPath}\n`);
   process.exit(1);
 }
 
@@ -91,7 +91,7 @@ function wrap(text, indent = '  ') {
 
 function printItem(item, idx, total) {
   console.log('\n' + HR);
-  const badge = item.priority === 'high' ? 'HIGH  🔴' : 'AMBER 🟡';
+  const badge = item.priority === 'high' ? 'HIGH  🔴' : 'OPEN  🟡';
   console.log(`\n  [${idx}/${total}]  ${badge}   type: ${item.type}\n`);
   console.log(wrap(item.description));
   if (item.source_url) {
@@ -155,7 +155,7 @@ async function run() {
   const resolvedAmber = research.items.filter(i => confirmed.has(i.description) && i.priority === 'amber').length;
   const remaining     = research.items.filter(i => !confirmed.has(i.description));
 
-  // Write updated research YAML
+  // Write updated open items
   const updatedResearch = { country_code: research.country_code, items: remaining };
   writeFileSync(researchPath, yamlDump(updatedResearch, {
     lineWidth:    -1,
@@ -200,7 +200,7 @@ async function run() {
     console.log(`  last_verified → today  |  confidence_summary → green`);
   }
 
-  console.log(`\n  Next: git commit -m "[${code}] AMBER-RESOLVED: ..."\n`);
+  console.log(`\n  Next: git commit -m "[${code}] ITEM-RESOLVED: ..."\n`);
 }
 
 run().catch(err => {
