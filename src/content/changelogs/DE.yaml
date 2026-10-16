@@ -1,5 +1,23 @@
 country_code: DE
 entries:
+  - timestamp: 2026-10-15T19:28:10Z
+    type: content-update
+    field: "preparation_timeline, operational_ownership, data_infrastructure, key_deadlines"
+    old_value: "No statement of the EDI exception, the permanent exemptions or the XRechnung version state; the 2027 issuing threshold read as prior-year turnover from domestic B2B transactions"
+    new_value: "Added: the 2027 EDI exception (par. 27 Abs. 38 Nr. 3 UStG); the three kinds of invoice that may always go as a sonstige Rechnung (pars. 33, 34, 34a UStDV) with the exclusion for supplies under pars. 3c, 6a and 13b UStG; the XRechnung version state (3.0 in force until at least 31 July 2027, 4.0 pre-release September 2026, final expected spring 2027). The threshold is stated as prior-year total turnover (Gesamtumsatz)."
+    description: "Page text brought to the saved statute texts (UStG par. 27 Abs. 38, UStDV pars. 33, 34 and 34a) and the XRechnung versions page of the standard's publisher read on 19 September 2026. Only the sentences named here were rechecked; the rest of the page was not re-verified in this change."
+    source_url: "https://www.gesetze-im-internet.de/ustg_1980/__27.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
+  - timestamp: 2026-10-15T19:28:05Z
+    type: error-correction
+    field: "archiving_years, key_deadlines"
+    old_value: "archiving_years 10 (GoBD archiving, ten years); 2027 issuing threshold described as prior-year turnover above EUR 800,000"
+    new_value: "archiving_years 8 (par. 14b UStG, eight years from the end of the calendar year of issue); 2027 issuing threshold described as prior-year total turnover (Gesamtumsatz) above EUR 800,000"
+    description: "Retention was stated as ten years. Par. 14b Abs. 1 Satz 1 UStG in the version in force since 1 January 2025 says eight years; the ten-year period is the version in force until 31 December 2024. The page text on archiving, the penalties paragraph and the readiness test now say eight years. Par. 27 Abs. 38 Nr. 2 UStG sets the EUR 800,000 limit on total turnover (Gesamtumsatz) of the previous calendar year, not on domestic B2B turnover; the deadline text now says so."
+    source_url: "https://www.gesetze-im-internet.de/ustg_1980/__14b.html"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-05-04T00:00:00Z
     type: content-update
     field: "correction_business_continuity.penalties"
