@@ -27,7 +27,7 @@ pnpm-debug.log*
 src/pages/status.astro
 src/pages/cockpit.astro
 
-# internal verification queue - kept outside this repository, linked in locally only
+# internal open-items folder - kept outside this repository, linked in locally only
 src/content/research
 
 # enterprise decks - local only, never in public repo
