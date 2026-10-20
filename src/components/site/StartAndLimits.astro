@@ -7,9 +7,10 @@ interface Props {
   start: { h2: any; intro?: any; steps: { label?: string; text: any }[]; cta?: any; pilot?: any };
   limits: { h2: any; lines: { lead: any; text: any }[] };
   tone?: 'white' | 'tint';
+  ctaHref?: string;
   t: (v: any) => string;
 }
-const { start, limits, tone = 'tint', t } = Astro.props;
+const { start, limits, tone = 'tint', ctaHref = '#contact', t } = Astro.props;
 ---
 <section class={`band band-${tone} sl`}>
   <div class="wrap">
@@ -23,7 +24,7 @@ const { start, limits, tone = 'tint', t } = Astro.props;
         </li>
       ))}
     </ol>
-    {start.cta && <p class="sl-cta"><a class="btn" href="#contact" set:html={t(start.cta)}></a></p>}
+    {start.cta && <p class="sl-cta"><a class="btn" href={ctaHref} set:html={t(start.cta)}></a></p>}
     {start.pilot && <p class="sl-pilot" set:html={t(start.pilot)}></p>}
     <div class="sl-limits" role="region" aria-labelledby="sl-limits-h">
       <h2 class="sl-limits-h" id="sl-limits-h" set:html={t(limits.h2)}></h2>

@@ -1,23 +1,19 @@
 ---
-// The shared page frame: top bar, content, footer on ink.
-// bar="story" shows the door and country as a breadcrumb and the "Get in touch" button anchored to #contact.
-// bar="home" shows the two door links anchored to #doors.
-// A story page built to the country-first tree (Website - page and site structure.md, part 3) passes countries and
-// types: the top bar then lists the countries instead of the breadcrumb. A country that carries its own types opens
-// them in a small menu under it on hover or keyboard focus, and on a first tap on a touch screen; the older two-way
-// type switch under the bar shows only for a page that passes types and no per-country types.
+// The shared page frame: top bar, content, footer on ink. Every page passes the country pages (src/data/countries.ts):
+// the top bar lists them with the current one marked, and the footer lists them again (Website - page and site structure.md,
+// part 3). The "Get in touch" button goes to the page's own form (#contact) on a country page, and to an email elsewhere.
+// A country that carries its own types opens them in a small menu under it on hover or keyboard focus, and on a first
+// tap on a touch screen; no country carries types today.
 interface NavLink { name: string; href: string; current?: boolean; types?: NavLink[] }
 interface Props {
   title: string;
   description: string;
-  bar?: 'home' | 'story';
-  door?: string;
-  country?: string;
   countries?: NavLink[];
-  types?: NavLink[];
+  contact?: string;
 }
-const { title, description, bar = 'story', door, country, countries, types } = Astro.props;
-const countryFirst = bar === 'story' && countries && countries.length > 0;
+const { title, description, countries, contact = '#contact' } = Astro.props;
+const countryFirst = !!countries && countries.length > 0;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -27,9 +23,10 @@ const countryFirst = bar === 'story' && countries && countries.length > 0;
   <meta name="color-scheme" content="only light" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="robots" content="noindex" />
-  <!-- Link previews in chat apps (improvement review 2026-10, item 12); noindex stays, it does not stop a preview. -->
+  <link rel="canonical" href={canonical} />
+  <!-- Link previews in chat apps (improvement review 2026-10, item 12). -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta name="twitter:card" content="summary" />
@@ -56,25 +53,9 @@ const countryFirst = bar === 'story' && countries && countries.length > 0;
           ))}
         </nav>
       )}
-      {bar === 'story' && country && !countryFirst && (
-        <p class="crumb">{country}</p>
-      )}
-      {bar === 'story' && <a class="btn btn-sm" href="#contact">Get in touch</a>}
-      {bar === 'home' && (
-        <nav class="topnav" aria-label="Find your page">
-          <a href="#doors">Independent company</a>
-          <a href="#doors">Part of an international group</a>
-        </nav>
-      )}
+      <a class="btn btn-sm" href={contact}>Get in touch</a>
     </div>
   </header>
-  {countryFirst && types && !countries!.some((l) => l.types && l.types.length > 0) && (
-    <nav class="typeswitch" aria-label="Kind of company">
-      <div class="wrap typeswitch-in">
-        {types.map((l) => <a href={l.href} aria-current={l.current ? 'page' : undefined}>{l.name}</a>)}
-      </div>
-    </nav>
-  )}
   <main>
     <slot />
   </main>
@@ -179,14 +160,11 @@ const countryFirst = bar === 'story' && countries && countries.length > 0;
   .topbar { background: var(--page); border-bottom: 1px solid var(--hairline); }
   .topbar-in { display: flex; align-items: center; gap: 16px; min-height: 64px; padding-top: 6px; padding-bottom: 6px; }
   .wordmark { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--serif); font-size: 22px; line-height: 1; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; margin-right: auto; }
-  .crumb { margin: 0; font-size: 0.95rem; color: var(--quiet); }
-  .crumb a { color: var(--quiet); display: inline-flex; align-items: center; min-height: 44px; }
   .topnav { display: flex; gap: 28px; }
   .topnav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.95rem; text-decoration: none; }
   .topnav a:hover { text-decoration: underline; }
   @media (max-width: 759px) {
     .topbar-in { flex-wrap: wrap; row-gap: 0; padding-top: 8px; }
-    .crumb { order: 3; flex-basis: 100%; }
     .topnav { order: 3; flex-basis: 100%; gap: 20px; flex-wrap: wrap; }
   }
 
@@ -215,16 +193,6 @@ const countryFirst = bar === 'story' && countries && countries.length > 0;
     .cc-menu ul { min-width: 0; }
   }
   .topnav-cc > a[aria-current="page"] { font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.35em; }
-  .typeswitch { background: var(--page); border-bottom: 1px solid var(--hairline); }
-  .typeswitch-in { display: flex; flex-wrap: wrap; gap: 0; padding-top: 10px; padding-bottom: 10px; }
-  .typeswitch a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; font-size: 0.92rem; text-decoration: none; color: var(--ink); border: 1px solid var(--box-border); }
-  .typeswitch a + a { border-left: 0; }
-  .typeswitch a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: #ffffff; font-weight: 600; }
-  .typeswitch a:not([aria-current="page"]):hover { background: var(--tint); }
-  @media (max-width: 759px) {
-    .typeswitch-in { flex-wrap: nowrap; }
-    .typeswitch a { flex: 1 1 0; justify-content: center; text-align: center; padding: 6px 10px; font-size: 0.85rem; line-height: 1.25; }
-  }
 
   main { display: block; }
 

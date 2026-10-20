@@ -1,6 +1,6 @@
 ---
-// One story page, shared by all eight (four countries, two doors). The pages under
-// src/pages/<door>/<country>/index.astro are thin wrappers that pass their story file and, for the
+// One story page, shared by every country page. The pages under
+// src/pages/<country>/index.astro are thin wrappers that pass their story file and, for the
 // live countries, the fan-out data. A country that is not live passes fanout={null}: then the proof strip,
 // the fan-out and the followed-through change are not rendered at all and nothing from them reaches the HTML.
 //
@@ -19,6 +19,7 @@ import MarketCards from './MarketCards.astro';
 import SwitchScript from './SwitchScript.astro';
 import { storyToday, renderText, isSrc, containsDated } from './switch.js';
 import { fill, isCond, pickCond } from './format';
+import { countryNav } from '../../data/countries';
 
 interface Props {
   c: any;
@@ -33,9 +34,6 @@ interface Props {
 const { c, fanout = null, page, segment, country, fanoutDisclosure, followedDisclosure } = Astro.props;
 const live = fanout !== null && fanout !== undefined;
 
-const DOORS: Record<string, string> = { standalone: 'Independent company', 'local-company': 'Part of an international group' };
-const door = DOORS[segment];
-const countryName = String(c.opening.kickerRest ?? '').replace(/^\s*·\s*/, '');
 
 const today = storyToday(process.env);
 const f = (s: string) => (live ? fill(s, fanout) : s);
@@ -46,8 +44,7 @@ const hasProof = live && c.proof;
 const subline = c.opening.subline ?? c.opening.p1;
 const contactTone = live ? 'tint' : 'white';
 
-// Flow C, opted into per story file with flow: 'c'. On the live site this is the only story page: the top bar carries no
-// country row, because the other country pages are not published.
+// Flow C, opted into per story file with flow: 'c'.
 const flowC = c.flow === 'c';
 // The row of boxes under the strip (ChangeBoxes.astro), opted into per story file with boxes: true, live flow C pages
 // only. With it the July grid comes straight after the strip and the market cards after the grid;
@@ -59,7 +56,7 @@ const redId = boxes ? c.followed.changes?.[c.followed.gridStart?.col ?? 0]?.id :
 const showFanout = live && c.fanout?.show !== false;
 const startTint = flowC && live && (!boxes || !showFanout);
 ---
-<Site title={c.meta.title} description={c.meta.description} bar="story" door={door} country={countryName}>
+<Site title={c.meta.title} description={c.meta.description} countries={countryNav(country)}>
   <section class="sp-top">
     <div class="band band-white sp-open">
       <div class="wrap">

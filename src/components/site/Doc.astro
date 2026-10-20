@@ -1,0 +1,33 @@
+---
+// A plain text page on the site frame: the legal notice and the privacy policy. Footer only, no form, no counts.
+import Site from '../../layouts/Site.astro';
+import { countryNav } from '../../data/countries';
+interface Props { title: string; description: string; h1: string; sub?: string }
+const { title, description, h1, sub } = Astro.props;
+const mail = `mailto:jens@einvoiceops.eu?subject=${encodeURIComponent('Message from einvoiceops.eu')}`;
+---
+<Site title={title} description={description} countries={countryNav()} contact={mail}>
+  <section class="band band-white doc">
+    <div class="wrap">
+      <h1 class="doc-h1">{h1}</h1>
+      {sub && <p class="doc-sub">{sub}</p>}
+      <div class="doc-body">
+        <slot />
+      </div>
+    </div>
+  </section>
+</Site>
+
+<style is:global>
+  .doc { padding: 56px 0 64px; }
+  .doc-h1 { font-size: clamp(2rem, 4.6vw, 2.8rem); }
+  .doc-sub { margin: 10px 0 0; color: var(--quiet); }
+  .doc-body { max-width: var(--measure); margin-top: 36px; }
+  .doc-body h2 { font-size: 1.3rem; margin: 40px 0 12px; padding-top: 14px; border-top: 1px solid var(--hairline); }
+  .doc-body h2:first-child { margin-top: 0; }
+  .doc-body ul { margin: 0 0 1em; padding-left: 1.2em; }
+  .doc-body li { margin-bottom: 6px; }
+  .doc-body address { font-style: normal; margin: 0 0 1em; }
+  .doc-body .doc-note { color: var(--quiet); }
+  @media (max-width: 759px) { .doc { padding: 32px 0 44px; } }
+</style>

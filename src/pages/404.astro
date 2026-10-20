@@ -1,0 +1,11 @@
+---
+// The page the host serves for any address that does not exist, including every address of the old site.
+import Doc from '../components/site/Doc.astro';
+import { countryPages } from '../data/countries';
+---
+<Doc title="Page not found | einvoiceops" description="This page doesn't exist." h1="We can't find that page">
+  <p>The page you were looking for isn't here, and it may have belonged to an earlier version of this site. You'll find everything on the <a href="/">home page</a> and on the country pages:</p>
+  <ul>
+    {countryPages.map((c) => <li><a href={c.href}>{c.name}</a></li>)}
+  </ul>
+</Doc>

@@ -1,374 +1,58 @@
 ---
-import Nav from '../components/Nav.astro';
+// The legal notice. The provider, registration, regulatory basis and governing law are carried over from the old page
+// unchanged; what the service is and is not is rewritten to the site as it is now (three country pages, no map).
+import Doc from '../components/site/Doc.astro';
+import { countryPages } from '../data/countries';
+const names = countryPages.map((c) => c.name);
+const listed = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Legal Notice | einvoiceops</title>
-  <meta name="description" content="Legal notice, service scope, content verification standard, and limitation of liability for einvoiceops." />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --navy:   #1a2b3c;
-      --accent: #2563eb;
-      --text:   #111827;
-      --sub:    #374151;
-      --muted:  #6b7280;
-      --border: #e5e7eb;
-      --bg:     #ffffff;
-      --bg-alt: #f8f9fa;
-      --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-    body {
-      font-family: var(--sans);
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.6;
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-    }
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 56px 2rem 80px;
-    }
-    h1 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--navy);
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      font-size: 0.875rem;
-      color: var(--muted);
-      margin-bottom: 48px;
-    }
-    h2 {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 36px 0 10px;
-    }
-    h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin: 28px 0 8px;
-    }
-    p, address, li {
-      font-size: 0.95rem;
-      color: var(--sub);
-      line-height: 1.75;
-      font-style: normal;
-    }
-    p + p { margin-top: 10px; }
-    ul {
-      margin: 10px 0 10px 1.4rem;
-    }
-    li + li { margin-top: 6px; }
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 48px 0;
-    }
-    .pending {
-      color: #92400e;
-      font-style: italic;
-    }
-    .notice {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 6px;
-      padding: 14px 18px;
-      font-size: 0.875rem;
-      color: #1e40af;
-      line-height: 1.65;
-      margin-top: 40px;
-    }
-    .scope-block {
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin: 20px 0;
-    }
-    .scope-block h3 {
-      margin-top: 0;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .scope-block ul {
-      margin-top: 0;
-    }
-    .scope-block li {
-      font-size: 0.9rem;
-    }
-    .confidence-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0;
-      font-size: 0.875rem;
-    }
-    .confidence-table th {
-      text-align: left;
-      padding: 8px 12px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      font-weight: 600;
-      color: var(--navy);
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .confidence-table td {
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      color: var(--sub);
-      vertical-align: top;
-    }
-    .badge-green {
-      display: inline-block;
-      background: #dcfce7;
-      color: #166534;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 4px;
-    }
-    .badge-amber {
-      display: inline-block;
-      background: #fef9c3;
-      color: #854d0e;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 4px;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    footer {
-      padding: 28px 2rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    footer p { font-size: 0.8rem; color: var(--muted); }
-    footer a { color: var(--accent); }
-  </style>
-</head>
-<body>
-  <Nav />
+<Doc
+  title="Legal notice | einvoiceops"
+  description="Legal notice for einvoiceops, Nomos Digital Oy: service provider, registration, what the service is and is not, liability and governing law."
+  h1="Legal notice"
+  sub="Impressum (DE) · Mentions légales (FR) · Palveluntarjoajan tiedot (FI)"
+>
+  <h2>Service provider</h2>
+  <address>
+    Nomos Digital Oy (trading as einvoiceops)<br />
+    Jens Anttila, Board Member<br />
+    Nallenpolku 4 F 90<br />
+    02110 Espoo<br />
+    Finland
+  </address>
 
-  <main>
-    <h1>Legal Notice</h1>
-    <p class="subtitle">
-      Impressum (DE) &nbsp;&middot;&nbsp; Mentions L&eacute;gales (FR) &nbsp;&middot;&nbsp; Palveluntarjoajan tiedot (FI)
-    </p>
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a><br />Phone: +358 400 374 990</p>
 
-    <h2>Service Provider</h2>
-    <address>
-      Nomos Digital Oy (trading as einvoiceops)<br />
-      Jens Anttila, Board Member<br />
-      Nallenpolku 4 F 90<br />
-      02110 Espoo<br />
-      Finland
-    </address>
+  <h2>Business registration</h2>
+  <p>Finnish Business ID (Y-tunnus): 3621903-9<br />VAT Registration Number: FI36219039</p>
 
-    <h2>Contact</h2>
-    <p>
-      Email: <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a><br />
-      Phone: <a href="tel:+358400374990">+358 400 374 990</a>
-    </p>
+  <h2>Regulatory basis</h2>
+  <p>This legal notice is provided pursuant to the Finnish Act on Electronic Communications Services (917/2014), the EU e-Commerce Directive (2000/31/EC), German teleservices legislation (DDG), and French requirements under the Loi pour la Confiance dans l'Économie Numérique (LCEN 2004-575).</p>
 
-    <h2>Business Registration</h2>
-    <p>
-      Finnish Business ID (Y-tunnus): 3621903-9<br />
-      VAT Registration Number: FI36219039
-    </p>
+  <h2>What the service is</h2>
+  <p>einvoiceops follows the e-invoicing rules in {listed}, each country on its own. For each country it reads a fixed list of sources every week. When it finds a change, it tells the people who look after the parts of a customer's invoicing the change affects what changed for them and where it was published, and it keeps a record of what it sent and to whom.</p>
+  <p>The service helps a company prepare for changes to e-invoicing rules. What it sends is a reading of a change with its source beside it, so the reader can check it.</p>
 
-    <h2>Regulatory Basis</h2>
-    <p>
-      This legal notice is provided pursuant to the Finnish Act on Electronic Communications Services
-      (917/2014), the EU e-Commerce Directive (2000/31/EC), German teleservices legislation (DDG),
-      and French requirements under the Loi pour la Confiance dans l'&Eacute;conomie
-      Num&eacute;rique (LCEN 2004-575).
-    </p>
+  <h2>What the service is not</h2>
+  <p>einvoiceops is not a law firm, licensed legal advisor, certified tax consultant, or compliance authority. No content on this site, and nothing sent through the paid service, constitutes legal advice, tax advice, or a compliance opinion.</p>
+  <p>Preparing for a change is not the same as compliance assurance. Whether a company's preparation makes it compliant in its own circumstances is a determination that requires qualified legal and tax counsel with full knowledge of that company's entity structure, VAT registrations, contracts, and systems. einvoiceops does not make that determination and does not represent that its outputs do. In particular, it does not:</p>
+  <ul>
+    <li>interpret how a rule applies to a particular company,</li>
+    <li>give tax advice or VAT opinions,</li>
+    <li>certify or sign off compliance, or confirm that a company is compliant,</li>
+    <li>advise on penalty exposure or enforcement risk,</li>
+    <li>resolve conflicting sources or legislative ambiguity.</li>
+  </ul>
+  <p>einvoiceops reports the changes it finds in the sources it reads. It does not claim to find every change to a country's rules, and what to do about a change, and when, stays with the customer.</p>
 
-    <hr class="divider" />
+  <h2>Figures on this site</h2>
+  <p>The counts on this site are the changes einvoiceops has found in the sources it reads, counted since 1 January 2024 and updated after its weekly read. They are not a count of every change made to a country's rules.</p>
 
-    <h2>What einvoiceops is</h2>
+  <h2>Limitation of liability</h2>
+  <p>Content on this site is provided for operational preparation purposes only. einvoiceops (Nomos Digital Oy) accepts no liability for decisions taken based on this content without independent legal and tax validation. Customers remain responsible for all compliance decisions, their implementation, and their legal consequences.</p>
+  <p>E-invoicing rules are subject to ongoing legislative change. einvoiceops makes reasonable efforts to track and reflect those changes but does not warrant that content is current, complete, or free of error at the time of reading. Users who require current and authoritative information for compliance decisions should consult the relevant national tax authority publications and qualified legal counsel.</p>
 
-    <p>
-      einvoiceops provides operational readiness support for EU e-invoicing mandates. Each EU member
-      state legislates e-invoicing independently: different formats, different platform models,
-      different identifiers, different deadlines. For organisations with operations across multiple
-      EU countries, the practical challenge is not understanding that mandates exist. The challenge
-      is translating each mandate's specific technical and operational requirements into concrete
-      preparation work, assigned to the right internal owners - IT, tax, finance systems, AP
-      operations - before a deadline creates pressure.
-    </p>
-    <p>
-      einvoiceops tracks EU mandate requirements against primary sources (enacted legislation,
-      official gazettes, tax authority publications) and translates that information into structured
-      operational preparation. The compliance map on this site reflects the current state of each
-      country's mandate as verified against those primary sources. Where content is marked as
-      source-verified, a specialist confirmed the specific claim matches the primary document on
-      the stated date.
-    </p>
-    <p>
-      The paid service goes further: mandate changes are translated into ERP-specific preparation
-      work and routed to named internal owners, so that when a deadline arrives, the organisation
-      has a traceable preparation record rather than a gap.
-    </p>
-
-    <div class="scope-block">
-      <h3>In scope</h3>
-      <ul>
-        <li>Mandate tracking: dates, formats, thresholds, compliance parameters per EU country</li>
-        <li>Operational preparation: translating mandate requirements into internal work items with named owners</li>
-        <li>Readiness assessment: identifying which internal functions are affected by a given mandate</li>
-        <li>Change monitoring: detecting when mandate requirements are updated and flagging what needs re-preparation</li>
-        <li>Structured delivery: work packets with official source citations, named internal owners, and version history</li>
-      </ul>
-    </div>
-
-    <hr class="divider" />
-
-    <h2>What einvoiceops is not</h2>
-
-    <p>
-      einvoiceops is not a law firm, licensed legal advisor, certified tax consultant, or compliance
-      authority. No content on this site, and no deliverable produced through the paid service,
-      constitutes legal advice, tax advice, or a compliance opinion.
-    </p>
-    <p>
-      Operational preparation is not the same as compliance assurance. einvoiceops helps organisations
-      structure the internal work required to prepare for a mandate. Whether that preparation produces
-      legal compliance in a specific organisation's circumstances is a determination that requires
-      qualified legal and tax counsel with full knowledge of that organisation's entity structure,
-      VAT registrations, contracts, and systems. einvoiceops does not make that determination and
-      does not represent that its outputs do.
-    </p>
-    <p>
-      The content on this site is mandate intelligence and tracking, not legal interpretation. When
-      a law says "invoices must be transmitted within 12 days of the supply date," einvoiceops
-      records that requirement and cites the source. It does not interpret whether your organisation's
-      specific invoicing practices fall within or outside that requirement. That interpretation
-      requires qualified legal or tax advice.
-    </p>
-
-    <div class="scope-block">
-      <h3>Not in scope - under any circumstances</h3>
-      <ul>
-        <li>Legal interpretation of mandate requirements in the context of your organisation</li>
-        <li>Tax advice or VAT opinions</li>
-        <li>Compliance certification or sign-off</li>
-        <li>Confirmation that your organisation is compliant with any mandate</li>
-        <li>Advice on penalty exposure or enforcement risk</li>
-        <li>Interpretation of conflicting sources or legislative ambiguity</li>
-      </ul>
-    </div>
-
-    <hr class="divider" />
-
-    <h2>Content Verification Standard</h2>
-
-    <p>
-      Mandate content on this site is assigned a confidence tier based on what has been confirmed
-      against primary sources. The tiers do not represent legal certainty. They represent the
-      current state of source verification.
-    </p>
-
-    <table class="confidence-table">
-      <thead>
-        <tr>
-          <th>Tier</th>
-          <th>What it means</th>
-          <th>What it does not mean</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="badge-green">Green</span></td>
-          <td>A specialist verified the specific claim against the primary source document on the stated date.</td>
-          <td>Legal confirmation that the claim is correct as a matter of law, or that it applies to your organisation specifically.</td>
-        </tr>
-        <tr>
-          <td><span class="badge-amber">Amber</span></td>
-          <td>The claim has a source citation and the source is plausible, but the primary document has not yet been personally confirmed by a specialist. The claim is likely accurate but treated as unconfirmed until that step is complete.</td>
-          <td>That the claim should be acted upon without independent validation. Amber claims should be treated as indicative until confirmed.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>What verification means and does not mean</h3>
-    <p>
-      Verification in the einvoiceops system is claim-source matching: confirming that a specific
-      published claim matches what a specific primary source document actually says. This is a
-      reading task, not a legal analysis task. The question being answered is: "Does this law
-      article say the mandate applies from January 2026?" not "Does this mandate apply to your
-      organisation and what does it require of you?"
-    </p>
-    <p>
-      When primary sources conflict on the same claim, the conflict is flagged explicitly and the
-      claim is not resolved to a single answer. Resolving legislative ambiguity requires qualified
-      legal judgment. einvoiceops does not perform that judgment and does not publish a resolved
-      answer in place of an honest flag.
-    </p>
-    <p>
-      The <em>last verified</em> date on each country page records when a specialist last confirmed
-      the source content for that country. It is a snapshot date, not a guarantee of current
-      accuracy. EU regulatory requirements change. Content may not reflect the most current state
-      at the time of reading.
-    </p>
-
-    <hr class="divider" />
-
-    <h2>Limitation of Liability</h2>
-
-    <p>
-      Content on this site is provided for operational preparation purposes only. einvoiceops (Nomos
-      Digital Oy) accepts no liability for decisions taken based on this content without independent
-      legal and tax validation. Customers remain responsible for all compliance decisions,
-      their implementation, and their legal consequences.
-    </p>
-    <p>
-      EU e-invoicing requirements are subject to ongoing legislative change. einvoiceops makes
-      reasonable efforts to track and reflect those changes but does not warrant that content is
-      current, complete, or free of error at the time of reading. Users who require current and
-      authoritative mandate information for compliance decisions should consult the relevant
-      national tax authority publications and qualified legal counsel.
-    </p>
-
-    <h2>Governing Law</h2>
-    <p>
-      These terms are governed by Finnish law. Disputes are subject to the jurisdiction of Finnish
-      courts, specifically the District Court of Espoo (Espoon käräjäoikeus) as the court of first
-      instance, unless mandatory EU consumer protection rules require otherwise.
-    </p>
-
-  </main>
-
-  <footer>
-    <p>einvoiceops &nbsp;&middot;&nbsp; <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> &nbsp;&middot;&nbsp; Finland</p>
-    <p>&copy; 2026 einvoiceops &nbsp;&middot;&nbsp; <a href="/legal/">Legal Notice</a> &nbsp;&middot;&nbsp; <a href="/privacy/">Privacy Policy</a></p>
-  </footer>
-</body>
-</html>
+  <h2>Governing law</h2>
+  <p>These terms are governed by Finnish law. Disputes are subject to the jurisdiction of Finnish courts, specifically the District Court of Espoo (Espoon käräjäoikeus) as the court of first instance, unless mandatory EU consumer protection rules require otherwise.</p>
+</Doc>
