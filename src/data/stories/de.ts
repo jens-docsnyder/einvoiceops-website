@@ -300,6 +300,6 @@ export const de = {
       photo: `/jens-anttila.jpg`,
       linkedin: `https://www.linkedin.com/in/jens-anttila/`,
     },
-    done: `Thank you, your message is sent. Jens will answer by email.`,
+    done: `Thank you, your message is sent. You will get an answer by email.`,
   },
 };
