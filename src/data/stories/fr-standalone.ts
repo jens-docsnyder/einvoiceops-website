@@ -342,8 +342,6 @@ export const frStandalone = {
     email: `Email`,
     message: `Your message`,
     send: `Send message`,
-    // The button opens a draft, it does not send; said under it, and the done line does not assume it opened.
-    after: `This opens a draft in your email program.`,
     mailto: `jens@einvoiceops.eu`,
     // In place of the line on where the message goes, a short note on what to tell us.
     hint: `Tell us who looks after your invoicing today, and whether that's one person, several, or a team for each function.`,
@@ -355,6 +353,6 @@ export const frStandalone = {
       // The name links to the profile; ContactForm.astro leaves the name plain without it.
       linkedin: `https://www.linkedin.com/in/jens-anttila/`,
     },
-    done: `If your email program opened, your message is there, addressed to Jens, and nothing is sent until you send it. If nothing opened, copy your message above and send it to <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>.`,
+    done: `Thank you, your message has reached Jens. He will answer by email.`,
   },
 };

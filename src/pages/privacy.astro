@@ -1,13 +1,14 @@
 ---
-// The privacy policy, carried over word for word from the old page onto the site frame. The contact form on the country
-// pages opens a draft in the visitor's own email program and sends nothing itself, so "when you contact us by email" holds.
+// The privacy policy, carried over from the old page onto the site frame, with the contact form added on 2026-10-20: the
+// form posts the message to Formspree (a form service in the United States), which emails it to us, so sections 2, 7 and the
+// short version name the form and the transfer. Nothing is sent from a page until the visitor presses the send button.
 import Doc from '../components/site/Doc.astro';
 ---
 <Doc
   title="Privacy policy | einvoiceops"
-  description="Privacy policy for einvoiceops (Nomos Digital Oy). No cookies, no analytics, no tracking. Personal data processed only when you contact us by email."
+  description="Privacy policy for einvoiceops (Nomos Digital Oy). No cookies, no analytics, no tracking. Personal data processed only when you contact us, by the form on this site or by email."
   h1="Privacy policy"
-  sub="Last updated: 28 May 2026"
+  sub="Last updated: 20 October 2026"
 >
   <h2>1. Data controller</h2>
   <address>
@@ -18,8 +19,8 @@ import Doc from '../components/site/Doc.astro';
   </address>
 
   <h2>2. What this site collects</h2>
-  <p>This website uses no cookies, analytics scripts, tracking pixels, or third-party services. No personal data is collected or stored by visiting or browsing the site.</p>
-  <p>Personal data is processed only when you contact us by email. The data processed is: your name, email address, company name, and the content of your message.</p>
+  <p>This website uses no cookies, analytics scripts, tracking pixels, or third-party scripts. No personal data is collected or stored by visiting or browsing the site.</p>
+  <p>Personal data is processed only when you contact us, by the contact form on this site or by email. The data processed is: your name, email address, company name, and the content of your message.</p>
 
   <h2>3. Purpose of processing</h2>
   <p>To respond to your business enquiry and, if relevant, to provide the service you requested. Your data is not used for any other purpose, including marketing.</p>
@@ -36,9 +37,10 @@ import Doc from '../components/site/Doc.astro';
   <p>Email enquiries are retained for up to 2 years from the date of last contact, unless a contract is established. Where a contract is signed, relevant correspondence is retained for the duration of the contract plus any legally required accounting retention period (6 years under Finnish Accounting Act 1336/1997).</p>
 
   <h2>7. Recipients and sub-processors</h2>
-  <p>Your data is not shared with third parties, sold, or used for advertising or profiling.</p>
+  <p>Your data is not sold or used for advertising or profiling, and it is not shared with third parties other than the service providers named in this section.</p>
   <p>This website is hosted on GitHub Pages (GitHub, Inc., a Microsoft subsidiary). GitHub processes web server logs (including IP addresses) as part of standard hosting operations. GitHub's privacy statement is available at <a href="https://github.com/site/privacy">github.com/site/privacy</a>. Email enquiries are handled via Google Workspace (Google LLC) and stored on Google's EU infrastructure.</p>
-  <p>No personal data is transferred outside the European Economic Area.</p>
+  <p>Messages sent through the contact form are passed on by Formspree (Formspree, Inc., United States), a form service that receives the message and emails it to us. Formspree processes the message on our behalf in order to deliver it and may keep a copy in its service. Formspree's privacy policy is available at <a href="https://formspree.io/legal/privacy-policy/">formspree.io/legal/privacy-policy</a>. Nothing is sent to Formspree until you press the send button.</p>
+  <p>Messages sent through the contact form are processed by Formspree in the United States, so those messages are transferred outside the European Economic Area. An email you send to us directly is not.</p>
 
   <h2>8. Your rights</h2>
   <p>Under GDPR (EU 2016/679), you have the right to:</p>
@@ -57,5 +59,5 @@ import Doc from '../components/site/Doc.astro';
 
   <h2>10. Changes to this policy</h2>
   <p>If this policy changes materially, the "Last updated" date above will be revised. Given the minimal scope of data processing, significant changes are unlikely.</p>
-  <p class="doc-note">Short version: we only receive your data if you email us, we use it to reply, we do not share it, and you can ask us to delete it at any time.</p>
+  <p class="doc-note">Short version: we only receive your data if you write to us, by the form or by email, we use it to reply, we do not sell it, and you can ask us to delete it at any time.</p>
 </Doc>

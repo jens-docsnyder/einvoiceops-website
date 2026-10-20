@@ -1,6 +1,7 @@
 ---
-// The contact section, id="contact". Nothing is sent from the page: the submit opens the reader's email program with a
-// message to jens@einvoiceops.eu already written (mailto), and the done line says only that it is ready to send there.
+// The contact section, id="contact". The submit posts the message to the form service (Formspree) as JSON, which emails it
+// to jens@einvoiceops.eu; the done line shows only when the service says it took the message. If the post fails, the page
+// says so and gives the address, and nothing claims the message went.
 interface Props {
   copy: { h2: any; name: string; email: string; message: string; send: string; done: any; after?: any; hint?: any; mailto?: string };
   page: string;
@@ -37,6 +38,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
       <input type="hidden" name="country" value={country} />
       <input type="hidden" name="lead" value="" />
       <input type="hidden" name="link" value="" />
+      <input class="cf-trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <div class="cf-pair">
         <div>
           <label class="cf-label" for="cf-name">{copy.name}</label>
@@ -51,6 +53,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
       <textarea class="cf-input cf-area" id="cf-message" name="message" rows="5" required></textarea>
       <button class="btn cf-send" type="submit">{copy.send}</button>
       {copy.after && <p class="cf-after quiet" set:html={t(copy.after)}></p>}
+      <p class="cf-error" id="cf-error" role="alert" hidden>Your message was not sent. Please email <a href={`mailto:${copy.mailto || 'jens@einvoiceops.eu'}`}>{copy.mailto || 'jens@einvoiceops.eu'}</a> instead.</p>
     </form>
     <p class="cf-done measure" id="cf-done" role="status" hidden set:html={t(copy.done)}></p>
     </div>
@@ -62,19 +65,47 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   (function () {
     var form = document.getElementById('cf-form');
     var done = document.getElementById('cf-done');
+    var error = document.getElementById('cf-error');
     if (!form || !done) return;
     var params = new URLSearchParams(window.location.search);
     var search = window.location.search.replace(/^\?/, '');
     form.elements['lead'].value = params.get('lead') || '';
     form.elements['link'].value = search;
+    var button = form.querySelector('.cf-send');
+    var label = button.textContent;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
       var f = form.elements;
-      var lines = [f['message'].value, '', 'Name and company: ' + f['name_company'].value, 'Email: ' + f['email'].value, 'Page: ' + window.location.pathname + window.location.search];
-      var href = 'mailto:jens@einvoiceops.eu?subject=' + encodeURIComponent('Message from einvoiceops.eu') + '&body=' + encodeURIComponent(lines.join('\r\n'));
-      done.hidden = false;
-      window.location.href = href;
+      var data = {
+        name_company: f['name_company'].value,
+        email: f['email'].value,
+        message: f['message'].value,
+        page: window.location.pathname + window.location.search,
+        segment: f['segment'].value,
+        country: f['country'].value,
+        lead: f['lead'].value,
+        link: f['link'].value,
+        _gotcha: f['_gotcha'].value,
+        _subject: 'Message from einvoiceops.eu'
+      };
+      error.hidden = true;
+      button.disabled = true;
+      button.textContent = 'Sending...';
+      fetch('https://formspree.io/f/xnjwvnvb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('rejected');
+        form.hidden = true;
+        done.hidden = false;
+        done.scrollIntoView({ block: 'nearest' });
+      }).catch(function () {
+        button.disabled = false;
+        button.textContent = label;
+        error.hidden = false;
+      });
     });
   })();
 </script>
@@ -90,6 +121,9 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   .cf-send { margin-top: 22px; }
   .cf-after { margin: 12px 0 0; font-size: 0.9rem; max-width: 60ch; }
   .cf-done { margin-top: 24px; }
+  .cf-error { margin: 14px 0 0; font-weight: 600; }
+  .cf-error[hidden] { display: none; }
+  .cf-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
   /* One card with the page's orange top line, the photo column tinted. */
   .cf-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); margin-top: 28px; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--accent); }
   .cf-grid .cf-form { margin-top: 0; max-width: none; }

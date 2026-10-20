@@ -1,7 +1,7 @@
 ---
 // The shared page frame: top bar, content, footer on ink. Every page passes the country pages (src/data/countries.ts):
 // the top bar lists them with the current one marked, and the footer lists them again (Website - page and site structure.md,
-// part 3). The "Get in touch" button goes to the page's own form (#contact) on a country page, and to an email elsewhere.
+// part 3). The "Get in touch" button goes to the page's own form (#contact) where the page has one, and to the form on the home page elsewhere.
 // A country that carries its own types opens them in a small menu under it on hover or keyboard focus, and on a first
 // tap on a touch screen; no country carries types today.
 interface NavLink { name: string; href: string; current?: boolean; types?: NavLink[] }

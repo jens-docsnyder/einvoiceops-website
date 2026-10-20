@@ -307,7 +307,6 @@ export const be = {
     email: `Email`,
     message: `Your message`,
     send: `Send message`,
-    after: `This opens a draft in your email program.`,
     mailto: `jens@einvoiceops.eu`,
     hint: `Tell us who looks after your invoicing today, and whether that's one person, several, or a team for each function.`,
     person: {
@@ -316,6 +315,6 @@ export const be = {
       photo: `/jens-anttila.jpg`,
       linkedin: `https://www.linkedin.com/in/jens-anttila/`,
     },
-    done: `If your email program opened, your message is there, addressed to Jens, and nothing is sent until you send it. If nothing opened, copy your message above and send it to <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a>.`,
+    done: `Thank you, your message has reached Jens. He will answer by email.`,
   },
 };

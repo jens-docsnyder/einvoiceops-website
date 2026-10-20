@@ -3,9 +3,10 @@
 // country pages as cards with their live counts, the six functions, starting and the limits, the countries again.
 // The countries and their order come from src/data/countries.ts and each count from that country's fan-out file, counted
 // exactly as the country page's proof strip counts it (publications() in format.ts), so the two never disagree.
-// There is no form here: "Get in touch" and "Get started" open an email to the owner, and the address is in the footer.
+// "Get in touch" and "Get started" go to the contact form at the foot of the page, the same form the country pages carry.
 import Site from '../layouts/Site.astro';
 import StartAndLimits from '../components/site/StartAndLimits.astro';
+import ContactForm from '../components/site/ContactForm.astro';
 import { countryPages, countryNav } from '../data/countries';
 import { publications, longDate, withBodies } from '../components/site/format';
 import { deBodies } from '../data/stories/de';
@@ -29,7 +30,6 @@ const cards = countryPages.map((c) => {
 
 const names = countryPages.map((c) => c.name);
 const listed = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
-const mail = `mailto:jens@einvoiceops.eu?subject=${encodeURIComponent('Message from einvoiceops.eu')}`;
 
 const functions = ['Outbound invoicing', 'Inbound invoicing', 'Connectivity', 'Tax engine', 'Master data', 'Archiving'];
 
@@ -52,13 +52,30 @@ const limits = {
     { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
   ],
 };
+// The contact form, as on the country pages: the start button lands here, so the heading names it.
+const contact = {
+  h2: `Get started, or tell us how you keep up today`,
+  name: `Name and company`,
+  email: `Email`,
+  message: `Your message`,
+  send: `Send message`,
+  mailto: `jens@einvoiceops.eu`,
+  hint: `Tell us who looks after your invoicing today, and whether that's one person, several, or a team for each function.`,
+  person: {
+    name: `Jens Anttila`,
+    email: `jens@einvoiceops.eu`,
+    photo: `/jens-anttila.jpg`,
+    linkedin: `https://www.linkedin.com/in/jens-anttila/`,
+  },
+  done: `Thank you, your message has reached Jens. He will answer by email.`,
+};
 const t = (v: string) => v;
 ---
 <Site
   title="einvoiceops | Changes to e-invoicing rules, sent to the people they affect"
   description={`We keep track of the e-invoicing rules in ${listed}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`}
   countries={countryNav()}
-  contact={mail}
+  contact="#contact"
 >
   <section class="band band-white home-open">
     <div class="wrap">
@@ -96,7 +113,7 @@ const t = (v: string) => v;
     </div>
   </section>
 
-  <StartAndLimits start={start} limits={limits} tone="tint" ctaHref={mail} t={t} />
+  <StartAndLimits start={start} limits={limits} tone="tint" ctaHref="#contact" t={t} />
 
   <section class="band band-white home-close">
     <div class="wrap">
@@ -106,6 +123,8 @@ const t = (v: string) => v;
       </ul>
     </div>
   </section>
+
+  <ContactForm copy={contact} page="home" segment="" country="" tone="tint" person={contact.person} t={t} />
 </Site>
 
 <style is:global>

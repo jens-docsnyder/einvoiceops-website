@@ -4,9 +4,8 @@ import Site from '../../layouts/Site.astro';
 import { countryNav } from '../../data/countries';
 interface Props { title: string; description: string; h1: string; sub?: string }
 const { title, description, h1, sub } = Astro.props;
-const mail = `mailto:jens@einvoiceops.eu?subject=${encodeURIComponent('Message from einvoiceops.eu')}`;
 ---
-<Site title={title} description={description} countries={countryNav()} contact={mail}>
+<Site title={title} description={description} countries={countryNav()} contact="/#contact">
   <section class="band band-white doc">
     <div class="wrap">
       <h1 class="doc-h1">{h1}</h1>
