@@ -7,12 +7,19 @@
 import Site from '../layouts/Site.astro';
 import StartAndLimits from '../components/site/StartAndLimits.astro';
 import { countryPages, countryNav } from '../data/countries';
-import { publications, longDate } from '../components/site/format';
+import { publications, longDate, withBodies } from '../components/site/format';
+import { deBodies } from '../data/stories/de';
+import { beBodies } from '../data/stories/be';
 import fr from '../data/fanout/FR.json';
 import de from '../data/fanout/DE.json';
 import be from '../data/fanout/BE.json';
 
-const fanouts: Record<string, any> = { FR: fr, DE: de, BE: be };
+// Each file gets the same issuing-body fallback its country page gives it, so the two counts can never disagree.
+const fanouts: Record<string, any> = {
+  FR: withBodies(fr, {}, 'Home page: FR.json'),
+  DE: withBodies(de, deBodies, 'Home page: DE.json'),
+  BE: withBodies(be, beBodies, 'Home page: BE.json'),
+};
 const cards = countryPages.map((c) => {
   const d = fanouts[c.cc];
   const pubs = publications(d);
@@ -49,14 +56,14 @@ const t = (v: string) => v;
 ---
 <Site
   title="einvoiceops | Changes to e-invoicing rules, sent to the people they affect"
-  description={`We follow the e-invoicing rules in ${listed}. When we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`}
+  description={`We keep track of the e-invoicing rules in ${listed}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`}
   countries={countryNav()}
   contact={mail}
 >
   <section class="band band-white home-open">
     <div class="wrap">
       <h1 class="home-h1">Go-live was the start, not the finish.</h1>
-      <p class="home-sub">We follow the e-invoicing rules in {listed}. When we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.</p>
+      <p class="home-sub">We keep track of the e-invoicing rules in {listed}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.</p>
     </div>
   </section>
 
@@ -82,7 +89,7 @@ const t = (v: string) => v;
   <section class="band band-white home-fns">
     <div class="wrap">
       <h2 class="band-h home-h2">A change can touch one part of your invoicing or several</h2>
-      <p class="home-fns-p">When we find a change, the person who looks after each part it touches hears from us about their own part, so nobody has to follow a change across all six.</p>
+      <p class="home-fns-p">Whoever looks after each part a change touches hears from us about their own part, so nobody has to follow the change across all six.</p>
       <ul class="tiles">
         {functions.map((n) => <li class="tile">{n}</li>)}
       </ul>
