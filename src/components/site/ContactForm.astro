@@ -2,6 +2,14 @@
 // The contact section, id="contact". The submit posts the message to the form service (Formspree) as JSON, which emails it
 // to jens@einvoiceops.eu; the done line shows only when the service says it took the message. If the post fails, the page
 // says so and gives the address, and nothing claims the message went.
+// A form on a page in another language also carries a hidden `language` field (the page's locale code) and sends it, so
+// the message shows which language's page it came from. The English page carries no such field and sends none: the English
+// build stays byte-identical to what it was, and the receiving side treats a message without `language` as English.
+// `page` is the address of the page the form is on, in its own language.
+import { dictionary } from '../../i18n/dictionaries/index';
+import { contactScript } from './contact-script';
+import type { Locale } from '../../i18n/registry';
+
 interface Props {
   copy: { h2: any; name: string; email: string; message: string; send: string; done: any; after?: any; hint?: any; mailto?: string };
   page: string;
@@ -12,8 +20,14 @@ interface Props {
   // With a person, the section is one card: photo column left, form right, and copy.hint under the address.
   person?: { name: string; email: string; photo: string; linkedin?: string };
   t: (v: any) => string;
+  locale?: Locale;
 }
-const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
+const { copy, page, segment, country, tone = 'tint', person, t, locale = 'en' } = Astro.props;
+const ui = dictionary(locale);
+const translated = locale !== 'en';
+const mail = copy.mailto || 'jens@einvoiceops.eu';
+const formError = ui.formError.replace('{mail}', `<a href="mailto:${mail}">${mail}</a>`);
+const script = contactScript(ui.formSending, translated);
 ---
 <section class={`band band-${tone} cf-section${person ? ' cf-with-person' : ''}`} id="contact">
   <div class="wrap">
@@ -23,7 +37,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
       <div class="cf-person">
         <img class="cf-photo" src={person.photo} alt={person.name} width="150" height="150" loading="lazy" />
         <p class="cf-name">{person.name}{person.linkedin && (
-          <a class="cf-in" href={person.linkedin} target="_blank" rel="noopener" aria-label={`${person.name} on LinkedIn`}>
+          <a class="cf-in" href={person.linkedin} target="_blank" rel="noopener" aria-label={ui.linkedinLabel.replace('{name}', person.name)}>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           </a>
         )}</p>
@@ -35,7 +49,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
     <form class="cf-form" id="cf-form" onsubmit="return false" novalidate={false} data-mailto={copy.mailto} data-page={page} data-segment={segment} data-country={country}>
       <input type="hidden" name="page" value={page} />
       <input type="hidden" name="segment" value={segment} />
-      <input type="hidden" name="country" value={country} />
+      <input type="hidden" name="country" value={country} />{translated && <input type="hidden" name="language" value={locale} />}
       <input type="hidden" name="lead" value="" />
       <input type="hidden" name="link" value="" />
       <input class="cf-trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -53,7 +67,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
       <textarea class="cf-input cf-area" id="cf-message" name="message" rows="5" required></textarea>
       <button class="btn cf-send" type="submit">{copy.send}</button>
       {copy.after && <p class="cf-after quiet" set:html={t(copy.after)}></p>}
-      <p class="cf-error" id="cf-error" role="alert" hidden>Your message was not sent. Please email <a href={`mailto:${copy.mailto || 'jens@einvoiceops.eu'}`}>{copy.mailto || 'jens@einvoiceops.eu'}</a> instead.</p>
+      <p class="cf-error" id="cf-error" role="alert" hidden set:html={formError}></p>
     </form>
     <p class="cf-done measure" id="cf-done" role="status" hidden set:html={t(copy.done)}></p>
     </div>
@@ -61,54 +75,7 @@ const { copy, page, segment, country, tone = 'tint', person, t } = Astro.props;
   </div>
 </section>
 
-<script is:inline>
-  (function () {
-    var form = document.getElementById('cf-form');
-    var done = document.getElementById('cf-done');
-    var error = document.getElementById('cf-error');
-    if (!form || !done) return;
-    var params = new URLSearchParams(window.location.search);
-    var search = window.location.search.replace(/^\?/, '');
-    form.elements['lead'].value = params.get('lead') || '';
-    form.elements['link'].value = search;
-    var button = form.querySelector('.cf-send');
-    var label = button.textContent;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      var f = form.elements;
-      var data = {
-        name_company: f['name_company'].value,
-        email: f['email'].value,
-        message: f['message'].value,
-        page: window.location.pathname + window.location.search,
-        segment: f['segment'].value,
-        country: f['country'].value,
-        lead: f['lead'].value,
-        link: f['link'].value,
-        _gotcha: f['_gotcha'].value,
-        _subject: 'Message from einvoiceops.eu'
-      };
-      error.hidden = true;
-      button.disabled = true;
-      button.textContent = 'Sending...';
-      fetch('https://formspree.io/f/xnjwvnvb', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      }).then(function (res) {
-        if (!res.ok) throw new Error('rejected');
-        form.hidden = true;
-        done.hidden = false;
-        done.scrollIntoView({ block: 'nearest' });
-      }).catch(function () {
-        button.disabled = false;
-        button.textContent = label;
-        error.hidden = false;
-      });
-    });
-  })();
-</script>
+<script is:inline set:html={script}></script>
 
 <style is:global>
   .cf-form { margin-top: 24px; max-width: 760px; }
