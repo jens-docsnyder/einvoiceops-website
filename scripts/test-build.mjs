@@ -13,6 +13,9 @@
  *  - The registry module (src/i18n/registry.ts) reads a test file only when the variable I18N_TEST_REGISTRY is set.
  *    Only this script sets it, from the path given on the command line. Nothing in package.json, the workflows or the
  *    config sets it, and if it is set during `npm run build` the registry stops the build instead of reading it.
+ *    However the build is started, astro.config.mjs stops it if it would write a test build to dist/.
+ *  - A real build with a ready language stops until that language's pages have translated text; only a test build
+ *    may copy the English text onto them (src/i18n/locale-home.astro, locale-page.astro).
  *  - The output goes to its own folder (default .astro/i18n-test-dist/<name of the registry file>), never to dist/.
  *    The script refuses dist/ and any non-empty folder that it did not make itself (it leaves a marker file beside its own), and it passes the folder to
  *    astro as --outDir, so `npm run build` and the deploy never see it.

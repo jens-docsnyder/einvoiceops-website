@@ -161,6 +161,20 @@ test('on a home page choosing a language lands on that home page', () => {
   }
 });
 
+// A translated page is built by its own route (src/i18n/locale-home.astro, locale-page.astro). If one route rendered
+// every kind of page, each page would carry the styles of all of them, and a country page's global rules would restyle
+// the home page (at phone width every button went full width). The same page must carry the same styles in every language.
+test('a translated page carries the same stylesheets in the same order as its English page', () => {
+  const english = { ...Object.fromEntries(Object.values(HOME).map((h) => [h, '/'])) };
+  for (const [p, c] of Object.entries(COUNTRY_OF)) english[p] = LANDS.en[c];
+  const styles = (page) => [...html(page).split('</head>')[0].matchAll(/<link rel="stylesheet" href="([^"]+)"|<style[^>]*>([\s\S]*?)<\/style>/g)]
+    .map((m) => m[1] || m[2]);
+  for (const [p, locale] of PAGES) {
+    if (locale === 'en') continue;
+    assert.deepEqual(styles(p), styles(english[p]), `${p} does not carry the styles of ${english[p]}`);
+  }
+});
+
 test('every internal link of every built page has a trailing slash', () => {
   for (const [file, text] of site.text) {
     if (!file.endsWith('.html')) continue;

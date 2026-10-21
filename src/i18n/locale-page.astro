@@ -1,23 +1,25 @@
 ---
-// The pages of the other languages: /de/, /fr/, /pl/ and the country pages under them. This file is not in src/pages: the
-// route is added by the integration in astro.config.mjs, and only when the registry has a ready language. While none is
-// ready the route does not exist, so the build holds no trace of it and the English pages are built exactly as before.
+// The country pages of the other languages: /de/deutschland/, /fr/france/, /fr/belgique/ and so on. This file is not in
+// src/pages: the route is added by the integration in astro.config.mjs, and only when the registry has a ready language.
+// While none is ready the route does not exist, so the build holds no trace of it and the English pages are built exactly
+// as before. The home pages of the other languages are their own route, src/i18n/locale-home.astro.
 // getStaticPaths lists only the pages the registry builds. For now a page is the English page on the frame of its language
-// (identity copy); the translations arrive as story files, language by language. The English pages stay where they are.
-import Home from '../components/site/HomePage.astro';
+// (identity copy), and only a test build may make one: a real build with a ready language stops here until that language's
+// translated story files exist. The English pages stay where they are.
 import France from '../components/site/FrancePage.astro';
 import Germany from '../components/site/GermanyPage.astro';
 import Belgium from '../components/site/BelgiumPage.astro';
-import { builtPages } from './registry';
+import { builtPages, testRegistry } from './registry';
 
 export function getStaticPaths() {
-  return builtPages()
-    .filter((p) => p.locale !== 'en')
-    .map((p) => ({ params: { locale: p.locale, slug: p.slug || undefined }, props: { page: p.page, locale: p.locale } }));
+  const built = builtPages().filter((p) => p.locale !== 'en' && p.page !== 'home');
+  if (built.length && !testRegistry) {
+    throw new Error(`A language is ready but its country pages have no translated text yet (${built.map((p) => p.path).join(', ')}). Only a test build may copy the English text.`);
+  }
+  return built.map((p) => ({ params: { locale: p.locale, slug: p.slug }, props: { page: p.page, locale: p.locale } }));
 }
 const { page, locale } = Astro.props;
 ---
-{page === 'home' && <Home locale={locale} />}
 {page === 'FR' && <France locale={locale} />}
 {page === 'DE' && <Germany locale={locale} />}
 {page === 'BE' && <Belgium locale={locale} />}

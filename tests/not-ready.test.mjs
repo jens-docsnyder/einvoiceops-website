@@ -9,6 +9,7 @@ import { ROOT, buildReal, snapshot, withBuildLock } from './_lib/site.mjs';
 let site;
 let buildResult;
 let refusal;
+let directRefusal;
 
 test('setup: real build', async () => {
   await withBuildLock(() => {
@@ -21,6 +22,13 @@ test('setup: real build', async () => {
       env: { ...process.env, I18N_TEST_REGISTRY: path.join(ROOT, 'tests', 'fixtures', 'registry-all-ready.json') },
     });
     refusal = { status: run.status, output: `${run.stdout}\n${run.stderr}` };
+    // The same, started without npm: astro itself, into dist/, the folder the deploy publishes.
+    const direct = spawnSync(path.join(ROOT, 'node_modules', '.bin', 'astro'), ['build'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: { ...process.env, I18N_TEST_REGISTRY: path.join(ROOT, 'tests', 'fixtures', 'registry-all-ready.json') },
+    });
+    directRefusal = { status: direct.status, output: `${direct.stdout}\n${direct.stderr}` };
     // Leave dist as the real build makes it.
     buildReal();
   });
@@ -72,6 +80,24 @@ test('every page is English with no alternate links in the head', () => {
 
 test('npm run build refuses the test registry variable', () => {
   assert.notEqual(refusal.status, 0, 'a real build with I18N_TEST_REGISTRY set succeeded');
+});
+
+test('astro build into dist/ refuses the test registry variable, however it is started', () => {
+  assert.notEqual(directRefusal.status, 0, 'astro build with I18N_TEST_REGISTRY set wrote to dist/');
+  assert.match(directRefusal.output, /I18N_TEST_REGISTRY is set .* would write to dist\//);
+});
+
+// Site.astro loads the registry with import() because a static import there moved the home page's form styles ahead of
+// the site stylesheet: the English output changed and the cascade with it. This holds the order without a baseline.
+test('the site stylesheet comes first in the head of every page', () => {
+  for (const [file, html] of site.text) {
+    if (!file.endsWith('.html')) continue;
+    const head = html.split('</head>')[0];
+    const first = /<link rel="stylesheet" href="([^"]+)"|<style\b/.exec(head);
+    assert.ok(first && /^\/_astro\/Site\.[^/]+\.css$/.test(first[1] || ''),
+      `${file}: the first style in the head is ${first ? first[1] || 'an inline <style>' : 'missing'}, not the site stylesheet. ` +
+      'An import added to Site.astro or a page component changed the order in which the build writes styles; see the comment at the registry import in Site.astro.');
+  }
 });
 
 test('the real build never reads tests/fixtures', () => {

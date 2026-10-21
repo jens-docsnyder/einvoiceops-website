@@ -26,8 +26,10 @@ export const localeInfo: Record<Locale, LocaleInfo> = {
 
 const readyFlags: Record<Locale, boolean> = { en: true, de: false, fr: false, pl: false };
 
-// Test builds only. Unknown keys, a non-boolean flag or English switched off stop the build.
+// Test builds only. Unknown keys, a non-boolean flag or English switched off stop the build. astro.config.mjs also
+// refuses any build into dist/ while a test registry is in use, however the build was started.
 const testFile = process.env.I18N_TEST_REGISTRY;
+export const testRegistry: string | null = testFile || null;
 if (testFile) {
   if (process.env.npm_lifecycle_event === 'build') {
     throw new Error('I18N_TEST_REGISTRY is set during npm run build. The real build never reads a test registry.');

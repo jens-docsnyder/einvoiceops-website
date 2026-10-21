@@ -9,7 +9,8 @@
 // it is not, none of that is written and the page is the same as before. Every internal link goes through the link rule.
 import type { Locale, PageId } from '../i18n/registry';
 // The registry is loaded with import() on purpose. A static import here changes the order in which the build writes the
-// English pages' stylesheets, and the English output must stay as it was.
+// English pages' stylesheets (the home page's form styles came before the site stylesheet), and the English output must
+// stay as it was. tests/not-ready.test.mjs fails if the site stylesheet is not first; a new import here can trip it too.
 const { alternatesFor, linkTarget, localeInfo } = await import('../i18n/registry');
 interface NavLink { name: string; href: string; current?: boolean; types?: NavLink[] }
 interface Props {
