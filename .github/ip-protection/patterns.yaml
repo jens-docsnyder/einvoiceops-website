@@ -1,5 +1,5 @@
 # einvoiceops IP gate pattern library
-# Version: 1.2 | Last updated: 2026-10-16
+# Version: 1.3 | Last updated: 2026-10-21
 #
 # This file is public. The patterns list what we are protecting.
 # No person, prospect or account name is written in it, not even partly or in brackets.
@@ -462,6 +462,242 @@ rules:
     description: "A verification-queue priority field. The open-items list is kept outside the repository."
 
 
+  # ── CATEGORY L: Language rules (German, French, Polish) ────────────────────
+  # Added 2026-10-21 for the translated pages. A translator who renders an internal term or an
+  # authority claim in German, French or Polish is stopped here as the English one is above.
+  # The scanner also tests each line with accents and look-alike letters folded away, so a
+  # pattern written without diacritics still matches the accented spelling.
+
+  - id: IP-L01
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\b(?:Vigil(?:s|a|u|em|owi)|Augur(?:s|a|u|em|owi|ze))\b'
+    description: "Inflected form of an internal product name (German genitive, Polish cases). Use outcome language only."
+
+  - id: IP-L02
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\b(?:vigiles?|augures?)\b'
+    description: "French rendering of an internal product name. Also an ordinary French word, so a warning: rephrase it."
+
+  - id: IP-L03
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\bprovenance\b|\bprovenienz\w*|\bproweniencj\w*'
+    description: "Rendering of an internal system name. Also an ordinary word, so a warning: say where a change came from instead."
+
+  - id: IP-L04
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\breadiness[\s-]*(?:map|karte|carte)\w*|\bbereitschafts[\s-]*(?:karte|map)\w*|\bcartes?\s+de\s+(?:pr[ée]paration|maturit[ée]|readiness)\b|\bmap\w*\s+gotowo[sś]ci\b'
+    description: "Translated internal methodology name. Describe outputs, not the methodology."
+
+  - id: IP-L05
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\b(?:confidence|konfidenz|vertrauens)[\s-]*(?:board|tafel|[üu]bersicht)\w*|\btableaux?\s+(?:de|des)\s+(?:confiance|fiabilit[ée])\b|\btablic\w*\s+(?:pewno[sś]ci|zaufania)\b'
+    description: "Translated internal dashboard name. Not for external audiences."
+
+  - id: IP-L06
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\bkanonisch\w*\s+(?:daten)?modell\w*|\bmod[èe]les?\s+(?:de\s+donn[ée]es\s+)?canoniques?\b|\bmodel\w*\s+kanoniczn\w*|\bcanonical\s+model\b'
+    description: "Translated internal framework name. Never share externally."
+
+  - id: IP-L07
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bquellen[\s-]*(?:register|verzeichnis)\w*|\bregistre\s+des\s+sources\b|\brejestr\w*\s+[źz]r[óo]de[łl]\w*'
+    description: "Translated internal source document name. Reveals the monitoring source network."
+
+  - id: IP-L10
+    category: L
+    severity: high
+    type: regex
+    pattern: 'cluster'
+    description: "'Cluster' in any language or compound (Funktionscluster, cluster fonctionnel, ERP-Cluster). In public text say 'invoicing function' and its translation."
+
+  - id: IP-L11
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bklast(?:er|r)\w*|\bgrappes?\b|\bregroupements?\s+(?:fonctionnels?|de\s+fonctions)\b'
+    description: "Polish or French rendering of 'cluster'. Externally say 'invoicing function' and its translation."
+
+  - id: IP-L15
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\barbeits[\s-]*paket\w*'
+    description: "German rendering of an internal deliverable name. On the page the unit is a work item (Aufgabe)."
+
+  - id: IP-L16
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\b(?:lots?|paquets?)\s+de\s+trava(?:il|ux)\b'
+    description: "French rendering of an internal deliverable name. On the page the unit is a work item (tâche)."
+
+  - id: IP-L17
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\bpakiet\w*\s+(?:robocz\w*|prac\w*|zada[ńn]\w*)'
+    description: "Polish rendering of an internal deliverable name. On the page the unit is a work item (zadanie)."
+
+  - id: IP-L20
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\bSTCD\d\b|\bFR_B2B(?:_CRN)?\b|\bFRSINV\b|\bEDOC_[A-Z_]+\b|\bBADI_[A-Z0-9_]+\b|\bBAdI\b|\bPROCESS_(?:CALLBACK|AFTER_STATUS_CHANGE)\b|\bEDIFACT_OUT\b|\bVDART\b'
+    description: "ERP field, process or enhancement name. Configuration detail never appears in public text, in any language."
+
+  - id: IP-L21
+    category: L
+    severity: high
+    type: regex
+    case_sensitive: true
+    pattern: '\b(?:VF0[1-4]|VF11|FB60|FB70|MIRO|MIGO|SPRO|SM59|SE1[16]|WE0[2-5]|BD87|SOAMANAGER)\b'
+    description: "ERP transaction code. Say what has to be configured, not where."
+
+  - id: IP-L22
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\bSAP[\s-]*(?:notes?|hinweis(?:e)?)\s*(?:nr\.?\s*|no\.?\s*|n[°o]\.?\s*)?\d{5,}|\b(?:notes?|nota|hinweis)\s+SAP\s*(?:nr\.?\s*|n[°o]\.?\s*)?\d{5,}'
+    description: "Vendor note number, in any language. Configuration detail never appears in public text."
+
+  - id: IP-L23
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bglobali[sz]ation\s+studio\b|\bER[\s-]+format[\s-]*mapping\b'
+    description: "ERP configuration workspace or sequence. Say what has to be configured, not how."
+
+  - id: IP-L25
+    category: L
+    severity: critical
+    type: regex
+    pattern: '\b(?:layer|schicht|couche|warstw\w*)[\s_-]*[1-3]\b'
+    description: "Numbered layer label in any language. Reveals internal processing stages."
+
+  - id: IP-L26
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\b(?:ebene|niveau|poziom\w*)[\s_-]*[1-3]\b'
+    description: "Numbered level label. Ordinary in some sentences, so a warning: check it is not a layer or source grade."
+
+  - id: IP-L27
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bquellen?\s+(?:der\s+)?(?:stufe|ebene|klasse|kategorie|rang)\s*[1-3]\b|\b(?:stufe|ebene|klasse)[\s_-]*[1-3][\s-]*quellen?\b|\bsources?\s+de\s+(?:niveau|rang|cat[ée]gorie|classe)\s*[1-3]\b|\b[źz]r[óo]d\w*\s+(?:poziomu|klasy|kategorii|rz[ęe]du)\s*[1-3]\b'
+    description: "Translated internal source grading label. Say what the source is instead."
+
+  - id: IP-L28
+    category: L
+    severity: high
+    type: regex
+    pattern: '\b(?:wir|unser(?:e|em)?\s+system|einvoiceops)\s+(?:[üu]berwach|ueberwach|scann|crawl|scrap|pars|extrahier|monitor)\w*|\b(?:[üu]berwach|ueberwach|scann|crawl|scrap|extrahier|monitor)\w*\s+wir\b'
+    description: "German system-agency verb reveals the internal pipeline. On the page we read sources (lesen)."
+
+  - id: IP-L29
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bnous\s+(?:les\s+|la\s+|le\s+|l.)?(?:surveill|scann|crawl|scrap|pars|extray|extrai|d[ée]tect|monitor)\w*|\b(?:notre\s+syst[èe]me|einvoiceops)\s+(?:surveill|scann|crawl|scrap|pars|extrai|d[ée]tect|monitor)\w*'
+    description: "French system-agency verb reveals the internal pipeline. On the page we read sources (lisons)."
+
+  - id: IP-L30
+    category: L
+    severity: high
+    type: regex
+    pattern: '\b(?:monitorujemy|skanujemy|wykrywamy|parsujemy|ekstrahujemy|crawlujemy|scrapujemy)\b|\bnasz\s+system\s+(?:monitoruje|skanuje|wykrywa)\w*'
+    description: "Polish system-agency verb reveals the internal pipeline. On the page we read sources (czytamy)."
+
+  - id: IP-L31
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\b(?:[äa]nderungs|aenderungs)[\s-]*erkennung\b|\bd[ée]tection\s+des?\s+(?:changements?|modifications?)\b|\bwykrywani\w*\s+zmian\b'
+    description: "Translated monitoring architecture term. Use outcome language instead."
+
+  - id: IP-L32
+    category: L
+    severity: high
+    type: regex
+    pattern: '\b(?:monitor\w*|track\w*|[üu]berwach\w*|ueberwach\w*|beobacht\w*|surveill\w*|suiv\w*|monitoruj\w*|[śs]ledz\w*|obserwuj\w*)\s+(?:\w+\s+){0,3}\d+\s+(?:countries|l[äa]nder\w*|laender\w*|pays|kraj\w*|pa[ńn]stw\w*)\b|\b\d+\s+(?:countries|l[äa]nder\w*|laender\w*|pays|kraj\w*|pa[ńn]stw\w*)\s+(?:\w+\s+){0,2}(?:tracked|monitored|watched|[üu]berwacht|beobachtet|surveill[ée]s|suivis|monitorowan\w*|[śs]ledzon\w*|obserwowan\w*)'
+    description: "Monitoring scope stated as a country count, in any language. Name the countries a customer buys, not the reach."
+
+  - id: IP-L33
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bSP[\s-]+pipelines?\b|\b(?:monitoring|[üu]berwachungs|ueberwachungs|surveillance|veille|monitorowani\w*)[\s-]*pipelines?\b|\bpipelines?\s+(?:de\s+(?:surveillance|veille|signaux)|monitorowani\w*)\b|\bsignal[\s-]*(?:detection|registry|erkennung|erfassung|register)\w*|\b(?:d[ée]tection|registre)\s+(?:de|des)\s+signaux\b|\b(?:wykrywani\w*|rejestr\w*)\s+sygna[łl]\w*'
+    description: "Internal monitoring pipeline or signal wording, in any language."
+
+  # Authority claims. The product prepares operations and makes no compliance authority claim,
+  # so a guarantee, a legal-compliance promise or an offer of advice is blocked in every language.
+  # The line that says we give no advice is allowed; the bare advice nouns are warnings only.
+
+  - id: IP-L40
+    category: L
+    severity: high
+    type: regex
+    pattern: '\b(?:legally|certified)\s+compliant\b|\bguarantee[ds]?\b|\bwe\s+(?:provide|offer|give)\s+(?:\w+\s+){0,2}(?:legal|tax)\s+advice\b|\bour\s+(?:legal|tax)\s+advice\b'
+    description: "Compliance authority claim or offer of advice. State what we send and where it says so."
+
+  - id: IP-L41
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bgarantier\w*|\bgarantie\w*|\brechts[\s-]*(?:sicher|konform)\w*|\b(?:gesetzes|gobd|steuer)[\s-]*konform\w*|\bgesetzlich\w*\s+konform\w*|\bzertifiziert\w*\s+(?:konform|compliant)\w*|\b(?:konformit[äa]t|compliance)\s+(?:ist\s+|wird\s+)?(?:gew[äa]hrleistet|zugesichert|sichergestellt)\b|\bbeglaubigt\w*|\b(?:unser\w*\s+|wir\s+(?:bieten|leisten|erbringen|geben)\w*\s+(?:(?!kein|nicht)\w+\s+){0,2})(?:rechts|steuer)(?:[\s-]+(?:oder|und)\s+steuer)?[\s-]*beratung\w*|\bwir\s+beraten\s+(?:sie\s+)?(?:rechtlich|steuerlich)\w*'
+    description: "German compliance authority claim, certified-copy claim or offer of advice (garantiert, rechtssicher, rechtskonform). State what we send and where it says so."
+
+  - id: IP-L42
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\bgew(?:ä|a|ae)hrleist\w*|\b(?:rechts|steuer)[\s-]*beratung\w*|\brechts[\s-]*verbindlich\w*'
+    description: "German wording close to an authority claim. Expected once in the line that says we give no advice; anywhere else, rephrase."
+
+  - id: IP-L43
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bgarant(?:i|ie|ies|is|ir|issons|issent|issez|it|issant)\b|\bconformes?\s+[àa]\s+la\s+(?:loi|r[ée]glementation|l[ée]gislation)\b|\bl[ée]galement\s+conformes?\b|\bconformit[ée]\s+(?:l[ée]gale|r[ée]glementaire|garantie|assur[ée]e|certifi[ée]e)\b|\bcertifi[ée]e?s?\s+conformes?\b|\ben\s+r[èe]gle\s+avec\s+(?:la\s+loi|le\s+fisc)\b|\b(?:nos|notre)\s+conseils?\s+(?:juridiques?|fiscaux|fiscal)\b|\bnous\s+(?:vous\s+)?(?:fournissons|offrons|apportons|donnons|proposons|assurons)\s+(?:(?!pas\b|aucun)\w+\s+){0,2}(?:conseils?|avis)\s+(?:juridiques?|fiscaux|fiscal)'
+    description: "French compliance authority claim, certified-copy claim or offer of advice (garanti, conforme à la loi). State what we send and where it says so."
+
+  - id: IP-L44
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\b(?:conseils?|avis)\s+(?:juridiques?|fiscaux|fiscal)\b'
+    description: "French advice wording. Expected once in the line that says we give no advice; anywhere else, rephrase."
+
+  - id: IP-L45
+    category: L
+    severity: high
+    type: regex
+    pattern: '\bgwarant\w*|\bzgodn\w*\s+z\s+prawem\b|\bprawnie\s+zgodn\w*|\bzgodno[sś][cć]\w*\s+(?:z\s+prawem|prawn\w*|certyfikowan\w*|zapewnion\w*)|\bcertyfikowan\w*\s+zgodno[sś][cć]\w*|(?<!nie )\bzapewniamy\s+zgodno[sś][cć]\w*|\b(?:uwierzytelnion|po[śs]wiadczon)\w*\s+(?:kopi|odpis)\w*|\b(?:kopi|odpis)\w*\s+(?:uwierzytelnion|po[śs]wiadczon)\w*|\bnasz\w*\s+(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)|(?<!nie )\b(?:udzielamy|[śs]wiadczymy|oferujemy|zapewniamy)\s+(?:\w+\s+){0,2}(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)'
+    description: "Polish compliance authority claim, certified-copy claim or offer of advice (gwarantowane, zgodny z prawem). State what we send and where it says so."
+
+  - id: IP-L46
+    category: L
+    severity: medium
+    type: regex
+    pattern: '\bzgodn\w*\s+z\s+przepisami\b|\b(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)'
+    description: "Polish wording close to an authority claim. Expected once in the line that says we give no advice; anywhere else, rephrase."
+
+
 # Path rules: a file or folder that may not exist in the repository, whatever it contains.
 # A path that git ignores and does not track (the local link to the open-items list) is let
 # through in a working checkout, because it cannot be pushed. In CI it never exists.
@@ -485,3 +721,13 @@ exceptions:
   - pattern: "manual queue management"
     rule: IP-B08
     reason: "Describes the customer email fallback process in DE.md body, not our internal backend"
+  - regex: "work items in each cluster vary by ERP system"
+    mask: true
+    rule: IP-L10
+    path_prefix: "src/content/countries/"
+    reason: "The approved closing sentence of the older country pages, already a warning under IP-D09"
+  - regex: "verifiable provenance"
+    mask: true
+    rule: IP-L03
+    path: "src/content/countries/FR.md"
+    reason: "English archiving wording on the France country page, not the system name"

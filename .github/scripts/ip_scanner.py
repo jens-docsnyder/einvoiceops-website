@@ -12,6 +12,11 @@ Hardening added 2026-10-16 (row 1339):
   - every exception must name the rule it relaxes (a rule-less exception would switch off all
     rules for a line) and the loader rejects one that does not;
   - exclusions are real paths from the repository root, not names that match at any depth.
+
+Language rules added 2026-10-21: each line is tested in three forms, the raw line, the normalised
+line and a folded line (accents removed, look-alike Cyrillic and Greek letters and dash forms
+mapped to plain ones), so a decomposed umlaut, a soft hyphen or a look-alike letter cannot carry a
+German, French or Polish term past a rule. A hit is reported once, at the original file and line.
 """
 
 import argparse
@@ -71,6 +76,51 @@ def normalize(line):
             continue
         out.append(ch)
     return "".join(out)
+
+
+# Letters that are not accented forms but read as Latin ones. Matching only, never shown.
+_FOLD = str.maketrans({
+    "ł": "l", "Ł": "L", "ß": "ss", "ø": "o", "Ø": "O", "đ": "d", "Đ": "D",
+    # Cyrillic look-alikes
+    "а": "a", "е": "e", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x",
+    "і": "i", "ј": "j", "ѕ": "s", "А": "A", "В": "B", "Е": "E", "К": "K",
+    "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X",
+    "І": "I", "Ј": "J", "Ѕ": "S",
+    # Greek look-alikes
+    "Α": "A", "Β": "B", "Ε": "E", "Ζ": "Z", "Η": "H", "Ι": "I", "Κ": "K",
+    "Μ": "M", "Ν": "N", "Ο": "O", "Ρ": "P", "Τ": "T", "Υ": "Y", "Χ": "X",
+    "ο": "o",
+})
+
+
+def fold(text):
+    """The text without accents, look-alike letters or dash forms, for patterns written without diacritics."""
+    text = unicodedata.normalize("NFD", text)
+    text = "".join(
+        "-" if unicodedata.category(ch) == "Pd" else ch
+        for ch in text
+        if unicodedata.category(ch) != "Mn"
+    )
+    return unicodedata.normalize("NFC", text.translate(_FOLD))
+
+
+def line_forms(raw_line, exceptions, folded_exceptions):
+    """The raw line, the normalised line and the folded line, each with the exceptions that read against it."""
+    norm = normalize(raw_line)
+    forms = [(raw_line, exceptions)]
+    for text, exs in ((norm, exceptions), (fold(norm), folded_exceptions)):
+        if all(text != t for t, _ in forms):
+            forms.append((text, exs))
+    return forms
+
+
+def fold_exception(ex):
+    """An exception as it reads against the folded line."""
+    ex = dict(ex)
+    for key in ("regex", "pattern"):
+        if ex.get(key):
+            ex[key] = fold(ex[key])
+    return ex
 
 
 def fail(message):
@@ -216,6 +266,7 @@ def path_is_harmless_locally(rel, repo_root):
 def scan(config, list_hits=False):
     rules = config.get("rules", [])
     exceptions = config.get("exceptions", [])
+    folded_exceptions = [fold_exception(ex) for ex in exceptions]
     path_rules = config.get("path_rules", []) or []
     violations = 0
     findings = []
@@ -272,13 +323,16 @@ def scan(config, list_hits=False):
                 lines = raw.decode("utf-8", errors="ignore").splitlines()
                 withhold = filename.startswith(".env")
                 for line_num, raw_line in enumerate(lines, start=1):
-                    line = normalize(raw_line)
+                    forms = line_forms(raw_line, exceptions, folded_exceptions)
                     for rule in rules:
                         rule_id = rule.get("id", "IP-???")
-                        tested = mask_line(line, filepath, exceptions, rule_id)
-                        if not matches_rule(tested, rule):
-                            continue
-                        if is_exception(tested, filepath, exceptions, rule_id):
+                        # A hit in any form counts; a line exception in any form lets the line through.
+                        hit = excused = False
+                        for line, exs in forms:
+                            tested = mask_line(line, filepath, exs, rule_id)
+                            hit = hit or matches_rule(tested, rule)
+                            excused = excused or is_exception(tested, filepath, exs, rule_id)
+                        if not hit or excused:
                             continue
                         shown = "[line withheld]" if withhold else raw_line.strip()
                         record(rule.get("severity", "medium"), rel, line_num, rule_id,
