@@ -82,6 +82,11 @@ export function isReady(locale: Locale): boolean {
   return readyFlags[locale];
 }
 
+// The pages that have a version in this language, ready or not, in page order. The translation sheets are made from this.
+export function pagesDefinedIn(locale: Locale): PageId[] {
+  return (Object.keys(pages) as PageId[]).filter((p) => !!pages[p].versions[locale]?.exists);
+}
+
 export function slugFor(page: PageId, locale: Locale): string | undefined {
   return pages[page].versions[locale]?.slug;
 }
