@@ -16,9 +16,9 @@ const dictionaries: Record<Locale, Dictionary> = { en, de, fr, pl };
 // checker, so this is what stops a missing, extra or empty entry.
 export function shapeProblems(dict: unknown, source: unknown = en, at = ''): string[] {
   if (typeof source === 'string') {
-    return typeof dict === 'string' && dict.length > 0 ? [] : [`${at}: expected text`];
+    return typeof dict === 'string' && dict.length > 0 ? [] : [`${at.replace(/\.$/, '')}: expected text`];
   }
-  if (typeof dict !== 'object' || dict === null) return [`${at}: expected an object`];
+  if (typeof dict !== 'object' || dict === null) return [`${at.replace(/\.$/, '')}: expected an object`];
   const want = Object.keys(source as object).sort();
   const have = Object.keys(dict).sort();
   const out = want.filter((k) => !have.includes(k)).map((k) => `${at}${k}: missing`);
