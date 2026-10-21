@@ -12,14 +12,16 @@
 // The sources number is always sources_weekly from the fan-out data: no number is typed, since a typed one overrode the file and went stale.
 // An empty proof.checked drops the date column from the lead shape (no code writes last_check, so the date went stale); the two remaining columns keep the same proportions.
 import { shortDate } from './format';
+import type { Locale } from '../../i18n/registry';
 
 interface Data { total: number; checked_on: string; last_check?: string; sources_named: number; sources_weekly: number }
 interface Props {
   data: Data;
   proof: { changes?: any; sources: any; checked: any; headline?: any; headlineSub?: any; sourcesUnit?: string };
   t: (v: any) => string;
+  locale?: Locale;
 }
-const { data, proof, t } = Astro.props;
+const { data, proof, t, locale = 'en' } = Astro.props;
 const lead = proof.headline !== undefined && proof.headline !== null;
 const lastCheck = data.last_check ?? data.checked_on;
 const weekly = data.sources_weekly;
@@ -31,7 +33,7 @@ const showDate = !!proof.checked;
       <dl class={showDate ? 'proof-three' : 'proof-three proof-two'}>
         {showDate && (
           <div class="proof-col">
-            <dt class="proof-top">{shortDate(lastCheck)}</dt>
+            <dt class="proof-top">{shortDate(lastCheck, locale)}</dt>
             <dd class="proof-l" set:html={t(proof.checked)}></dd>
           </div>
         )}
@@ -59,7 +61,7 @@ const showDate = !!proof.checked;
           <dd class="proof-l" set:html={t(proof.sources)}></dd>
         </div>
         <div class="proof-item">
-          <dt class="proof-n proof-date">{shortDate(data.checked_on)}</dt>
+          <dt class="proof-n proof-date">{shortDate(data.checked_on, locale)}</dt>
           <dd class="proof-l" set:html={t(proof.checked)}></dd>
         </div>
       </dl>

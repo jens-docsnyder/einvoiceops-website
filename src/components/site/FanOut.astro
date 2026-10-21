@@ -3,6 +3,8 @@
 // in a 3 by 2 grid. A card opens in place to its example lines and "and N more"; the other five stay in view.
 // Reads src/data/fanout/<CC>.json (shape documented in the page that passes it).
 import { shortDate, fill } from './format';
+import { dictionary } from '../../i18n/dictionaries/index';
+import type { Locale } from '../../i18n/registry';
 
 interface Line { date: string; text: string; domain: string }
 interface Fn { name: string; count: number; more: number; gap: boolean; lines: Line[] }
@@ -21,9 +23,10 @@ interface Props {
   disclosure?: any;
   tone?: 'white' | 'tint';
   t: (v: any) => string;
+  locale?: Locale;
 }
-const { tone = 'tint', data, copy, disclosure, t } = Astro.props;
-const heading = copy.heading ?? `${data.total} ${fill(copy.topAfter, data)}`;
+const { tone = 'tint', data, copy, disclosure, t, locale = 'en' } = Astro.props;
+const heading = copy.heading ?? `${data.total} ${fill(copy.topAfter, data, locale, dictionary(locale).changeWord)}`;
 const intro = copy.intro ?? copy.openLine;
 const countLabel = (n: number) => `${n} ${n === 1 ? copy.changesOne : copy.changesMany}`;
 ---
@@ -43,7 +46,7 @@ const countLabel = (n: number) => `${n} ${n === 1 ? copy.changesOne : copy.chang
             {fn.lines.map((l, i) => (
               <>
                 <div class="fo-line">
-                  <span class="fo-date">{shortDate(l.date)}</span>
+                  <span class="fo-date">{shortDate(l.date, locale)}</span>
                   <span class="fo-text">{l.text}</span>
                   <span class="fo-domain">{l.domain}</span>
                 </div>

@@ -15,13 +15,17 @@
 // change the July grid opens on grows by a third and the line into the July section grows out of it; its own date steps
 // aside for the line (the July section names the day). Fourteen to a row, seven under 600 px.
 import { publications } from './format';
+import { dictionary } from '../../i18n/dictionaries/index';
+import type { Locale } from '../../i18n/registry';
 
 interface Change { id: string; date: string; body?: string }
 interface Props {
   data: { total: number; changes?: Change[] };
   redId?: string;
+  locale?: Locale;
 }
-const { data, redId } = Astro.props;
+const { data, redId, locale = 'en' } = Astro.props;
+const ui = dictionary(locale);
 
 // The list has to agree with the released count. If it does not, the build stops: a page with a row of boxes that does not
 // match the number beside it is wrong, and a missing row would hide that.
@@ -53,7 +57,7 @@ const futureNarrow = (7 - (count % 7)) % 7;
           <li class={k === red ? 'cb-box cb-red' : 'cb-box'}><span class="cb-sq"></span><span class="cb-date">{label(p.date)}</span></li>
         ))}
         {Array.from({ length: future }, (_, k) => (
-          <li class={k < futureNarrow ? 'cb-box cb-fut' : 'cb-box cb-fut cb-fut-wide'} style={`--k: ${k}`}><span class="cb-sq"></span>{k === 0 && <span class="cb-next">Future changes</span>}</li>
+          <li class={k < futureNarrow ? 'cb-box cb-fut' : 'cb-box cb-fut cb-fut-wide'} style={`--k: ${k}`}><span class="cb-sq"></span>{k === 0 && <span class="cb-next">{ui.futureChanges}</span>}</li>
         ))}
       </ol>
     </div>

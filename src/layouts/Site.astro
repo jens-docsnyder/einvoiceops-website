@@ -7,11 +7,13 @@
 // A page takes a locale (default English) and the id of the page in the language registry (src/i18n/registry.ts). Where the
 // page is also built in another ready language, the frame adds the language selector, the hreflang links and og:locale; where
 // it is not, none of that is written and the page is the same as before. Every internal link goes through the link rule.
+// The frame's own words (the labels, the footer, the button) come from the language's dictionary (src/i18n/dictionaries).
 import type { Locale, PageId } from '../i18n/registry';
 // The registry is loaded with import() on purpose. A static import here changes the order in which the build writes the
 // English pages' stylesheets (the home page's form styles came before the site stylesheet), and the English output must
 // stay as it was. tests/not-ready.test.mjs fails if the site stylesheet is not first; a new import here can trip it too.
 const { alternatesFor, linkTarget, localeInfo } = await import('../i18n/registry');
+const { dictionary } = await import('../i18n/dictionaries/index');
 interface NavLink { name: string; href: string; current?: boolean; types?: NavLink[] }
 interface Props {
   title: string;
@@ -22,6 +24,9 @@ interface Props {
   pageId?: PageId;
 }
 const { title, description, countries, contact = '#contact', locale = 'en', pageId } = Astro.props;
+const ui = dictionary(locale);
+// The legal notice and the privacy policy exist in English only, so on a translated page their links say so.
+const toEnglish = locale !== 'en';
 const countryFirst = !!countries && countries.length > 0;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const abs = (path: string) => new URL(path, Astro.site).href;
@@ -63,7 +68,7 @@ const privacyHref = linkTarget('privacy', locale)!;
     <div class="wrap topbar-in">
       <a class="wordmark" href={homeHref}>einvoiceops</a>
       {countryFirst && (
-        <nav class="topnav topnav-cc" aria-label="Countries">
+        <nav class="topnav topnav-cc" aria-label={ui.countriesNavLabel}>
           {countries!.map((l) => l.types && l.types.length > 0 ? (
             <div class={`cc-item${l.current ? ' cc-here' : ''}`}>
               <a class="cc-link" href={l.href} aria-current={l.current ? 'true' : undefined}>{l.name}</a>
@@ -78,7 +83,7 @@ const privacyHref = linkTarget('privacy', locale)!;
           ))}
         </nav>
       )}
-      {multilingual && <nav class="langnav" aria-label="Language">{alternates.map((a) => <a href={a.url} lang={a.locale} hreflang={a.locale} aria-current={a.current ? 'page' : undefined}>{a.label}</a>)}</nav>}<a class="btn btn-sm" href={contactHref}>Get in touch</a>
+      {multilingual && <nav class="langnav" aria-label={ui.languageNavLabel}>{alternates.map((a) => <a href={a.url} lang={a.locale} hreflang={a.locale} aria-current={a.current ? 'page' : undefined}>{a.label}</a>)}</nav>}<a class="btn btn-sm" href={contactHref}>{ui.getInTouch}</a>
     </div>
   </header>
   <main>
@@ -89,8 +94,8 @@ const privacyHref = linkTarget('privacy', locale)!;
       {countryFirst && (
         <p class="foot-line foot-cc">{countries!.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.name}</a></>)}</p>
       )}
-      <p class="foot-line">Nomos Digital Oy · Espoo, Finland · <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> · <a href={legalHref}>Legal notice</a> · <a href={privacyHref}>Privacy</a></p>
-      <p class="foot-note">We help companies prepare for changes to e-invoicing rules, and we don't give legal or tax advice. When we describe a change on this site, we show you where it was published.</p>
+      <p class="foot-line">{ui.footerEntity} · <a href="mailto:jens@einvoiceops.eu">jens@einvoiceops.eu</a> · <a href={legalHref}>{ui.legalNotice}{toEnglish && ` ${ui.inEnglish}`}</a> · <a href={privacyHref}>{ui.privacy}{toEnglish && ` ${ui.inEnglish}`}</a></p>
+      <p class="foot-note" set:html={ui.footerNote}></p>
     </div>
   </footer>
   {countryFirst && (

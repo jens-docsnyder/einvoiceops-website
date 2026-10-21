@@ -20,7 +20,8 @@ import SwitchScript from './SwitchScript.astro';
 import { storyToday, renderText, isSrc, containsDated } from './switch.js';
 import { fill, isCond, pickCond } from './format';
 import { countryNav } from '../../data/countries';
-import type { Locale } from '../../i18n/registry';
+import { urlFor, type Locale, type PageId } from '../../i18n/registry';
+import { dictionary } from '../../i18n/dictionaries/index';
 
 interface Props {
   c: any;
@@ -35,10 +36,13 @@ interface Props {
 }
 const { c, fanout = null, page, segment, country, fanoutDisclosure, followedDisclosure, locale = 'en' } = Astro.props;
 const live = fanout !== null && fanout !== undefined;
+const ui = dictionary(locale);
+// The address the contact form reports: the page's own, in its own language. English keeps the address the wrapper passes.
+const pagePath = locale === 'en' ? page : urlFor(country as PageId, locale);
 
 
 const today = storyToday(process.env);
-const f = (s: string) => (live ? fill(s, fanout) : s);
+const f = (s: string) => (live ? fill(s, fanout, locale, ui.changeWord) : s);
 // A conditional passage ({ ifNone, then, otherwise }, format.ts) is resolved from the fan-out data before the date switch.
 const t = (v: any) => renderText(live && isCond(v) ? pickCond(v, fanout) : v, f, today);
 
@@ -64,13 +68,13 @@ const startTint = flowC && live && (!boxes || !showFanout);
       <div class="wrap">
         <h1 class="sp-h1" set:html={t(c.opening.h1)}></h1>
         <p class="sp-sub" set:html={t(subline)}></p>
-        <a class="btn" href="#contact">Get in touch</a>
+        <a class="btn" href="#contact">{ui.getInTouch}</a>
       </div>
     </div>
-    {hasProof && <ProofStrip data={fanout} proof={c.proof} t={t} />}
+    {hasProof && <ProofStrip data={fanout} proof={c.proof} t={t} locale={locale} />}
   </section>
 
-  {boxes && <ChangeBoxes data={fanout} redId={redId} />}
+  {boxes && <ChangeBoxes data={fanout} redId={redId} locale={locale} />}
   {boxes && <FollowedChange copy={c.followed} disclosure={followedDisclosure} tone="tint" framed={redId !== undefined} t={t} />}
 
   {c.market ? (
@@ -92,7 +96,7 @@ const startTint = flowC && live && (!boxes || !showFanout);
                 <span class="sp-no" aria-hidden="true">{b.id}</span>
                 <h2 class="sp-ch-h" set:html={t(heading)}></h2>
                 <p class="sp-short" set:html={t(shortText)}></p>
-                {whatWeDo && <p class="sp-wwd"><strong>What we do:</strong> <span set:html={t(whatWeDo)}></span></p>}
+                {whatWeDo && <p class="sp-wwd"><strong>{ui.whatWeDo}</strong> <span set:html={t(whatWeDo)}></span></p>}
                 {b.source && sourceVisible && <p class="sp-src" set:html={t(b.source)}></p>}
                 <details class="sp-more">
                   <summary>{c.readMore}</summary>
@@ -103,7 +107,7 @@ const startTint = flowC && live && (!boxes || !showFanout);
                     {b.h3 && <h3 class="sp-h3" set:html={t(b.h3)}></h3>}
                     {hasWhatWeDo && b.vp && <p set:html={t(b.vp)}></p>}
                     {(b.more ?? []).map((m: any) => isSrc(m) ? <p class="sp-src" set:html={f(m.src)}></p> : <p set:html={t(m)}></p>)}
-                    <button type="button" class="sp-close">Close</button>
+                    <button type="button" class="sp-close">{ui.close}</button>
                   </div>
                 </details>
               </article>
@@ -126,17 +130,17 @@ const startTint = flowC && live && (!boxes || !showFanout);
   {flowC ? (
     <>
       {live && !boxes && <FollowedChange copy={c.followed} disclosure={followedDisclosure} tone="tint" t={t} />}
-      {showFanout && <FanOut data={fanout} copy={c.fanout} disclosure={fanoutDisclosure} tone={boxes ? 'tint' : 'white'} t={t} />}
+      {showFanout && <FanOut data={fanout} copy={c.fanout} disclosure={fanoutDisclosure} tone={boxes ? 'tint' : 'white'} t={t} locale={locale} />}
       <StartAndLimits start={c.onboarding} limits={c.limits} tone={startTint ? 'tint' : 'white'} t={t} />
-      <ContactForm copy={c.contact} page={page} segment={segment} country={country} tone={startTint ? 'white' : 'tint'} person={c.contact.person} t={t} />
+      <ContactForm copy={c.contact} page={pagePath} segment={segment} country={country} tone={startTint ? 'white' : 'tint'} person={c.contact.person} t={t} locale={locale} />
     </>
   ) : (
     <>
-      {live && <FanOut data={fanout} copy={c.fanout} disclosure={fanoutDisclosure} t={t} />}
+      {live && <FanOut data={fanout} copy={c.fanout} disclosure={fanoutDisclosure} t={t} locale={locale} />}
       {live && <FollowedChange copy={c.followed} disclosure={followedDisclosure} t={t} />}
       <WhoBehind copy={c.who} tone={live ? 'tint' : 'white'} t={t} />
       <Onboarding copy={c.onboarding} tone={live ? 'white' : 'tint'} t={t} />
-      <ContactForm copy={c.contact} page={page} segment={segment} country={country} tone={contactTone} t={t} />
+      <ContactForm copy={c.contact} page={pagePath} segment={segment} country={country} tone={contactTone} t={t} locale={locale} />
     </>
   )}
 </Site>
