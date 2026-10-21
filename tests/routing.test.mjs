@@ -104,14 +104,18 @@ for (const [p, locale, kind] of PAGES) {
       });
     }
 
-    if (locale !== 'en') {
-      await t.test('"Get in touch" opens the home page in the page language', () => {
-        const git = anchors(header(p)).filter((a) => /get in touch/i.test(a.text));
-        assert.equal(git.length, 1, 'no "Get in touch" link in the top bar');
-        const target = git[0].href.startsWith('#') ? p : pathOnly(git[0].href);
-        assert.equal(target, HOME[locale], `"Get in touch" goes to ${git[0].href}`);
-      });
-    }
+    // The plan's table row "Get in touch | home page in that language", made precise (review 2026-10-21): the button opens
+    // the page's own form where the page has one, as the English country pages always have, and the form on the home page
+    // in the visitor's language elsewhere. Either way the visitor stays in their language.
+    await t.test('"Get in touch" opens the form on this page, or on the home page in the page language', () => {
+      const git = anchors(header(p)).filter((a) => /get in touch/i.test(a.text));
+      assert.equal(git.length, 1, 'no "Get in touch" link in the top bar');
+      const href = git[0].href;
+      const ownForm = /\bid="contact"/.test(html(p));
+      assert.equal(ownForm, kind !== 'static', `${p}: the home and country pages have a form, legal and privacy do not`);
+      if (ownForm) assert.equal(href, '#contact', `${p} has its own form but "Get in touch" goes to ${href}`);
+      else assert.equal(href, `${HOME[locale]}#contact`, `${p} has no form and "Get in touch" goes to ${href}`);
+    });
 
     await t.test('every other internal link follows the table', () => {
       const body = html(p).replace(/<nav class="langnav"[\s\S]*?<\/nav>/, '');
