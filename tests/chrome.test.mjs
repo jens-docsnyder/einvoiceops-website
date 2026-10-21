@@ -1,5 +1,5 @@
 // The part of the page chrome that Node can check from built HTML: the page language, the selector as real links a keyboard
-// can reach, and the language field of the contact form. (The phone-width look is checked in a browser.)
+// can reach, and the language field of the contact form. (The phone-width look is checked in Chrome by chrome-phone.test.mjs.)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { anchors, attrs, between, buildTest, htmlLang, pathOfFile, snapshot, withBuildLock } from './_lib/site.mjs';

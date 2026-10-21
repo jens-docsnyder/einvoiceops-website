@@ -11,9 +11,9 @@
 // Set IP_GATE_WEAKEN=<rule id> to blank that one rule in the scratch copy. The test must then fail:
 // that is the check that the test is really looking at the scanner.
 
-import { test, after } from 'node:test';
+import { test as nodeTest, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFile } from 'node:child_process';
+import { execFile, spawnSync } from 'node:child_process';
 import { promisify } from 'node:util';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -27,6 +27,13 @@ const NAME_SCAN = process.env.NAME_SCAN || '';
 const WEAKEN = process.env.IP_GATE_WEAKEN || '';
 const WORKERS = 8;
 const LOCALES = ['de', 'fr', 'pl'];
+
+// The scanner needs PyYAML. Without a Python that has it (IP_PYTHON), the tests that run the scanner are skipped, said out loud.
+const noYaml = spawnSync(PY, ['-c', 'import yaml'], { encoding: 'utf8' }).status === 0
+  ? false
+  : `PyYAML not found for "${PY}": set IP_PYTHON to a Python with PyYAML to run the content gate tests`;
+const test = (name, a, b) =>
+  typeof a === 'function' ? nodeTest(name, { skip: noYaml }, a) : nodeTest(name, { ...a, skip: a.skip || noYaml }, b);
 
 const t = (s) => s.replace(/~/g, '');
 
@@ -217,7 +224,7 @@ add('pl', 'pl', PL);
 
 let counts = { ran: 0, blockedAsExpected: 0, warnedAsExpected: 0, nameScanRan: 0 };
 
-const termResults = pool(termCases, async (c, dir) => {
+const termResults = noYaml ? Promise.resolve([]) : pool(termCases, async (c, dir) => {
   const files = fixturePaths(c.locale);
   for (const f of files) write(dir, f, `export const x = 'Vor ${c.text} nach';\n`);
   const r = await scan(dir);
@@ -281,7 +288,7 @@ if (NAME_SCAN && fs.existsSync(NAME_SCAN)) {
 
 const nameSkip = NAME_SCAN ? false : 'NAME_SCAN is not set';
 
-test('the owner name was found on the legal page', () => {
+nodeTest('the owner name was found on the legal page', () => {
   assert.ok(OWNER_FULL, 'could not read the name from src/pages/legal.astro');
 });
 
