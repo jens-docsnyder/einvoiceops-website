@@ -7,9 +7,12 @@
 import Site from '../../layouts/Site.astro';
 import StartAndLimits from './StartAndLimits.astro';
 import ContactForm from './ContactForm.astro';
+import { home as c } from '../../data/stories/home';
 import { homeContact as contact } from '../../data/stories/home-contact';
-import { countryPages, countryPagesFor, countryNav } from '../../data/countries';
+import { countryPagesFor, countryNav } from '../../data/countries';
 import { publications, longDate, withBodies } from './format';
+import { dictionary } from '../../i18n/dictionaries/index';
+import { urlFor } from '../../i18n/registry';
 import { deBodies } from '../../data/stories/de';
 import { beBodies } from '../../data/stories/be';
 import fr from '../../data/fanout/FR.json';
@@ -22,69 +25,52 @@ const fanouts: Record<string, any> = {
   DE: withBodies(de, deBodies, 'Home page: DE.json'),
   BE: withBodies(be, beBodies, 'Home page: BE.json'),
 };
-// The home page is also rendered in the other languages (src/i18n/locale-page.astro); the card and country links then follow the link rule.
+// The home page is also rendered in the other languages (src/i18n/locale-home.astro); the card and country links then follow the link rule.
 const { locale = 'en' } = Astro.props;
+const ui = dictionary(locale);
 const links = countryPagesFor(locale);
-const cards = links.map((c) => {
-  const d = fanouts[c.cc];
+// The copy holds {name}-style placeholders (see home.ts); this fills them.
+const put = (text: string, vars: Record<string, string | number>) => text.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
+const cards = links.map((l) => {
+  const d = fanouts[l.cc];
   const pubs = publications(d);
-  if (!pubs) throw new Error(`Home page: ${c.cc}.json, the changes list does not agree with the released total`);
-  return { ...c, changes: pubs.length, since: longDate(d.since), weekly: d.sources_weekly };
+  if (!pubs) throw new Error(`Home page: ${l.cc}.json, the changes list does not agree with the released total`);
+  return { ...l, changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly };
 });
 
-const names = countryPages.map((c) => c.name);
-const listed = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
+const names = links.map((l) => l.name);
+const listed = names.length > 1 ? `${names.slice(0, -1).join(', ')} ${ui.listAnd} ${names[names.length - 1]}` : names[0];
 
-const functions = ['Outbound invoicing', 'Inbound invoicing', 'Connectivity', 'Tax engine', 'Master data', 'Archiving'];
-
-// Starting and the limits: the country pages' onboarding steps word for word; the price per country, because the home page
-// speaks for all of them; the limits as the country pages say them, without a country's source count.
-const start = {
-  h2: `We keep your invoicing teams up to date. Free onboarding, then €450 a month for each country.`,
-  steps: [
-    { text: `After your first message, we send you a form, about an hour's work, where you tell us who looks after each of your invoicing functions.` },
-    { text: `We then have a short call with whoever signs off on your side, so they know what each person will hear from us and what we don't do.` },
-    { text: `When we find a change, each person it affects hears from us what to check or prepare, and where it says so. We keep a record of each change we find and who we sent it to, so it never rests on one person remembering.` },
-  ],
-  cta: `Get started`,
-};
-const limits = {
-  h2: `What we don't do`,
-  lines: [
-    { lead: `Give legal or tax advice.`, text: `What we send is our reading of what a change means for your invoicing, with the source beside it so you can check it.` },
-    { lead: `Look beyond our sources.`, text: `For each country we read a fixed list of sources every week, and we tell you about the changes we find there and nowhere else.` },
-    { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
-  ],
-};
+// Starting and the limits go to the shared section as the country pages give it.
 const t = (v: string) => v;
 ---
 <Site
   locale={locale}
   pageId="home"
-  title="einvoiceops | Changes to e-invoicing rules, sent to the people they affect"
-  description={`We keep track of the e-invoicing rules in ${listed}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`}
+  title={c.meta.title}
+  description={put(c.meta.description, { countries: listed })}
   countries={countryNav(undefined, locale)}
   contact="#contact"
 >
   <section class="band band-white home-open">
     <div class="wrap">
-      <h1 class="home-h1">Go-live was the start, not the finish.</h1>
-      <p class="home-sub">We keep track of the e-invoicing rules in {listed}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.</p>
+      <h1 class="home-h1" set:html={c.opening.h1}></h1>
+      <p class="home-sub" set:html={put(c.opening.subline, { countries: listed })}></p>
     </div>
   </section>
 
   <section class="band band-tint band-ruled home-countries" id="countries">
     <div class="wrap">
-      <h2 class="band-h home-h2">Find the country where you run your invoicing</h2>
+      <h2 class="band-h home-h2" set:html={c.countries.h2}></h2>
       <ul class="cards">
-        {cards.map((c) => (
+        {cards.map((k) => (
           <li>
-            <a class="card" href={c.href}>
-              <span class="card-name">{c.name}</span>
-              <span class="card-n">{c.changes}</span>
-              <span class="card-l">changes we've counted since {c.since}</span>
-              <span class="card-w">{c.weekly} sources we read every week</span>
-              <span class="card-go">Read about {c.name}</span>
+            <a class="card" href={k.href}>
+              <span class="card-name">{k.name}</span>
+              <span class="card-n">{k.changes}</span>
+              <span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span>
+              <span class="card-w" set:html={put(c.countries.weekly, { weekly: k.weekly })}></span>
+              <span class="card-go" set:html={put(c.countries.go, { name: k.name })}></span>
             </a>
           </li>
         ))}
@@ -94,26 +80,26 @@ const t = (v: string) => v;
 
   <section class="band band-white home-fns">
     <div class="wrap">
-      <h2 class="band-h home-h2">A change can touch one part of your invoicing or several</h2>
-      <p class="home-fns-p">Whoever looks after each part a change touches hears from us about their own part, so nobody has to follow the change across all six.</p>
+      <h2 class="band-h home-h2" set:html={c.functions.h2}></h2>
+      <p class="home-fns-p" set:html={c.functions.intro}></p>
       <ul class="tiles">
-        {functions.map((n) => <li class="tile">{n}</li>)}
+        {c.functions.names.map((n) => <li class="tile" set:html={n}></li>)}
       </ul>
     </div>
   </section>
 
-  <StartAndLimits start={start} limits={limits} tone="tint" ctaHref="#contact" t={t} />
+  <StartAndLimits start={c.onboarding} limits={c.limits} tone="tint" ctaHref="#contact" t={t} />
 
   <section class="band band-white home-close">
     <div class="wrap">
-      <h2 class="band-h home-h2">Read what changed in your country</h2>
+      <h2 class="band-h home-h2" set:html={c.close.h2}></h2>
       <ul class="close-links">
-        {links.map((c) => <li><a href={c.href}>{c.name}</a></li>)}
+        {links.map((l) => <li><a href={l.href}>{l.name}</a></li>)}
       </ul>
     </div>
   </section>
 
-  <ContactForm copy={contact} page="home" segment="" country="" tone="tint" person={contact.person} t={t} />
+  <ContactForm copy={contact} page={locale === 'en' ? 'home' : urlFor('home', locale)} segment="" country="" tone="tint" person={contact.person} t={t} locale={locale} />
 </Site>
 
 <style is:global>
