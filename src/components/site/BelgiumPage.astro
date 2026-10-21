@@ -1,6 +1,7 @@
 ---
 import StoryPage from './StoryPage.astro';
-import { be as c, beBodies, beBodyKeys } from '../../data/stories/be';
+import { be, beBodies, beBodyKeys } from '../../data/stories/be';
+import { storyFor } from '../../i18n/stories';
 import fanoutFile from '../../data/fanout/BE.json';
 import { publications, withBodies, warnBodies } from './format';
 
@@ -23,5 +24,6 @@ if (!publications(fanoutFile)) {
 const fanout = withBodies(fanoutFile, beBodies, 'Belgium page: BE.json');
 warnBodies('Belgium page', fanout, beBodyKeys);
 const { locale = 'en' } = Astro.props;
+const c = storyFor('be', 'be', be, locale);
 ---
 <StoryPage locale={locale} c={c} fanout={fanout} page="/belgium/" segment="standalone" country="BE" followedDisclosure={c.disclosure} />

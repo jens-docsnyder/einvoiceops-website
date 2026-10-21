@@ -7,8 +7,9 @@
 import Site from '../../layouts/Site.astro';
 import StartAndLimits from './StartAndLimits.astro';
 import ContactForm from './ContactForm.astro';
-import { home as c } from '../../data/stories/home';
-import { homeContact as contact } from '../../data/stories/home-contact';
+import { home } from '../../data/stories/home';
+import { homeContact } from '../../data/stories/home-contact';
+import { storyFor } from '../../i18n/stories';
 import { countryPagesFor, countryNav } from '../../data/countries';
 import { publications, longDate, withBodies } from './format';
 import { dictionary } from '../../i18n/dictionaries/index';
@@ -28,6 +29,8 @@ const fanouts: Record<string, any> = {
 // The home page is also rendered in the other languages (src/i18n/locale-home.astro); the card and country links then follow the link rule.
 const { locale = 'en' } = Astro.props;
 const ui = dictionary(locale);
+const c = storyFor('home', 'home', home, locale);
+const contact = storyFor('home-contact', 'homeContact', homeContact, locale);
 const links = countryPagesFor(locale);
 // The copy holds {name}-style placeholders (see home.ts); this fills them.
 const put = (text: string, vars: Record<string, string | number>) => text.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));

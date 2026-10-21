@@ -14,8 +14,9 @@
  *    Only this script sets it, from the path given on the command line. Nothing in package.json, the workflows or the
  *    config sets it, and if it is set during `npm run build` the registry stops the build instead of reading it.
  *    However the build is started, astro.config.mjs stops it if it would write a test build to dist/.
- *  - A real build with a ready language stops until that language's pages have translated text; only a test build
- *    may copy the English text onto them (src/i18n/locale-home.astro, locale-page.astro).
+ *  - A real build with a ready language stops unless that language's translated story files and dictionary exist and pass the
+ *    parity gate (src/i18n/gate.ts); only a test build may copy the English text onto its pages (identity copy, marked in
+ *    the build log), and the gate still runs on it.
  *  - The output goes to its own folder (default .astro/i18n-test-dist/<name of the registry file>), never to dist/.
  *    The script refuses dist/ and any non-empty folder that it did not make itself (it leaves a marker file beside its own), and it passes the folder to
  *    astro as --outDir, so `npm run build` and the deploy never see it.

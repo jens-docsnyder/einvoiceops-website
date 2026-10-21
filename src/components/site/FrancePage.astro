@@ -1,6 +1,7 @@
 ---
 import StoryPage from './StoryPage.astro';
-import { frStandalone as c, frBodyKeys } from '../../data/stories/fr-standalone';
+import { frStandalone, frBodyKeys } from '../../data/stories/fr-standalone';
+import { storyFor } from '../../i18n/stories';
 import fanoutFile from '../../data/fanout/FR.json';
 import { withBodies, warnBodies } from './format';
 
@@ -12,5 +13,6 @@ import { withBodies, warnBodies } from './format';
 const fanout = withBodies(fanoutFile, {}, 'France page: FR.json');
 warnBodies('France page', fanout, frBodyKeys);
 const { locale = 'en' } = Astro.props;
+const c = storyFor('fr-standalone', 'frStandalone', frStandalone, locale);
 ---
 <StoryPage locale={locale} c={c} fanout={fanout} page="/france/" segment="standalone" country="FR" fanoutDisclosure={c.disclosure} />

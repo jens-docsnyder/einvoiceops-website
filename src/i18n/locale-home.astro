@@ -1,15 +1,14 @@
 ---
 // The home pages of the other languages: /de/, /fr/, /pl/. Added by the integration in astro.config.mjs only when the
-// registry has a ready language, like the country pages (src/i18n/locale-page.astro). For now a home page is the English
-// one on the frame of its language (identity copy), and only a test build may make one.
+// registry has a ready language, like the country pages (src/i18n/locale-page.astro). The text is the language's own story
+// files; the parity gate (src/i18n/gate.ts) has already stopped the build if one is missing or does not match the English.
 import Home from '../components/site/HomePage.astro';
-import { builtPages, testRegistry } from './registry';
+import { builtPages } from './registry';
+import { runGate } from './run-gate';
 
 export function getStaticPaths() {
+  runGate();
   const built = builtPages().filter((p) => p.locale !== 'en' && p.page === 'home');
-  if (built.length && !testRegistry) {
-    throw new Error(`A language is ready but its home page has no translated text yet (${built.map((p) => p.path).join(', ')}). Only a test build may copy the English text.`);
-  }
   return built.map((p) => ({ params: { locale: p.locale }, props: { locale: p.locale } }));
 }
 const { locale } = Astro.props;

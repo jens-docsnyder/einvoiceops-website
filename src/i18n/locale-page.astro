@@ -3,19 +3,18 @@
 // src/pages: the route is added by the integration in astro.config.mjs, and only when the registry has a ready language.
 // While none is ready the route does not exist, so the build holds no trace of it and the English pages are built exactly
 // as before. The home pages of the other languages are their own route, src/i18n/locale-home.astro.
-// getStaticPaths lists only the pages the registry builds. For now a page is the English page on the frame of its language
-// (identity copy), and only a test build may make one: a real build with a ready language stops here until that language's
-// translated story files exist. The English pages stay where they are.
+// getStaticPaths lists only the pages the registry builds. The text is the language's own story files: the parity gate
+// (src/i18n/gate.ts) has already stopped the build if one is missing or does not match the English. Only a test build can
+// show the English text here (identity copy). The English pages stay where they are.
 import France from '../components/site/FrancePage.astro';
 import Germany from '../components/site/GermanyPage.astro';
 import Belgium from '../components/site/BelgiumPage.astro';
-import { builtPages, testRegistry } from './registry';
+import { builtPages } from './registry';
+import { runGate } from './run-gate';
 
 export function getStaticPaths() {
+  runGate();
   const built = builtPages().filter((p) => p.locale !== 'en' && p.page !== 'home');
-  if (built.length && !testRegistry) {
-    throw new Error(`A language is ready but its country pages have no translated text yet (${built.map((p) => p.path).join(', ')}). Only a test build may copy the English text.`);
-  }
   return built.map((p) => ({ params: { locale: p.locale, slug: p.slug }, props: { page: p.page, locale: p.locale } }));
 }
 const { page, locale } = Astro.props;
