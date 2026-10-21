@@ -687,7 +687,7 @@ rules:
     category: L
     severity: high
     type: regex
-    pattern: '\bgwarant\w*|\bzgodn\w*\s+z\s+prawem\b|\bprawnie\s+zgodn\w*|\bzgodno[sś][cć]\w*\s+(?:z\s+prawem|prawn\w*|certyfikowan\w*|zapewnion\w*)|\bcertyfikowan\w*\s+zgodno[sś][cć]\w*|(?<!nie )\bzapewniamy\s+zgodno[sś][cć]\w*|\b(?:uwierzytelnion|po[śs]wiadczon)\w*\s+(?:kopi|odpis)\w*|\b(?:kopi|odpis)\w*\s+(?:uwierzytelnion|po[śs]wiadczon)\w*|\bnasz\w*\s+(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)|(?<!nie )\b(?:udzielamy|[śs]wiadczymy|oferujemy|zapewniamy)\s+(?:\w+\s+){0,2}(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)'
+    pattern: '\bgwarant\w*|\bgwarancj\w*|\bzgodn\w*\s+z\s+prawem\b|\bprawnie\s+zgodn\w*|\bzgodno[sś][cć]\w*\s+(?:z\s+prawem|prawn\w*|certyfikowan\w*|zapewnion\w*)|\bcertyfikowan\w*\s+zgodno[sś][cć]\w*|(?<!nie )\bzapewniamy\s+zgodno[sś][cć]\w*|\b(?:uwierzytelnion|po[śs]wiadczon)\w*\s+(?:kopi|odpis)\w*|\b(?:kopi|odpis)\w*\s+(?:uwierzytelnion|po[śs]wiadczon)\w*|\bnasz\w*\s+(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)|(?<!nie )\b(?:udzielamy|[śs]wiadczymy|oferujemy|zapewniamy)\s+(?:\w+\s+){0,2}(?:doradztw\w*|porad\w*)\s+(?:prawn\w*|podatkow\w*)'
     description: "Polish compliance authority claim, certified-copy claim or offer of advice (gwarantowane, zgodny z prawem). State what we send and where it says so."
 
   - id: IP-L46
