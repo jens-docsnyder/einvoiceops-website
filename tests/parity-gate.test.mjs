@@ -158,6 +158,23 @@ const PROBES = [
   ['a grid letter changed', 'de', 'followed.grid.0', (o, k) => { o[k] = 'oi'; }, 'must stay exactly'],
   ['a link swapped between two keys', 'de', 'market.cards.0.back.points.0', (o) => { [o[0], o[1]] = [o[1], o[0]]; }, 'links differ'],
   ['list items with placeholders swapped', 'de', 'market.cards.2.back.points.0', (o) => { [o[0], o[1]] = [o[1], o[0]]; }, 'placeholders differ'],
+  // Holes found by the reviewing seat, fixed in parity.ts.
+  ['full-width digits', 'de', 'meta.description', (o, k) => { o[k] += ' １２'; }, 'typed number'],
+  ['digits written as numeric entities', 'de', 'meta.description', (o, k) => { o[k] += ' &#49;&#50;'; }, 'typed number 12'],
+  ['digits written as hex entities', 'de', 'meta.description', (o, k) => { o[k] += ' &#x31;&#x32;'; }, 'typed number 12'],
+  ['a superscript digit', 'de', 'meta.description', (o, k) => { o[k] += ' ²'; }, 'typed number 2'],
+  ['digits of another script', 'de', 'meta.description', (o, k) => { o[k] += ' ١٢'; }, 'typed number'],
+  ['a number of the English left out', 'fr-standalone', 'followed.changes.5.parts.0.text', (o, k) => { o[k] = o[k].replace(' and 1 September 2027', ''); }, 'number 2027 of the English is missing'],
+  ['an unquoted attribute', 'de', 'market.cards.0.back.points.0', (o, k) => { o[k] = o[k].replace('<a href=', '<a onclick=alert(1) href='); }, 'tags differ'],
+  ['an attribute with no value', 'de', 'market.cards.0.back.points.0', (o, k) => { o[k] = o[k].replace('<a href=', '<a download href='); }, 'tags differ'],
+  ['a second href before the right one', 'de', 'market.cards.0.back.points.0', (o, k) => { o[k] = o[k].replace('<a href=', '<a href=https://example.com/ href='); }, 'tags differ'],
+  ['an opened comment that hides the rest of the page', 'de', 'meta.description', (o, k) => { o[k] += ' <!-- '; }, 'stray < or >'],
+  ['a stray closing bracket', 'de', 'opening.subline', (o, k) => { o[k] = o[k].replace('team', 'team>'); }, 'stray < or >'],
+  ['two links in one key swapped', 'fr-standalone', 'market.cards.0.back.points.1', (o, k) => { o[k] = o[k].replace('54499487', '@@').replace('54499535', '54499487').replace('@@', '54499535'); }, 'links are in another order'],
+  ['the Dutch and French gazette links swapped', 'be', 'followed.arrives.source', (o, k) => { o[k] = o[k].replace('language=nl', '@@').replace('language=fr', 'language=nl').replace('@@', 'language=fr'); }, 'links are in another order'],
+  ['a limit line blanked with a space', 'de', 'limits.lines.0.lead', (o, k) => { o[k] = ' '; }, 'no visible text'],
+  ['a limit line blanked with a zero-width space', 'home', 'limits.lines.0.lead', (o, k) => { o[k] = '​'; }, 'no visible text'],
+  ['a limit line blanked with an entity', 'be', 'limits.lines.0.lead', (o, k) => { o[k] = '&nbsp;'; }, 'no visible text'],
 ];
 
 for (const [name, file, key, change, says] of PROBES) {
@@ -167,6 +184,14 @@ for (const [name, file, key, change, says] of PROBES) {
     assert.ok(r.problems.some((p) => p.startsWith(`${key}: `) && p.includes(says)), r.problems.join('\n') || 'no problem');
   });
 }
+
+test('probe: an object that inherits the English copy is missing its keys, it does not fall back', () => {
+  const t = translation('de');
+  t.copy.market = Object.setPrototypeOf({ h2: t.copy.market.h2 }, ENGLISH.de.de.market);
+  const r = check('de', t);
+  assert.ok(r.problems.includes('market.intro: missing'), r.problems.join('\n') || 'no problem');
+  assert.ok(r.problems.includes('market.cards: missing'));
+});
 
 // The gate as the build runs it, with German ready and no test-build identity copies: a missing file stops it.
 test('a ready language with a story file missing stops the gate, a real dictionary is required too', async () => {
@@ -254,7 +279,7 @@ test('cleanup: no scratch file is left in the tree', () => {
 test('known limits, for the language seat: these keep the shape and pass the gate', () => {
   const limits = [
     broken('de', 'market.cards.0.back.points.0', (o, k) => { o[k] = o[k].replace('Eleven', 'Twelve'); }),
-    broken('de', 'market.cards.1.front.coming', (o, k) => { o[k] = o[k].replace('2027', 'X').replace('2028', '2027').replace('X', '2028'); }),
+    broken('de', 'market.cards.1.front.coming', (o, k) => { o[k] = o[k].replace('2027', '@@').replace('2028', '2027').replace('@@', '2028'); }),
     broken('de', 'opening.h1', (o, k) => { [o[k].coming, o[k].here] = [o[k].here, o[k].coming]; }),
     broken('home', 'functions.names', (o, k) => { o[k].reverse(); }),
   ];
