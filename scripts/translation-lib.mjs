@@ -153,8 +153,8 @@ export function parseGlossary(text, locale) {
     for (const [alt, use] of pairs) {
       const parts = splitTop(alt, ', ');
       const uses = splitTop(use, ', ');
-      if (parts.length > 1 && parts.length === uses.length && parts.every((p) => words(p) <= 3)) {
-        parts.forEach((p, j) => terms.push({ term: p, use: uses[j] }));
+      if (parts.length > 1 && (parts.length === uses.length || uses.length === 1) && parts.every((p) => words(p) <= 3)) {
+        parts.forEach((p, j) => terms.push({ term: p, use: uses.length === 1 ? uses[0] : uses[j] }));
       } else {
         terms.push({ term: alt, use });
       }
@@ -221,7 +221,7 @@ export function noteFor(row, glossary) {
   if (text !== text.trim()) notes.push('The English starts or ends with a space; keep that space.');
   if (glossary.length) {
     const hits = glossaryHits(glossary, text);
-    if (hits.length) notes.push(`Word list: ${hits.map((h) => `"${h.term}", use: ${h.use}`).join('; ')}.`);
+    if (hits.length) notes.push(`Word list: ${hits.map((h) => `"${h.term}", use: ${h.use.replace(/\.+$/, '')}`).join('; ')}.`);
   }
   return notes.join(' ');
 }
