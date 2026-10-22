@@ -2,7 +2,7 @@
 // is home-contact.ts. Strings may hold <strong> and <span class='accent'>; they are rendered with set:html.
 // Placeholders: {countries} is the list of country names ("France, Germany and Belgium", joined with the language's own
 // "and"), {since} the date a country's count starts, {weekly} the number of sources read every week and {name} a country's
-// name. The counts and dates come from src/data/fanout/<CC>.json; none is typed here.
+// name; in the hover panel under a card {fn} is a function's name, {n} the changes that touched it and {m} all the changes shown. The counts and dates come from src/data/fanout/<CC>.json; none is typed here.
 export const home = {
   meta: {
     title: `einvoiceops | Changes to e-invoicing rules, sent to the people they affect`,
@@ -17,7 +17,9 @@ export const home = {
     h2: `How many of these changes reached you?`,
     line: `Pick the country where you run your invoicing.`,
     changes: `changes we've counted since {since}`,
-    strip: `Each column is one change. The lit squares show which functions it touched.`,
+    strip: `Each column is one change. The lit squares show which functions it touched. Point at a function to see its changes, or at a square to see that change.`,
+    panelIdle: `Point at a function name to see the changes that touched it. On a phone, tap it.`,
+    panelFn: `{fn}: touched by {n} of the {m} changes`,
     weekly: `Connected to {weekly} sources`,
     go: `Read about {name}`,
   },

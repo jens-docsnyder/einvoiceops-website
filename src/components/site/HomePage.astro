@@ -22,11 +22,17 @@ import be from '../../data/fanout/BE.json';
 import frFns from '../../data/changefns/FR.json';
 import deFns from '../../data/changefns/DE.json';
 import beFns from '../../data/changefns/BE.json';
+import frLines from '../../data/changelines/FR.json';
+import deLines from '../../data/changelines/DE.json';
+import beLines from '../../data/changelines/BE.json';
+import bodyNames from '../../data/changelines/bodies.json';
 
 // Each file gets the same issuing-body fallback its country page gives it, so the two counts can never disagree.
 // Which functions each counted change touched, by change id (src/data/changefns). A stand-in until the weekly feed carries
 // this list in the fan-out file itself; a change with no entry is drawn as not yet sorted, never as touching nothing.
 const touched: Record<string, Record<string, string[]>> = { FR: frFns.functions, DE: deFns.functions, BE: beFns.functions };
+// The plain-language line of each change that has one (src/data/changelines), a stand-in like the list above; a change without one shows its date and issuing body only.
+const linesOf: Record<string, Record<string, { text: string; domain: string }>> = { FR: frLines.lines, DE: deLines.lines, BE: beLines.lines };
 const fanouts: Record<string, any> = {
   FR: withBodies(fr, {}, 'Home page: FR.json'),
   DE: withBodies(de, deBodies, 'Home page: DE.json'),
@@ -48,19 +54,23 @@ const cards = links.map((l) => {
   // in the month it was published, and a row for each of the six functions, lit where the change touched it. The columns come
   // from the same list as the number, so the two cannot disagree.
   const monthAt = (date: string) => (Number(date.slice(0, 4)) - Number(d.since.slice(0, 4))) * 12 + (Number(date.slice(5, 7)) - Number(d.since.slice(5, 7)));
-  type Col = { date: string; fns: Set<string> | null };
-  const byPub = new Map<string, { date: string; ids: string[] }>();
+  type Col = { date: string; fns: Set<string> | null; idx: number };
+  const byPub = new Map<string, { date: string; body: string; ids: string[] }>();
   for (const ch of d.changes) {
     const key = `${ch.date}\u0000${ch.body ?? ''}`;
-    if (!byPub.has(key)) byPub.set(key, { date: ch.date, ids: [] });
+    if (!byPub.has(key)) byPub.set(key, { date: ch.date, body: ch.body ?? '', ids: [] });
     byPub.get(key)!.ids.push(ch.id);
   }
   const months: Col[][] = Array.from({ length: monthAt(d.checked_on) + 1 }, () => []);
-  for (const { date, ids } of [...byPub.values()].sort((x, y) => (x.date < y.date ? -1 : x.date > y.date ? 1 : 0))) {
+  // What the hover panel shows, one entry per column in the order the columns run: the date, the issuing body and each change's line.
+  const names: string[] = c.functions.names;
+  const pubsData: any[] = [];
+  for (const { date, body, ids } of [...byPub.values()].sort((x, y) => (x.date < y.date ? -1 : x.date > y.date ? 1 : 0))) {
     const i = monthAt(date);
     if (i < 0 || i >= months.length) throw new Error(`Home page: ${l.cc}.json, a change dated ${date} falls outside ${d.since} to ${d.checked_on}`);
     const lists = ids.map((id) => touched[l.cc][id]);
-    months[i].push({ date, fns: lists.some((x) => !x) ? null : new Set(lists.flat()) });
+    months[i].push({ date, fns: lists.some((x) => !x) ? null : new Set(lists.flat()), idx: pubsData.length });
+    pubsData.push({ d: longDate(date, locale), b: (bodyNames as any)[l.cc]?.[body] ?? body, ch: ids.map((id, j) => ({ f: (lists[j] ?? []).map((n) => names.indexOf(n)), t: linesOf[l.cc][id]?.text ?? '', w: linesOf[l.cc][id]?.domain ?? '' })) });
   }
   if (months.reduce((a, m) => a + m.length, 0) !== pubs.length) throw new Error(`Home page: ${l.cc}.json, the matrix and the count disagree`);
   const widths = months.map((m) => Math.max(1, m.length));
@@ -72,8 +82,12 @@ const cards = links.map((l) => {
     return { y, left: (at / total) * 100 };
   });
   const perFn = c.functions.names.map((n: string) => months.flat().filter((col) => col.fns?.has(n)).length);
-  return { ...l, changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
+  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
 });
+
+// A square of the matrix: lit where the change touched the function (and then a button), pale where it did not, hatched where it is not yet sorted.
+const lit = (col: { fns: Set<string> | null }, n: string) => !!col.fns?.has(n);
+const cellClass = (col: { fns: Set<string> | null }, n: string) => (lit(col, n) ? 'on' : col.fns === null ? 'un' : 'off');
 
 const names = links.map((l) => l.name);
 const listed = names.length > 1 ? `${names.slice(0, -1).join(', ')} ${ui.listAnd} ${names[names.length - 1]}` : names[0];
@@ -114,33 +128,142 @@ const t = (v: string) => v;
           });
         })();
       </script>
+      <script is:inline>
+        // Pointing at a function name zooms its row and lists its changes under the card; pointing at (or tabbing to) a square shows that
+        // change with the line that touches the function highlighted. A tap or a click holds it open; Escape lets it go. Without this
+        // script the matrix is the plain picture it was.
+        (function () {
+          function node(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; }
+          function init(card) {
+            var pubs = JSON.parse(card.querySelector('.mx-data').textContent).pubs;
+            var panel = card.querySelector('.mx-panel');
+            var mx = card.querySelector('.mx');
+            var labs = [].slice.call(card.querySelectorAll('.mx-lab'));
+            var rows = [].slice.call(card.querySelectorAll('.mx-row'));
+            var boxes = [].slice.call(card.querySelectorAll('.mx-row .on'));
+            var pin = null, hover = null;
+            function touches(p, fn) { return p.ch.filter(function (c) { return c.f.indexOf(fn) !== -1; }); }
+            function lineOf(c) {
+              var f = document.createDocumentFragment();
+              if (c.t) { f.appendChild(node('span', 'mx-t', c.t)); if (c.w) f.appendChild(node('span', 'mx-w', c.w)); }
+              return f;
+            }
+            function fill(s) {
+              panel.textContent = '';
+              if (!s) { panel.appendChild(node('p', 'mx-idle', card.getAttribute('data-panel-idle'))); return; }
+              var name = labs[s.fn].textContent;
+              if (s.pub == null) {
+                var hit = pubs.map(function (p, i) { return i; }).filter(function (i) { return touches(pubs[i], s.fn).length; });
+                panel.appendChild(node('p', 'mx-h', card.getAttribute('data-panel-fn').replace('{fn}', name).replace('{n}', hit.length).replace('{m}', pubs.length)));
+                var ul = node('ul', 'mx-list');
+                hit.slice().reverse().forEach(function (i) {
+                  var li = node('li');
+                  li.appendChild(node('span', 'mx-d', pubs[i].d));
+                  li.appendChild(node('span', 'mx-b', pubs[i].b));
+                  touches(pubs[i], s.fn).forEach(function (c) { if (c.t) { var d = node('span', 'mx-line'); d.appendChild(lineOf(c)); li.appendChild(d); } });
+                  ul.appendChild(li);
+                });
+                panel.appendChild(ul);
+                return;
+              }
+              var p = pubs[s.pub];
+              var h = node('p', 'mx-h');
+              h.appendChild(node('span', 'mx-d', p.d));
+              h.appendChild(node('span', 'mx-b', p.b));
+              h.appendChild(node('span', 'mx-fn', name));
+              panel.appendChild(h);
+              var ul2 = node('ul', 'mx-list mx-one');
+              p.ch.forEach(function (c) {
+                if (!c.t) return;
+                var li = node('li', c.f.indexOf(s.fn) !== -1 ? 'hl' : 'dim');
+                li.appendChild(lineOf(c));
+                ul2.appendChild(li);
+              });
+              if (ul2.childNodes.length) panel.appendChild(ul2);
+            }
+            function render() {
+              var s = hover || pin;
+              if (s) card.setAttribute('data-fn', s.fn); else card.removeAttribute('data-fn');
+              // Zoom size: as wide as a square is in its column, at least the usual 18px and at most 40px; the other rows give up the height.
+              var z = 18;
+              if (s) {
+                [].slice.call(rows[s.fn].querySelectorAll('.mx-col')).forEach(function (c) { if (c.children.length) z = Math.max(z, c.getBoundingClientRect().width / c.children.length - 2); });
+                z = Math.min(40, Math.round(z));
+                var o = Math.max(10, Math.round((108 - z) / 5));
+                card.style.setProperty('--z', z + 'px');
+                mx.style.gridTemplateRows = labs.map(function (l, i) { return (i === s.fn ? z : o) + 'px'; }).join(' ') + ' auto';
+              } else mx.style.gridTemplateRows = '';
+              labs.forEach(function (l, i) {
+                l.classList.toggle('act', !!s && s.fn === i);
+                l.setAttribute('aria-pressed', pin && pin.fn === i && pin.pub == null ? 'true' : 'false');
+              });
+              rows.forEach(function (r, i) { r.classList.toggle('zoom', !!s && s.fn === i); });
+              boxes.forEach(function (b) {
+                var fn = +b.parentNode.parentNode.getAttribute('data-fn');
+                b.tabIndex = s && s.fn === fn ? 0 : -1;
+                b.classList.toggle('hi', !!s && s.pub != null && s.pub === +b.getAttribute('data-p') && s.fn === fn);
+              });
+              fill(s);
+            }
+            function same(a, b) { return !!a && !!b && a.fn === b.fn && a.pub === b.pub; }
+            function at(t) {
+              var l = t.closest('.mx-lab'); if (l) return { fn: +l.getAttribute('data-fn'), pub: null };
+              var b = t.closest('.on'); if (b) return { fn: +b.parentNode.parentNode.getAttribute('data-fn'), pub: +b.getAttribute('data-p') };
+              var r = t.closest('.mx-row'); if (r) return { fn: +r.getAttribute('data-fn'), pub: null };
+              return null;
+            }
+            mx.addEventListener('mouseover', function (e) { hover = at(e.target); render(); });
+            mx.addEventListener('mouseleave', function () { hover = null; render(); });
+            mx.addEventListener('click', function (e) {
+              var s = at(e.target);
+              if (!s || (e.target.closest('.mx-row') && !e.target.closest('.on'))) return;
+              pin = same(pin, s) ? null : s; hover = pin; render();
+            });
+            mx.addEventListener('focusin', function (e) { var s = e.target.closest('.mx-lab, .on') ? at(e.target) : null; if (s) { hover = s; render(); } });
+            mx.addEventListener('focusout', function (e) { if (!e.relatedTarget || !mx.contains(e.relatedTarget)) { hover = null; render(); } });
+            mx.addEventListener('keydown', function (e) {
+              var t = e.target;
+              if (e.key === 'Escape') { pin = null; hover = null; render(); var l = t.closest('.mx-row') ? labs[+t.parentNode.parentNode.getAttribute('data-fn')] : t; if (l && l.focus) l.focus(); return; }
+              if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+              var list = t.classList.contains('mx-lab') ? [] : [].slice.call(t.parentNode.parentNode.querySelectorAll('.on'));
+              if (t.classList.contains('mx-lab')) { var first = rows[+t.getAttribute('data-fn')].querySelector('.on'); if (e.key === 'ArrowRight' && first) { e.preventDefault(); first.focus(); } return; }
+              var i = list.indexOf(t) + (e.key === 'ArrowRight' ? 1 : -1);
+              if (list[i]) { e.preventDefault(); list[i].focus(); }
+            });
+            document.addEventListener('click', function (e) { if (pin && !card.contains(e.target)) { pin = null; hover = null; render(); } });
+          }
+          document.addEventListener('DOMContentLoaded', function () { [].slice.call(document.querySelectorAll('.card[data-card]')).forEach(init); });
+        })();
+      </script>
       <ul class="cards">
         {cards.map((k) => (
           <li>
-            <a class="card" href={k.href}>
-              <span class="card-head">
+            <div class="card" data-card={k.cc} data-panel-idle={c.countries.panelIdle} data-panel-fn={c.countries.panelFn}>
+              <a class="card-head" href={k.href}>
                 <span class="card-name">{k.name}</span>
                 <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
                 <span class="card-w"><span class="card-dot" aria-hidden="true"></span><span set:html={put(c.countries.weekly, { weekly: k.weekly })}></span></span>
-              </span>
-              <span class="mx" aria-hidden="true">
+              </a>
+              <div class="mx">
                 {c.functions.names.map((n: string, fi: number) => (
                   <>
-                    <span class="mx-lab">{n}</span>
-                    <span class="mx-row" style={`grid-template-columns: ${k.cols}`}>
+                    <button type="button" class="mx-lab" data-fn={fi} aria-pressed="false">{n}</button>
+                    <span class="mx-row" data-fn={fi} style={`grid-template-columns: ${k.cols}`}>
                       {k.months.map((m, i) => (
                         <span class="mx-col" style={`--k: ${i}`}>
-                          {m.length === 0 ? <b></b> : m.map((col) => <i class={col.fns === null ? 'un' : col.fns.has(n) ? 'on' : 'off'}></i>)}
+                          {m.length === 0 ? <b></b> : m.map((col) => <button type="button" class={cellClass(col, n)} data-p={col.idx} disabled={!lit(col, n)} tabindex="-1" aria-label={lit(col, n) ? `${n}, ${k.pubs[col.idx].d}, ${k.pubs[col.idx].b}` : undefined} aria-hidden={lit(col, n) ? undefined : 'true'}></button>)}
                         </span>
                       ))}
                     </span>
                   </>
                 ))}
-                <span class="mx-axis"><span class="mx-ax">{k.years.map((y) => <span class="mx-year" style={`left: ${y.left.toFixed(2)}%`}>{y.y}</span>)}</span></span>
-              </span>
+                <span class="mx-axis" aria-hidden="true"><span class="mx-ax">{k.years.map((y) => <span class="mx-year" style={`left: ${y.left.toFixed(2)}%`}>{y.y}</span>)}</span></span>
+              </div>
+              <div class="mx-panel" aria-live="polite"><p class="mx-idle">{c.countries.panelIdle}</p></div>
+              <script is:inline type="application/json" class="mx-data" set:html={k.data}></script>
               <span class="sr">{c.functions.names.map((n: string, fi: number) => `${n}: ${k.perFn[fi]}. `).join('')}</span>
-              <span class="card-go" set:html={put(c.countries.go, { name: k.name })}></span>
-            </a>
+              <a class="card-go" href={k.href} set:html={put(c.countries.go, { name: k.name })}></a>
+            </div>
           </li>
         ))}
       </ul>
@@ -172,9 +295,10 @@ const t = (v: string) => v;
   .home-countries { padding: 44px 0 48px; }
   .cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .card { display: flex; flex-direction: column; height: 100%; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 26px 28px 22px; color: var(--ink); text-decoration: none; }
-  .card:hover { border-color: var(--ink); text-decoration: none; }
-  .card:hover .card-go { text-decoration-color: var(--accent); }
-  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .card:hover { border-color: var(--ink); }
+  .card-head { color: inherit; text-decoration: none; }
+  .card-head:hover .card-name, .card-go:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+  .card-head:focus-visible, .card-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .home-key { margin: 6px 0 0; color: var(--quiet); }
   .card-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 36px; margin-bottom: 22px; }
   .card-name { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; }
@@ -185,21 +309,47 @@ const t = (v: string) => v;
   .card-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #2f9e44; animation: card-blink 2s ease-out infinite; }
   @keyframes card-blink { 0% { box-shadow: 0 0 0 0 rgba(47, 158, 68, 0.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(47, 158, 68, 0); } }
   @media (prefers-reduced-motion: reduce) { .card-dot { animation: none; } }
-  .card-go { align-self: flex-start; margin-top: 18px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+  .card-go { color: inherit; align-self: flex-start; margin-top: 18px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
 
   /* The matrix: a row for each function, a column for each change, lit where the change touched the function. */
-  .mx { display: grid; grid-template-columns: 150px minmax(0, 1fr); row-gap: 5px; align-items: center; }
-  .mx-lab { font-size: 0.88rem; font-weight: 600; line-height: 1.2; }
-  .mx-row { display: grid; column-gap: 3px; }
-  .mx-col { display: flex; gap: 2px; }
-  .mx-col i, .mx-col b { display: block; flex: 1; height: 18px; }
-  .mx-col i.on { background: var(--accent); }
-  .mx-col i.off { background: #e4dcc9; }
-  .mx-col i.un { background: repeating-linear-gradient(45deg, #e4dcc9, #e4dcc9 2px, transparent 2px, transparent 4px); }
+  .mx { display: grid; grid-template-columns: 150px minmax(0, 1fr); grid-template-rows: repeat(6, 18px) auto; row-gap: 5px; align-items: stretch; transition: grid-template-rows 0.22s ease; }
+  .mx-lab { appearance: none; background: none; border: 0; padding: 0; margin: 0; font: 600 0.88rem/1.2 var(--sans); color: var(--ink); text-align: left; cursor: pointer; display: flex; align-items: center; transition: opacity 0.22s ease; }
+  .mx-lab:hover, .mx-lab.act { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+  .mx-lab:focus-visible, .mx-col button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .mx-row { display: grid; column-gap: 3px; min-height: 0; transition: opacity 0.22s ease; }
+  .mx-col { display: flex; gap: 2px; min-height: 0; }
+  .mx-col b, .mx-col button { display: block; flex: 1; min-width: 0; min-height: 0; padding: 0; border: 0; border-radius: 0; }
+  .mx-col button:disabled { pointer-events: none; }
+  .mx-col button.on { background: var(--accent); cursor: pointer; }
+  .mx-col button.off { background: #e4dcc9; }
+  .mx-col button.un { background: repeating-linear-gradient(45deg, #e4dcc9, #e4dcc9 2px, transparent 2px, transparent 4px); }
+  .mx-col button.on.hi { background: var(--ink); outline: 2px solid var(--accent); outline-offset: 1px; position: relative; z-index: 1; }
+  /* One function zoomed: its row takes the height the other five give up, so the card does not change size under the pointer. */
+  /* The zoomed row's squares are square and a little bigger (the script sets --z, the size, from the width a square has in its column). */
+  .mx-row.zoom button { align-self: center; flex: 0 1 var(--z); max-width: var(--z); height: auto; aspect-ratio: 1 / 1; }
+  .card[data-fn] .mx-lab:not(.act) { opacity: 0.4; font-size: 0.74rem; }
+  .card[data-fn] .mx-row:not(.zoom) { opacity: 0.4; }
   .mx-axis { grid-column: 1 / -1; display: grid; grid-template-columns: 150px minmax(0, 1fr); margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
   .mx-axis::before { content: ''; }
   .mx-ax { position: relative; height: 16px; }
   .mx-year { position: absolute; top: 0; font: 400 0.8rem/1 var(--sans); color: var(--quiet); font-variant-numeric: tabular-nums; border-left: 1px solid var(--hairline); padding-left: 5px; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .mx, .mx-lab, .mx-row { transition: none; } }
+  /* The panel under the matrix: the function's changes, or one change. A fixed height, so pointing at something never moves the page. */
+  .mx-panel { margin-top: 14px; height: 176px; overflow-y: auto; background: var(--tint); border: 1px solid var(--box-border); padding: 12px 14px; font-size: 0.92rem; line-height: 1.4; }
+  .mx-panel:focus-visible { outline: 2px solid var(--accent); }
+  .mx-idle { margin: 0; color: var(--quiet); }
+  .mx-h { margin: 0 0 8px; font-weight: 700; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+  .mx-fn { color: var(--quiet); font-weight: 600; }
+  .mx-list { list-style: none; margin: 0; padding: 0; }
+  .mx-list li { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 0 12px; padding: 5px 0; border-top: 1px solid var(--hairline); }
+  .mx-list li:first-child { border-top: 0; }
+  .mx-d { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .mx-b { color: var(--quiet); }
+  .mx-line { grid-column: 2; }
+  .mx-w { margin-left: 8px; color: var(--quiet); font-size: 0.82rem; }
+  .mx-one li { display: block; border: 0; padding: 4px 0 4px 10px; border-left: 3px solid transparent; }
+  .mx-one li.hl { border-left-color: var(--accent); background: rgba(0, 0, 0, 0.04); font-weight: 600; }
+  .mx-one li.dim { color: var(--quiet); }
   .cs-js .mx-col { opacity: 0; transition: opacity 0.35s ease calc(var(--k) * 45ms); }
   .cs-js .card.is-in .mx-col { opacity: 1; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -222,7 +372,7 @@ const t = (v: string) => v;
     .mx-lab { font-size: 0.74rem; }
     .mx-row { column-gap: 2px; }
     .mx-col { gap: 1px; }
-    .mx-col i, .mx-col b { height: 14px; }
+    .mx { grid-template-rows: repeat(6, 14px) auto; }
   }
   @media (max-width: 519px) {
     .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }

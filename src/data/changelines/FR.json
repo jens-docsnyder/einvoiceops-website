@@ -1,0 +1,69 @@
+{
+ "note": "The plain-language line of each counted change that has one, written 2026-10-22. A stand-in until the weekly feed carries a line for every change in changes[]; a change with no entry here shows its date and issuing body only.",
+ "lines": {
+  "FR-E01": {
+   "text": "state refocuses the project on a directory of recipients",
+   "domain": "economie.gouv.fr"
+  },
+  "FR-E10": {
+   "text": "format standard tightens invoice identifier and address checks",
+   "domain": "afnor.org"
+  },
+  "FR-E11": {
+   "text": "format standard expands guidance on e-invoice addresses",
+   "domain": "afnor.org"
+  },
+  "FR-E26": {
+   "text": "right to change platform created; the old platform serves at least a year",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E48": {
+   "text": "binding invoice formats written into law",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E49": {
+   "text": "platforms must follow the API and use-case standards",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E50": {
+   "text": "format conversion must keep a readable copy",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E51": {
+   "text": "duplicate invoice numbers must be caught by the platform",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E52": {
+   "text": "new mandatory data item: price uplift for fees and charges",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E53": {
+   "text": "two data-reporting start dates moved to 1 Sep 2026 and 1 Sep 2027",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E55": {
+   "text": "transaction reporting moves to fixed intervals, no longer a minimum",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E56": {
+   "text": "directory must list members of a VAT group",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E57": {
+   "text": "changing reception platform becomes a regulated procedure",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E24": {
+   "text": "the platform itself sends invoice, transaction and payment data to the tax administration",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E54": {
+   "text": "transaction and payment data sets change content",
+   "domain": "legifrance.gouv.fr"
+  },
+  "FR-E58": {
+   "text": "platform registration, audit and certification are tightened",
+   "domain": "legifrance.gouv.fr"
+  }
+ }
+}

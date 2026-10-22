@@ -1,0 +1,5 @@
+{
+ "FR": { "law": "Parliament and government, through the law", "afnor": "AFNOR, France's standards body", "tax": "The tax administration" },
+ "DE": { "law": "Parliament, through the federal gazette", "ministry": "The finance ministry", "kosit": "KoSIT, the XRechnung standard", "ferd": "FeRD, the ZUGFeRD standard" },
+ "BE": { "law": "Parliament and government, through the gazette", "administration": "The tax administration" }
+}

@@ -1,0 +1,53 @@
+{
+ "note": "The plain-language line of each counted change that has one, written 2026-10-22. A stand-in until the weekly feed carries a line for every change in changes[]; a change with no entry here shows its date and issuing body only.",
+ "lines": {
+  "BE-E02": {
+   "text": "law creates the duty to use e-invoices between businesses, starting 1 January 2026",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E08a": {
+   "text": "law takes foreign VAT-registered businesses without a Belgian establishment out of the e-invoice duty",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E08b": {
+   "text": "law excuses the supplier from the e-invoice, but not from invoicing, when the recipient cannot technically receive one",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E08c": {
+   "text": "law now cites the European standard under Directive 2014/55/EU instead of naming EN 16931-1 and CEN/TS 16931-2",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E11": {
+   "text": "federal e-invoicing site adds answers on rejecting misaddressed incoming invoices and on reverse-charge information",
+   "domain": "efactuur.belgium.be"
+  },
+  "BE-E17": {
+   "text": "royal decree names Peppol BIS (UBL) over the Peppol network as the e-invoice format, from 1 January 2026",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E18": {
+   "text": "royal decree adds an article on holding the technical means to send and receive e-invoices",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E19": {
+   "text": "royal decree adds fines for lacking the means to send and receive e-invoices",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E21": {
+   "text": "law restores the invoice retention period",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E16": {
+   "text": "royal decree adds a mandatory wording on invoices of small businesses under the exemption scheme",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E24": {
+   "text": "royal decree extends the correcting document to structured e-invoices",
+   "domain": "ejustice.just.fgov.be"
+  },
+  "BE-E25": {
+   "text": "royal decree requires farmer purchase notes to be issued as structured e-invoices",
+   "domain": "ejustice.just.fgov.be"
+  }
+ }
+}

@@ -87,7 +87,7 @@ test('every English sentence of the home page story is in the original index.ast
   walk(home, 'home');
   assert.ok(leaves.length >= 20, 'the story holds the home page copy');
   // Copy written after the language work, locked 2026-10-22: the hero, the subheader and the country banner; the country card key and the connected line.
-  const REWRITTEN = ['home.opening.h1', 'home.opening.subline', 'home.countries.h2', 'home.countries.line', 'home.countries.strip', 'home.countries.weekly'];
+  const REWRITTEN = ['home.opening.h1', 'home.opening.subline', 'home.countries.h2', 'home.countries.line', 'home.countries.strip', 'home.countries.weekly', 'home.countries.panelIdle', 'home.countries.panelFn'];
   for (const [at, text] of leaves) {
     if (REWRITTEN.includes(at)) continue;
     for (const piece of text.split(/\{\w+\}/).filter((p) => p.trim().length > 0)) {
@@ -156,8 +156,8 @@ test('the home story uses only the placeholders its header comment lists, and th
   const [header, body] = [text.slice(0, text.indexOf('export const home')), text.slice(text.indexOf('export const home'))];
   const listed = new Set(header.match(/\{\w+\}/g));
   const used = new Set(body.match(/\{\w+\}/g));
-  assert.deepEqual([...listed].sort(), ['{countries}', '{name}', '{since}', '{weekly}']);
-  assert.deepEqual([...used].sort(), ['{countries}', '{name}', '{since}', '{weekly}']);
+  assert.deepEqual([...listed].sort(), ['{countries}', '{fn}', '{m}', '{name}', '{n}', '{since}', '{weekly}']);
+  assert.deepEqual([...used].sort(), ['{countries}', '{fn}', '{m}', '{name}', '{n}', '{since}', '{weekly}']);
   const page = readFileSync(path.join(ROOT, 'src/components/site/HomePage.astro'), 'utf8');
   for (const key of ['countries', 'since', 'weekly', 'name']) {
     assert.ok(new RegExp(`put\\([^)]*\\{[^}]*\\b${key}\\b`).test(page), `HomePage.astro does not fill {${key}}`);

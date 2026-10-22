@@ -99,7 +99,7 @@ for (const [p, locale, kind] of PAGES) {
 
     if (kind === 'home') {
       await t.test('country cards follow the link rule', () => {
-        const cards = anchors(html(p)).filter((a) => (a.class || '').split(/\s+/).includes('card')).map((a) => a.href);
+        const cards = anchors(html(p)).filter((a) => (a.class || '').split(/\s+/).includes('card-head')).map((a) => a.href);
         assert.deepEqual(cards.sort(), ORDER.map((c) => lands[c]).sort());
       });
     }

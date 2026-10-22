@@ -1,0 +1,49 @@
+{
+ "note": "The plain-language line of each counted change that has one, written 2026-10-22. A stand-in until the weekly feed carries a line for every change in changes[]; a change with no entry here shows its date and issuing body only.",
+ "lines": {
+  "DE-E27": {
+   "text": "Parliament creates the duty to use e-invoices between businesses",
+   "domain": "recht.bund.de"
+  },
+  "DE-E41": {
+   "text": "finance ministry letter on checks of incoming hybrid invoices",
+   "domain": "bundesfinanzministerium.de"
+  },
+  "DE-E42": {
+   "text": "ZUGFeRD 2.4 released",
+   "domain": "fnfe-mpe.org"
+  },
+  "DE-E44": {
+   "text": "XRechnung winter 2025/26 bundle released",
+   "domain": "xeinkauf.de"
+  },
+  "DE-E46": {
+   "text": "finance ministry updates its e-invoicing FAQ",
+   "domain": "bundesfinanzministerium.de"
+  },
+  "DE-E47": {
+   "text": "ZUGFeRD 2.5 released",
+   "domain": "ferd-net.de"
+  },
+  "DE-E49": {
+   "text": "ZUGFeRD 2.5.2 released",
+   "domain": "ferd-net.de"
+  },
+  "DE-E50": {
+   "text": "finance ministry letter on VAT stated on invoices",
+   "domain": "bundesfinanzministerium.de"
+  },
+  "DE-E51": {
+   "text": "law on online administration services changes invoice rules for public bodies",
+   "domain": "recht.bund.de"
+  },
+  "DE-E52": {
+   "text": "law shortens invoice retention to eight years",
+   "domain": "recht.bund.de"
+  },
+  "DE-E67": {
+   "text": "XRechnung summer 2026 bundle: a check becomes fatal",
+   "domain": "github.com"
+  }
+ }
+}
