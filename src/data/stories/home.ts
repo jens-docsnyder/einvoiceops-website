@@ -21,7 +21,9 @@ export const home = {
     panelIdle: `Point at a function name to see the changes that touched it. On a phone, tap it.`,
     panelFn: `{fn}: touched by {n} of the {m} changes`,
     weekly: `Connected to {weekly} sources`,
-    go: `Read about {name}`,
+    go: `Learn about our service for {name}`,
+    labelSource: `Source`,
+    labelFn: `Function`,
   },
   // The six functions, in the order the tiles show them.
   functions: {

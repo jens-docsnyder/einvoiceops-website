@@ -76,7 +76,7 @@ const pages: Record<PageId, { versions: Partial<Record<Locale, Version>> }> = {
 };
 
 // The country pages, in the order the top bar, the home page and the footer list them.
-export const countryOrder: PageId[] = ['FR', 'DE', 'BE', 'PL'];
+export const countryOrder: PageId[] = ['DE', 'FR', 'BE', 'PL'];
 
 export function isReady(locale: Locale): boolean {
   return readyFlags[locale];

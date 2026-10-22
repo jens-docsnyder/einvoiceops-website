@@ -26,7 +26,7 @@ const PAGES = [
   ['/de/deutschland/', 'de', 'country'], ['/fr/france/', 'fr', 'country'], ['/fr/belgique/', 'fr', 'country'],
   ['/legal/', 'en', 'static'], ['/privacy/', 'en', 'static'],
 ];
-const ORDER = ['france', 'germany', 'belgium'];
+const ORDER = ['germany', 'france', 'belgium'];
 // What the selector offers on each page: [label, href, lang].
 const FOUR_HOMES = [['English', '/', 'en'], ['Deutsch', '/de/', 'de'], ['Français', '/fr/', 'fr'], ['Polski', '/pl/', 'pl']];
 const SELECTOR = {

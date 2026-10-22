@@ -72,6 +72,17 @@ const cards = links.map((l) => {
     months[i].push({ date, fns: lists.some((x) => !x) ? null : new Set(lists.flat()), idx: pubsData.length });
     pubsData.push({ d: longDate(date, locale), b: (bodyNames as any)[l.cc]?.[body] ?? body, ch: ids.map((id, j) => ({ f: (lists[j] ?? []).map((n) => names.indexOf(n)), t: linesOf[l.cc][id]?.text ?? '', w: linesOf[l.cc][id]?.domain ?? '' })) });
   }
+  // What a card shows before anyone points at it: the change with the most written lines, under the function most of those lines touch,
+  // so the panel is never an empty box. The latest wins a tie; with no written line at all there is no default and the panel asks to be pointed at.
+  let def: { fn: number; pub: number } | null = null;
+  let defScore = 0;
+  pubsData.forEach((p, i) => {
+    const written = p.ch.filter((x: any) => x.t && x.f.length);
+    if (!written.length || written.length < defScore) return;
+    const tally = names.map((_n, fi) => written.filter((x: any) => x.f.includes(fi)).length);
+    def = { fn: tally.indexOf(Math.max(...tally)), pub: i };
+    defScore = written.length;
+  });
   if (months.reduce((a, m) => a + m.length, 0) !== pubs.length) throw new Error(`Home page: ${l.cc}.json, the matrix and the count disagree`);
   const widths = months.map((m) => Math.max(1, m.length));
   const total = widths.reduce((a, b) => a + b, 0);
@@ -82,7 +93,7 @@ const cards = links.map((l) => {
     return { y, left: (at / total) * 100 };
   });
   const perFn = c.functions.names.map((n: string) => months.flat().filter((col) => col.fns?.has(n)).length);
-  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
+  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData, def }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
 });
 
 // A square of the matrix: lit where the change touched the function (and then a button), pale where it did not, hatched where it is not yet sorted.
@@ -134,8 +145,11 @@ const t = (v: string) => v;
         // script the matrix is the plain picture it was.
         (function () {
           function node(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; }
+          var holders = [];
           function init(card) {
-            var pubs = JSON.parse(card.querySelector('.mx-data').textContent).pubs;
+            var data = JSON.parse(card.querySelector('.mx-data').textContent);
+            var pubs = data.pubs, def = data.def;
+            var lSource = card.getAttribute('data-l-source'), lFn = card.getAttribute('data-l-fn');
             var panel = card.querySelector('.mx-panel');
             var mx = card.querySelector('.mx');
             var labs = [].slice.call(card.querySelectorAll('.mx-lab'));
@@ -159,7 +173,7 @@ const t = (v: string) => v;
                 hit.slice().reverse().forEach(function (i) {
                   var li = node('li');
                   li.appendChild(node('span', 'mx-d', pubs[i].d));
-                  li.appendChild(node('span', 'mx-b', pubs[i].b));
+                  li.appendChild(node('span', 'mx-b', lSource + ': ' + pubs[i].b));
                   touches(pubs[i], s.fn).forEach(function (c) { if (c.t) { var d = node('span', 'mx-line'); d.appendChild(lineOf(c)); li.appendChild(d); } });
                   ul.appendChild(li);
                 });
@@ -169,8 +183,8 @@ const t = (v: string) => v;
               var p = pubs[s.pub];
               var h = node('p', 'mx-h');
               h.appendChild(node('span', 'mx-d', p.d));
-              h.appendChild(node('span', 'mx-b', p.b));
-              h.appendChild(node('span', 'mx-fn', name));
+              h.appendChild(node('span', 'mx-b', lSource + ': ' + p.b));
+              h.appendChild(node('span', 'mx-fn', lFn + ': ' + name));
               panel.appendChild(h);
               var ul2 = node('ul', 'mx-list mx-one');
               p.ch.forEach(function (c) {
@@ -182,7 +196,7 @@ const t = (v: string) => v;
               if (ul2.childNodes.length) panel.appendChild(ul2);
             }
             function render() {
-              var s = hover || pin;
+              var s = pin || hover || def;
               if (s) card.setAttribute('data-fn', s.fn); else card.removeAttribute('data-fn');
               // Zoom size: as wide as a square is in its column, at least the usual 18px and at most 40px; the other rows give up the height.
               var z = 18;
@@ -205,7 +219,6 @@ const t = (v: string) => v;
               });
               fill(s);
             }
-            function same(a, b) { return !!a && !!b && a.fn === b.fn && a.pub === b.pub; }
             function at(t) {
               var l = t.closest('.mx-lab'); if (l) return { fn: +l.getAttribute('data-fn'), pub: null };
               var b = t.closest('.on'); if (b) return { fn: +b.parentNode.parentNode.getAttribute('data-fn'), pub: +b.getAttribute('data-p') };
@@ -214,10 +227,12 @@ const t = (v: string) => v;
             }
             mx.addEventListener('mouseover', function (e) { hover = at(e.target); render(); });
             mx.addEventListener('mouseleave', function () { hover = null; render(); });
+            // A click holds a function or a square until another is clicked or a click lands outside the whole section (or Escape).
             mx.addEventListener('click', function (e) {
               var s = at(e.target);
               if (!s || (e.target.closest('.mx-row') && !e.target.closest('.on'))) return;
-              pin = same(pin, s) ? null : s; hover = pin; render();
+              pin = s; hover = null; render();
+              holders.forEach(function (h) { if (h !== api) h.release(); });
             });
             mx.addEventListener('focusin', function (e) { var s = e.target.closest('.mx-lab, .on') ? at(e.target) : null; if (s) { hover = s; render(); } });
             mx.addEventListener('focusout', function (e) { if (!e.relatedTarget || !mx.contains(e.relatedTarget)) { hover = null; render(); } });
@@ -230,15 +245,19 @@ const t = (v: string) => v;
               var i = list.indexOf(t) + (e.key === 'ArrowRight' ? 1 : -1);
               if (list[i]) { e.preventDefault(); list[i].focus(); }
             });
-            document.addEventListener('click', function (e) { if (pin && !card.contains(e.target)) { pin = null; hover = null; render(); } });
+            var api = { release: function () { if (pin || hover) { pin = null; hover = null; render(); } } };
+            holders.push(api);
+            window.addEventListener('resize', function () { render(); });
+            render();
           }
           document.addEventListener('DOMContentLoaded', function () { [].slice.call(document.querySelectorAll('.card[data-card]')).forEach(init); });
+          document.addEventListener('click', function (e) { if (!e.target.closest('.home-countries')) holders.forEach(function (h) { h.release(); }); });
         })();
       </script>
       <ul class="cards">
         {cards.map((k) => (
           <li>
-            <div class="card" data-card={k.cc} data-panel-idle={c.countries.panelIdle} data-panel-fn={c.countries.panelFn}>
+            <div class="card" data-card={k.cc} data-panel-idle={c.countries.panelIdle} data-panel-fn={c.countries.panelFn} data-l-source={c.countries.labelSource} data-l-fn={c.countries.labelFn}>
               <a class="card-head" href={k.href}>
                 <span class="card-name">{k.name}</span>
                 <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
