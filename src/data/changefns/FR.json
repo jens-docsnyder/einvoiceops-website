@@ -1,0 +1,141 @@
+{
+ "note": "Which functions each counted change touched, read from the change files on 2026-10-22. A stand-in until the weekly feed carries this list itself; a change with no entry here is drawn as not yet sorted.",
+ "checked_on": "2026-10-19",
+ "functions": {
+  "FR-E01": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "FR-E02": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "FR-E05": [
+   "Outbound invoicing",
+   "Inbound invoicing"
+  ],
+  "FR-E07": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "FR-E10": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Master data"
+  ],
+  "FR-E11": [
+   "Outbound invoicing",
+   "Master data"
+  ],
+  "FR-E15": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "FR-E16": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "FR-E24": [
+   "Connectivity",
+   "Tax engine"
+  ],
+  "FR-E25": [
+   "Connectivity",
+   "Master data"
+  ],
+  "FR-E26": [
+   "Connectivity",
+   "Archiving"
+  ],
+  "FR-E27": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E28": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E29": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E30": [
+   "Connectivity"
+  ],
+  "FR-E31": [
+   "Tax engine"
+  ],
+  "FR-E32": [
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E33": [
+   "Tax engine"
+  ],
+  "FR-E34": [
+   "Connectivity"
+  ],
+  "FR-E35": [
+   "Connectivity",
+   "Tax engine"
+  ],
+  "FR-E36": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E41": [
+   "Connectivity",
+   "Tax engine"
+  ],
+  "FR-E48": [
+   "Outbound invoicing",
+   "Inbound invoicing"
+  ],
+  "FR-E49": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "FR-E50": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Archiving"
+  ],
+  "FR-E51": [
+   "Outbound invoicing",
+   "Master data"
+  ],
+  "FR-E52": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E53": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E54": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "FR-E55": [
+   "Connectivity",
+   "Tax engine"
+  ],
+  "FR-E56": [
+   "Master data"
+  ],
+  "FR-E57": [
+   "Connectivity",
+   "Master data",
+   "Archiving"
+  ],
+  "FR-E58": [
+   "Connectivity"
+  ]
+ }
+}

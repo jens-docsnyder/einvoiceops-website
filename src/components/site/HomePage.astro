@@ -19,8 +19,14 @@ import { beBodies } from '../../data/stories/be';
 import fr from '../../data/fanout/FR.json';
 import de from '../../data/fanout/DE.json';
 import be from '../../data/fanout/BE.json';
+import frFns from '../../data/changefns/FR.json';
+import deFns from '../../data/changefns/DE.json';
+import beFns from '../../data/changefns/BE.json';
 
 // Each file gets the same issuing-body fallback its country page gives it, so the two counts can never disagree.
+// Which functions each counted change touched, by change id (src/data/changefns). A stand-in until the weekly feed carries
+// this list in the fan-out file itself; a change with no entry is drawn as not yet sorted, never as touching nothing.
+const touched: Record<string, Record<string, string[]>> = { FR: frFns.functions, DE: deFns.functions, BE: beFns.functions };
 const fanouts: Record<string, any> = {
   FR: withBodies(fr, {}, 'Home page: FR.json'),
   DE: withBodies(de, deBodies, 'Home page: DE.json'),
@@ -38,21 +44,35 @@ const cards = links.map((l) => {
   const d = fanouts[l.cc];
   const pubs = publications(d);
   if (!pubs) throw new Error(`Home page: ${l.cc}.json, the changes list does not agree with the released total`);
-  // The strip: one column per month from the count's start to the last check, one square per change (publication) in the
-  // month it was published. The squares come from the same list as the number, so the two cannot disagree.
+  // The matrix: one column per month from the count's start to the last check, one sub-column for each change (publication)
+  // in the month it was published, and a row for each of the six functions, lit where the change touched it. The columns come
+  // from the same list as the number, so the two cannot disagree.
   const monthAt = (date: string) => (Number(date.slice(0, 4)) - Number(d.since.slice(0, 4))) * 12 + (Number(date.slice(5, 7)) - Number(d.since.slice(5, 7)));
-  const months: number[] = Array.from({ length: monthAt(d.checked_on) + 1 }, () => 0);
-  for (const p of pubs) {
-    const i = monthAt(p.date);
-    if (i < 0 || i >= months.length) throw new Error(`Home page: ${l.cc}.json, a change dated ${p.date} falls outside ${d.since} to ${d.checked_on}`);
-    months[i]++;
+  type Col = { date: string; fns: Set<string> | null };
+  const byPub = new Map<string, { date: string; ids: string[] }>();
+  for (const ch of d.changes) {
+    const key = `${ch.date}\u0000${ch.body ?? ''}`;
+    if (!byPub.has(key)) byPub.set(key, { date: ch.date, ids: [] });
+    byPub.get(key)!.ids.push(ch.id);
   }
-  if (months.reduce((a, b) => a + b, 0) !== pubs.length) throw new Error(`Home page: ${l.cc}.json, the strip and the count disagree`);
-  const years = Array.from({ length: Number(d.checked_on.slice(0, 4)) - Number(d.since.slice(0, 4)) + 1 }, (_, i) => {
-    const y = Number(d.since.slice(0, 4)) + i;
-    return { y, col: i === 0 ? 1 : monthAt(`${y}-01`) + 1 };
+  const months: Col[][] = Array.from({ length: monthAt(d.checked_on) + 1 }, () => []);
+  for (const { date, ids } of [...byPub.values()].sort((x, y) => (x.date < y.date ? -1 : x.date > y.date ? 1 : 0))) {
+    const i = monthAt(date);
+    if (i < 0 || i >= months.length) throw new Error(`Home page: ${l.cc}.json, a change dated ${date} falls outside ${d.since} to ${d.checked_on}`);
+    const lists = ids.map((id) => touched[l.cc][id]);
+    months[i].push({ date, fns: lists.some((x) => !x) ? null : new Set(lists.flat()) });
+  }
+  if (months.reduce((a, m) => a + m.length, 0) !== pubs.length) throw new Error(`Home page: ${l.cc}.json, the matrix and the count disagree`);
+  const widths = months.map((m) => Math.max(1, m.length));
+  const total = widths.reduce((a, b) => a + b, 0);
+  const startY = Number(d.since.slice(0, 4));
+  const years = Array.from({ length: Number(d.checked_on.slice(0, 4)) - startY + 1 }, (_, i) => {
+    const y = startY + i;
+    const at = i === 0 ? 0 : widths.slice(0, monthAt(`${y}-01`)).reduce((a, b) => a + b, 0);
+    return { y, left: (at / total) * 100 };
   });
-  return { ...l, changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years };
+  const perFn = c.functions.names.map((n: string) => months.flat().filter((col) => col.fns?.has(n)).length);
+  return { ...l, changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
 });
 
 const names = links.map((l) => l.name);
@@ -80,6 +100,7 @@ const t = (v: string) => v;
     <div class="wrap">
       <h2 class="band-h home-h2" set:html={c.countries.h2}></h2>
       <p class="home-line" set:html={c.countries.line}></p>
+      <p class="home-key" set:html={c.countries.strip}></p>
       <script is:inline>
         // The squares fill in left to right as a card comes into view. Without this script, or with reduced motion, they are all there from the start.
         (function () {
@@ -97,24 +118,28 @@ const t = (v: string) => v;
         {cards.map((k) => (
           <li>
             <a class="card" href={k.href}>
-              <span class="card-main">
+              <span class="card-head">
                 <span class="card-name">{k.name}</span>
-                <span class="card-n">{k.changes}</span>
-                <span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span>
-                <span class="card-w" set:html={put(c.countries.weekly, { weekly: k.weekly })}></span>
-                <span class="card-go" set:html={put(c.countries.go, { name: k.name })}></span>
+                <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
+                <span class="card-w"><span class="card-dot" aria-hidden="true"></span><span set:html={put(c.countries.weekly, { weekly: k.weekly })}></span></span>
               </span>
-              <span class="cs" aria-hidden="true" style={`--n: ${k.months.length}`}>
-                <span class="cs-cols">
-                  {k.months.map((m, i) => (
-                    <span class="cs-col">{Array.from({ length: m }, (_, j) => <span class="cs-sq" style={`--k: ${i}`}></span>)}</span>
-                  ))}
-                </span>
-                <span class="cs-axis">
-                  {k.years.map((y, i) => <span class="cs-year" style={`grid-column: ${y.col} / ${i === k.years.length - 1 ? -1 : k.years[i + 1].col}`}>{y.y}</span>)}
-                </span>
-                <span class="cs-cap" set:html={c.countries.strip}></span>
+              <span class="mx" aria-hidden="true">
+                {c.functions.names.map((n: string, fi: number) => (
+                  <>
+                    <span class="mx-lab">{n}</span>
+                    <span class="mx-row" style={`grid-template-columns: ${k.cols}`}>
+                      {k.months.map((m, i) => (
+                        <span class="mx-col" style={`--k: ${i}`}>
+                          {m.length === 0 ? <b></b> : m.map((col) => <i class={col.fns === null ? 'un' : col.fns.has(n) ? 'on' : 'off'}></i>)}
+                        </span>
+                      ))}
+                    </span>
+                  </>
+                ))}
+                <span class="mx-axis"><span class="mx-ax">{k.years.map((y) => <span class="mx-year" style={`left: ${y.left.toFixed(2)}%`}>{y.y}</span>)}</span></span>
               </span>
+              <span class="sr">{c.functions.names.map((n: string, fi: number) => `${n}: ${k.perFn[fi]}. `).join('')}</span>
+              <span class="card-go" set:html={put(c.countries.go, { name: k.name })}></span>
             </a>
           </li>
         ))}
@@ -146,27 +171,38 @@ const t = (v: string) => v;
 
   .home-countries { padding: 44px 0 48px; }
   .cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .card { display: grid; grid-template-columns: minmax(200px, 270px) minmax(0, 1fr); gap: 16px 48px; align-items: stretch; height: 100%; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 26px 28px 24px; color: var(--ink); text-decoration: none; }
+  .card { display: flex; flex-direction: column; height: 100%; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 26px 28px 22px; color: var(--ink); text-decoration: none; }
   .card:hover { border-color: var(--ink); text-decoration: none; }
   .card:hover .card-go { text-decoration-color: var(--accent); }
   .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .card-main { display: flex; flex-direction: column; }
-  .card-name { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; margin-bottom: 18px; }
+  .home-key { margin: 6px 0 0; color: var(--quiet); }
+  .card-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 36px; margin-bottom: 22px; }
+  .card-name { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; }
+  .card-count { display: flex; align-items: baseline; gap: 12px; }
   .card-n { font-family: var(--serif); font-size: 3rem; line-height: 1; }
-  .card-l { margin-top: 6px; font-weight: 600; }
-  .card-w { margin-top: 4px; font-size: 0.95rem; color: var(--quiet); }
-  .card-go { margin-top: auto; padding-top: 20px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+  .card-l { font-weight: 600; }
+  .card-w { margin-left: auto; display: flex; align-items: center; gap: 9px; font-size: 0.95rem; color: var(--quiet); }
+  .card-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #2f9e44; animation: card-blink 2s ease-out infinite; }
+  @keyframes card-blink { 0% { box-shadow: 0 0 0 0 rgba(47, 158, 68, 0.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(47, 158, 68, 0); } }
+  @media (prefers-reduced-motion: reduce) { .card-dot { animation: none; } }
+  .card-go { align-self: flex-start; margin-top: 18px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
 
-  /* The strip: a column for each month, a square for each change, standing on a baseline. */
-  .cs { display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
-  .cs-cols { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
-  .cs-col { display: flex; flex-direction: column-reverse; gap: 3px; }
-  .cs-sq { display: block; width: 100%; aspect-ratio: 1; background: var(--accent); }
-  .cs-axis { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; margin-top: 6px; }
-  .cs-year { font: 400 0.8rem/1 var(--sans); color: var(--quiet); font-variant-numeric: tabular-nums; border-left: 1px solid var(--hairline); padding-left: 5px; white-space: nowrap; }
-  .cs-cap { margin-top: 14px; font-size: 0.9rem; color: var(--quiet); }
-  .cs-js .cs-sq { opacity: 0; transition: opacity 0.35s ease calc(var(--k) * 45ms); }
-  .cs-js .card.is-in .cs-sq { opacity: 1; }
+  /* The matrix: a row for each function, a column for each change, lit where the change touched the function. */
+  .mx { display: grid; grid-template-columns: 150px minmax(0, 1fr); row-gap: 5px; align-items: center; }
+  .mx-lab { font-size: 0.88rem; font-weight: 600; line-height: 1.2; }
+  .mx-row { display: grid; column-gap: 3px; }
+  .mx-col { display: flex; gap: 2px; }
+  .mx-col i, .mx-col b { display: block; flex: 1; height: 18px; }
+  .mx-col i.on { background: var(--accent); }
+  .mx-col i.off { background: #e4dcc9; }
+  .mx-col i.un { background: repeating-linear-gradient(45deg, #e4dcc9, #e4dcc9 2px, transparent 2px, transparent 4px); }
+  .mx-axis { grid-column: 1 / -1; display: grid; grid-template-columns: 150px minmax(0, 1fr); margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
+  .mx-axis::before { content: ''; }
+  .mx-ax { position: relative; height: 16px; }
+  .mx-year { position: absolute; top: 0; font: 400 0.8rem/1 var(--sans); color: var(--quiet); font-variant-numeric: tabular-nums; border-left: 1px solid var(--hairline); padding-left: 5px; white-space: nowrap; }
+  .cs-js .mx-col { opacity: 0; transition: opacity 0.35s ease calc(var(--k) * 45ms); }
+  .cs-js .card.is-in .mx-col { opacity: 1; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   .home-fns-p { max-width: 62ch; margin: 14px 0 0; }
   .tiles { list-style: none; margin: 24px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
@@ -175,15 +211,18 @@ const t = (v: string) => v;
 
   @media (max-width: 899px) {
     .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .card { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 759px) {
     .home-open { padding: 36px 0 32px; }
     .home-sub { font-size: 1.02rem; }
     .card { padding: 20px 18px 18px; }
     .card-n { font-size: 2.4rem; }
-    .cs-cols, .cs-axis { gap: 2px; }
-    .cs-col { gap: 2px; }
+    .card-w { margin-left: 0; width: 100%; }
+    .mx, .mx-axis { grid-template-columns: 84px minmax(0, 1fr); }
+    .mx-lab { font-size: 0.74rem; }
+    .mx-row { column-gap: 2px; }
+    .mx-col { gap: 1px; }
+    .mx-col i, .mx-col b { height: 14px; }
   }
   @media (max-width: 519px) {
     .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }

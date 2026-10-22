@@ -86,8 +86,8 @@ test('every English sentence of the home page story is in the original index.ast
   };
   walk(home, 'home');
   assert.ok(leaves.length >= 20, 'the story holds the home page copy');
-  // Copy written after the language work, locked 2026-10-22: the hero, the subheader and the country banner.
-  const REWRITTEN = ['home.opening.h1', 'home.opening.subline', 'home.countries.h2', 'home.countries.line', 'home.countries.strip'];
+  // Copy written after the language work, locked 2026-10-22: the hero, the subheader and the country banner; the country card key and the connected line.
+  const REWRITTEN = ['home.opening.h1', 'home.opening.subline', 'home.countries.h2', 'home.countries.line', 'home.countries.strip', 'home.countries.weekly'];
   for (const [at, text] of leaves) {
     if (REWRITTEN.includes(at)) continue;
     for (const piece of text.split(/\{\w+\}/).filter((p) => p.trim().length > 0)) {

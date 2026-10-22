@@ -1,0 +1,51 @@
+{
+ "note": "Which functions each counted change touched, read from the change files on 2026-10-22. A stand-in until the weekly feed carries this list itself; a change with no entry here is drawn as not yet sorted.",
+ "checked_on": "2026-10-19",
+ "functions": {
+  "BE-E02": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "BE-E16": [
+   "Outbound invoicing"
+  ],
+  "BE-E17": [
+   "Outbound invoicing",
+   "Connectivity"
+  ],
+  "BE-E18": [
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "BE-E19": [
+   "Tax engine"
+  ],
+  "BE-E25": [
+   "Outbound invoicing"
+  ],
+  "BE-E21": [
+   "Archiving"
+  ],
+  "BE-E24": [
+   "Outbound invoicing"
+  ],
+  "BE-E08a": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Master data"
+  ],
+  "BE-E08b": [
+   "Outbound invoicing",
+   "Master data"
+  ],
+  "BE-E08c": [
+   "Outbound invoicing"
+  ],
+  "BE-E11": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ]
+ }
+}

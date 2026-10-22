@@ -1,0 +1,120 @@
+{
+ "note": "Which functions each counted change touched, read from the change files on 2026-10-22. A stand-in until the weekly feed carries this list itself; a change with no entry here is drawn as not yet sorted.",
+ "checked_on": "2026-10-19",
+ "functions": {
+  "DE-E50": [
+   "Tax engine"
+  ],
+  "DE-E27": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine",
+   "Master data"
+  ],
+  "DE-E28": [
+   "Outbound invoicing"
+  ],
+  "DE-E29": [
+   "Outbound invoicing"
+  ],
+  "DE-E30": [
+   "Outbound invoicing"
+  ],
+  "DE-E51": [
+   "Outbound invoicing",
+   "Connectivity"
+  ],
+  "DE-E31": [
+   "Outbound invoicing",
+   "Inbound invoicing"
+  ],
+  "DE-E32": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E52": [
+   "Archiving"
+  ],
+  "DE-E33": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E34": [
+   "Outbound invoicing"
+  ],
+  "DE-E35": [
+   "Outbound invoicing"
+  ],
+  "DE-E53": [
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E54": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E55": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E38": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "DE-E39": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E40": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "DE-E59": [
+   "Inbound invoicing",
+   "Archiving"
+  ],
+  "DE-E41": [
+   "Inbound invoicing",
+   "Archiving"
+  ],
+  "DE-E42": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine",
+   "Archiving"
+  ],
+  "DE-E48": [
+   "Outbound invoicing",
+   "Connectivity"
+  ],
+  "DE-E44": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ],
+  "DE-E46": [
+   "Outbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E47": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Tax engine"
+  ],
+  "DE-E49": [
+   "Outbound invoicing",
+   "Inbound invoicing"
+  ],
+  "DE-E67": [
+   "Outbound invoicing",
+   "Inbound invoicing",
+   "Connectivity"
+  ]
+ }
+}
