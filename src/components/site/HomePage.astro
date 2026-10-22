@@ -72,28 +72,23 @@ const cards = links.map((l) => {
     months[i].push({ date, fns: lists.some((x) => !x) ? null : new Set(lists.flat()), idx: pubsData.length });
     pubsData.push({ d: longDate(date, locale), b: (bodyNames as any)[l.cc]?.[body] ?? body, ch: ids.map((id, j) => ({ f: (lists[j] ?? []).map((n) => names.indexOf(n)), t: linesOf[l.cc][id]?.text ?? '', w: linesOf[l.cc][id]?.domain ?? '' })) });
   }
-  // What a card shows before anyone points at it: the change with the most written lines, under the function most of those lines touch,
-  // so the panel is never an empty box. The latest wins a tie; with no written line at all there is no default and the panel asks to be pointed at.
-  let def: { fn: number; pub: number } | null = null;
-  let defScore = 0;
-  pubsData.forEach((p, i) => {
-    const written = p.ch.filter((x: any) => x.t && x.f.length);
-    if (!written.length || written.length < defScore) return;
-    const tally = names.map((_n, fi) => written.filter((x: any) => x.f.includes(fi)).length);
-    def = { fn: tally.indexOf(Math.max(...tally)), pub: i };
-    defScore = written.length;
-  });
+  // What a card shows before anyone points at it, and again after a click anywhere that is not a square: the first function's whole row, every change in time order.
+  const def = { fn: 0, pub: null };
   if (months.reduce((a, m) => a + m.length, 0) !== pubs.length) throw new Error(`Home page: ${l.cc}.json, the matrix and the count disagree`);
   const widths = months.map((m) => Math.max(1, m.length));
   const total = widths.reduce((a, b) => a + b, 0);
-  const startY = Number(d.since.slice(0, 4));
-  const years = Array.from({ length: Number(d.checked_on.slice(0, 4)) - startY + 1 }, (_, i) => {
-    const y = startY + i;
-    const at = i === 0 ? 0 : widths.slice(0, monthAt(`${y}-01`)).reduce((a, b) => a + b, 0);
-    return { y, left: (at / total) * 100 };
-  });
+  // The time axis in quarters (Q1 to Q4), the year written under each Q1 and under the first quarter shown.
+  const startQ = Math.floor((Number(d.since.slice(5, 7)) - 1) / 3);
+  const quarters: { label: string; year: string; left: number }[] = [];
+  for (let k = 0; ; k++) {
+    const q = (startQ + k) % 4;
+    const y = Number(d.since.slice(0, 4)) + Math.floor((startQ + k) / 4);
+    const idx = Math.max(0, monthAt(`${y}-${String(q * 3 + 1).padStart(2, '0')}`));
+    if (idx >= widths.length) break;
+    quarters.push({ label: `Q${q + 1}`, year: q === 0 || k === 0 ? String(y) : '', left: (widths.slice(0, idx).reduce((a, b) => a + b, 0) / total) * 100 });
+  }
   const perFn = c.functions.names.map((n: string) => months.flat().filter((col) => col.fns?.has(n)).length);
-  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData, def }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, years, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
+  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData, def }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, quarters, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
 });
 
 // A square of the matrix: lit where the change touched the function (and then a button), pale where it did not, hatched where it is not yet sorted.
@@ -140,7 +135,7 @@ const t = (v: string) => v;
         })();
       </script>
       <script is:inline>
-        // Pointing at a function name zooms its row and lists its changes under the card; pointing at (or tabbing to) a square shows that
+        // Pointing at a function name (or its row) zooms the row and lists its changes under the card, Outbound invoicing by default; pointing at (or tabbing to) a square shows that
         // change with the line that touches the function highlighted. A tap or a click holds it open; Escape lets it go. Without this
         // script the matrix is the plain picture it was.
         (function () {
@@ -198,20 +193,24 @@ const t = (v: string) => v;
             function render() {
               var s = pin || hover || def;
               if (s) card.setAttribute('data-fn', s.fn); else card.removeAttribute('data-fn');
-              // Zoom size: as wide as a square is in its column, at least the usual 18px and at most 40px; the other rows give up the height.
+              // The whole row of a function (pointing at its name or at the row) is the only view that changes the rows: the row zooms and the others
+              // give up the height. A single square changes nothing but itself. Zoom size: as wide as a square is in its column, at least the
+              // usual 18px and at most 40px.
+              var rowView = !!s && s.pub == null;
               var z = 18;
-              if (s) {
+              if (rowView) {
                 [].slice.call(rows[s.fn].querySelectorAll('.mx-col')).forEach(function (c) { if (c.children.length) z = Math.max(z, c.getBoundingClientRect().width / c.children.length - 2); });
                 z = Math.min(40, Math.round(z));
                 var o = Math.max(10, Math.round((108 - z) / 5));
                 card.style.setProperty('--z', z + 'px');
                 mx.style.gridTemplateRows = labs.map(function (l, i) { return (i === s.fn ? z : o) + 'px'; }).join(' ') + ' auto';
               } else mx.style.gridTemplateRows = '';
+              card.classList.toggle('is-row', rowView);
               labs.forEach(function (l, i) {
                 l.classList.toggle('act', !!s && s.fn === i);
                 l.setAttribute('aria-pressed', pin && pin.fn === i && pin.pub == null ? 'true' : 'false');
               });
-              rows.forEach(function (r, i) { r.classList.toggle('zoom', !!s && s.fn === i); });
+              rows.forEach(function (r, i) { r.classList.toggle('zoom', rowView && s.fn === i); });
               boxes.forEach(function (b) {
                 var fn = +b.parentNode.parentNode.getAttribute('data-fn');
                 b.tabIndex = s && s.fn === fn ? 0 : -1;
@@ -227,7 +226,7 @@ const t = (v: string) => v;
             }
             mx.addEventListener('mouseover', function (e) { hover = at(e.target); render(); });
             mx.addEventListener('mouseleave', function () { hover = null; render(); });
-            // A click holds a function or a square until another is clicked or a click lands outside the whole section (or Escape).
+            // A click on a function name or a square holds it until another is clicked; a click anywhere else (or Escape) goes back to the card's default.
             mx.addEventListener('click', function (e) {
               var s = at(e.target);
               if (!s || (e.target.closest('.mx-row') && !e.target.closest('.on'))) return;
@@ -251,7 +250,7 @@ const t = (v: string) => v;
             render();
           }
           document.addEventListener('DOMContentLoaded', function () { [].slice.call(document.querySelectorAll('.card[data-card]')).forEach(init); });
-          document.addEventListener('click', function (e) { if (!e.target.closest('.home-countries')) holders.forEach(function (h) { h.release(); }); });
+          document.addEventListener('click', function (e) { if (!e.target.closest('.mx-lab, .mx .on, .mx-panel')) holders.forEach(function (h) { h.release(); }); });
         })();
       </script>
       <ul class="cards">
@@ -263,6 +262,7 @@ const t = (v: string) => v;
                 <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
                 <span class="card-w"><span class="card-dot" aria-hidden="true"></span><span set:html={put(c.countries.weekly, { weekly: k.weekly })}></span></span>
               </a>
+              <p class="mx-head">{c.countries.labelFn}</p>
               <div class="mx">
                 {c.functions.names.map((n: string, fi: number) => (
                   <>
@@ -276,7 +276,7 @@ const t = (v: string) => v;
                     </span>
                   </>
                 ))}
-                <span class="mx-axis" aria-hidden="true"><span class="mx-ax">{k.years.map((y) => <span class="mx-year" style={`left: ${y.left.toFixed(2)}%`}>{y.y}</span>)}</span></span>
+                <span class="mx-axis" aria-hidden="true"><span class="mx-ax">{k.quarters.map((q) => <span class="mx-q" style={`left: ${q.left.toFixed(2)}%`}><span class="mx-ql">{q.label}</span><span class="mx-year">{q.year}</span></span>)}</span></span>
               </div>
               <div class="mx-panel" aria-live="polite"><p class="mx-idle">{c.countries.panelIdle}</p></div>
               <script is:inline type="application/json" class="mx-data" set:html={k.data}></script>
@@ -346,12 +346,16 @@ const t = (v: string) => v;
   /* One function zoomed: its row takes the height the other five give up, so the card does not change size under the pointer. */
   /* The zoomed row's squares are square and a little bigger (the script sets --z, the size, from the width a square has in its column). */
   .mx-row.zoom button { align-self: center; flex: 0 1 var(--z); max-width: var(--z); height: auto; aspect-ratio: 1 / 1; }
-  .card[data-fn] .mx-lab:not(.act) { opacity: 0.4; font-size: 0.74rem; }
-  .card[data-fn] .mx-row:not(.zoom) { opacity: 0.4; }
+  .card.is-row .mx-lab:not(.act) { opacity: 0.4; font-size: 0.74rem; }
+  .card.is-row .mx-row:not(.zoom) { opacity: 0.4; }
+  /* The heading over the function names: the column's name, set apart so it reads as the thing to point at. */
+  .mx-head { margin: 0 0 8px; padding: 0 0 4px; width: 150px; font: 700 0.74rem/1.2 var(--sans); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; color: var(--accent); border-bottom: 3px solid var(--accent); }
   .mx-axis { grid-column: 1 / -1; display: grid; grid-template-columns: 150px minmax(0, 1fr); margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
   .mx-axis::before { content: ''; }
-  .mx-ax { position: relative; height: 16px; }
-  .mx-year { position: absolute; top: 0; font: 400 0.8rem/1 var(--sans); color: var(--quiet); font-variant-numeric: tabular-nums; border-left: 1px solid var(--hairline); padding-left: 5px; white-space: nowrap; }
+  .mx-ax { position: relative; height: 38px; }
+  .mx-q { position: absolute; top: 0; border-left: 1px solid var(--hairline); padding-left: 5px; font: 400 0.78rem/1 var(--sans); color: var(--quiet); white-space: nowrap; }
+  .mx-ql, .mx-year { display: block; }
+  .mx-year { margin-top: 5px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
   @media (prefers-reduced-motion: reduce) { .mx, .mx-lab, .mx-row { transition: none; } }
   /* The panel under the matrix: the function's changes, or one change. A fixed height, so pointing at something never moves the page. */
   .mx-panel { margin-top: 14px; height: 176px; overflow-y: auto; background: var(--tint); border: 1px solid var(--box-border); padding: 12px 14px; font-size: 0.92rem; line-height: 1.4; }
@@ -389,6 +393,7 @@ const t = (v: string) => v;
     .card-w { margin-left: 0; width: 100%; }
     .mx, .mx-axis { grid-template-columns: 84px minmax(0, 1fr); }
     .mx-lab { font-size: 0.74rem; }
+    .mx-head { width: 84px; font-size: 0.6rem; letter-spacing: 0; }
     .mx-row { column-gap: 2px; }
     .mx-col { gap: 1px; }
     .mx { grid-template-rows: repeat(6, 14px) auto; }

@@ -23,7 +23,7 @@ export const home = {
     weekly: `Connected to {weekly} sources`,
     go: `Learn about our service for {name}`,
     labelSource: `Source`,
-    labelFn: `Function`,
+    labelFn: `Affected function`,
   },
   // The six functions, in the order the tiles show them.
   functions: {
