@@ -45,7 +45,4 @@ export const home = {
       { lead: `Decide for you.`, text: `What to do about a change, and when, stays with you and the people who look after your invoicing.` },
     ],
   },
-  close: {
-    h2: `Read what changed in your country`,
-  },
 };

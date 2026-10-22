@@ -94,15 +94,6 @@ const t = (v: string) => v;
 
   <StartAndLimits start={c.onboarding} limits={c.limits} tone="tint" ctaHref="#contact" t={t} />
 
-  <section class="band band-white home-close">
-    <div class="wrap">
-      <h2 class="band-h home-h2" set:html={c.close.h2}></h2>
-      <ul class="close-links">
-        {links.map((l) => <li><a href={l.href}>{l.name}</a></li>)}
-      </ul>
-    </div>
-  </section>
-
   <ContactForm copy={contact} page={locale === 'en' ? 'home' : urlFor('home', locale)} segment="" country="" tone="tint" person={contact.person} t={t} locale={locale} />
 </Site>
 
@@ -129,9 +120,6 @@ const t = (v: string) => v;
   .tiles { list-style: none; margin: 24px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
   .tile { background: var(--tint); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 14px 12px; min-height: 64px; display: flex; align-items: center; font-weight: 600; font-size: 0.95rem; line-height: 1.3; }
 
-  .close-links { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 12px; }
-  .close-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid var(--ink); border-radius: 2px; text-decoration: none; font-weight: 600; }
-  .close-links a:hover { background: var(--ink); color: #ffffff; }
 
   @media (max-width: 899px) {
     .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
