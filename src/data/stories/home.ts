@@ -17,6 +17,7 @@ export const home = {
     h2: `How many of these changes reached you?`,
     line: `Pick the country where you run your invoicing.`,
     changes: `changes we've counted since {since}`,
+    strip: `One square for each change, in the month it was published.`,
     weekly: `{weekly} sources we read every week`,
     go: `Read about {name}`,
   },
