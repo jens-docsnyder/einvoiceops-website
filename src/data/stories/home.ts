@@ -9,12 +9,13 @@ export const home = {
     description: `We keep track of the e-invoicing rules in {countries}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`,
   },
   opening: {
-    h1: `Go-live was the start, not the finish.`,
-    subline: `We keep track of the e-invoicing rules in {countries}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`,
+    h1: `When e-invoicing rules change, you piece the news together from wherever you can. You never know if it's the full picture.`,
+    subline: `The piece you missed turns up later, as a rush job. Heard in time, it would have been a plan.`,
   },
   // The country cards: a count and its start date, the sources read every week, and the link.
   countries: {
-    h2: `Find the country where you run your invoicing`,
+    h2: `How many of these changes reached you?`,
+    line: `Pick the country where you run your invoicing.`,
     changes: `changes we've counted since {since}`,
     weekly: `{weekly} sources we read every week`,
     go: `Read about {name}`,

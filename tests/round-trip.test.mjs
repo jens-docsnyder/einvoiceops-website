@@ -478,7 +478,7 @@ test('the sheet columns are exactly file,key,English,Translation,Note and the Tr
 test('row counts per locale', () => {
   const counts = Object.fromEntries(LOCALES.map((l) => [l, exportSheet(l).rows.length]));
   console.log(`# row counts: ${JSON.stringify(counts)}`);
-  assert.deepEqual(counts, { de: 147, fr: 277, pl: 58 });
+  assert.deepEqual(counts, { de: 148, fr: 278, pl: 59 });
 });
 
 test('every row of every pack is a real English text of its file', async () => {

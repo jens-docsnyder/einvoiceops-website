@@ -65,6 +65,7 @@ const t = (v: string) => v;
   <section class="band band-tint band-ruled home-countries" id="countries">
     <div class="wrap">
       <h2 class="band-h home-h2" set:html={c.countries.h2}></h2>
+      <p class="home-line" set:html={c.countries.line}></p>
       <ul class="cards">
         {cards.map((k) => (
           <li>
@@ -107,9 +108,10 @@ const t = (v: string) => v;
 
 <style is:global>
   .home-open { padding: 64px 0 52px; }
-  .home-h1 { max-width: 20ch; font-size: clamp(2.2rem, 5.4vw, 3.4rem); }
+  .home-h1 { max-width: 26ch; font-size: clamp(1.9rem, 4.4vw, 2.9rem); }
   .home-sub { max-width: 62ch; margin: 22px 0 0; font-size: 1.14rem; line-height: 1.5; font-weight: 500; }
   .home-h2 { max-width: 34ch; }
+  .home-line { margin: 12px 0 0; font-size: 1.14rem; line-height: 1.5; font-weight: 500; }
 
   .home-countries { padding: 44px 0 48px; }
   .cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
