@@ -344,10 +344,17 @@ const t = (v: string) => v;
 
 <style is:global>
   .home-open { padding: 64px 0 52px; }
-  /* The hero: the words on the left, the picture on the right; on a phone the picture goes under the words. */
-  .home-open .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 48px; align-items: center; }
+  /* The hero: the words in the left half of the column, the picture from the middle of the screen to its right edge at the hero's full
+     height, so it grows with the screen; under 900px the picture goes under the words. */
   .home-pic { display: block; width: 100%; height: auto; }
-  .home-h1 { max-width: 26ch; font-size: clamp(1.9rem, 4.4vw, 2.9rem); }
+  @media (min-width: 900px) {
+    .home-open { position: relative; display: flex; align-items: center; min-height: clamp(460px, 60vh, 640px); padding: 64px 0; }
+    .home-open .wrap { width: 100%; }
+    .home-open-text { width: calc(50% - 40px); }
+    .home-pic { position: absolute; top: 0; bottom: 0; left: 50%; width: 50%; max-width: none; height: 100%; object-fit: cover; object-position: 85% center; }
+  }
+  @media (min-width: 760px) and (max-width: 899px) { .home-open .wrap { display: grid; gap: 32px; } }
+  .home-h1 { max-width: 26ch; font-size: clamp(1.9rem, 4.4vw, 2.9rem); text-wrap: balance; }
   .home-sub { max-width: 62ch; margin: 22px 0 0; font-size: 1.14rem; line-height: 1.5; font-weight: 500; }
   .home-h2 { max-width: 34ch; }
 
@@ -438,7 +445,7 @@ const t = (v: string) => v;
   }
   @media (max-width: 759px) {
     .home-open { padding: 36px 0 32px; }
-    .home-open .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .home-open .wrap { display: grid; gap: 24px; }
     .home-sub { font-size: 1.02rem; }
     .fold-q { padding: 18px 16px; }
     .fold-h { font-size: 1.3rem; }
