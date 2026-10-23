@@ -8,6 +8,7 @@
 // dated value (see switch.js). New copy fields are read with a fallback to the older field.
 import Site from '../../layouts/Site.astro';
 import ProofStrip from './ProofStrip.astro';
+import { photos } from '../../data/photos';
 import FanOut from './FanOut.astro';
 import FollowedChange from './FollowedChange.astro';
 import ChangeBoxes from './ChangeBoxes.astro';
@@ -38,6 +39,7 @@ const { c, fanout = null, page, segment, country, fanoutDisclosure, followedDisc
 const live = fanout !== null && fanout !== undefined;
 const ui = dictionary(locale);
 // The address the contact form reports: the page's own, in its own language. English keeps the address the wrapper passes.
+const photo = photos[country];
 const pagePath = locale === 'en' ? page : urlFor(country as PageId, locale);
 
 
@@ -64,11 +66,14 @@ const startTint = flowC && live && (!boxes || !showFanout);
 ---
 <Site title={c.meta.title} description={c.meta.description} countries={countryNav(country, locale)} locale={locale} pageId={country}>
   <section class="sp-top">
-    <div class="band band-white sp-open">
+    <div class={`band band-white sp-open${photo ? ' sp-open-pic' : ''}`}>
       <div class="wrap">
-        <h1 class="sp-h1" set:html={t(c.opening.h1)}></h1>
-        <p class="sp-sub" set:html={t(subline)}></p>
-        <a class="btn" href="#contact">{ui.getInTouch}</a>
+        <div class="sp-open-text">
+          <h1 class="sp-h1" set:html={t(c.opening.h1)}></h1>
+          <p class="sp-sub" set:html={t(subline)}></p>
+          <a class="btn" href="#contact">{ui.getInTouch}</a>
+        </div>
+        {photo && <img class="sp-pic" src={photo.src} alt={photo.alt} width="1200" height="896" fetchpriority="high" style={`object-position: ${photo.pos}`} />}
       </div>
     </div>
     {hasProof && <ProofStrip data={fanout} proof={c.proof} t={t} locale={locale} />}
@@ -220,6 +225,16 @@ const startTint = flowC && live && (!boxes || !showFanout);
 
 <style is:global>
   .sp-open { padding: 60px 0 44px; }
+  /* The photo, as on the home page: from the middle of the screen to its right edge at the heading's full height on a wide screen,
+     under the words below 900px. */
+  .sp-pic { display: block; width: 100%; height: auto; margin-top: 28px; }
+  @media (min-width: 900px) {
+    .sp-open-pic { position: relative; display: flex; align-items: center; min-height: clamp(460px, 60vh, 640px); padding: 60px 0; }
+    .sp-open-pic .wrap { width: 100%; }
+    .sp-open-pic .sp-open-text { width: calc(50% - 40px); }
+    .sp-open-pic .sp-h1 { text-wrap: balance; }
+    .sp-pic { position: absolute; top: 0; bottom: 0; left: 50%; width: 50%; max-width: none; height: 100%; margin: 0; object-fit: cover; }
+  }
   .sp-h1 { max-width: 30ch; }
   /* The subline under the heading speaks for the page, so it is set in ink and a step heavier than the quieter
      explaining text further down so it reads bold and assertive. */
