@@ -18,6 +18,7 @@ export const home = {
     line: `Pick the country where you run your invoicing.`,
     changes: `changes we've counted since {since}`,
     strip: `Each column is one change. The lit squares show which functions it touched. Point at a function to see its changes, or at a square to see that change.`,
+    stripPhone: `Each cell counts the changes in a quarter that touched a function. Tap a cell to see them, or a function name to see all of its changes.`,
     panelIdle: `Point at a function name to see the changes that touched it. On a phone, tap it.`,
     panelFn: `{fn}: touched by {n} of the {m} changes`,
     weekly: `Connected to {weekly} sources`,

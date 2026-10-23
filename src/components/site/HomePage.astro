@@ -70,25 +70,28 @@ const cards = links.map((l) => {
     if (i < 0 || i >= months.length) throw new Error(`Home page: ${l.cc}.json, a change dated ${date} falls outside ${d.since} to ${d.checked_on}`);
     const lists = ids.map((id) => touched[l.cc][id]);
     months[i].push({ date, fns: lists.some((x) => !x) ? null : new Set(lists.flat()), idx: pubsData.length });
-    pubsData.push({ d: longDate(date, locale), b: (bodyNames as any)[l.cc]?.[body] ?? body, ch: ids.map((id, j) => ({ f: (lists[j] ?? []).map((n) => names.indexOf(n)), t: linesOf[l.cc][id]?.text ?? '', w: linesOf[l.cc][id]?.domain ?? '' })) });
+    pubsData.push({ q: Math.floor((i + ((Number(d.since.slice(5, 7)) - 1) % 3)) / 3), d: longDate(date, locale), b: (bodyNames as any)[l.cc]?.[body] ?? body, ch: ids.map((id, j) => ({ f: (lists[j] ?? []).map((n) => names.indexOf(n)), t: linesOf[l.cc][id]?.text ?? '', w: linesOf[l.cc][id]?.domain ?? '' })) });
   }
   // What a card shows before anyone points at it, and again after a click anywhere that is not a square: the first function's whole row, every change in time order.
-  const def = { fn: 0, pub: null };
+  const def = { fn: 0, pub: null, q: null };
   if (months.reduce((a, m) => a + m.length, 0) !== pubs.length) throw new Error(`Home page: ${l.cc}.json, the matrix and the count disagree`);
   const widths = months.map((m) => Math.max(1, m.length));
   const total = widths.reduce((a, b) => a + b, 0);
   // The time axis in quarters (Q1 to Q4), the year written under each Q1 and under the first quarter shown.
   const startQ = Math.floor((Number(d.since.slice(5, 7)) - 1) / 3);
-  const quarters: { label: string; year: string; left: number }[] = [];
+  const quarters: { label: string; full: string; year: string; left: number }[] = [];
   for (let k = 0; ; k++) {
     const q = (startQ + k) % 4;
     const y = Number(d.since.slice(0, 4)) + Math.floor((startQ + k) / 4);
     const idx = Math.max(0, monthAt(`${y}-${String(q * 3 + 1).padStart(2, '0')}`));
     if (idx >= widths.length) break;
-    quarters.push({ label: `Q${q + 1}`, year: q === 0 || k === 0 ? String(y) : '', left: (widths.slice(0, idx).reduce((a, b) => a + b, 0) / total) * 100 });
+    quarters.push({ label: `Q${q + 1}`, full: `Q${q + 1} ${y}`, year: q === 0 || k === 0 ? String(y) : '', left: (widths.slice(0, idx).reduce((a, b) => a + b, 0) / total) * 100 });
   }
+  // The phone's version of the matrix: for each function and quarter, how many of that quarter's changes touched it, shaded by the count.
+  const qCount = names.map((_n, fi) => quarters.map((_q, qi) => pubsData.filter((p) => p.q === qi && p.ch.some((x: any) => x.f.includes(fi))).length));
+  const qMax = Math.max(1, ...qCount.flat());
   const perFn = c.functions.names.map((n: string) => months.flat().filter((col) => col.fns?.has(n)).length);
-  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData, def }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, quarters, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
+  return { ...l, pubs: pubsData, data: JSON.stringify({ pubs: pubsData, def, qs: quarters.map((q) => q.full) }).replaceAll('<', '\\u003c'), changes: pubs.length, since: longDate(d.since, locale), weekly: d.sources_weekly, months, quarters, qCount, qMax, cols: widths.map((w) => `${w}fr`).join(' '), perFn };
 });
 
 // A square of the matrix: lit where the change touched the function (and then a button), pale where it did not, hatched where it is not yet sorted.
@@ -120,7 +123,8 @@ const t = (v: string) => v;
     <div class="wrap">
       <h2 class="band-h home-h2" set:html={c.countries.h2}></h2>
       <p class="home-line" set:html={c.countries.line}></p>
-      <p class="home-key" set:html={c.countries.strip}></p>
+      <p class="home-key home-key-wide" set:html={c.countries.strip}></p>
+      <p class="home-key home-key-phone" set:html={c.countries.stripPhone}></p>
       <script is:inline>
         // The squares fill in left to right as a card comes into view. Without this script, or with reduced motion, they are all there from the start.
         (function () {
@@ -135,21 +139,26 @@ const t = (v: string) => v;
         })();
       </script>
       <script is:inline>
-        // Pointing at a function name (or its row) zooms the row and lists its changes under the card, Outbound invoicing by default; pointing at (or tabbing to) a square shows that
-        // change with the line that touches the function highlighted. A tap or a click holds it open; Escape lets it go. Without this
+        // Pointing at a function name (or its row) zooms the row and lists its changes under the card, Outbound invoicing by default;
+        // pointing at (or tabbing to) a square shows that change with the line that touches the function highlighted. A click on a function
+        // name or a square holds it until another is clicked; a click anywhere else (or Escape) goes back to the card's default.
+        // On a phone the squares are replaced by one cell per function and quarter (tap it for that quarter's changes). Without this
         // script the matrix is the plain picture it was.
         (function () {
           function node(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; }
           var holders = [];
+          var phone = window.matchMedia('(max-width: 759px)');
           function init(card) {
             var data = JSON.parse(card.querySelector('.mx-data').textContent);
-            var pubs = data.pubs, def = data.def;
+            var pubs = data.pubs, def = data.def, qs = data.qs;
             var lSource = card.getAttribute('data-l-source'), lFn = card.getAttribute('data-l-fn');
             var panel = card.querySelector('.mx-panel');
             var mx = card.querySelector('.mx');
             var labs = [].slice.call(card.querySelectorAll('.mx-lab'));
             var rows = [].slice.call(card.querySelectorAll('.mx-row'));
+            var qrows = [].slice.call(card.querySelectorAll('.mq-row'));
             var boxes = [].slice.call(card.querySelectorAll('.mx-row .on'));
+            var cells = [].slice.call(card.querySelectorAll('.mq-c'));
             var pin = null, hover = null;
             function touches(p, fn) { return p.ch.filter(function (c) { return c.f.indexOf(fn) !== -1; }); }
             function lineOf(c) {
@@ -157,22 +166,33 @@ const t = (v: string) => v;
               if (c.t) { f.appendChild(node('span', 'mx-t', c.t)); if (c.w) f.appendChild(node('span', 'mx-w', c.w)); }
               return f;
             }
+            function list(hit, fn) {
+              var ul = node('ul', 'mx-list');
+              hit.slice().reverse().forEach(function (i) {
+                var li = node('li');
+                li.appendChild(node('span', 'mx-d', pubs[i].d));
+                li.appendChild(node('span', 'mx-b', lSource + ': ' + pubs[i].b));
+                touches(pubs[i], fn).forEach(function (c) { if (c.t) { var d = node('span', 'mx-line'); d.appendChild(lineOf(c)); li.appendChild(d); } });
+                ul.appendChild(li);
+              });
+              return ul;
+            }
             function fill(s) {
               panel.textContent = '';
               if (!s) { panel.appendChild(node('p', 'mx-idle', card.getAttribute('data-panel-idle'))); return; }
               var name = labs[s.fn].textContent;
+              var all = pubs.map(function (p, i) { return i; });
+              if (s.q != null) {
+                var inQ = all.filter(function (i) { return pubs[i].q === s.q; });
+                var hitQ = inQ.filter(function (i) { return touches(pubs[i], s.fn).length; });
+                panel.appendChild(node('p', 'mx-h', card.getAttribute('data-panel-fn').replace('{fn}', name + ', ' + qs[s.q]).replace('{n}', hitQ.length).replace('{m}', inQ.length)));
+                panel.appendChild(list(hitQ, s.fn));
+                return;
+              }
               if (s.pub == null) {
-                var hit = pubs.map(function (p, i) { return i; }).filter(function (i) { return touches(pubs[i], s.fn).length; });
+                var hit = all.filter(function (i) { return touches(pubs[i], s.fn).length; });
                 panel.appendChild(node('p', 'mx-h', card.getAttribute('data-panel-fn').replace('{fn}', name).replace('{n}', hit.length).replace('{m}', pubs.length)));
-                var ul = node('ul', 'mx-list');
-                hit.slice().reverse().forEach(function (i) {
-                  var li = node('li');
-                  li.appendChild(node('span', 'mx-d', pubs[i].d));
-                  li.appendChild(node('span', 'mx-b', lSource + ': ' + pubs[i].b));
-                  touches(pubs[i], s.fn).forEach(function (c) { if (c.t) { var d = node('span', 'mx-line'); d.appendChild(lineOf(c)); li.appendChild(d); } });
-                  ul.appendChild(li);
-                });
-                panel.appendChild(ul);
+                panel.appendChild(list(hit, s.fn));
                 return;
               }
               var p = pubs[s.pub];
@@ -193,54 +213,62 @@ const t = (v: string) => v;
             function render() {
               var s = pin || hover || def;
               if (s) card.setAttribute('data-fn', s.fn); else card.removeAttribute('data-fn');
-              // The whole row of a function (pointing at its name or at the row) is the only view that changes the rows: the row zooms and the others
-              // give up the height. A single square changes nothing but itself. Zoom size: as wide as a square is in its column, at least the
-              // usual 18px and at most 40px.
-              var rowView = !!s && s.pub == null;
+              var wholeRow = !!s && s.pub == null && s.q == null;
+              // The whole row of a function (pointing at its name or at the row) is the only view that changes the rows on a wide screen: the
+              // row zooms and the others give up the height. A single square changes nothing but itself. Zoom size: as wide as the widest
+              // square of the row, at least the usual 18px and at most 40px.
+              var zoom = wholeRow && !phone.matches;
               var z = 18;
-              if (rowView) {
-                [].slice.call(rows[s.fn].querySelectorAll('.mx-col')).forEach(function (c) { if (c.children.length) z = Math.max(z, c.getBoundingClientRect().width / c.children.length - 2); });
+              if (zoom) {
+                [].slice.call(rows[s.fn].querySelectorAll('.mx-col')).forEach(function (c) {
+                  var n = c.children.length;
+                  if (n) z = Math.max(z, (c.getBoundingClientRect().width - (n - 1) * (parseFloat(getComputedStyle(c).columnGap) || 0)) / n);
+                });
                 z = Math.min(40, Math.round(z));
                 var o = Math.max(10, Math.round((108 - z) / 5));
-                card.style.setProperty('--z', z + 'px');
-                mx.style.gridTemplateRows = labs.map(function (l, i) { return (i === s.fn ? z : o) + 'px'; }).join(' ') + ' auto';
+                mx.style.gridTemplateRows = labs.map(function (l, i) { return (i === s.fn ? z : o) + 5 + 'px'; }).join(' ') + ' auto';
               } else mx.style.gridTemplateRows = '';
-              card.classList.toggle('is-row', rowView);
+              card.classList.toggle('is-row', zoom);
               labs.forEach(function (l, i) {
                 l.classList.toggle('act', !!s && s.fn === i);
-                l.setAttribute('aria-pressed', pin && pin.fn === i && pin.pub == null ? 'true' : 'false');
+                l.setAttribute('aria-pressed', pin && pin.fn === i && pin.pub == null && pin.q == null ? 'true' : 'false');
               });
-              rows.forEach(function (r, i) { r.classList.toggle('zoom', rowView && s.fn === i); });
+              rows.forEach(function (r, i) { r.classList.toggle('zoom', zoom && s.fn === i); });
+              qrows.forEach(function (r, i) { r.classList.toggle('sel', wholeRow && s.fn === i); });
               boxes.forEach(function (b) {
                 var fn = +b.parentNode.parentNode.getAttribute('data-fn');
                 b.tabIndex = s && s.fn === fn ? 0 : -1;
                 b.classList.toggle('hi', !!s && s.pub != null && s.pub === +b.getAttribute('data-p') && s.fn === fn);
               });
+              cells.forEach(function (b) {
+                b.classList.toggle('hi', !!s && s.q != null && s.q === +b.getAttribute('data-q') && s.fn === +b.parentNode.getAttribute('data-fn'));
+              });
               fill(s);
             }
             function at(t) {
-              var l = t.closest('.mx-lab'); if (l) return { fn: +l.getAttribute('data-fn'), pub: null };
-              var b = t.closest('.on'); if (b) return { fn: +b.parentNode.parentNode.getAttribute('data-fn'), pub: +b.getAttribute('data-p') };
-              var r = t.closest('.mx-row'); if (r) return { fn: +r.getAttribute('data-fn'), pub: null };
+              var l = t.closest('.mx-lab'); if (l) return { fn: +l.getAttribute('data-fn'), pub: null, q: null };
+              var b = t.closest('.on'); if (b) return { fn: +b.parentNode.parentNode.getAttribute('data-fn'), pub: +b.getAttribute('data-p'), q: null };
+              var m = t.closest('.mq-c'); if (m) return { fn: +m.parentNode.getAttribute('data-fn'), pub: null, q: +m.getAttribute('data-q') };
+              var r = t.closest('.mx-row, .mq-row'); if (r) return { fn: +r.getAttribute('data-fn'), pub: null, q: null };
               return null;
             }
             mx.addEventListener('mouseover', function (e) { hover = at(e.target); render(); });
             mx.addEventListener('mouseleave', function () { hover = null; render(); });
-            // A click on a function name or a square holds it until another is clicked; a click anywhere else (or Escape) goes back to the card's default.
             mx.addEventListener('click', function (e) {
               var s = at(e.target);
-              if (!s || (e.target.closest('.mx-row') && !e.target.closest('.on'))) return;
+              if (!s || (e.target.closest('.mx-row, .mq-row') && !e.target.closest('.on, .mq-c'))) return;
               pin = s; hover = null; render();
               holders.forEach(function (h) { if (h !== api) h.release(); });
             });
-            mx.addEventListener('focusin', function (e) { var s = e.target.closest('.mx-lab, .on') ? at(e.target) : null; if (s) { hover = s; render(); } });
+            mx.addEventListener('focusin', function (e) { var s = e.target.closest('.mx-lab, .on, .mq-c') ? at(e.target) : null; if (s) { hover = s; render(); } });
             mx.addEventListener('focusout', function (e) { if (!e.relatedTarget || !mx.contains(e.relatedTarget)) { hover = null; render(); } });
             mx.addEventListener('keydown', function (e) {
               var t = e.target;
               if (e.key === 'Escape') { pin = null; hover = null; render(); var l = t.closest('.mx-row') ? labs[+t.parentNode.parentNode.getAttribute('data-fn')] : t; if (l && l.focus) l.focus(); return; }
               if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-              var list = t.classList.contains('mx-lab') ? [] : [].slice.call(t.parentNode.parentNode.querySelectorAll('.on'));
               if (t.classList.contains('mx-lab')) { var first = rows[+t.getAttribute('data-fn')].querySelector('.on'); if (e.key === 'ArrowRight' && first) { e.preventDefault(); first.focus(); } return; }
+              if (!t.classList.contains('on')) return;
+              var list = [].slice.call(t.parentNode.parentNode.querySelectorAll('.on'));
               var i = list.indexOf(t) + (e.key === 'ArrowRight' ? 1 : -1);
               if (list[i]) { e.preventDefault(); list[i].focus(); }
             });
@@ -250,7 +278,7 @@ const t = (v: string) => v;
             render();
           }
           document.addEventListener('DOMContentLoaded', function () { [].slice.call(document.querySelectorAll('.card[data-card]')).forEach(init); });
-          document.addEventListener('click', function (e) { if (!e.target.closest('.mx-lab, .mx .on, .mx-panel')) holders.forEach(function (h) { h.release(); }); });
+          document.addEventListener('click', function (e) { if (!e.target.closest('.mx-lab, .mx .on, .mq-c, .mx-panel')) holders.forEach(function (h) { h.release(); }); });
         })();
       </script>
       <ul class="cards">
@@ -260,7 +288,6 @@ const t = (v: string) => v;
               <a class="card-head" href={k.href}>
                 <span class="card-name">{k.name}</span>
                 <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
-                <span class="card-w"><span class="card-dot" aria-hidden="true"></span><span set:html={put(c.countries.weekly, { weekly: k.weekly })}></span></span>
               </a>
               <p class="mx-head">{c.countries.labelFn}</p>
               <div class="mx">
@@ -274,14 +301,21 @@ const t = (v: string) => v;
                         </span>
                       ))}
                     </span>
+                    <span class="mq-row" data-fn={fi} style={`grid-template-columns: repeat(${k.quarters.length}, minmax(0, 1fr))`}>
+                      {k.quarters.map((q, qi) => <button type="button" class="mq-c" data-q={qi} style={`--a: ${(k.qCount[fi][qi] / k.qMax).toFixed(2)}`} disabled={k.qCount[fi][qi] === 0} aria-label={k.qCount[fi][qi] ? `${n}, ${q.full}` : undefined} aria-hidden={k.qCount[fi][qi] ? undefined : 'true'}>{k.qCount[fi][qi] || ''}</button>)}
+                    </span>
                   </>
                 ))}
+                <span class="mq-axis" aria-hidden="true"><span class="mq-qs" style={`grid-template-columns: repeat(${k.quarters.length}, minmax(0, 1fr))`}>{k.quarters.map((q) => <span class="mq-q"><span class="mq-ql">{q.label}</span><span class="mq-year">{q.year.slice(2)}</span></span>)}</span></span>
                 <span class="mx-axis" aria-hidden="true"><span class="mx-ax">{k.quarters.map((q) => <span class="mx-q" style={`left: ${q.left.toFixed(2)}%`}><span class="mx-ql">{q.label}</span><span class="mx-year">{q.year}</span></span>)}</span></span>
               </div>
               <div class="mx-panel" aria-live="polite"><p class="mx-idle">{c.countries.panelIdle}</p></div>
               <script is:inline type="application/json" class="mx-data" set:html={k.data}></script>
               <span class="sr">{c.functions.names.map((n: string, fi: number) => `${n}: ${k.perFn[fi]}. `).join('')}</span>
-              <a class="card-go" href={k.href} set:html={put(c.countries.go, { name: k.name })}></a>
+              <div class="card-foot">
+                <span class="card-w"><span class="card-dot" aria-hidden="true"></span><span set:html={put(c.countries.weekly, { weekly: k.weekly })}></span></span>
+                <a class="card-go" href={k.href} set:html={put(c.countries.go, { name: k.name })}></a>
+              </div>
             </div>
           </li>
         ))}
@@ -316,26 +350,32 @@ const t = (v: string) => v;
   .card { display: flex; flex-direction: column; height: 100%; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 26px 28px 22px; color: var(--ink); text-decoration: none; }
   .card:hover { border-color: var(--ink); }
   .card-head { color: inherit; text-decoration: none; }
-  .card-head:hover .card-name, .card-go:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+  .card-head:hover .card-name { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
   .card-head:focus-visible, .card-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .home-key { margin: 6px 0 0; color: var(--quiet); }
-  .card-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 36px; margin-bottom: 22px; }
+  .home-key-phone { display: none; }
+  /* Three sizes on a card: the name, the number, and the one small size every other line uses. */
+  .card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; margin-bottom: 22px; }
   .card-name { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; }
   .card-count { display: flex; align-items: baseline; gap: 12px; }
   .card-n { font-family: var(--serif); font-size: 3rem; line-height: 1; }
-  .card-l { font-weight: 600; }
-  .card-w { margin-left: auto; display: flex; align-items: center; gap: 9px; font-size: 0.95rem; color: var(--quiet); }
+  .card-l { font-size: 0.88rem; font-weight: 600; }
+  .card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+  .card-w { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; color: var(--quiet); }
   .card-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #2f9e44; animation: card-blink 2s ease-out infinite; }
   @keyframes card-blink { 0% { box-shadow: 0 0 0 0 rgba(47, 158, 68, 0.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(47, 158, 68, 0); } }
   @media (prefers-reduced-motion: reduce) { .card-dot { animation: none; } }
-  .card-go { color: inherit; align-self: flex-start; margin-top: 18px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+  .card-go { color: var(--ink); font-size: 0.88rem; font-weight: 700; text-decoration: none; border: 2px solid var(--ink); padding: 9px 16px; }
+  .card-go::after { content: ' \2192'; }
+  .card-go:hover { background: var(--ink); color: var(--page); }
 
-  /* The matrix: a row for each function, a column for each change, lit where the change touched the function. */
-  .mx { display: grid; grid-template-columns: 150px minmax(0, 1fr); grid-template-rows: repeat(6, 18px) auto; row-gap: 5px; align-items: stretch; transition: grid-template-rows 0.22s ease; }
+  /* The matrix: a row for each function, a column for each change, lit where the change touched the function. The rows touch each other
+     (the space between two squares is part of the row), so moving from one function to the next never passes over nothing. */
+  .mx { display: grid; grid-template-columns: 150px minmax(0, 1fr); grid-template-rows: repeat(6, 23px) auto; align-items: stretch; transition: grid-template-rows 0.22s ease; }
   .mx-lab { appearance: none; background: none; border: 0; padding: 0; margin: 0; font: 600 0.88rem/1.2 var(--sans); color: var(--ink); text-align: left; cursor: pointer; display: flex; align-items: center; transition: opacity 0.22s ease; }
   .mx-lab:hover, .mx-lab.act { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
-  .mx-lab:focus-visible, .mx-col button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .mx-row { display: grid; column-gap: 3px; min-height: 0; transition: opacity 0.22s ease; }
+  .mx-lab:focus-visible, .mx-col button:focus-visible, .mq-c:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .mx-row { display: grid; column-gap: 3px; min-height: 0; padding: 2px 0 3px; transition: opacity 0.22s ease; }
   .mx-col { display: flex; gap: 2px; min-height: 0; }
   .mx-col b, .mx-col button { display: block; flex: 1; min-width: 0; min-height: 0; padding: 0; border: 0; border-radius: 0; }
   .mx-col button:disabled { pointer-events: none; }
@@ -343,22 +383,22 @@ const t = (v: string) => v;
   .mx-col button.off { background: #e4dcc9; }
   .mx-col button.un { background: repeating-linear-gradient(45deg, #e4dcc9, #e4dcc9 2px, transparent 2px, transparent 4px); }
   .mx-col button.on.hi { background: var(--ink); outline: 2px solid var(--accent); outline-offset: 1px; position: relative; z-index: 1; }
-  /* One function zoomed: its row takes the height the other five give up, so the card does not change size under the pointer. */
-  /* The zoomed row's squares are square and a little bigger (the script sets --z, the size, from the width a square has in its column). */
-  .mx-row.zoom button { align-self: center; flex: 0 1 var(--z); max-width: var(--z); height: auto; aspect-ratio: 1 / 1; }
-  .card.is-row .mx-lab:not(.act) { opacity: 0.4; font-size: 0.74rem; }
+  /* One function zoomed (its whole row selected): the row takes the height the other five give up. Its squares keep the width they have and are square. */
+  .mx-row.zoom button { align-self: center; flex: 1 1 0; max-width: 40px; height: auto; aspect-ratio: 1 / 1; }
+  .card.is-row .mx-lab:not(.act) { opacity: 0.4; }
   .card.is-row .mx-row:not(.zoom) { opacity: 0.4; }
   /* The heading over the function names: the column's name, set apart so it reads as the thing to point at. */
-  .mx-head { margin: 0 0 8px; padding: 0 0 4px; width: 150px; font: 700 0.74rem/1.2 var(--sans); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; color: var(--accent); border-bottom: 3px solid var(--accent); }
-  .mx-axis { grid-column: 1 / -1; display: grid; grid-template-columns: 150px minmax(0, 1fr); margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
+  .mx-head { margin: 0 0 8px; padding: 0 0 4px; width: 150px; font: 700 0.88rem/1.2 var(--sans); white-space: nowrap; color: var(--accent); border-bottom: 3px solid var(--accent); }
+  .mx-axis { grid-column: 1 / -1; display: grid; grid-template-columns: 150px minmax(0, 1fr); margin-top: 6px; border-top: 2px solid var(--ink); padding-top: 6px; }
   .mx-axis::before { content: ''; }
-  .mx-ax { position: relative; height: 38px; }
-  .mx-q { position: absolute; top: 0; border-left: 1px solid var(--hairline); padding-left: 5px; font: 400 0.78rem/1 var(--sans); color: var(--quiet); white-space: nowrap; }
+  .mx-ax { position: relative; height: 40px; }
+  .mx-q { position: absolute; top: 0; border-left: 1px solid var(--hairline); padding-left: 5px; font: 400 0.88rem/1 var(--sans); color: var(--quiet); white-space: nowrap; }
   .mx-ql, .mx-year { display: block; }
   .mx-year { margin-top: 5px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .mq-row, .mq-axis { display: none; }
   @media (prefers-reduced-motion: reduce) { .mx, .mx-lab, .mx-row { transition: none; } }
   /* The panel under the matrix: the function's changes, or one change. A fixed height, so pointing at something never moves the page. */
-  .mx-panel { margin-top: 14px; height: 176px; overflow-y: auto; background: var(--tint); border: 1px solid var(--box-border); padding: 12px 14px; font-size: 0.92rem; line-height: 1.4; }
+  .mx-panel { margin-top: 14px; height: 176px; overflow-y: auto; background: var(--tint); border: 1px solid var(--box-border); padding: 12px 14px; font-size: 0.88rem; line-height: 1.4; }
   .mx-panel:focus-visible { outline: 2px solid var(--accent); }
   .mx-idle { margin: 0; color: var(--quiet); }
   .mx-h { margin: 0 0 8px; font-weight: 700; display: flex; flex-wrap: wrap; gap: 2px 14px; }
@@ -369,7 +409,7 @@ const t = (v: string) => v;
   .mx-d { font-variant-numeric: tabular-nums; font-weight: 600; }
   .mx-b { color: var(--quiet); }
   .mx-line { grid-column: 2; }
-  .mx-w { margin-left: 8px; color: var(--quiet); font-size: 0.82rem; }
+  .mx-w { margin-left: 8px; color: var(--quiet); }
   .mx-one li { display: block; border: 0; padding: 4px 0 4px 10px; border-left: 3px solid transparent; }
   .mx-one li.hl { border-left-color: var(--accent); background: rgba(0, 0, 0, 0.04); font-weight: 600; }
   .mx-one li.dim { color: var(--quiet); }
@@ -387,16 +427,33 @@ const t = (v: string) => v;
   }
   @media (max-width: 759px) {
     .home-open { padding: 36px 0 32px; }
+    .home-key-wide { display: none; }
+    .home-key-phone { display: block; }
     .home-sub { font-size: 1.02rem; }
-    .card { padding: 20px 18px 18px; }
+    .card { padding: 20px 16px 18px; }
     .card-n { font-size: 2.4rem; }
-    .card-w { margin-left: 0; width: 100%; }
-    .mx, .mx-axis { grid-template-columns: 84px minmax(0, 1fr); }
+    .card-foot { flex-direction: column; align-items: stretch; }
+    .card-go { text-align: center; }
+    /* A phone has no room for a square per change: one cell per function and quarter, shaded by how many changes touched it. */
+    .mx, .mx-axis, .mq-axis { grid-template-columns: 84px minmax(0, 1fr); }
+    .mx { grid-template-rows: repeat(6, 32px) auto; }
     .mx-lab { font-size: 0.74rem; }
-    .mx-head { width: 84px; font-size: 0.6rem; letter-spacing: 0; }
-    .mx-row { column-gap: 2px; }
-    .mx-col { gap: 1px; }
-    .mx { grid-template-rows: repeat(6, 14px) auto; }
+    .mx-head { width: 84px; white-space: normal; font-size: 0.74rem; }
+    .mx-row, .mx-axis { display: none; }
+    .mq-row { display: grid; column-gap: 2px; padding: 2px 0 3px; }
+    .mq-row.sel { background: rgba(0, 0, 0, 0.05); }
+    .mq-c { display: flex; align-items: center; justify-content: center; min-width: 0; padding: 0; border: 0; border-radius: 0; font: 700 0.74rem/1 var(--sans); color: var(--ink); background: color-mix(in srgb, var(--accent) calc(var(--a) * 85% + 15%), #e4dcc9); }
+    .mq-c:disabled { background: #efe9da; pointer-events: none; }
+    .mq-c.hi { outline: 2px solid var(--ink); outline-offset: 1px; position: relative; z-index: 1; }
+    .mq-axis { grid-column: 1 / -1; display: grid; margin-top: 6px; border-top: 2px solid var(--ink); padding-top: 4px; }
+    .mq-axis::before { content: ''; }
+    .mq-qs { display: grid; column-gap: 2px; }
+    .mq-q { display: block; font: 400 0.6rem/1 var(--sans); color: var(--quiet); text-align: center; }
+    .mq-ql, .mq-year { display: block; }
+    .mq-year { margin-top: 3px; font-weight: 700; color: var(--ink); }
+    .mx-panel { height: 200px; }
+    .mx-list li { grid-template-columns: minmax(0, 1fr); }
+    .mx-line { grid-column: 1; }
   }
   @media (max-width: 519px) {
     .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
