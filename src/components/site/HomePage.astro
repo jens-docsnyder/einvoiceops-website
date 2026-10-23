@@ -114,8 +114,11 @@ const t = (v: string) => v;
 >
   <section class="band band-white home-open">
     <div class="wrap">
-      <h1 class="home-h1" set:html={c.opening.h1}></h1>
-      <p class="home-sub" set:html={put(c.opening.subline, { countries: listed })}></p>
+      <div class="home-open-text">
+        <h1 class="home-h1" set:html={c.opening.h1}></h1>
+        <p class="home-sub" set:html={put(c.opening.subline, { countries: listed })}></p>
+      </div>
+      <img class="home-pic" src="/team-discussion.jpg" alt={c.opening.imageAlt} width="1200" height="896" fetchpriority="high" />
     </div>
   </section>
 
@@ -341,6 +344,9 @@ const t = (v: string) => v;
 
 <style is:global>
   .home-open { padding: 64px 0 52px; }
+  /* The hero: the words on the left, the picture on the right; on a phone the picture goes under the words. */
+  .home-open .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 48px; align-items: center; }
+  .home-pic { display: block; width: 100%; height: auto; }
   .home-h1 { max-width: 26ch; font-size: clamp(1.9rem, 4.4vw, 2.9rem); }
   .home-sub { max-width: 62ch; margin: 22px 0 0; font-size: 1.14rem; line-height: 1.5; font-weight: 500; }
   .home-h2 { max-width: 34ch; }
@@ -432,6 +438,7 @@ const t = (v: string) => v;
   }
   @media (max-width: 759px) {
     .home-open { padding: 36px 0 32px; }
+    .home-open .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; }
     .home-sub { font-size: 1.02rem; }
     .fold-q { padding: 18px 16px; }
     .fold-h { font-size: 1.3rem; }

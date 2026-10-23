@@ -11,6 +11,7 @@ export const home = {
   opening: {
     h1: `E-invoicing news reaches you in pieces. You never know if you have the full picture.`,
     subline: `Some changes reach you late, and some don't reach you at all. Here are the ones we've counted in each country.`,
+    imageAlt: `Two colleagues discussing a printed document at an office table.`,
   },
   // The country cards: each folds open from its question, then a count and its start date, the sources read every week, and the link.
   countries: {
