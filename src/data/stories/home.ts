@@ -9,8 +9,8 @@ export const home = {
     description: `We keep track of the e-invoicing rules in {countries}, and when we find a change, we email the person who looks after the part of your invoicing it affects, with what changed for them and where it says so.`,
   },
   opening: {
-    h1: `E-invoicing news reaches you in pieces. You never know if you have them all.`,
-    subline: `The piece you missed turns up later, as a rush job.`,
+    h1: `E-invoicing news reaches you in pieces. You never know if you have the full picture.`,
+    subline: `Some changes reach you late, and some don't reach you at all. Here are the ones we've counted in each country.`,
   },
   // The country cards: a count and its start date, the sources read every week, and the link.
   countries: {
