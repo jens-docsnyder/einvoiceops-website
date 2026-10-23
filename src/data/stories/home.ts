@@ -12,13 +12,10 @@ export const home = {
     h1: `E-invoicing news reaches you in pieces. You never know if you have the full picture.`,
     subline: `Some changes reach you late, and some don't reach you at all. Here are the ones we've counted in each country.`,
   },
-  // The country cards: a count and its start date, the sources read every week, and the link.
+  // The country cards: each folds open from its question, then a count and its start date, the sources read every week, and the link.
   countries: {
-    h2: `How many of these changes reached you?`,
-    line: `Pick the country where you run your invoicing.`,
+    ask: `How many changes in {name} have reached you?`,
     changes: `changes we've counted since {since}`,
-    strip: `Each column is one change. The lit squares show which functions it touched. Point at a function to see its changes, or at a square to see that change.`,
-    stripPhone: `Each cell counts the changes in a quarter that touched a function. Tap a cell to see them, or a function name to see all of its changes.`,
     panelIdle: `Point at a function name to see the changes that touched it. On a phone, tap it.`,
     panelFn: `{fn}: touched by {n} of the {m} changes`,
     weekly: `Connected to {weekly} sources`,

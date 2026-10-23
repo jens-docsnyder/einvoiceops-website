@@ -121,10 +121,6 @@ const t = (v: string) => v;
 
   <section class="band band-tint band-ruled home-countries" id="countries">
     <div class="wrap">
-      <h2 class="band-h home-h2" set:html={c.countries.h2}></h2>
-      <p class="home-line" set:html={c.countries.line}></p>
-      <p class="home-key home-key-wide" set:html={c.countries.strip}></p>
-      <p class="home-key home-key-phone" set:html={c.countries.stripPhone}></p>
       <script is:inline>
         // The squares fill in left to right as a card comes into view. Without this script, or with reduced motion, they are all there from the start.
         (function () {
@@ -275,6 +271,9 @@ const t = (v: string) => v;
             var api = { release: function () { if (pin || hover) { pin = null; hover = null; render(); } } };
             holders.push(api);
             window.addEventListener('resize', function () { render(); });
+            // A closed card has no width, so the default row is drawn again when it opens.
+            var fold = card.closest('details');
+            if (fold) fold.addEventListener('toggle', function () { if (fold.open) render(); });
             render();
           }
           document.addEventListener('DOMContentLoaded', function () { [].slice.call(document.querySelectorAll('.card[data-card]')).forEach(init); });
@@ -284,11 +283,12 @@ const t = (v: string) => v;
       <ul class="cards">
         {cards.map((k) => (
           <li>
+            <details class="fold">
+            <summary class="fold-q"><h2 class="fold-h" set:html={put(c.countries.ask, { name: k.name })}></h2><span class="fold-tri" aria-hidden="true"></span></summary>
             <div class="card" data-card={k.cc} data-panel-idle={c.countries.panelIdle} data-panel-fn={c.countries.panelFn} data-l-source={c.countries.labelSource} data-l-fn={c.countries.labelFn}>
-              <a class="card-head" href={k.href}>
-                <span class="card-name">{k.name}</span>
+              <div class="card-head">
                 <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
-              </a>
+              </div>
               <p class="mx-head">{c.countries.labelFn}</p>
               <div class="mx">
                 {c.functions.names.map((n: string, fi: number) => (
@@ -317,6 +317,7 @@ const t = (v: string) => v;
                 <a class="card-go" href={k.href} set:html={put(c.countries.go, { name: k.name })}></a>
               </div>
             </div>
+            </details>
           </li>
         ))}
       </ul>
@@ -343,20 +344,24 @@ const t = (v: string) => v;
   .home-h1 { max-width: 26ch; font-size: clamp(1.9rem, 4.4vw, 2.9rem); }
   .home-sub { max-width: 62ch; margin: 22px 0 0; font-size: 1.14rem; line-height: 1.5; font-weight: 500; }
   .home-h2 { max-width: 34ch; }
-  .home-line { margin: 12px 0 0; font-size: 1.14rem; line-height: 1.5; font-weight: 500; }
 
   .home-countries { padding: 44px 0 48px; }
-  .cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .card { display: flex; flex-direction: column; height: 100%; background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 26px 28px 22px; color: var(--ink); text-decoration: none; }
-  .card:hover { border-color: var(--ink); }
-  .card-head { color: inherit; text-decoration: none; }
-  .card-head:hover .card-name { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
-  .card-head:focus-visible, .card-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .home-key { margin: 6px 0 0; color: var(--quiet); }
-  .home-key-phone { display: none; }
-  /* Three sizes on a card: the name, the number, and the one small size every other line uses. */
+  .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  /* Each country folds open from its question; closed, only the question and the triangle show. */
+  .fold { background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); }
+  .fold:hover, .fold[open] { border-color: var(--ink); }
+  .fold-q { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 28px; cursor: pointer; list-style: none; }
+  .fold-q::-webkit-details-marker { display: none; }
+  .fold-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .fold-h { margin: 0; font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; }
+  .fold-q:hover .fold-h { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+  .fold-tri { flex: none; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 11px solid var(--ink); transition: transform 0.2s; }
+  .fold[open] .fold-tri { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .fold-tri { transition: none; } }
+  .card { display: flex; flex-direction: column; padding: 0 28px 22px; color: var(--ink); }
+  .card-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* Three sizes on a card: the question, the number, and the one small size every other line uses. */
   .card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; margin-bottom: 22px; }
-  .card-name { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; }
   .card-count { display: flex; align-items: baseline; gap: 12px; }
   .card-n { font-family: var(--serif); font-size: 3rem; line-height: 1; }
   .card-l { font-size: 0.88rem; font-weight: 600; }
@@ -365,9 +370,9 @@ const t = (v: string) => v;
   .card-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #2f9e44; animation: card-blink 2s ease-out infinite; }
   @keyframes card-blink { 0% { box-shadow: 0 0 0 0 rgba(47, 158, 68, 0.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(47, 158, 68, 0); } }
   @media (prefers-reduced-motion: reduce) { .card-dot { animation: none; } }
-  .card-go { color: var(--ink); font-size: 0.88rem; font-weight: 700; text-decoration: none; border: 2px solid var(--ink); padding: 9px 16px; }
+  .card-go { color: #fff; background: var(--accent); font-size: 1rem; font-weight: 700; text-decoration: none; border: 2px solid var(--accent); padding: 13px 24px; }
   .card-go::after { content: ' \2192'; }
-  .card-go:hover { background: var(--ink); color: var(--page); }
+  .card-go:hover { background: var(--ink); border-color: var(--ink); color: var(--page); }
 
   /* The matrix: a row for each function, a column for each change, lit where the change touched the function. The rows touch each other
      (the space between two squares is part of the row), so moving from one function to the next never passes over nothing. */
@@ -427,10 +432,10 @@ const t = (v: string) => v;
   }
   @media (max-width: 759px) {
     .home-open { padding: 36px 0 32px; }
-    .home-key-wide { display: none; }
-    .home-key-phone { display: block; }
     .home-sub { font-size: 1.02rem; }
-    .card { padding: 20px 16px 18px; }
+    .fold-q { padding: 18px 16px; }
+    .fold-h { font-size: 1.3rem; }
+    .card { padding: 0 16px 18px; }
     .card-n { font-size: 2.4rem; }
     .card-foot { flex-direction: column; align-items: stretch; }
     .card-go { text-align: center; }

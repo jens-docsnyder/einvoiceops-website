@@ -34,6 +34,8 @@ function measure(page) {
       shown: s.display !== 'none' && s.visibility !== 'hidden', focused: d.activeElement === a };
   }) : null;
   const nr = nav ? nav.getBoundingClientRect() : null;
+  // A closed fold draws nothing, so every fold is opened first and its grids are measured as a visitor sees them.
+  d.querySelectorAll('main details').forEach((x) => { x.open = true; });
   const grids = [...d.querySelectorAll('main *')].filter((e) => getComputedStyle(e).display === 'grid')
     .map((e) => getComputedStyle(e).gridTemplateColumns.split(' ').length);
   results[page] = { inner: f.contentWindow.innerWidth, scroll: d.documentElement.scrollWidth, links, nav: nr && { left: nr.left, right: nr.right }, grids };
