@@ -129,6 +129,6 @@ A Belgian mandate operation is ready when four conditions hold:
 - Every Belgian-established entity's Peppol ID is registered in the Belgian SMP and verifiable by counterparties - send a Peppol SMP lookup for the entity's KBO number and confirm a registered endpoint returns
 - All outbound domestic B2B invoices route via Peppol in Peppol BIS 3.0 format with no PDF substitutes for mandated transactions
 - Inbound Peppol invoices from Belgian suppliers automatically reach the AP system - not queuing unread in the access point
-- 7-year archiving of transmitted XML invoice data is active and owned by a named person, separate from PDF storage
+- 7-year archiving of invoices is active and owned by a named person; the official FPS BOSA page says any format is allowed and that keeping the original electronic format (XML) is strongly recommended
 
 The operations test: if a key Belgian supplier sends a Peppol invoice today, does it reach your AP system automatically, or does it sit in an access point queue? If the answer is "I'm not sure," inbound compliance is not done.

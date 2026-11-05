@@ -1,5 +1,14 @@
 country_code: BE
 entries:
+  - timestamp: 2026-11-05T13:27:37Z
+    type: error-correction
+    field: "archiving checklist"
+    old_value: "7-year archiving of transmitted XML invoice data, separate from PDF storage"
+    new_value: "7-year archiving of invoices; keeping the original electronic format (XML) is strongly recommended, any format is allowed"
+    description: "The page read keeping the XML as a requirement. The official FPS BOSA page says invoices may be kept on paper or electronically regardless of the original format and that retaining the original electronic format (XML) is strongly recommended. Seven years is unchanged."
+    source_url: "https://einvoice.belgium.be/en/article/how-do-i-keep-invoices-received-electronic-invoicing"
+    mandate_version_before: 2
+    mandate_version_after: 2
   - timestamp: 2026-10-15T19:31:20Z
     type: error-correction
     field: "penalty_max"

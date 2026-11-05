@@ -131,6 +131,6 @@ A Polish KSeF operation is ready when four conditions hold:
 - Every Polish entity's KSeF API connection is live with a valid NIP-linked authorization token, and the ZAW-FA form has been filed for every billing entity or SSC acting on its behalf
 - Every billing scenario produces valid FA(3) XML with correct GTU codes, Split Payment flags, and related-party indicators - confirmed by successful KSeF acceptance, not only schema pre-validation
 - The KSeF number flows automatically back into the ERP header record and is included in JPK_V7 filings and Split Payment transfer descriptions
-- AP Operations downloads and archives the KSeF-sealed XML for all inbound supplier invoices, not the PDF copy
+- Each invoice is stored in KSeF for 10 years counted from the end of the year; AP Operations knows where the KSeF-sealed XML and the KSeF ID of every inbound supplier invoice can be retrieved, not only the PDF copy
 
-The audit test: if a Polish tax inspector asks for the legal original of any invoice from the past two years, can you produce the KSeF-sealed XML with the KSeF ID? If AP is archiving PDFs and not the KSeF XML, the operation is not compliant.
+The audit test: if a Polish tax inspector asks for the legal original of any invoice, can you produce the KSeF-sealed XML with the KSeF ID? KSeF stores each invoice for 10 years counted from the end of the year. If AP holds only PDF copies, it has no KSeF ID to point to.
