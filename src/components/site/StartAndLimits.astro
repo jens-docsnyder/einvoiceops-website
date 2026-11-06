@@ -4,7 +4,7 @@
 // and one line each; a column on a phone), the call to action under them, then the "What we don't do" bullets
 // (the limits as short bullets).
 interface Props {
-  start: { h2: any; intro?: any; steps: { label?: string; text: any }[]; cta?: any; pilot?: any };
+  start: { h2: any; lead?: any; intro?: any; steps: { label?: string; text: any }[]; cta?: any; pilot?: any };
   limits: { h2: any; lines: { lead: any; text: any }[] };
   tone?: 'white' | 'tint';
   ctaHref?: string;
@@ -15,6 +15,7 @@ const { start, limits, tone = 'tint', ctaHref = '#contact', t } = Astro.props;
 <section class={`band band-${tone} sl`}>
   <div class="wrap">
     <h2 class="band-h" set:html={t(start.h2)}></h2>
+    {start.lead && <p class="sl-lead measure" set:html={t(start.lead)}></p>}
     {start.intro && <p class="sl-intro" set:html={t(start.intro)}></p>}
     <ol class="sl-steps">
       {start.steps.map((s, i) => (
@@ -26,7 +27,7 @@ const { start, limits, tone = 'tint', ctaHref = '#contact', t } = Astro.props;
     </ol>
     {start.cta && <p class="sl-cta"><a class="btn" href={ctaHref} set:html={t(start.cta)}></a></p>}
     {start.pilot && <p class="sl-pilot" set:html={t(start.pilot)}></p>}
-    <div class="sl-limits" role="region" aria-labelledby="sl-limits-h">
+    <div class={`sl-limits${limits.lines.length > 3 ? " sl-limits-4" : ""}`} role="region" aria-labelledby="sl-limits-h">
       <h2 class="sl-limits-h" id="sl-limits-h" set:html={t(limits.h2)}></h2>
       {limits.lines.map((l) => (
         <p><strong set:html={t(l.lead)}></strong> <span set:html={t(l.text)}></span></p>
@@ -36,6 +37,7 @@ const { start, limits, tone = 'tint', ctaHref = '#contact', t } = Astro.props;
 </section>
 
 <style is:global>
+  .sl-lead { margin: 14px 0 0; font-size: 1.05rem; }
   .sl-intro { margin: 0; font-size: 1.05rem; }
   .sl .band-h { max-width: 30ch; }
   /* Three steps across under large accent numbers; a column on a phone. */
@@ -46,6 +48,7 @@ const { start, limits, tone = 'tint', ctaHref = '#contact', t } = Astro.props;
   .sl-pilot { margin: 16px 0 0; font-weight: 600; max-width: 52ch; }
   /* The limits as one quiet row under a rule. */
   .sl-limits { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--box-border); display: grid; grid-template-columns: 200px repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .sl-limits-4 { grid-template-columns: 180px repeat(4, minmax(0, 1fr)); gap: 24px; }
   .sl-limits-h { font-size: 1.1rem; margin: 0; }
   .sl-limits p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--quiet); }
   .sl-limits strong { display: block; color: var(--ink); font-weight: 600; }

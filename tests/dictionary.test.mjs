@@ -88,8 +88,10 @@ test('every English sentence of the home page story is in the original index.ast
   assert.ok(leaves.length >= 20, 'the story holds the home page copy');
   // Copy written after the language work, locked 2026-10-22: the hero, the subheader and the country banner; the country card key and the connected line; 2026-10-22 evening: the card button and the panel labels; 2026-10-23: each card's question.
   const REWRITTEN = ['home.opening.h1', 'home.opening.subline', 'home.opening.imageAlt', 'home.countries.ask', 'home.countries.weekly', 'home.countries.panelIdle', 'home.countries.panelFn', 'home.countries.go', 'home.countries.labelSource', 'home.countries.labelFn'];
+  // Home page value story, 2026-11-06: the new sections' keys, new copy that was never in the original page.
+  const NEW = ['home.reach.', 'home.cards.', 'home.yours.', 'home.countries.askAll', 'home.countries.tabsLabel', 'home.onboarding.lead', 'home.limits.lines[2]'];
   for (const [at, text] of leaves) {
-    if (REWRITTEN.includes(at)) continue;
+    if (REWRITTEN.includes(at) || NEW.some((n) => at.startsWith(n))) continue;
     for (const piece of text.split(/\{\w+\}/).filter((p) => p.trim().length > 0)) {
       assert.ok(src.includes(piece), `${at}: ${JSON.stringify(piece)} is not in the original home page`);
     }

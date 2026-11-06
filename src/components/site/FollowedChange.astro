@@ -43,9 +43,11 @@ interface Props {
   // The line from the chosen box above runs on as a frame around this section,
   // its top edge on the band's top edge where the line arrives (ChangeBoxes.astro draws it in once the line is down).
   framed?: boolean;
+  // Extra class on the h2 (the home page's tabs hide it when the tab already names the country).
+  hClass?: string;
   t: (v: any) => string;
 }
-const { tone = 'white', copy, disclosure, t, framed = false } = Astro.props;
+const { tone = 'white', copy, disclosure, t, framed = false, hClass = '' } = Astro.props;
 const intro = copy.introShort ?? copy.intro;
 const arrivesText = copy.arrives.textShort ?? copy.arrives.text;
 const FNS = ['o', 'i', 'c', 't', 'm', 'a'];
@@ -59,7 +61,7 @@ const startName = (copy.owners[FNS.indexOf(start.fn)]?.name ?? '').toLowerCase()
 <section class={`band band-${tone} fc-section${framed ? ' fc-framed' : ''}`}>
   <div class="wrap"><div class={framed ? 'fc-frame' : 'fc-body'}>
     {framed && <svg class="fc-frame-svg" aria-hidden="true"><path class="fc-frame-l" pathLength="1"></path><path class="fc-frame-r" pathLength="1"></path></svg>}
-    <h2 class="band-h fc-h" set:html={t(copy.h2)}></h2>
+    <h2 class={`band-h fc-h${hClass ? " " + hClass : ""}`} set:html={t(copy.h2)}></h2>
     <p class="fc-intro measure quiet" set:html={t(intro)}></p>
 
     {copy.shows ? (

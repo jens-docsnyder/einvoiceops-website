@@ -7,15 +7,22 @@
 import Site from '../../layouts/Site.astro';
 import StartAndLimits from './StartAndLimits.astro';
 import ContactForm from './ContactForm.astro';
+import FollowedChange from './FollowedChange.astro';
+import FunctionCards from './FunctionCards.astro';
+import YourPart from './YourPart.astro';
+import homeMails from '../../data/home-mails.json';
 import { home } from '../../data/stories/home';
 import { homeContact } from '../../data/stories/home-contact';
 import { storyFor } from '../../i18n/stories';
 import { countryPagesFor, countryNav } from '../../data/countries';
-import { publications, longDate, withBodies } from './format';
+import { publications, longDate, withBodies, fill } from './format';
+import { storyToday, renderText } from './switch.js';
 import { dictionary } from '../../i18n/dictionaries/index';
 import { urlFor } from '../../i18n/registry';
 import { deBodies } from '../../data/stories/de';
-import { beBodies } from '../../data/stories/be';
+import { beBodies, be as beStory } from '../../data/stories/be';
+import { de as deStory } from '../../data/stories/de';
+import { frStandalone } from '../../data/stories/fr-standalone';
 import fr from '../../data/fanout/FR.json';
 import de from '../../data/fanout/DE.json';
 import be from '../../data/fanout/BE.json';
@@ -103,6 +110,21 @@ const listed = names.length > 1 ? `${names.slice(0, -1).join(', ')} ${ui.listAnd
 
 // Starting and the limits go to the shared section as the country pages give it.
 const t = (v: string) => v;
+
+// "What reaches you": each country's followed example from its story file, with the home intro in place of the page's own
+// (introShort is dropped so the intro shown is the home one). Each is rendered with its own country's fan-out data, as its page does.
+// Only the English copy carries this section; a language without the keys renders none of it.
+const today = storyToday(process.env);
+const reach = (c as any).reach;
+const reachOrder = ['DE', 'FR', 'BE'];
+const followedOf: Record<string, any> = { DE: (deStory as any).followed, FR: (frStandalone as any).followed, BE: (beStory as any).followed };
+const reachTabs = reach ? reachOrder.map((cc) => ({
+  cc,
+  label: reach.tabs[cc],
+  copy: { ...followedOf[cc], h2: reach.tabs[cc], intro: reach.intros[cc], introShort: undefined },
+  disclosure: cc === 'BE' ? (beStory as any).disclosure : undefined,
+  t: (v: any) => renderText(v, (x: string) => fill(x, fanouts[cc], locale, ui.changeWord), today),
+})) : [];
 ---
 <Site
   locale={locale}
@@ -283,11 +305,14 @@ const t = (v: string) => v;
           document.addEventListener('click', function (e) { if (!e.target.closest('.mx-lab, .mx .on, .mq-c, .mx-panel')) holders.forEach(function (h) { h.release(); }); });
         })();
       </script>
-      <ul class="cards">
+      <h2 class="cx-h" set:html={c.countries.askAll}></h2>
+      <div class="cx-tabs" role="tablist" aria-label={c.countries.tabsLabel}>
+        {cards.map((k, i) => <button type="button" role="tab" class="cx-tab" id={`cx-tab-${k.cc}`} aria-controls={`cx-panel-${k.cc}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{k.name}</button>)}
+      </div>
+      <ul class="cards cx-panels">
         {cards.map((k) => (
-          <li>
-            <details class="fold">
-            <summary class="fold-q"><h2 class="fold-h" set:html={put(c.countries.ask, { name: k.name })}></h2><span class="fold-tri" aria-hidden="true"></span></summary>
+          <li class="cx-panel" role="tabpanel" id={`cx-panel-${k.cc}`} aria-labelledby={`cx-tab-${k.cc}`}>
+            <h3 class="cx-nojs" set:html={k.name}></h3>
             <div class="card" data-card={k.cc} data-panel-idle={c.countries.panelIdle} data-panel-fn={c.countries.panelFn} data-l-source={c.countries.labelSource} data-l-fn={c.countries.labelFn}>
               <div class="card-head">
                 <span class="card-count"><span class="card-n">{k.changes}</span><span class="card-l" set:html={put(c.countries.changes, { since: k.since })}></span></span>
@@ -320,22 +345,104 @@ const t = (v: string) => v;
                 <a class="card-go" href={k.href} set:html={put(c.countries.go, { name: k.name })}></a>
               </div>
             </div>
-            </details>
           </li>
         ))}
       </ul>
+      <script is:inline>
+        // One country shown at a time, Germany first; a tab switches it. Without this script every country shows, each under its name.
+        (function () {
+          var root = document.currentScript.closest('.home-countries');
+          root.classList.add('cx-js');
+          var tabs = [].slice.call(root.querySelectorAll('.cx-tab'));
+          var panels = [].slice.call(root.querySelectorAll('.cx-panel'));
+          function pick(i) {
+            tabs.forEach(function (t, j) { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+            panels.forEach(function (p, j) { p.hidden = j !== i; });
+            window.dispatchEvent(new Event('resize'));
+          }
+          tabs.forEach(function (t, i) {
+            t.addEventListener('click', function () { pick(i); });
+            t.addEventListener('keydown', function (e) {
+              var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : -9;
+              if (n === -9) return; n = (n + tabs.length) % tabs.length; e.preventDefault(); pick(n); tabs[n].focus();
+            });
+          });
+          pick(0);
+        })();
+      </script>
     </div>
   </section>
 
-  <section class="band band-white home-fns">
+  {c.yours && <YourPart copy={c.yours} items={(homeMails as any[]).map((m, i) => ({ ...m, outcome: c.yours.outcomes[i], context: c.yours.contexts[i] }))} />}
+
+  {!c.yours && reach && (
+    <>
+      <section class="band band-white home-reach" id="reach">
+        <div class="wrap">
+          <h2 class="band-h home-h2" set:html={reach.h2}></h2>
+          <p class="reach-lead measure" set:html={reach.lead}></p>
+          {reach.readiness.built && <p class="reach-lead measure" set:html={reach.readiness.text}></p>}
+          {reach.quiet.built && <p class="reach-lead measure" set:html={reach.quiet.text}></p>}
+          <p class="reach-into measure" set:html={reach.into}></p>
+          <div class="reach-tabs" role="tablist" aria-label={reach.tabsLabel}>
+            {reachTabs.map((tab, i) => (
+              <button type="button" role="tab" class="reach-tab" id={`reach-tab-${tab.cc}`} aria-controls={`reach-panel-${tab.cc}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{tab.label}</button>
+            ))}
+          </div>
+        </div>
+      </section>
+      <div class="reach-panels">
+        {reachTabs.map((tab) => (
+          <div class="reach-panel" role="tabpanel" id={`reach-panel-${tab.cc}`} aria-labelledby={`reach-tab-${tab.cc}`}>
+            <FollowedChange copy={tab.copy} disclosure={tab.disclosure} tone="white" hClass="reach-h" t={tab.t} />
+          </div>
+        ))}
+      </div>
+      <script is:inline>
+        // Tabs: real buttons, arrow keys, Home and End move between them. Without this script all three examples show, one under the other,
+        // each under its country's name.
+        (function () {
+          var root = document.querySelector('.home-reach');
+          if (!root) return;
+          var tabs = [].slice.call(root.querySelectorAll('.reach-tab'));
+          var panels = [].slice.call(document.querySelectorAll('.reach-panel'));
+          if (!tabs.length || tabs.length !== panels.length) return;
+          document.documentElement.classList.add('reach-js');
+          function show(i, focus) {
+            tabs.forEach(function (t, j) { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+            panels.forEach(function (p, j) { p.hidden = j !== i; });
+            if (focus) tabs[i].focus();
+          }
+          tabs.forEach(function (t, i) {
+            t.addEventListener('click', function () { show(i, false); });
+            t.addEventListener('keydown', function (e) {
+              var n = tabs.length, k = e.key, j = -1;
+              if (k === 'ArrowRight') j = (i + 1) % n; else if (k === 'ArrowLeft') j = (i + n - 1) % n; else if (k === 'Home') j = 0; else if (k === 'End') j = n - 1;
+              if (j >= 0) { e.preventDefault(); show(j, true); }
+            });
+          });
+          show(0, false);
+        })();
+      </script>
+    </>
+  )}
+
+  {!c.yours && <section class="band band-white home-fns">
     <div class="wrap">
       <h2 class="band-h home-h2" set:html={c.functions.h2}></h2>
-      <p class="home-fns-p" set:html={c.functions.intro}></p>
-      <ul class="tiles">
-        {c.functions.names.map((n) => <li class="tile" set:html={n}></li>)}
-      </ul>
+      <p class="home-fns-p" set:html={c.cards ? c.cards.intro : c.functions.intro}></p>
+      {c.cards ? (
+        <>
+          <FunctionCards cue={c.cards.cue} cards={c.cards.items.map((k: any, i: number) => ({ ...k, label: c.functions.names[i], back: k.back }))} />
+          {c.cards.after && <p class="fcards-after" set:html={c.cards.after}></p>}
+        </>
+      ) : (
+        <ul class="tiles">
+          {c.functions.names.map((n) => <li class="tile" set:html={n}></li>)}
+        </ul>
+      )}
     </div>
-  </section>
+  </section>}
 
   <StartAndLimits start={c.onboarding} limits={c.limits} tone="tint" ctaHref="#contact" t={t} />
 
@@ -359,6 +466,16 @@ const t = (v: string) => v;
   .home-h2 { max-width: 34ch; }
 
   .home-countries { padding: 44px 0 48px; }
+  .cx-h { margin: 0 0 20px; font-family: var(--serif); font-size: 1.9rem; line-height: 1.2; }
+  .cx-tabs { display: none; gap: 4px; border-bottom: 3px solid var(--ink); }
+  .cx-js .cx-tabs { display: flex; }
+  .cx-tab { appearance: none; font: 700 1.05rem/1.2 var(--sans); color: var(--ink); background: var(--page); border: 1px solid var(--box-border); border-bottom: 0; padding: 12px 24px; cursor: pointer; }
+  .cx-tab:hover { border-color: var(--ink); }
+  .cx-tab[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .cx-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cx-js .cx-nojs { display: none; }
+  .cx-nojs { font-family: var(--serif); font-size: 1.3rem; margin: 24px 0 8px; }
+  .cx-panels > li { border: 1px solid var(--ink); border-top: 0; background: var(--page); padding-top: 18px; }
   .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
   /* Each country folds open from its question; closed, only the question and the triangle show. */
   .fold { background: var(--page); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); }
@@ -392,6 +509,9 @@ const t = (v: string) => v;
   .mx { display: grid; grid-template-columns: 150px minmax(0, 1fr); grid-template-rows: repeat(6, 23px) auto; align-items: stretch; transition: grid-template-rows 0.22s ease; }
   .mx-lab { appearance: none; background: none; border: 0; padding: 0; margin: 0; font: 600 0.88rem/1.2 var(--sans); color: var(--ink); text-align: left; cursor: pointer; display: flex; align-items: center; transition: opacity 0.22s ease; }
   .mx-lab:hover, .mx-lab.act { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+  .mx-lab { position: relative; }
+  .mx-lab::before { content: '>'; position: absolute; left: -14px; top: 50%; transform: translateY(-52%); color: var(--accent); font-weight: 800; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+  .mx-lab.act::before { opacity: 1; }
   .mx-lab:focus-visible, .mx-col button:focus-visible, .mq-c:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .mx-row { display: grid; column-gap: 3px; min-height: 0; padding: 2px 0 3px; transition: opacity 0.22s ease; }
   .mx-col { display: flex; gap: 2px; min-height: 0; }
@@ -435,6 +555,18 @@ const t = (v: string) => v;
   .cs-js .card.is-in .mx-col { opacity: 1; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+  .home-reach { padding-bottom: 0; }
+  .reach-lead { margin: 14px 0 0; font-size: 1.05rem; }
+  .reach-into { margin: 14px 0 0; font-weight: 600; }
+  .reach-tabs { display: none; margin-top: 28px; gap: 4px; border-bottom: 2px solid var(--ink); }
+  .reach-js .reach-tabs { display: flex; }
+  .reach-tab { appearance: none; font: 700 1rem/1.2 var(--sans); color: var(--ink); background: var(--tint); border: 1px solid var(--box-border); border-bottom: 0; padding: 12px 22px; cursor: pointer; }
+  .reach-tab[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .reach-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .reach-panel .fc-section { padding-top: 28px; }
+  .reach-panel .fc-intro { margin-top: 0; }
+  .reach-js .reach-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .reach-panel[hidden] { display: none; }
   .home-fns-p { max-width: 62ch; margin: 14px 0 0; }
   .tiles { list-style: none; margin: 24px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
   .tile { background: var(--tint); border: 1px solid var(--box-border); border-top: 3px solid var(--ink); padding: 14px 12px; min-height: 64px; display: flex; align-items: center; font-weight: 600; font-size: 0.95rem; line-height: 1.3; }

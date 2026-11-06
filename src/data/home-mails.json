@@ -1,0 +1,171 @@
+[
+ {
+  "fn": "Outbound invoicing",
+  "cc": "DE",
+  "country": "Germany",
+  "date": "27 March 2024",
+  "body": "German federal parliament",
+  "line": "Parliament creates the duty to use e-invoices between businesses.",
+  "subject": "Germany: e-invoices between businesses become the rule from 1 January 2025",
+  "headline": "UStG § 14 (Ausstellung von Rechnungen) moved to a new version, and everything we hold about it is already in force.",
+  "when": "In force since 1 January 2025.",
+  "quotes": [
+   {
+    "text": "An electronic invoice is a structured electronic invoice that is issued, transmitted and received in a structured electronic format enabling electronic processing.",
+    "cite": "§ 14 (1) sentence 3 UStG, in force 1 January 2025"
+   },
+   {
+    "text": "The structured electronic format must conform to EN 16931 or be agreed between issuer and recipient allowing correct extraction conforming to or interoperable with EN 16931.",
+    "cite": "§ 14 (1) sentence 6 UStG, in force 1 January 2025"
+   }
+  ],
+  "checks": [
+   "The format or syntax, and which version is in force: what your billing setup has for Germany today.",
+   "Whether a document type you still issue is permitted: what your billing setup has for Germany today."
+  ],
+  "for": "Outbound Invoicing",
+  "source": "Source: gesetze-im-internet.de (Federal Ministry of Justice), https://www.gesetze-im-internet.de/ustg_1980/__14.html.",
+  "disclosure": "",
+  "lead": "It applied 40 weeks after it was published, on 1 January 2025.",
+  "subject_now": "Germany: 1 new for you."
+ },
+ {
+  "fn": "Inbound invoicing",
+  "cc": "BE",
+  "country": "Belgium",
+  "date": "20 February 2026",
+  "body": "Belgian federal parliament",
+  "line": "Law takes foreign VAT-registered businesses without a Belgian establishment out of the e-invoice duty.",
+  "subject": "Belgium: who must be able to receive e-invoices changed on 20 February 2026",
+  "headline": "W.Btw art. 53 moved to a new version, and everything we hold about it is already in force.",
+  "when": "In force since 20 February 2026.",
+  "quotes": [
+   {
+    "text": "The recipient of a structured electronic invoice issued under § 2bis who is identified for VAT under article 50 § 1 first paragraph 1° must be able, itself or through a third party, to receive it in the format in which it was issued, and cannot invoke the customer-acceptance rule of § 2 fourth paragraph.",
+    "cite": "§ 2bis, vijfde lid, in force 20 February 2026"
+   },
+   {
+    "text": "The supplier is not bound to issue or have issued a structured electronic invoice when the recipient is for technical reasons unable to receive it, itself or via a third party in its name and for its account.",
+    "cite": "§ 2bis, zesde lid, eerste zin, in force 20 February 2026"
+   }
+  ],
+  "checks": [
+   "Which formats have to be accepted on arrival: what your receiving setup has for Belgium today.",
+   "Acceptance and rejection states, and their deadlines: what your receiving setup has for Belgium today."
+  ],
+  "for": "Inbound Invoicing",
+  "source": "Source: Fisconetplus (Belgian FPS Finance), https://eservices.minfin.fgov.be/myminfin-web/pages/fisconet/document/773cb22d-053e-4d4d-ae1f-7ddadab87d78.",
+  "disclosure": "This rests on Fisconetplus, the tax administration's copy, not the gazette, and on 20 September 2026 the amending acts it names were checked against Justel's register of amending acts and corroborated; that shows which text is in force and what amended it, not that every sentence matches the gazette word for word; reading each article against its amending act in the gazette would close the gap, a session's work per act and no money.",
+  "lead": "It applied the day it was published.",
+  "subject_now": "Belgium: 1 new for you."
+ },
+ {
+  "fn": "Connectivity",
+  "cc": "FR",
+  "country": "France",
+  "date": "20 February 2026",
+  "body": "French parliament",
+  "line": "The platform itself sends invoice, transaction and payment data to the tax administration.",
+  "subject": "France: invoices between companies must go through a certified platform",
+  "headline": "Code général des impôts, article 289 bis moved to a new version, and what we hold about it runs out on 1 January 2027.",
+  "when": "In force since 21 February 2026, until 1 January 2027 (in 10 weeks).",
+  "quotes": [
+   {
+    "text": "In this later version, the option to use the government portal for invoice exchange was removed: emission, transmission and receipt of electronic invoices between French-established assujettis must go through a plateforme agréée.",
+    "cite": "Article 289 bis, I, in force 21 February 2026 to 1 January 2027"
+   },
+   {
+    "text": "Paragraph II, which in the earlier version routed invoicing data through the government portal to the administration, is repealed in this version.",
+    "cite": "Article 289 bis, II, in force 21 February 2026 to 1 January 2027"
+   }
+  ],
+  "checks": [
+   "Which channel or network is mandated or forbidden: what your connection has for France today."
+  ],
+  "for": "Transport and Connectivity",
+  "source": "Source: Légifrance, https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000053546660. The page carries no date of its own; we saw it change on 12 October 2026.",
+  "disclosure": "",
+  "lead": "It applied the day after it was published.",
+  "subject_now": "France: 1 new for you. Next date 1 January 2027."
+ },
+ {
+  "fn": "Tax engine",
+  "cc": "BE",
+  "country": "Belgium",
+  "date": "14 July 2025",
+  "body": "Belgian federal government",
+  "line": "Royal decree adds fines for lacking the means to send and receive e-invoices.",
+  "subject": "Belgium: fines for late invoices and for not being able to e-invoice, from 1 January 2026",
+  "headline": "KB nr. 44 Bijlage Afd. 2 Rubriek I was inserted, and everything we hold about it is already in force.",
+  "when": "In force since 1 January 2026.",
+  "quotes": [
+   {
+    "text": "For the first failure to issue an invoice or equivalent document within the prescribed period: a fine of 50 EUR per invoice with a maximum of 500 EUR per case.",
+    "cite": "KB nr. 44, Bijlage, Afdeling 2, Rubriek I, A, in force 1 January 2026"
+   },
+   {
+    "text": "For the first failure to have technical means to issue and receive a structured electronic invoice: a fine of 1,500 EUR.",
+    "cite": "KB nr. 44, Bijlage, Afdeling 2, Rubriek I, C, in force 1 January 2026"
+   }
+  ],
+  "checks": [
+   "Penalties, and the exposure they create: what your tax determination has for Belgium today."
+  ],
+  "for": "Tax Engine",
+  "source": "Source: Fisconetplus (Belgian FPS Finance), https://eservices.minfin.fgov.be/myminfin-web/pages/fisconet/document/7c905590-ec02-43a4-bdf0-8400033a43e9.",
+  "disclosure": "This rests on Fisconetplus, the tax administration's copy, not the gazette, and on 20 September 2026 the amending acts it names were checked against Justel's register of amending acts and corroborated; that shows which text is in force and what amended it, not that every sentence matches the gazette word for word; reading each article against its amending act in the gazette would close the gap, a session's work per act and no money.",
+  "lead": "It applied 24 weeks after it was published, on 1 January 2026.",
+  "subject_now": "Belgium: 1 new for you."
+ },
+ {
+  "fn": "Master data",
+  "cc": "FR",
+  "country": "France",
+  "date": "28 July 2026",
+  "body": "French government",
+  "line": "Directory must list members of a VAT group.",
+  "subject": "France: the central directory now lists members of a VAT group, from 29 July 2026",
+  "headline": "Code général des impôts, annexe II, articles 242 nonies B à H moved to a new version.",
+  "when": "In force since 29 July 2026.",
+  "quotes": [
+   {
+    "text": "The central directory registers taxable persons subject to article 289 bis, public-law legal persons subject to electronic invoicing obligations under the public procurement code, certified platforms mentioned in article 290 B, and members of a VAT group (assujetti unique).",
+    "cite": "Article 242 nonies H, I, in force 29 July 2026"
+   }
+  ],
+  "checks": [
+   "Which identifier must be on a record, and in what form: what your master data has for France today.",
+   "Who is in scope, and on which reference date: what your master data has for France today."
+  ],
+  "for": "Master Data",
+  "source": "Source: Légifrance, https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054552531.",
+  "disclosure": "",
+  "lead": "It applied the day after it was published.",
+  "subject_now": "France: 1 new for you."
+ },
+ {
+  "fn": "Archiving",
+  "cc": "DE",
+  "country": "Germany",
+  "date": "29 October 2024",
+  "body": "German federal parliament",
+  "line": "Law shortens invoice retention to eight years.",
+  "subject": "Germany: keep invoices for eight years instead of ten, from 1 January 2025",
+  "headline": "UStG § 14b (Aufbewahrung von Rechnungen) moved to a new version, and everything we hold about it is already in force.",
+  "when": "In force since 1 January 2025.",
+  "quotes": [
+   {
+    "text": "An entrepreneur must retain an invoice copy issued by them or a third party on their behalf, and all received invoices, for eight years.",
+    "cite": "§ 14b (1) sentence 1 UStG, in force 1 January 2025"
+   }
+  ],
+  "checks": [
+   "Retention duration: what your archive has for Germany today."
+  ],
+  "for": "Archiving",
+  "source": "Source: gesetze-im-internet.de (Federal Ministry of Justice), https://www.gesetze-im-internet.de/ustg_1980/__14b.html.",
+  "disclosure": "",
+  "lead": "It applied 9 weeks after it was published, on 1 January 2025.",
+  "subject_now": "Germany: 1 new for you."
+ }
+]

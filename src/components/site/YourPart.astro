@@ -1,0 +1,125 @@
+---
+// "What you'd have heard from us": the reader picks the part of the invoicing they look after and sees, for that part,
+// one real change that touched it, the mail item the person looking after it gets from us (verbatim from the sender's
+// output, src/data/home-mails.json), and one sentence on what is different for them. One part shows at a time; without
+// JavaScript all six show, each under its name.
+interface Item {
+  fn: string; cc: string; country: string; date: string; body: string; line: string;
+  lead: string; subject: string; headline: string; when: string;
+  quotes: { text: string; cite: string }[]; checks: string[]; for: string; source: string; disclosure: string;
+  outcome: string; context: string;
+}
+interface Props {
+  copy: { h2: string; intro: string; tabsLabel: string; changeLabel: string; mailLabel: string; diffLabel: string; from: string; to: string; quoteLabel: string; checkLabel: string };
+  items: Item[];
+}
+const { copy, items } = Astro.props;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
+---
+<section class="band band-white yp" id="your-part">
+  <div class="wrap">
+    <h2 class="band-h yp-h" set:html={copy.h2}></h2>
+    <p class="yp-intro" set:html={copy.intro}></p>
+    <div class="yp-tabs" role="tablist" aria-label={copy.tabsLabel}>
+      {items.map((it, i) => <button type="button" role="tab" class="yp-tab" id={`yp-tab-${slug(it.fn)}`} aria-controls={`yp-${slug(it.fn)}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{it.fn}</button>)}
+    </div>
+    {items.map((it) => (
+      <div class="yp-panel" role="tabpanel" id={`yp-${slug(it.fn)}`} aria-labelledby={`yp-tab-${slug(it.fn)}`}>
+        <h3 class="yp-nojs">{it.fn}</h3>
+        <div class="yp-story">
+          <p class="yp-ctx" set:html={it.context}></p>
+          <div class="yp-mailwrap">
+            <article class="yp-mail">
+              <dl class="yp-hdr">
+                <div><dt>From</dt><dd>{copy.from}</dd></div>
+                <div><dt>To</dt><dd>{copy.to}</dd></div>
+                <div class="yp-subj"><dt>Subject</dt><dd>{it.subject}</dd></div>
+              </dl>
+              <div class="yp-mbody">
+                <p class="yp-hl">{it.headline}</p>
+                <p class="yp-when">{it.when}</p>
+                {it.quotes.length > 0 && <p class="yp-ml">{copy.quoteLabel}</p>}
+                {it.quotes.map((q) => <blockquote class="yp-q"><p>{q.text}</p><cite>{q.cite}</cite></blockquote>)}
+                {it.checks.length > 0 && <p class="yp-ml">{copy.checkLabel}</p>}
+                {it.checks.length > 0 && <ul class="yp-checks">{it.checks.map((c) => <li>{c}</li>)}</ul>}
+                <p class="yp-for">For: {it.for}.</p>
+                <p class="yp-src">{it.source}</p>
+                {it.disclosure && <p class="yp-disc">{it.disclosure}</p>}
+              </div>
+            </article>
+          </div>
+          <p class="yp-out" set:html={it.outcome}></p>
+        </div>
+      </div>
+    ))}
+  </div>
+  <script is:inline>
+    (function () {
+      var root = document.currentScript.closest('.yp');
+      root.classList.add('yp-js');
+      var tabs = [].slice.call(root.querySelectorAll('.yp-tab'));
+      var panels = [].slice.call(root.querySelectorAll('.yp-panel'));
+      function pick(i) {
+        tabs.forEach(function (t, j) { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+        panels.forEach(function (p, j) { p.hidden = j !== i; });
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { pick(i); });
+        t.addEventListener('keydown', function (e) {
+          var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : -9;
+          if (n === -9) return; n = (n + tabs.length) % tabs.length; e.preventDefault(); pick(n); tabs[n].focus();
+        });
+      });
+      var h = location.hash.slice(1), start = 0;
+      panels.forEach(function (p, j) { if (p.id === h) start = j; });
+      pick(start);
+    })();
+  </script>
+</section>
+
+<style is:global>
+  .yp { padding: 56px 0 60px; }
+  .yp-h { margin-bottom: 10px; }
+  .yp-intro { max-width: 640px; margin: 0 0 26px; font-size: 1.05rem; }
+  .yp-tabs { display: none; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+  .yp-js .yp-tabs { display: flex; }
+  .yp-tab { position: relative; appearance: none; font: 600 0.95rem/1.2 var(--sans); color: var(--ink); background: var(--page); border: 1px solid var(--box-border); padding: 11px 18px 11px 26px; cursor: pointer; }
+  .yp-tab::before { content: '>'; position: absolute; left: 11px; top: 50%; transform: translateY(-52%); color: var(--accent); font-weight: 800; opacity: 0; }
+  .yp-tab:hover { border-color: var(--ink); }
+  .yp-tab[aria-selected="true"] { border-color: var(--ink); box-shadow: inset 0 -3px 0 var(--accent); }
+  .yp-tab[aria-selected="true"]::before { opacity: 1; }
+  .yp-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .yp-js .yp-nojs { display: none; }
+  .yp-nojs { font-family: var(--serif); font-size: 1.3rem; margin: 30px 0 12px; }
+  .yp-story { max-width: 780px; }
+  .yp-ctx { margin: 0 0 22px; font-family: var(--serif); font-size: 1.3rem; line-height: 1.45; }
+  .yp-out { position: relative; margin: 30px 0 0; padding: 22px 0 0 34px; border-top: 3px solid var(--ink); font-family: var(--serif); font-size: 2.1rem; line-height: 1.2; font-weight: 700; }
+  .yp-out::before { content: '>'; position: absolute; left: 0; top: 22px; color: var(--accent); font-family: var(--sans); font-weight: 800; }
+  .yp-mail { background: var(--page); border: 1px solid var(--box-border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05); font-size: 0.92rem; }
+  .yp-hdr { margin: 0; padding: 14px 20px; background: var(--tint); border-bottom: 1px solid var(--box-border); }
+  .yp-hdr div { display: grid; grid-template-columns: 70px 1fr; gap: 10px; padding: 2px 0; }
+  .yp-hdr dt { color: var(--faint); }
+  .yp-hdr dd { margin: 0; }
+  .yp-subj dd { font-weight: 700; }
+  .yp-mbody { padding: 18px 20px 20px; }
+  .yp-mbody p { margin: 0 0 10px; }
+  .yp-hl { font-weight: 700; font-size: 1rem; }
+  .yp-when { font-weight: 600; }
+  .yp-ml { font-style: italic; color: var(--quiet); margin-top: 14px !important; }
+  .yp-q { margin: 0 0 10px; padding: 2px 0 2px 14px; border-left: 3px solid var(--hairline); }
+  .yp-q p { margin: 0 0 4px; }
+  .yp-q cite { font-style: normal; font-size: 0.82rem; color: var(--faint); }
+  .yp-checks { margin: 0 0 12px; padding-left: 20px; }
+  .yp-checks li { margin-bottom: 4px; }
+  .yp-for { font-weight: 600; }
+  .yp-src, .yp-disc { font-size: 0.8rem; color: var(--faint); overflow-wrap: anywhere; }
+  @media (max-width: 539px) {
+    .yp { padding: 40px 0 44px; }
+    .yp-ctx { font-size: 1.12rem; }
+    .yp-out { font-size: 1.5rem; padding-left: 26px; }
+    .yp-tab { padding: 9px 12px 9px 22px; font-size: 0.86rem; }
+    .yp-tab::before { left: 9px; }
+    .yp-hdr, .yp-mbody { padding-left: 14px; padding-right: 14px; }
+    .yp-hdr div { grid-template-columns: 58px 1fr; }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+// The six function cards of the home page. Each card is one button holding two faces: the front (function name, a hook as the
+// headline and a cue with a small turn icon) and the back (the outcome sentence). Clicking, tapping, Enter or Space turns the card
+// and turns it back; hovering only lifts it. The hidden face is aria-hidden and inert (set by the script, so that without script
+// both faces are plain text, stacked). Loading the page with a card's anchor (#tax-engine) turns that card and scrolls to it.
+// All words come from props (src/data/stories/home.ts).
+interface Props {
+  cards: { id: string; label: string; hook: string; back: string }[];
+  cue: string;
+}
+const { cards, cue } = Astro.props;
+---
+<ul class="fcards" id="fcards">
+  {cards.map((k) => (
+    <li>
+      <button type="button" class="fcard" id={k.id} aria-pressed="false">
+        <span class="fcard-inner">
+          <span class="fcard-face fcard-front">
+            <span class="fcard-label">{k.label}</span>
+            <span class="fcard-hook">{k.hook}</span>
+            <span class="fcard-cue">{cue}
+              <svg class="fcard-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.6-5.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20.5 3.5v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </span>
+          <span class="fcard-face fcard-back">
+            <span class="fcard-label">{k.label}</span>
+            <span class="fcard-text">{k.back}</span>
+          </span>
+        </span>
+      </button>
+    </li>
+  ))}
+</ul>
+<script is:inline>
+  (function () {
+    var list = document.getElementById('fcards');
+    if (!list) return;
+    list.classList.add('is-js');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function faces(b, on) {
+      var f = b.querySelector('.fcard-front'), k = b.querySelector('.fcard-back');
+      f.inert = on; k.inert = !on;
+      f.setAttribute('aria-hidden', on ? 'true' : 'false'); k.setAttribute('aria-hidden', on ? 'false' : 'true');
+    }
+    function set(b, on) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); faces(b, on); }
+    var btns = [].slice.call(list.querySelectorAll('.fcard'));
+    btns.forEach(function (b) {
+      faces(b, false);
+      b.addEventListener('click', function () { set(b, b.getAttribute('aria-pressed') !== 'true'); });
+    });
+    function fromHash() {
+      var id = decodeURIComponent((location.hash || '').slice(1));
+      var b = id && btns.filter(function (x) { return x.id === id; })[0];
+      if (!b) return;
+      set(b, true);
+      b.scrollIntoView({ block: 'center', behavior: reduce.matches ? 'auto' : 'smooth' });
+    }
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+  })();
+</script>
+
+<style is:global>
+  .fcards { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .fcards > li { display: flex; }
+  .fcard { appearance: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; display: block; width: 100%; padding: 0; margin: 0; border: 0; background: none; perspective: 1100px; scroll-margin-top: 24px; transition: transform 0.2s ease, filter 0.2s ease; }
+  .fcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (hover: hover) { .fcard:hover { transform: translateY(-3px); filter: drop-shadow(0 6px 8px rgba(31, 31, 31, 0.14)); } }
+  /* Both faces share one grid cell, so the card is as tall as the taller face. */
+  .fcard-inner { display: grid; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s ease; }
+  .fcard-face { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 12px; padding: 20px 20px 18px; min-height: 220px; border: 1px solid var(--box-border); border-top: 3px solid var(--ink); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .fcard-front { background: var(--tint); }
+  .fcard-back { background: var(--ink); color: #fff; border-color: var(--ink); transform: rotateY(180deg); }
+  .fcard-label { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
+  .fcard-back .fcard-label { color: #f3c58f; }
+  .fcard-hook { font-family: var(--serif); font-size: 1.4rem; line-height: 1.25; font-weight: 700; }
+  .fcard-cue { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; color: var(--quiet); }
+  .fcard-icon { flex: none; color: var(--accent); }
+  .fcard-text { font-size: 1.02rem; line-height: 1.5; }
+  /* Without script: both faces stacked, plain. */
+  .fcards:not(.is-js) .fcard-inner { display: block; }
+  .fcards:not(.is-js) .fcard-face { min-height: 0; transform: none; backface-visibility: visible; }
+  .fcards:not(.is-js) .fcard-back { border-top-width: 1px; }
+  /* With script: the turn. */
+  .fcards.is-js .fcard[aria-pressed="true"] .fcard-inner { transform: rotateY(180deg); }
+  @media (prefers-reduced-motion: reduce) {
+    .fcard, .fcard-inner { transition: none; }
+    .fcard:hover { transform: none; }
+    .fcards.is-js .fcard-inner, .fcards.is-js .fcard[aria-pressed="true"] .fcard-inner { transform: none; }
+    .fcards.is-js .fcard-face { transition: opacity 0.3s ease; backface-visibility: visible; transform: none; }
+    .fcards.is-js .fcard-back, .fcards.is-js .fcard[aria-pressed="true"] .fcard-front { opacity: 0; }
+    .fcards.is-js .fcard[aria-pressed="true"] .fcard-back { opacity: 1; }
+  }
+  .fcards-after { margin: 24px 0 0; max-width: 62ch; font-weight: 600; }
+  @media (max-width: 899px) { .fcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 599px) { .fcards { grid-template-columns: minmax(0, 1fr); } .fcard-face { min-height: 0; } }
+</style>
