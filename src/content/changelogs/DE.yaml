@@ -1,5 +1,14 @@
 country_code: DE
 entries:
+  - timestamp: 2026-11-06T09:36:22Z
+    type: content-update
+    field: "archiving exception group"
+    old_value: "8 years, no exception stated"
+    new_value: "8 years; credit institutions, supervised insurers and securities institutions keep the previous period"
+    description: "Art. 97 § 19a Abs. 3 EGAO applies the earlier version of § 147 Abs. 3 Satz 1 AO to institutions under § 1 Abs. 1b KWG, insurers under § 1 Abs. 1 VAG and securities institutions under § 2 Abs. 1 WpIG."
+    source_url: "https://www.gesetze-im-internet.de/aoeg_1977/EGAO.pdf"
+    mandate_version_before: 1
+    mandate_version_after: 1
   - timestamp: 2026-10-15T19:28:10Z
     type: content-update
     field: "preparation_timeline, operational_ownership, data_infrastructure, key_deadlines"
