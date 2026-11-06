@@ -1,5 +1,14 @@
 country_code: FR
 entries:
+  - timestamp: 2026-11-06T09:36:22Z
+    type: error-correction
+    field: "Annuaire addressing level, who writes the entry, content-error fine"
+    old_value: "Annuaire routes at SIRET and a SIREN-only record fails; IT owns Annuaire registration; EUR 15 per invoice for content errors"
+    new_value: "Annuaire entries exist at SIREN, SIRET, routing code and suffix level, the receiving PA writes them; EUR 15 per omission or inaccuracy, capped at 25% of the invoice"
+    description: "The external specification v3.2 (section 3.5) says the central portal creates a default entry at SIREN level for private companies and the receiving PA updates entries and adds SIRET, routing code and suffix levels. BOFiP BOI-CF-INF-10-40-40 n.150 says each omission or inaccuracy is fined EUR 15 and the total per invoice is capped at 25% of the invoice amount."
+    source_url: "https://www.impots.gouv.fr/specifications-externes-b2b"
+    mandate_version_before: 2
+    mandate_version_after: 2
   - timestamp: 2026-05-18T22:30:00Z
     type: confidence-upgrade
     field: "verification status + items pending verification"

@@ -1,5 +1,14 @@
 country_code: PL
 entries:
+  - timestamp: 2026-11-05T13:27:37Z
+    type: error-correction
+    field: "archiving checklist and audit test"
+    old_value: "AP Operations downloads and archives the KSeF-sealed XML for all inbound supplier invoices; audit test names the past two years"
+    new_value: "Each invoice is stored in KSeF for 10 years counted from the end of the year; the audit test no longer names a two-year window"
+    description: "The page stated a two-year audit window and an AP download duty. The Ministry of Finance KSeF page says invoices are stored in KSeF for 10 years counted from the end of the year; no source seen supports two years or a download duty. Wording now states only the 10-year storage."
+    source_url: "https://ksef.podatki.gov.pl/ksef-news/zasady-obowiazywania-ksef-i-przepisy-prawne/"
+    mandate_version_before: 2
+    mandate_version_after: 2
   - timestamp: 2026-05-19T07:30:00Z
     type: confidence-upgrade
     field: "verification status + items pending verification + last_verified"

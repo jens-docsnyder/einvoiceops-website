@@ -37,7 +37,7 @@ master_data_id: "SIRET (14-digit establishment identifier)"
 mandatory_pdf_bundle: none
 foreign_resident_scope: false
 archiving_years: 10
-penalty_max: "EUR 50/invoice for failure to issue electronically (Art. 1737 §III CGI, cap EUR 15,000/year); EUR 15/invoice for content errors (Art. 1737 §II CGI, cap 25% of invoice amount); EUR 500-1,000/quarter escalating for failure to use certified PA for reception (Art. 1737 §IV bis CGI). First infraction in 3 years exempt if corrected within 30 days (Art. 1737 §V CGI)."
+penalty_max: "EUR 50/invoice for failure to issue electronically (Art. 1737 §III CGI, cap EUR 15,000/year); EUR 15 per omission or inaccuracy for content errors, total per invoice capped at 25% of the invoice amount (Art. 1737 §II CGI); EUR 500-1,000/quarter escalating for failure to use certified PA for reception (Art. 1737 §IV bis CGI). First infraction in 3 years exempt if corrected within 30 days (Art. 1737 §V CGI)."
 reporting_window: null
 correction_mechanism: credit_note
 
@@ -86,7 +86,7 @@ A clean implementation from standing start takes 4-6 months minimum. Four stages
 
 **AP/AR Operations** manages lifecycle status exceptions. A Rejet (technical failure at the PA) means the invoice was never legally issued. A Refus (buyer rejection for business reasons) means the invoice was legally issued. These require different responses and AR must have separate documented procedures for each.
 
-**IT** owns the PA integration layer: the connection between the ERP and the certified PA, Annuaire registration for all French SIRETs, and - where an OD is currently in use - the bridge from OD output to PA input.
+**IT** owns the PA integration layer: the connection between the ERP and the certified PA, the information the PA needs to write and update the company's Annuaire entries (the receiving PA writes them, not the company), and - where an OD is currently in use - the bridge from OD output to PA input.
 
 **Where it breaks:** Groups using an OD (uncertified invoice software) that have not yet contracted a certified PA. An OD cannot transmit invoices under the mandate. The transition requires 6-9 months of lead time. Most groups relying on an OD have not started this transition.
 
@@ -96,11 +96,11 @@ The configuration work items in each of these areas vary by ERP system, entity s
 
 Three ERP data gaps are consistently blocking French mandate readiness:
 
-**SIRET at establishment level.** The Annuaire routes invoices at the 14-digit SIRET - the establishment identifier, not the 9-digit SIREN legal entity identifier. ERPs configured for cross-border EU operations typically store SIREN or VAT number, not the full SIRET. Any invoice addressed to a SIREN-only record will fail routing in the Annuaire. This must be corrected field-by-field across all French customer and vendor records.
+**Addressing level in the Annuaire.** An Annuaire entry can sit at four levels: SIREN (legal entity), SIRET (establishment), routing code and suffix. The central portal creates a default entry at SIREN level for every private company, and the receiving PA can replace it and add SIRET, routing code or suffix entries once the company has contracted with it (external specification v3.2, section 3.5). A SIREN-only address is therefore valid, but it only reaches the right place if the company wants invoices received centrally. ERPs configured for cross-border EU operations typically store SIREN or VAT number, not the full SIRET, so a company that wants decentralised receipt must hold the SIRET and any routing code in its customer and vendor records.
 
 **Annuaire registration completeness across all entities.** Every active French establishment must be registered in the Annuaire with an assigned PA. Groups with multiple French subsidiaries must audit their entity list against the SIRENE database and deregister defunct establishments before registering active ones. Routing confusion from inactive SIRETs creates invoice delivery failures at the sender's PA.
 
-**Pre-invoice Annuaire lookup.** Before transmitting an invoice, the system must confirm the buyer's SIRET is registered in the Annuaire and identify which PA they use. Standard ERP configurations do not include this as a default pre-validation step. Invoices sent to unregistered buyers are rejected at the sender's PA.
+**Pre-invoice Annuaire lookup.** Before transmitting an invoice, the system must confirm the buyer's Annuaire entry (at SIREN, SIRET, routing code or suffix level) and identify which PA they use. Standard ERP configurations do not include this as a default pre-validation step. Invoices sent to unregistered buyers are rejected at the sender's PA.
 
 Format selection: all three formats (Factur-X, UBL BIS 3.0, CII) are legally equivalent. Factur-X is often preferred for mixed supplier bases because of its embedded PDF layer. Pure UBL or CII is preferred for fully automated end-to-end processing. The Factur-X MINIMUM profile is insufficient - EN 16931 or Basic WL is the required baseline.
 
