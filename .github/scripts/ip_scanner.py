@@ -326,10 +326,16 @@ def scan(config, list_hits=False):
                     forms = line_forms(raw_line, exceptions, folded_exceptions)
                     for rule in rules:
                         rule_id = rule.get("id", "IP-???")
+                        # A rule may be limited to one folder (path_prefix) and may read a line with its web
+                        # addresses cut out (cut_urls), as a reader of the page does not read a link's text.
+                        if rule.get("path_prefix") and not rel.startswith(rule["path_prefix"]):
+                            continue
                         # A hit in any form counts; a line exception in any form lets the line through.
                         hit = excused = False
                         for line, exs in forms:
                             tested = mask_line(line, filepath, exs, rule_id)
+                            if rule.get("cut_urls"):
+                                tested = re.sub(r"https?://\S+", " ", tested)
                             hit = hit or matches_rule(tested, rule)
                             excused = excused or is_exception(tested, filepath, exs, rule_id)
                         if not hit or excused:

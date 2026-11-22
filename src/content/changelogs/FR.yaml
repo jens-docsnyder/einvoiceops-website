@@ -149,7 +149,7 @@ entries:
     field: "items pending verification"
     old_value: "3"
     new_value: "2"
-    description: "First source verification pass (partial). One pending item resolved: Article 91 of Loi 2023-1322 (Legifrance JORFARTI000048727444) confirmed: Sep 1, 2026 for large companies / ETI, Sep 1, 2027 for SMEs / micro, with postponement decree option up to Dec 1 / Dec 1 respectively. Two items still open: (1) high-priority - PPF B2B discontinuation October 2024: DGFiP FAQ does not contain the claim, main impots.gouv.fr page search pending; (2) pending - pilot phase dates Feb-Aug 2026: original source URL 404, new source search pending. Penalty amounts also still pending - no source URL found yet. Status stays pending verification."
+    description: "First source verification pass (partial). One pending item resolved: Article 91 of Loi 2023-1322 (Legifrance, linked as the source) confirmed: Sep 1, 2026 for large companies / ETI, Sep 1, 2027 for SMEs / micro, with postponement decree option up to Dec 1 / Dec 1 respectively. Two items still open: (1) high-priority - PPF B2B discontinuation October 2024: DGFiP FAQ does not contain the claim, main impots.gouv.fr page search pending; (2) pending - pilot phase dates Feb-Aug 2026: original source URL 404, new source search pending. Penalty amounts also still pending - no source URL found yet. Status stays pending verification."
     source_url: "https://www.legifrance.gouv.fr/jorf/id/JORFARTI000048727444"
     mandate_version_before: 1
     mandate_version_after: 1

@@ -698,6 +698,61 @@ rules:
     description: "Polish wording close to an authority claim. Expected once in the line that says we give no advice; anywhere else, rephrase."
 
 
+  # ── CATEGORY S7: Public changelogs (the same words the email standard's section 7 cuts) ──
+  # Each rule reads only src/content/changelogs/ and reads a line without its web addresses, because a source
+  # link may carry the identifier. The patterns are those of the email standard's section 7, case-sensitive.
+
+  - id: IP-S7-01
+    category: S7
+    severity: critical
+    type: regex
+    case_sensitive: true
+    path_prefix: "src/content/changelogs/"
+    cut_urls: true
+    pattern: '\b(?:BJNR[0-9A-Z]+|LEGI(?:ARTI|TEXT|SCTA)\d+|BEFISCO\d+|[A-Z]{2}-W\d+-[0-9a-f]{6,}|[A-Z]{3,}[A-Z0-9]*\d{6,}[A-Z0-9]*)\b'
+    description: "A version identifier of a source document. Say the source is linked; the link may carry the identifier."
+
+  - id: IP-S7-02
+    category: S7
+    severity: critical
+    type: regex
+    case_sensitive: true
+    path_prefix: "src/content/changelogs/"
+    cut_urls: true
+    pattern: '\b[A-Z]{2}-[0-9a-f]{10}\b'
+    description: "An internal change identifier. Describe the change in words."
+
+  - id: IP-S7-03
+    category: S7
+    severity: critical
+    type: regex
+    case_sensitive: true
+    path_prefix: "src/content/changelogs/"
+    cut_urls: true
+    pattern: '\b(?:de|fr|be|pl|eu)(?:-[a-z0-9]+){2,}\b'
+    description: "An internal source name. Name the source in words."
+
+  - id: IP-S7-04
+    category: S7
+    severity: critical
+    type: regex
+    case_sensitive: true
+    path_prefix: "src/content/changelogs/"
+    cut_urls: true
+    pattern: '\bwatchers?\b|watched page updated|\bThis lane\b|\bthe lane\b|reached you on the sentence''s own words|Read out of the document|Read from guidance about'
+    description: "Wording about how a change was found. Say what changed, not how it was seen."
+
+  - id: IP-S7-05
+    category: S7
+    severity: critical
+    type: regex
+    case_sensitive: true
+    path_prefix: "src/content/changelogs/"
+    cut_urls: true
+    pattern: 'Two kinds of thing|Nothing here is decided|not decided|\bPROPOSED\b|Operational preparation only|No compliance authority claim|nothing on it is decided'
+    description: "A safety rule of the product restated. It belongs in the rules, not in a changelog entry."
+
+
 # Path rules: a file or folder that may not exist in the repository, whatever it contains.
 # A path that git ignores and does not track (the local link to the open-items list) is let
 # through in a working checkout, because it cannot be pushed. In CI it never exists.

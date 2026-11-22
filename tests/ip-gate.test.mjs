@@ -361,6 +361,58 @@ test('a clean tree passes the name scan', { skip: nameSkip }, async () => {
   counts.nameScanRan += 1;
 });
 
+// ---- the public changelogs and the section 7 families (plan 615, phase 12) ----
+// Each case plants one term in a scratch copy of the France changelog and expects the scanner to stop it, naming the rule.
+const CHANGELOG = 'src/content/changelogs/FR.yaml';
+const changelogText = fs.readFileSync(path.join(ROOT, CHANGELOG), 'utf8');
+const S7 = [
+  ['version id', 'IP-S7-01', t('JORF~ARTI000000000001')],
+  ['change id', 'IP-S7-02', t('F~R-0123456789')],
+  ['source slug', 'IP-S7-03', t('de-ko~sit-xrechnung-versionen')],
+  ['pipeline phrase', 'IP-S7-04', t("seen by this product's wat~cher")],
+  ['safety phrase', 'IP-S7-05', t('Two ki~nds of thing')],
+];
+
+function plantChangelog(dir, term) {
+  const i = changelogText.indexOf('    description: "');
+  assert.notEqual(i, -1, 'no description line in the changelog copy');
+  const at = i + '    description: "'.length;
+  write(dir, CHANGELOG, term === null ? changelogText : changelogText.slice(0, at) + term + ' ' + changelogText.slice(at));
+}
+
+for (const [label, rule, term] of S7) {
+  test(`changelog: a planted ${label} is stopped by ${rule}`, async () => {
+    const dir = makeTree(`cl-${rule}`);
+    plantChangelog(dir, term);
+    const r = await scan(dir);
+    assert.equal(r.code, 1, `exit ${r.code}, wanted 1`);
+    assert.ok(hitsOf(r.out).some((h) => h.file === CHANGELOG && h.rule === rule), `no ${rule} hit in ${CHANGELOG}:\n${r.out}`);
+    counts.ran += 1;
+  });
+}
+
+test('changelog: the unplanted copy exits 0', async () => {
+  const dir = makeTree('cl-clean');
+  plantChangelog(dir, null);
+  const r = await scan(dir);
+  assert.equal(r.code, 0, r.out);
+  counts.ran += 1;
+});
+
+nodeTest('N0 name scan available', () => {
+  assert.ok(NAME_SCAN && fs.existsSync(NAME_SCAN), 'name scan unavailable: NAME_SCAN not set or file missing');
+});
+
+test('changelog: a planted first name is stopped by the name scan', { skip: nameSkip }, async () => {
+  const dir = makeTree('cl-name');
+  plantChangelog(dir, `${OWNER_FULL.split(' ')[0]} schrieb`);
+  const r = await nameScan(dir);
+  assert.equal(r.code, 1, `exit ${r.code}, wanted 1:\n${r.out}`);
+  assert.ok(r.out.includes(CHANGELOG), r.out);
+  counts.ran += 1;
+  counts.nameScanRan += 1;
+});
+
 after(() => {
   console.log(
     `content gate cases: ${counts.ran} ran, ${counts.blockedAsExpected} exited 1 as expected, ` +
