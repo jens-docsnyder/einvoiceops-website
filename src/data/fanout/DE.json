@@ -2,9 +2,9 @@
   "country": "DE",
   "total": 27,
   "since": "2024-01-01",
-  "checked_on": "2026-11-16",
+  "checked_on": "2026-11-23",
   "sources_named": 41,
-  "sources_weekly": 36,
+  "sources_weekly": 39,
   "functions": [
     {
       "name": "Outbound invoicing",
